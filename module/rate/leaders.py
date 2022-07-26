@@ -50,5 +50,4 @@ def setup(bot):
                     break
                 else:
                     index += 1
-
         await ctx.send(embed = mbed)

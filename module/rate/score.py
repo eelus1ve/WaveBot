@@ -32,7 +32,6 @@ def setup(bot):
                 description=f'{SCR}',
                 color=COLOR
             ))
-            
     @bot.command()
     @commands.has_permissions(administrator=True)
     async def add_score(ctx, mr: discord.Member = None, arg = None):
@@ -79,7 +78,6 @@ def setup(bot):
                         description=f'Использование: ~add_score (@Учасник) (кол-во опыта)',
                         color=ErCOLOR
                     ))
-
     @bot.command()
     @commands.has_permissions(administrator=True)
     async def remove_score(ctx, mr: discord.Member = None, arg = None):
@@ -126,7 +124,6 @@ def setup(bot):
                         description=f'Использование: ~remove_score (@Учасник) (кол-во опыта)',
                         color=ErCOLOR
                     ))
-
     @bot.command()
     @commands.has_permissions(administrator=True)
     async def clear_score(ctx, mr: discord.Member = None):
@@ -153,7 +150,6 @@ def setup(bot):
                 description=f'{ctx.author} потерял все очки!',
                 color=COLOR
             ))
-
     @bot.command()
     async def set_lvl(ctx, user = discord.Member, arg = None):
         userr = user or ctx.author
