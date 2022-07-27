@@ -43,16 +43,5 @@ def setup(bot):
                 await interaction.edit_origin(
                     components=[]
                 )'''
-    @bot.command()
-    async def a(ctx):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-        for i in ctx.guild.members:
-            if str(i.id) == '136845059717988354':
-                await ctx.send(embed=discord.Embed(
-                title=f"{i.name}",
-                description="",
-                color=COLOR
-            ))
+
 

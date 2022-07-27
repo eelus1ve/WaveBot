@@ -178,7 +178,7 @@ def setup(bot):
                             for filename in mods:
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
                                     if f'{filename[:-3]}' in list:
-                                        list.append(f'{filename[:-3]}')            
+                                        list.remove(f'{filename[:-3]}')            
                                         bot.unload_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
                                         msg = await ctx.send(embed=discord.Embed(
@@ -201,7 +201,7 @@ def setup(bot):
                             for filename in mods:
                                 if filename.endswith(".py"):
                                     if f'{filename[:-3]}' in list:
-                                        list.append(f'{filename[:-3]}')
+                                        list.remove(f'{filename[:-3]}')
                                         bot.unload_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
                                         pass
@@ -246,7 +246,7 @@ def setup(bot):
         if str(ctx.author.id) in ADMINS:
             await ctx.send(embed=discord.Embed(
                 title="Список загруженых модулей",
-                description=f"".join(list),
+                description=f"{list}",
                 color=COLOR
             ))
         else:
