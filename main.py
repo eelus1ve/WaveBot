@@ -19,7 +19,6 @@ config = {
 #=======================================================================================================================
 intents=discord.Intents.all()
 def get_prefix(bot, message):
-    guildid = message.guild.id #айди сервера где была визвана команда prefix
     with open('users.json', 'r') as file:
         data = json.load(file)
     prefix = data[str(message.guild.id)]['PREFIX']
