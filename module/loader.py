@@ -7,9 +7,6 @@ def setup(bot):
     from discord.ext import commands
     from BTSET import TOKEN, ADMINS
 
-    config = {
-    'prefix': '~' #поиграться с префиксами
-    }
     dir_name1 = "D:\Windows\Рабочий стол\wave1\module"
     
     list = []
@@ -20,6 +17,7 @@ def setup(bot):
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+                prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
         try:
             # -----------------------------селект
             if str(ctx.author.id) in ADMINS:
@@ -63,7 +61,7 @@ def setup(bot):
                 elif arg == None:
                     msg = await ctx.send(embed=discord.Embed(
                         title="Ошибка",
-                        description="*Использование:* " + str(config['prefix']) + "*load (_имя модуля_)*",
+                        description=f"*Использование:* {prefix} *load (_имя модуля_)*",
                         color=ErCOLOR
                         ))
                 else:
@@ -92,6 +90,7 @@ def setup(bot):
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+                prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
         try:
             # -----------------------------селект
             if str(ctx.author.id) in ADMINS:
@@ -137,7 +136,7 @@ def setup(bot):
                 elif arg == None:
                    msg = await ctx.send(embed=discord.Embed(
                         title="Ошибка",
-                        description="*Использование:* " + str(config['prefix']) + "*load (_имя модуля_)*",
+                        description=f"*Использование:* {prefix} *load (_имя модуля_)*",
                         color=ErCOLOR
                         ))
 
@@ -166,6 +165,7 @@ def setup(bot):
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+                prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
         try:
             # -----------------------------селект
             if str(ctx.author.id) in ADMINS:
@@ -213,7 +213,7 @@ def setup(bot):
                 elif arg == None:
                     msg = await ctx.send(embed=discord.Embed(
                         title="Ошибка",
-                        description="*Использование:* " + str(config['prefix']) + "*load (_имя модуля_)*",
+                        description=f"*Использование:* {prefix} *load (_имя модуля_)*",
                         color=ErCOLOR
                         ))
 
@@ -246,7 +246,7 @@ def setup(bot):
         if str(ctx.author.id) in ADMINS:
             await ctx.send(embed=discord.Embed(
                 title="Список загруженых модулей",
-                description=f"{list}",
+                description=f"".join(list),
                 color=COLOR
             ))
         else:

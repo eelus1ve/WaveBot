@@ -12,10 +12,6 @@ from BTSET import TOKEN, ADMINS, BOTVERSION
 from discord.ext import commands
 from discord_components import ComponentsBot
 
-#==============================================================================================всё для запуска
-config = {
-    'prefix': '~' #поиграться с префиксами
-}
 #=======================================================================================================================
 intents=discord.Intents.all()
 def get_prefix(bot, message):
@@ -89,7 +85,15 @@ async def on_ready():
         await asyncio.sleep(20)
         
 
-
+@bot.command()
+async def a(ctx):
+    with open('users.json', 'r') as file:
+        dataServerID = json.load(file)
+        COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+    await ctx.send(embed=discord.Embed(
+        title="Степ не волнуйся все хорошо)",
+        color=COLOR
+        ))
     
 #=======================================================================================================================
 #           1)рейтинг (--)
