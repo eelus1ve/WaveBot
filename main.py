@@ -2,6 +2,8 @@
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!
 
+from dataclasses import dataclass
+from sys import prefix
 import discord
 import json
 import os
@@ -16,7 +18,13 @@ config = {
 }
 #=======================================================================================================================
 intents=discord.Intents.all()
-bot = ComponentsBot(command_prefix=config['prefix'], intents=intents)
+def get_prefix(bot, message):
+    guildid = message.guild.id #айди сервера где была визвана команда prefix
+    with open('users.json', 'r') as file:
+        data = json.load(file)
+    prefix = data[str(message.guild.id)]['PREFIX']
+    return prefix
+bot =commands.Bot(command_prefix = get_prefix, help_command=None)
 bot.remove_command('help')
 #=======================================================================================================================
 @bot.event
@@ -81,6 +89,9 @@ async def on_ready():
                     
         await asyncio.sleep(20)
         
+
+
+    
 #=======================================================================================================================
 #           1)рейтинг (--)
 #           3)присоединение и отключение учасника
