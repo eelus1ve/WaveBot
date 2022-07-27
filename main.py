@@ -1,9 +1,6 @@
 #=============================================================================================импорты
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!
-
-from dataclasses import dataclass
-from sys import prefix
 import discord
 import json
 import os
@@ -19,7 +16,7 @@ def get_prefix(bot, message):
         data = json.load(file)
     prefix = data[str(message.guild.id)]['PREFIX']
     return prefix
-bot =commands.Bot(command_prefix = get_prefix, help_command=None)
+bot =ComponentsBot(command_prefix = get_prefix, help_command=None)
 bot.remove_command('help')
 #=======================================================================================================================
 @bot.event
