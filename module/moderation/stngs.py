@@ -16,6 +16,7 @@ def setup(bot):
             roles =  dataServerID[str(ctx.author.guild.id)]['JoinRoles']
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
             ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+            prefix = dataServerID[str(ctx.author.guild.id)]['PREFIX']
         #print([SelectOption(label=i, value=i) for i in ctx.author.guild.roles])
         emb = discord.Embed(title=f'Настройка сервера ***{str(ctx.message.guild)}***',      #ПЕРЕДЕЛАТЬ
                             description="***Параметры:*** \n\
@@ -381,9 +382,9 @@ def setup(bot):
                 ))
             else:
                 await ctx.send(embed=discord.Embed(
-                title="Ошибка",
-                description="*Использование: !settings prefix (ваш префикс)*",
-                color=ErCOLOR
+                title=f"Префикс установленный на сервере: ***{prefix}***",
+                description=f"Для смены префикса напишите {prefix}settings prefix ваш_префикс",
+                color=COLOR
                 ))
 
         elif arg == 'selfroom':
