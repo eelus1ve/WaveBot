@@ -1,4 +1,3 @@
-
 def setup(bot):
     import discord
     import random

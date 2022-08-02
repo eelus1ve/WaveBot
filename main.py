@@ -1,13 +1,21 @@
 #=============================================================================================импорты
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!
-import discord
-import json
-import os
 import asyncio
 from BTSET import TOKEN, ADMINS, BOTVERSION
 from discord.ext import commands
-from discord_components import ComponentsBot
+from msilib.schema import Component
+import py_compile
+import discord
+import random
+import json
+import time
+import os
+import sys
+import asyncio
+from discord import Spotify
+from discord.utils import get
+from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption
 
 #=======================================================================================================================
 intents=discord.Intents.all()
@@ -16,7 +24,7 @@ def get_prefix(bot, message):
         data = json.load(file)
     prefix = data[str(message.guild.id)]['PREFIX']
     return prefix
-bot =ComponentsBot(command_prefix = get_prefix, help_command=None)
+bot =ComponentsBot(command_prefix = get_prefix, intents=intents)
 bot.remove_command('help')
 #=======================================================================================================================
 @bot.event
@@ -55,16 +63,15 @@ async def on_ready():
                             'Mafrooms': {},
                             'IgnoreChannels': [],
                             'IgnoreRoles': [],
-                            'card': '0.png',
-                            'text_color': '#0000FF',
-                            'bar_color': '#0000FF',
+                            'card': 'wave.png',
+                            'text_color': '#d0ed2b',
+                            'bar_color': '#ec5252',
                             'blend': 1,
                             'USERS': {},
                         }})
 
             with open('users.json', 'w') as file:
                 json.dump(data, file, indent=4)
-
             for member in guild.members:
                 with open('users.json', 'r') as file:
                     dat = json.load(file)
@@ -88,7 +95,7 @@ async def a(ctx):
         dataServerID = json.load(file)
         COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
     await ctx.send(embed=discord.Embed(
-        title="Степ не волнуйся все хорошо)",
+        title="Степ не волнуйся все плохо)",
         color=COLOR
         ))
     

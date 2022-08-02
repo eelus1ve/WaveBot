@@ -11,7 +11,8 @@ def setup(bot):
                 data = json.load(file)
                 IgnoreChannels = data[str(message.guild.id)]['IgnoreChannels']
                 IgnoreRoles = data[str(message.guild.id)]['IgnoreRoles']
-            if not(message.content.startswith("~") or str(message.channel.id) in IgnoreChannels or True in [str(ii) in IgnoreRoles for ii in [i.id for i in message.author.roles]] or message.author.bot):
+                pref = str(data[str(message.author.guild.id)]['PREFIX'])
+            if not(message.content.startswith(pref) or str(message.channel.id) in IgnoreChannels or True in [str(ii) in IgnoreRoles for ii in [i.id for i in message.author.roles]] or message.author.bot):
 
                     xp = data[str(message.guild.id)]['USERS'][str(message.author.id)]['SCR']
                     lvl = data[str(message.guild.id)]['USERS'][str(message.author.id)]['LvL']

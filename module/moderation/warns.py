@@ -5,9 +5,6 @@ def setup(bot):
     from discord.ext import commands
     from discord.utils import get
 
-    config = {
-    'prefix': '~' #поиграться с префиксами
-    }
     # Выдача варнов
     @bot.command()
     @commands.has_permissions(administrator=True)
@@ -55,6 +52,7 @@ def setup(bot):
             idAdminchennel = int(data[str(ctx.author.guild.id)]['idAdminchennel'])
             nWarns = int(data[str(ctx.guild.id)]['nWarns'])
             nCaps = int(data[str(ctx.author.guild.id)]['nCaps'])
+            pref = str(data[str(ctx.author.guild.id)]['PREFIX'])
             BADWORDS = data[str(ctx.author.guild.id)]['BADWORDS']
             LINKS = data[str(ctx.author.guild.id)]['LINKS']
             WARN = []
@@ -62,7 +60,7 @@ def setup(bot):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(embed=discord.Embed(
                 title="Ошибка",
-                description="*Использование: " + str(config['prefix']) + "warn (@Участник) (Причина)",
+                description=f"*Использование: {pref}warn (@Участник) (Причина)",
                 color=ErCOLOR
             ))
         if isinstance(error, commands.MissingPermissions):
@@ -110,6 +108,7 @@ def setup(bot):
             idAdminchennel = int(dataServerID[str(ctx.author.guild.id)]['idAdminchennel'])
             nWarns = int(dataServerID[str(ctx.guild.id)]['nWarns'])
             nCaps = int(dataServerID[str(ctx.author.guild.id)]['nCaps'])
+            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
             BADWORDS = dataServerID[str(ctx.author.guild.id)]['BADWORDS']
             LINKS = dataServerID[str(ctx.author.guild.id)]['LINKS']
             WARN = []
@@ -117,7 +116,7 @@ def setup(bot):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(embed=discord.Embed(
                 title="Ошибка",
-                description="*Использование: " + str(config['prefix']) + "unwarn (@Участник)",
+                description=f"*Использование: {pref}unwarn (@Участник)",
                 color=ErCOLOR
             ))
         if isinstance(error, commands.MissingPermissions):
@@ -168,6 +167,7 @@ def setup(bot):
             idAdminchennel = int(dataServerID[str(ctx.author.guild.id)]['idAdminchennel'])
             nWarns = int(dataServerID[str(ctx.guild.id)]['nWarns'])
             nCaps = int(dataServerID[str(ctx.author.guild.id)]['nCaps'])
+            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
             BADWORDS = dataServerID[str(ctx.author.guild.id)]['BADWORDS']
             LINKS = dataServerID[str(ctx.author.guild.id)]['LINKS']
             WARN = []
@@ -175,7 +175,7 @@ def setup(bot):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(embed=discord.Embed(
                 title="Ошибка",
-                description="*Использование: " + str(config['prefix']) + "clear_warns (@Участник)",
+                description=f"*Использование: {pref}clear_warns (@Участник)",
                 color=ErCOLOR
 
             ))

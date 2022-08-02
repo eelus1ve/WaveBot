@@ -5,6 +5,7 @@ def setup(bot):
     import discord
     import json
     from discord import Spotify
+    from discord.utils import get
     from discord.ext import commands
     from BTSET import ADMINS
 

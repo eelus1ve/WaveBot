@@ -17,31 +17,11 @@ def setup(bot):
                 description="*Орел*",
                 color=COLOR
             ))
-            '''components=[
-                    Button(label="Удалить ", style=4)
-                ]
-            )
-            interaction = await bot.wait_for("button_click")
-            if interaction.component.label.startswith("Удалить "):
-                await msg.edit(content = '', embed = {})
-                await interaction.edit_origin(
-                    components=[]
-                )'''
         else:
-            msg = await ctx.send(embed=discord.Embed(
+            await ctx.send(embed=discord.Embed(
                 title="Выпала: ",
                 description="*Решка*",
                 color=COLOR
             ))
-        '''components=[
-                    Button(label="Удалить ", style=4)
-                ]
-            )
-            interaction = await bot.wait_for("button_click")
-            if interaction.component.label.startswith("Удалить "):
-                await msg.edit(content = '', embed = {})
-                await interaction.edit_origin(
-                    components=[]
-                )'''
 
 

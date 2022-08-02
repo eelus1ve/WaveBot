@@ -19,7 +19,7 @@ def setup(bot):
         if len(rls) != 0:
             f = len(rls)
             n = 0
-            while n != f:
+            for n in f:
                 rl = mbr.guild.get_role(int(rls[n]))
                 n = n + 1
                 await mbr.add_roles(rl)

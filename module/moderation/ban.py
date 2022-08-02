@@ -30,16 +30,17 @@ def setup(bot):
             dataServerID = json.load(file)
             ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
             AdminchennelID = int(dataServerID[str(ctx.author.guild.id)]['idAdminchennel'], 16)
-        
+            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+
         if isinstance(error, commands.MissingRequiredArgument):
-            msg = await ctx.send(embed=discord.Embed(
+            await ctx.send(embed=discord.Embed(
                 title="Ошибка",
-                description="*Использование:* " + str(config['prefix']) + "*ban (@Участник)*",
+                description=f"*Использование:* {pref}*ban (@Участник)*",
                 color = ErCOLOR
             ))
             
         if isinstance(error, commands.MissingPermissions):
-            msg = await ctx.send(embed=discord.Embed(
+            await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description="*У вас недостаточно прав!*",
                 color = ErCOLOR
