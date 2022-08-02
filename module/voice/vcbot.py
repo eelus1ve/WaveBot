@@ -3,7 +3,7 @@ from discord.utils import get
 import json
 from youtube_dl import YoutubeDL
 from discord.ext import commands
-class voice(commands.Cog):
+class vcbot(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['я-одинокая-мразь'])
@@ -154,4 +154,4 @@ class voice(commands.Cog):
                 ))
 
 def setup(bot):
-    bot.add_cog(voice(bot))
+    bot.add_cog(vcbot(bot))
