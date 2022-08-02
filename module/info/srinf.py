@@ -1,12 +1,13 @@
-def setup(bot):
-    import discord
-    from discord import Spotify
-    from discord.ext import commands
-    import json
-    
+import discord
+from discord import Spotify
+from discord.ext import commands
+import json
 
-    @bot.command()
-    async def server_info(ctx):
+class srinf(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
+    async def server_info(self, ctx):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -22,8 +23,8 @@ def setup(bot):
         emb.add_field(name='Дата создания: ', value=ctx.message.guild.created_at.strftime("%d.%m.%y"))
         await ctx.send(embed=emb)
 
-    @bot.command() #Доделать. Знаю что доделать делаю делаю и думаю о том что ты пидр ведь мог бы и сам сделать а ты что-то другое делаешь а мне ещё документацию писать я тут сдохну 
-    async def server_info_channel(ctx, arg=None):
+    @commands.command() #Доделать. Знаю что доделать делаю делаю и думаю о том что ты пидр ведь мог бы и сам сделать а ты что-то другое делаешь а мне ещё документацию писать я тут сдохну 
+    async def server_info_channel(self, ctx, arg=None):
         if arg == 'on':
             if not('📊Info📊' in [i.name for i in ctx.guild.categories]):
                 ct = await ctx.guild.create_category(name='📊Info📊', position=0)
@@ -39,15 +40,17 @@ def setup(bot):
                 [await ii.delete() for ii in ctx.guild.categories if ii.name == '📊Info📊']
 
                 
-    @bot.listen('on_member_join')
-    async def srinfo(member):
+    @commands.Cog.listener('on_member_join')
+    async def srinfo(self, member):
         roomNames=[f'👥Members: {len(member.guild.members)}👥', f'🤖Bots: {len([i for i in member.guild.members if i.bot])}🤖', f'👤Humans: {len(member.guild.members) - len([i for i in member.guild.members if i.bot])}👤']
         if '📊Info📊' in [i.name for i in member.guild.categories]:
                 [await i.edit(name=roomNames.pop(0)) for i in [ii.channels for ii in member.guild.categories if ii.name == '📊Info📊'][0]]
 
 
-    @bot.event
-    async def on_member_remove(member):
+    @commands.Cog.listener('on_member_remove')
+    async def an_member_remove(self, member):
         roomNames=[f'👥Members: {len(member.guild.members)}👥', f'🤖Bots: {len([i for i in member.guild.members if i.bot])}🤖', f'👤Humans: {len(member.guild.members) - len([i for i in member.guild.members if i.bot])}👤']
         if '📊Info📊' in [i.name for i in member.guild.categories]:
                 [await i.edit(name=roomNames.pop(0)) for i in [ii.channels for ii in member.guild.categories if ii.name == '📊Info📊'][0]]
+def setup(bot):    
+    bot.add_cog(srinf(bot))

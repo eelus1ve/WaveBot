@@ -1,13 +1,14 @@
-def setup(bot):
-    from BTSET import ADMINS
-    import discord
-    import asyncio
-    import json
-    from discord.ext import commands
-
-    @bot.command(aliases=['очистить', 'Очистить', 'ОЧИСТИТЬ'])
+from BTSET import ADMINS
+import discord
+import asyncio
+import json
+from discord.ext import commands
+class clean(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command(aliases=['очистить', 'Очистить', 'ОЧИСТИТЬ'])
     @commands.has_permissions(administrator=True)
-    async def clear(ctx, amount: int):
+    async def clear(self, ctx, amount: int):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -30,7 +31,7 @@ def setup(bot):
         await asyncio.sleep(5)
         await msg.delete()
     @clear.error
-    async def error(ctx, error):
+    async def error(self, ctx, error):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
@@ -51,9 +52,9 @@ def setup(bot):
         await asyncio.sleep(2)
         await msg.delete()
 
-    @bot.command()
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def clear_channels(ctx):
+    async def clear_channels(self, ctx):
         if ctx.author.id == ctx.guild.owner.id or ctx.author.id in ADMINS:
             guild = ctx.guild
             for channel in guild.channels:
@@ -67,3 +68,5 @@ def setup(bot):
                 description="*Пошел нахуй!*",
                 color=ErCOLOR
             ))
+def setup(bot):
+    bot.add_cog(clean(bot))

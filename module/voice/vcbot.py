@@ -1,13 +1,13 @@
-def setup(bot):
-    
-    import discord
-    from discord.utils import get
-    import json
-    from youtube_dl import YoutubeDL
-    from discord.ext import commands
-
-    @bot.command(aliases=['я-одинокая-мразь'])
-    async def join(ctx, chlen = None):
+import discord
+from discord.utils import get
+import json
+from youtube_dl import YoutubeDL
+from discord.ext import commands
+class voice(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command(aliases=['я-одинокая-мразь'])
+    async def join(self, ctx, chlen = None):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -16,7 +16,7 @@ def setup(bot):
         global voice
         try:
             channel = ctx.author.voice.channel
-            voice = get(bot.voice_clients, guild=ctx.guild)
+            voice = get(self.bot.voice_clients, guild=ctx.guild)
 
             if voice and voice.is_connected():
                 await voice.move_to(channel)
@@ -34,14 +34,14 @@ def setup(bot):
                 color=ErCOLOR
             ))
 
-    @bot.command()
-    async def leave(ctx):
+    @commands.command()
+    async def leave(self, ctx):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
         try:
             channel = ctx.author.voice.channel
-            voice = get(bot.voice_clients, guild=ctx.guild)
+            voice = get(self.bot.voice_clients, guild=ctx.guild)
 
             await voice.disconnect()
             await ctx.send(embed=discord.Embed(
@@ -54,13 +54,13 @@ def setup(bot):
             pass
 
 
-    @bot.command(aliases=['p'])
-    async def play(ctx, url):
+    @commands.command(aliases=['p'])
+    async def play(self, ctx, url):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-        vc = get(bot.voice_clients, guild=ctx.guild)
+        vc = get(self.bot.voice_clients, guild=ctx.guild)
         if not(vc.is_playing()) and not(vc.is_paused()):
 
             YDL_OPTIONS = {'format': 'worstaudio/best', 'noplaylist': 'False', 'simulate': 'True',
@@ -90,13 +90,13 @@ def setup(bot):
                     color=ErCOLOR
                 ))
     
-    @bot.command(aliases=['st'])
-    async def start(ctx):
+    @commands.command(aliases=['st'])
+    async def start(self, ctx):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-        vc = get(bot.voice_clients, guild=ctx.guild)
+        vc = get(self.bot.voice_clients, guild=ctx.guild)
         if not(vc.is_playing()):
             vc.resume()
             await ctx.send(embed=discord.Embed(
@@ -111,13 +111,13 @@ def setup(bot):
                     color=ErCOLOR
                 ))
     
-    @bot.command()
-    async def pause(ctx):
+    @commands.command()
+    async def pause(self, ctx):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-        vc = get(bot.voice_clients, guild=ctx.guild)
+        vc = get(self.bot.voice_clients, guild=ctx.guild)
         if vc.is_playing():
             vc.pause()
             await ctx.message.reply(embed=discord.Embed(
@@ -132,13 +132,13 @@ def setup(bot):
                     color=ErCOLOR
                 ))
 
-    @bot.command(aliases=['skip', 'sk'])
-    async def stop(ctx):
+    @commands.command(aliases=['skip', 'sk'])
+    async def stop(self, ctx):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-        vc = get(bot.voice_clients, guild=ctx.guild)
+        vc = get(self.bot.voice_clients, guild=ctx.guild)
         if vc.is_playing():
             vc.stop()
             await ctx.message.reply(embed=discord.Embed(
@@ -152,3 +152,6 @@ def setup(bot):
                     description="Трек не играет!",
                     color=ErCOLOR
                 ))
+
+def setup(bot):
+    bot.add_cog(voice(bot))

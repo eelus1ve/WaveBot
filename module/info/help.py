@@ -1,25 +1,23 @@
-def setup(bot):
+import discord
+import json
+from discord.ext import commands
+from BTSET import BOTVERSION
 
-    import discord
-    import json
-    from discord.ext import commands
-    from BTSET import BOTVERSION
-
-    config = {
-    'prefix': '~' #поиграться с префиксами
-    }   
-    
-    @bot.command(aliases = ['хелп', 'Хелп', 'ХЕЛП'])
-    async def help(ctx, *arg):
+class help(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command(aliases = ['хелп', 'Хелп', 'ХЕЛП'])
+    async def help(self, ctx, *arg):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+                pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
         if arg:
             if arg[0] == 'rand':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]}\n\
+                    description=f"*Использование: {pref} {arg[0]}\n\
                         Генерирует случайное число*",
                     color=COLOR
                 ))
@@ -32,7 +30,7 @@ def setup(bot):
             elif arg[0] == 'info':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} \n\
+                    description=f"*Использование: {pref} {arg[0]} \n\
                         Информация о боте*",
                     color=COLOR
                 ))
@@ -45,7 +43,7 @@ def setup(bot):
             elif arg[0] == 'warn':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])}{arg[0]} (@Учасник) (Причина) \n\
+                    description=f"*Использование: {pref}{arg[0]} (@Учасник) (Причина) \n\
                         Выдать предупреждение пользователю",
                     color=COLOR
                 ))
@@ -58,7 +56,7 @@ def setup(bot):
             elif arg[0] == 'coin':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} \n\
+                    description=f"*Использование: {pref} {arg[0]} \n\
                         Подбросить монетку*",
                     color=COLOR
                 ))
@@ -71,7 +69,7 @@ def setup(bot):
             elif arg[0] == 'ban':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} (@Учасник)\n\
+                    description=f"*Использование: {pref} {arg[0]} (@Учасник)\n\
                         Забанить человека*",
                     color=COLOR
                 ))
@@ -84,7 +82,7 @@ def setup(bot):
             elif arg[0] == 'clear':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} (кол-во сообщений от 1 до 1000)\n\
+                    description=f"*Использование: {pref} {arg[0]} (кол-во сообщений от 1 до 1000)\n\
                         Отчистить чат на какое-то количество сообщений*",
                     color=COLOR
                 ))
@@ -97,7 +95,7 @@ def setup(bot):
             elif arg[0] == 'kick':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} (@Учасник)\n\
+                    description=f"*Использование: {pref} {arg[0]} (@Учасник)\n\
                         Кикнуть пользователя*",
                     color=COLOR
                 ))
@@ -110,9 +108,9 @@ def setup(bot):
             elif arg[0] == 'select':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} (класс) \n\
+                    description=f"*Использование: {pref} {arg[0]} (класс) \n\
                         Выдача ролей \n\
-                            Настраивать через {str(config['prefix'])}settings*",
+                            Настраивать через {pref}settings*",
                     color=COLOR
                 ))
                 await ctx.send(embed=discord.Embed(
@@ -124,7 +122,7 @@ def setup(bot):
             elif arg[0] == 'join':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} ||Временно бессмысленно|| \n\
+                    description=f"*Использование: {pref} {arg[0]} ||Временно бессмысленно|| \n\
                         Бот присоединяется к вашему воис чату*",
                     color=COLOR
                 ))
@@ -137,7 +135,7 @@ def setup(bot):
             elif arg[0] == 'spotify':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} (@Участник) \n\
+                    description=f"*Использование: {pref} {arg[0]} (@Участник) \n\
                         Показывает что слушает пользователь*",
                     color=COLOR
                 ))
@@ -150,7 +148,7 @@ def setup(bot):
             elif arg[0] == 'user':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} (@Учасник) \n\
+                    description=f"*Использование: {pref} {arg[0]} (@Учасник) \n\
                         Информация об учснике*",
                     color=COLOR
                 ))
@@ -163,7 +161,7 @@ def setup(bot):
             elif arg[0] == 'MagicBall':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} \n\
+                    description=f"*Использование: {pref} {arg[0]} \n\
                         Магический шар ответит на ваш вопрос (возможные ответы: да, нет, может быть)*",
                     color=COLOR
                 ))
@@ -176,7 +174,7 @@ def setup(bot):
             elif arg[0] == 'server_info':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} \n\
+                    description=f"*Использование: {pref} {arg[0]} \n\
                         Информация о сервере*",
                     color=COLOR
                 ))
@@ -189,7 +187,7 @@ def setup(bot):
             elif arg[0] == 'mafia':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} \n\
+                    description=f"*Использование: {pref} {arg[0]} \n\
                         Запускает мафию*",
                     color=COLOR
                 ))
@@ -202,7 +200,7 @@ def setup(bot):
             elif arg[0] == 'mafia':
                 await ctx.author.send(embed=discord.Embed(
                     title=f'***{arg[0]}***',
-                    description=f"*Использование: {str(config['prefix'])} {arg[0]} \n\
+                    description=f"*Использование: {pref} {arg[0]} \n\
                         Запускает мафию*",
                     color=COLOR
                 ))
@@ -239,34 +237,34 @@ def setup(bot):
                 ))
             else:
                 emb = discord.Embed(title='*Список доступных команд:*', 
-                description ='***{}rand***'.format(config['prefix']) + ' — рандомайзер \n\
-                ***{}info***'.format(config['prefix']) + ' — Информация о боте \n\
-                ***{}warn***'.format(config['prefix']) + ' — Выдать предупреждение \n\
-                ***{}unwarn***'.format(config['prefix']) + ' — Убрать предупреждение \n\
-                ***{}clear_warns***'.format(config['prefix']) + ' — Очистка предупреждений \n\
-                ***{}coin***'.format(config['prefix']) + ' — Кинуть монетку \n\
-                ***{}ban***'.format(config['prefix']) + ' — Забанить пользователя\n\
-                ***{}clear***'.format(config['prefix']) + ' — Очистка чата \n\
-                ***{}kick***'.format(config['prefix']) + ' — Кикнуть пользователя \n\
-                ***{}select***'.format(config['prefix']) + ' — Выдача ролей \n\
-                ***{}join***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-                ***{}play***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-                ***{}start***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-                ***{}stop***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-                ***{}pause***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-                ***{}spotify***'.format(config['prefix']) + ' — Информация юзера о прослушивании spotify \n\
-                ***{}user***'.format(config['prefix']) + ' — Информация о юзере \n\
-                ***{}MagicBall***'.format(config['prefix']) + ' — Магический шар \n\
-                ***{}server_info***'.format(config['prefix']) + ' — Информация о сервере \n\
-                ***{}mafia***'.format(config['prefix']) + ' — Запустить мафию \n\
-                ***{}score***'.format(config['prefix']) + 'Посмотреть счет учасника \n\
-                ***{}add_score***'.format(config['prefix']) + ' \n\
-                ***{}remove_score***'.format(config['prefix']) + ' \n\
-                ***{}clear_score***'.format(config['prefix']) + ' \n\
-                ***{}tr***'.format(config['prefix']) + ' —  Перевести текст \n\
-                ***{}vote***'.format(config['prefix']) + ' —  Вызвать голосование \n\
-                ***{}rank***'.format(config['prefix']) + ' — Показать ваш ранк на сервере \n\
-                ***{}settings***'.format(config['prefix']) + ' — Информация о настройке сервера',
+                description =f'***{pref}rand*** — рандомайзер \n\
+                ***{pref}info*** — Информация о боте \n\
+                ***{pref}warn*** — Выдать предупреждение \n\
+                ***{pref}unwarn*** — Убрать предупреждение \n\
+                ***{pref}clear_warns*** — Очистка предупреждений \n\
+                ***{pref}coin*** — Кинуть монетку \n\
+                ***{pref}ban*** — Забанить пользователя\n\
+                ***{pref}clear*** — Очистка чата \n\
+                ***{pref}kick*** — Кикнуть пользователя \n\
+                ***{pref}select*** — Выдача ролей \n\
+                ***{pref}join*** — Присоединение бота к голосовому чату \n\
+                ***{pref}play*** — Присоединение бота к голосовому чату \n\
+                ***{pref}start*** — Присоединение бота к голосовому чату \n\
+                ***{pref}stop*** — Присоединение бота к голосовому чату \n\
+                ***{pref}pause*** — Присоединение бота к голосовому чату \n\
+                ***{pref}spotify*** — Информация юзера о прослушивании spotify \n\
+                ***{pref}user*** — Информация о юзере \n\
+                ***{pref}MagicBall*** — Магический шар \n\
+                ***{pref}server_info*** — Информация о сервере \n\
+                ***{pref}mafia*** — Запустить мафию \n\
+                ***{pref}score*** Посмотреть счет учасника \n\
+                ***{pref}add_score*** \n\
+                ***{pref}remove_score*** \n\
+                ***{pref}clear_score*** \n\
+                ***{pref}tr*** —  Перевести текст \n\
+                ***{pref}vote*** —  Вызвать голосование \n\
+                ***{pref}rank*** — Показать ваш ранк на сервере \n\
+                ***{pref}settings*** — Информация о настройке сервера',
                 color=COLOR)
                 await ctx.author.send(embed=emb)
                 await ctx.send(embed=discord.Embed(
@@ -277,42 +275,46 @@ def setup(bot):
         #---------------------------------------------------------------------
         else:
             emb = discord.Embed(title = str(BOTVERSION) + ' | Навигация по командам',
-            description = 'Команды: \n\
-            ***{}rand***'.format(config['prefix']) + ' — рандомайзер \n\
-            ***{}info***'.format(config['prefix']) + ' — Информация о боте \n\
-            ***{}warn***'.format(config['prefix']) + ' — Выдать предупреждение \n\
-            ***{}unwarn***'.format(config['prefix']) + ' — Убрать предупреждение \n\
-            ***{}clear_warns***'.format(config['prefix']) + ' — Очистка предупреждений \n\
-            ***{}coin***'.format(config['prefix']) + ' — Кинуть монетку \n\
-            ***{}ban***'.format(config['prefix']) + ' — Забанить пользователя\n\
-            ***{}clear***'.format(config['prefix']) + ' — Очистка чата \n\
-            ***{}kick***'.format(config['prefix']) + ' — Кикнуть пользователя \n\
-            ***{}select***'.format(config['prefix']) + ' — Выдача ролей \n\
-            ***{}join***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-            ***{}play***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-            ***{}start***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-            ***{}stop***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-            ***{}pause***'.format(config['prefix']) + ' — Присоединение бота к голосовому чату \n\
-            ***{}spotify***'.format(config['prefix']) + ' — Информация юзера о прослушивании spotify \n\
-            ***{}user***'.format(config['prefix']) + ' — Информация о юзере \n\
-            ***{}MagicBall***'.format(config['prefix']) + ' — Магический шар \n\
-            ***{}server_info***'.format(config['prefix']) + ' — Информация о сервере \n\
-            ***{}mafia***'.format(config['prefix']) + ' — Запустить мафию \n\
-            ***{}score***'.format(config['prefix']) + 'Посмотреть счет учасника \n\
-            ***{}add_score***'.format(config['prefix']) + ' \n\
-            ***{}remove_score***'.format(config['prefix']) + ' \n\
-            ***{}clear_score***'.format(config['prefix']) + ' \n\
-            ***{}tr***'.format(config['prefix']) + ' —  Перевести текст \n\
-            ***{}vote***'.format(config['prefix']) + ' —  Вызвать голосование \n\
-            ***{}rank***'.format(config['prefix']) + ' — Показать ваш ранк на сервере \n\
-            ***{}settings***'.format(config['prefix']) + ' — Информация о настройке сервера \n\
+            description = f'Команды: \n\
+            ***{pref}rand*** — рандомайзер \n\
+            ***{pref}info*** — Информация о боте \n\
+            ***{pref}warn*** — Выдать предупреждение \n\
+            ***{pref}unwarn*** — Убрать предупреждение \n\
+            ***{pref}clear_warns*** — Очистка предупреждений \n\
+            ***{pref}coin*** — Кинуть монетку \n\
+            ***{pref}ban*** — Забанить пользователя\n\
+            ***{pref}clear*** — Очистка чата \n\
+            ***{pref}kick*** — Кикнуть пользователя \n\
+            ***{pref}select*** — Выдача ролей \n\
+            ***{pref}join*** — Присоединение бота к голосовому чату \n\
+            ***{pref}play*** — Присоединение бота к голосовому чату \n\
+            ***{pref}start*** — Присоединение бота к голосовому чату \n\
+            ***{pref}stop*** — Присоединение бота к голосовому чату \n\
+            ***{pref}pause*** — Присоединение бота к голосовому чату \n\
+            ***{pref}spotify*** — Информация юзера о прослушивании spotify \n\
+            ***{pref}user*** — Информация о юзере \n\
+            ***{pref}MagicBall*** — Магический шар \n\
+            ***{pref}server_info*** — Информация о сервере \n\
+            ***{pref}mafia*** — Запустить мафию \n\
+            ***{pref}score***Посмотреть счет учасника \n\
+            ***{pref}add_score*** \n\
+            ***{pref}remove_score*** \n\
+            ***{pref}clear_score*** \n\
+            ***{pref}tr*** —  Перевести текст \n\
+            ***{pref}vote*** —  Вызвать голосование \n\
+            ***{pref}rank*** — Показать ваш ранк на сервере \n\
+            ***{pref}settings*** — Информация о настройке сервера \n\
                 \n\
-            что бы узнать как работает команда по подробнее напишите ***{}help***'.format(config['prefix']) + '(название команды)',
+            что бы узнать как работает команда по подробнее напишите ***{pref}help*** (название команды)',
             color = COLOR)
-            emb.set_thumbnail(url=bot.user.avatar_url)
+            emb.set_thumbnail(url=self.bot.user.avatar_url)
             await ctx.author.send(embed = emb)
             await ctx.send(embed=discord.Embed(
                     title='Успешно',
                     description=f'Навигация по командам отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
+def setup(bot):
+    bot.add_cog(help(bot))
+    
+    

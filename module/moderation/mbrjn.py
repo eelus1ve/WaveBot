@@ -1,17 +1,18 @@
-def setup(bot):
-    import discord
-    import json
-    from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
-    from discord.ext import commands
-    from easy_pil import Editor, load_image_async, Font
-    from typing import Optional
-    from discord import File
-    import asyncio
-    import random
-    import os
-
-    @bot.event
-    async def on_member_join(mbr):
+import discord
+import json
+from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
+from discord.ext import commands
+from easy_pil import Editor, load_image_async, Font
+from typing import Optional
+from discord import File
+import asyncio
+import random
+import os
+class mbrjn(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.Cog.listener('on_member_join')
+    async def qn_member_join(self, mbr):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(mbr.guild.id)]['COLOR'], 16)
@@ -38,8 +39,8 @@ def setup(bot):
                         color=COLOR
                     ))
 
-    @bot.command()
-    async def is_stream(ctx, arg=None):
+    @commands.command()
+    async def is_stream(self, ctx, arg=None):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -54,3 +55,5 @@ def setup(bot):
                     description=ii.urls,
                     color=COLOR
                 ))
+def setup(bot):
+    bot.add_cog(mbrjn(bot))

@@ -1,17 +1,18 @@
-def setup(bot):
-    import discord
-    import json
-    import asyncio
-    import random
-    import os
-    from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
-    from discord.ext import commands
-    from easy_pil import Editor, load_image_async, Font
-    from typing import Optional
-    from discord import File
-
-    @bot.command()
-    async def score(ctx, mr: discord.Member = None, arg = None):
+import discord
+import json
+import asyncio
+import random
+import os
+from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
+from discord.ext import commands
+from easy_pil import Editor, load_image_async, Font
+from typing import Optional
+from discord import File
+class score(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
+    async def score(self, ctx, mr: discord.Member = None, arg = None):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -32,9 +33,9 @@ def setup(bot):
                 description=f'{SCR}',
                 color=COLOR
             ))
-    @bot.command()
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def add_score(ctx, mr: discord.Member = None, arg = None):
+    async def add_score(self, ctx, mr: discord.Member = None, arg = None):
         try:
             with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
@@ -81,9 +82,9 @@ def setup(bot):
                         ))
         except:
             pass
-    @bot.command()
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def remove_score(ctx, mr: discord.Member = None, arg = None):
+    async def remove_score(self, ctx, mr: discord.Member = None, arg = None):
         try:
             with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
@@ -130,9 +131,9 @@ def setup(bot):
                         ))
         except:
             pass
-    @bot.command()
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def clear_score(ctx, mr: discord.Member = None):
+    async def clear_score(self, ctx, mr: discord.Member = None):
         mrr = mr or ctx.author
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
@@ -147,8 +148,8 @@ def setup(bot):
                 description=f'{mrr} потерял все очки!',
                 color=COLOR
             ))
-    @bot.command()
-    async def set_lvl(ctx, user = discord.Member, arg = None):
+    @commands.command()
+    async def set_lvl(self, ctx, user = discord.Member, arg = None):
         userr = user or ctx.author
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
@@ -169,3 +170,6 @@ def setup(bot):
                 description='',
                 color=ErCOLOR
             ))
+
+def setup(bot):
+    bot.add_cog(score(bot))

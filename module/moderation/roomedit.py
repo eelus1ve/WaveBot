@@ -1,15 +1,16 @@
-def setup(bot):
-    import discord
-    from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
-    import interactions
-    from interactions import Modal, TextInput
-    import json
-    import asyncio
-    from discord.ext import commands
-
-    @bot.command()
+import discord
+from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
+import interactions
+from interactions import Modal, TextInput
+import json
+import asyncio
+from discord.ext import commands
+class roomedit(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def room(ctx):
+    async def room(self, ctx):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -43,8 +44,8 @@ def setup(bot):
         ]
     )
 
-    @bot.event
-    async def on_voice_state_update(a, b, c):
+    @commands.Cog.listener('on_voice_state_update')
+    async def ion_voice_state_update(self, a, b, c):
         try:
             with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
@@ -74,8 +75,8 @@ def setup(bot):
         except:
             pass
 
-    @bot.event
-    async def on_button_click(interaction):
+    @commands.Cog.listener('on_button_click')
+    async def aon_button_click(self, interaction):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             ownRoom = int(dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)])
@@ -84,7 +85,7 @@ def setup(bot):
 
         if str(interaction.component.emoji) == '👑':
             await interaction.send('укажите нового создателя этого канала @участник ')
-            ms = await bot.wait_for(event='message')
+            ms = await self.bot.wait_for(event='message')
             if ms.author == interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel:
                 dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)] = [str(i.id) for i in ms.author.voice.channel.members if ms.content == i.mention][0]
                 with open('users.json', 'w') as file:
@@ -93,7 +94,7 @@ def setup(bot):
             else:
                 while ms.author != interaction.guild.get_member(ownRoom):
                     if ms.author != interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel: continue
-                    ms = await bot.wait_for(event='message')
+                    ms = await self.bot.wait_for(event='message')
                     try:
                         dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)] = \
                         [str(i.id) for i in ms.author.voice.channel.members if ms.content == i.mention][0]
@@ -105,7 +106,7 @@ def setup(bot):
 
         elif str(interaction.component.emoji) == '🗒':
             await interaction.send('напишите @участник которому хотите ограничить право входить в комнату')
-            ms = await bot.wait_for(event='message')
+            ms = await self.bot.wait_for(event='message')
             if ms.author == interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel:
                 pr = discord.PermissionOverwrite()
                 if interaction.author.voice.channel.permissions_for([i for i in ms.author.voice.channel.members if ms.content == i.mention][0]).connect:
@@ -134,13 +135,13 @@ def setup(bot):
 
         elif str(interaction.component.emoji) == '👥':
             await interaction.send('напишите число участников')
-            ms = await bot.wait_for(event='message')
+            ms = await self.bot.wait_for(event='message')
             if ms.author == interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel:
                 await ms.author.voice.channel.edit(user_limit=int(ms.content))
                 await ms.delete()
             else:
                 while ms.author != interaction.guild.get_member(ownRoom) and ms.channel != interaction.channel:
-                    ms = await bot.wait_for(event='message')
+                    ms = await self.bot.wait_for(event='message')
                     if ms.author != interaction.guild.get_member(ownRoom) or ms.channel != interaction.channel: continue
                     try:
                         await ms.author.voice.channel.edit(user_limit=int(ms.content))
@@ -158,14 +159,14 @@ def setup(bot):
 
         elif str(interaction.component.emoji) == '✏️':
             await interaction.send('напишите новое название комнаты')
-            ms = await bot.wait_for(event='message')
+            ms = await self.bot.wait_for(event='message')
             if ms.author == interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel:
                 await ms.author.voice.channel.edit(name=f'\./{ms.content}')
                 await ms.delete()
             else:
                 while ms.author != interaction.guild.get_member(ownRoom):
                     if ms.author != interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel: continue
-                    ms = await bot.wait_for(event='message')
+                    ms = await self.bot.wait_for(event='message')
                     try:
                         await ms.author.voice.channel.edit(name=f'\./{ms.content}')
                     except:
@@ -182,14 +183,14 @@ def setup(bot):
 
         elif str(interaction.component.emoji) == '🚪':
             await interaction.send('напишите @участник  которого хотите выгнать')
-            ms = await bot.wait_for(event='message')
+            ms = await self.bot.wait_for(event='message')
             if ms.author == interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel:
                 [await i.move_to(None) for i in ms.author.voice.channel.members if ms.content == i.mention]
                 await ms.delete()
             else:
                 while ms.author != interaction.guild.get_member(ownRoom):
                     if ms.author != interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel: continue
-                    ms = await bot.wait_for(event='message')
+                    ms = await self.bot.wait_for(event='message')
                     try:
                         [await i.move_to(None) for i in ms.author.voice.channel.members if ms.content == i.mention]
                     except:
@@ -198,7 +199,7 @@ def setup(bot):
 
         elif str(interaction.component.emoji) == '🎙':
             await interaction.send('напишите @участник которому хотите ограничить право говорить')
-            ms = await bot.wait_for(event='message')
+            ms = await self.bot.wait_for(event='message')
             if ms.author == interaction.guild.get_member(ownRoom) and ms.channel == interaction.channel:
                 pr = discord.PermissionOverwrite()
                 if interaction.author.voice.channel.permissions_for([i for i in ms.author.voice.channel.members if ms.content == i.mention][0]).speak:
@@ -237,3 +238,5 @@ def setup(bot):
                     except:
                         pass
                     await ms.delete()
+def setup(bot):
+    bot.add_cog(roomedit(bot))

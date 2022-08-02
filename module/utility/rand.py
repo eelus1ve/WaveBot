@@ -1,20 +1,19 @@
-def setup(bot):
+import discord
+import random
+import json
+from discord.ext import commands
 
-    import discord
-    import random
-    import json
-    from discord.ext import commands
-
-    config = {
-    'prefix': '~' #поиграться с префиксами
-}
-
-    @bot.command(aliases = ['ранд', 'РАНД', 'Ранд'])
-    async def rand(ctx, arg = None, arg2 = None):
+class Rand(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        
+    @commands.command(aliases = ['ранд', 'РАНД', 'Ранд'])
+    async def rand(self, ctx, arg = None, arg2 = None):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
             ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
 
         if arg and not(arg2):
             des=random.randint(0, int(arg))
@@ -25,10 +24,10 @@ def setup(bot):
         else:
             await ctx.send(embed=discord.Embed(
                     title="Ошибка",
-                    description='Использование {}rand'.format(config['prefix']) + ' (число1) [число2]\n\n\
-                        Пример с одним числом: {}rand'.format(config['prefix']) + ' 100\n\
+                    description=f'Использование {pref}rand (число1) [число2]\n\n\
+                        Пример с одним числом: {pref}rand 100\n\
                             ┗Выведет рандомное число в пределах 100 \n\
-                        Пример с двумя числами: {}rand'.format(config['prefix']) + ' 100 200\n\
+                        Пример с двумя числами: {pref}rand 100 200\n\
                             ┗Выведет рандомное число от 100 до 200',
                     color = ErCOLOR,
                 ))
@@ -37,3 +36,8 @@ def setup(bot):
                     description=des,
                     color = COLOR,
                 ))
+
+def setup(bot):
+    bot.add_cog(Rand(bot))
+
+    

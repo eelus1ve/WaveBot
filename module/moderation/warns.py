@@ -1,14 +1,13 @@
-def setup(bot):
-
-    import discord
-    import json
-    from discord.ext import commands
-    from discord.utils import get
-
-    # Выдача варнов
-    @bot.command()
+import discord
+import json
+from discord.ext import commands
+from discord.utils import get
+class warns(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def warn(ctx, member: discord.Member, reason: str):
+    async def warn(self, ctx, member: discord.Member, reason: str):
         with open('users.json', 'r') as file:
             data = json.load(file)
             COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -44,7 +43,7 @@ def setup(bot):
 
 
     @warn.error
-    async def error(ctx, error):
+    async def error(self, ctx, error):
         with open('users.json', 'r') as file:
             data = json.load(file) 
             COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -71,9 +70,9 @@ def setup(bot):
             ))
 
 
-    @bot.command()
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def unwarn(ctx, member: discord.Member):
+    async def unwarn(self, ctx, member: discord.Member):
         with open('users.json', 'r') as file:
             data = json.load(file)
             COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -100,7 +99,7 @@ def setup(bot):
 
 
     @unwarn.error
-    async def error(ctx, error):
+    async def error(self, ctx, error):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -127,9 +126,9 @@ def setup(bot):
             ))
 
 
-    @bot.command()
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def clear_warns(ctx, member: discord.Member):
+    async def clear_warns(self, ctx, member: discord.Member):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -159,7 +158,7 @@ def setup(bot):
 
 
     @clear_warns.error
-    async def error(ctx, error):
+    async def error(self, ctx, error):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -185,3 +184,5 @@ def setup(bot):
                 description="*У вас недостаточно прав!*",
                 color=ErCOLOR
             ))
+def setup(bot):
+    bot.add_cog(warns(bot))

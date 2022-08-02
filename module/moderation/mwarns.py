@@ -1,16 +1,12 @@
-def setup(bot):
-
-    import discord
-    import json
-    from discord.ext import commands
-    from discord.utils import get
-
-    config = {
-    'prefix': '~' #поиграться с префиксами
-    }
-
-    @bot.event
-    async def on_message(message):
+import discord
+import json
+from discord.ext import commands
+from discord.utils import get
+class mwarns(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.Cog.listener('on_message')
+    async def ion_message(self, message):
         try:
             with open('users.json', 'r') as file:
                 data = json.load(file)
@@ -76,4 +72,5 @@ def setup(bot):
 
         except:
             pass
-        await bot.process_commands(message)
+def setup(bot):
+    bot.add_cog(mwarns(bot))

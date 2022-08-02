@@ -1,17 +1,18 @@
-def setup(bot):
-    import discord
-    import json
-    import asyncio
-    import random
-    import os
-    from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
-    from discord.ext import commands
-    from easy_pil import Editor, load_image_async, Font
-    from typing import Optional
-    from discord import File
-
-    @bot.command()
-    async def leaders(ctx, range_num=10):
+import discord
+import json
+import asyncio
+import random
+import os
+from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
+from discord.ext import commands
+from easy_pil import Editor, load_image_async, Font
+from typing import Optional
+from discord import File
+class leaders(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
+    async def leaders(self, ctx, range_num=10):
         with open("users.json", "r") as f:
             data = json.load(f)
         COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -51,3 +52,5 @@ def setup(bot):
                 else:
                     index += 1
         await ctx.send(embed = mbed)
+def setup(bot):
+    bot.add_cog(leaders(bot))

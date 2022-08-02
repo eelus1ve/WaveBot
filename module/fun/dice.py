@@ -1,11 +1,14 @@
-def setup(bot):
-    import discord
-    import random
-    import json
-    from discord.ext import commands
+import discord
+import random
+import json
+from discord.ext import commands
 
-    @bot.command()
-    async def dice(ctx):
+class dice(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def dice(self, ctx):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -16,3 +19,6 @@ def setup(bot):
                 color = COLOR
             )
         )
+
+def setup(bot):
+    bot.add_cog(dice(bot))

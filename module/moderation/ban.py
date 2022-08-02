@@ -1,18 +1,14 @@
+import discord
+from discord.ext import commands
+from distutils.log import error
+import json
 
-config = {
-    'prefix': '!' #поиграться с префиксами
-}
-
-def setup(bot):
-
-    import discord
-    from discord.ext import commands
-    from distutils.log import error
-    import json
-
-    @bot.command(aliases=['бан', 'Бан', 'БАН'])
+class ban(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command(aliases=['бан', 'Бан', 'БАН'])
     @commands.has_permissions(administrator=True)
-    async def ban(ctx, member: discord.Member, reason = None):
+    async def ban(self, ctx, member: discord.Member, reason = None):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -25,7 +21,7 @@ def setup(bot):
             ))
 
     @ban.error
-    async def error(ctx, error):
+    async def error(self, ctx, error):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
@@ -46,3 +42,5 @@ def setup(bot):
                 color = ErCOLOR
             ))
             
+def setup(bot):
+    bot.add_cog(ban(bot))

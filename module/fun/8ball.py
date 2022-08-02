@@ -1,11 +1,14 @@
-def setup(bot):
-    
-    import discord
-    import random
-    import json
-    from discord.ext import commands
-    @bot.command(aliases=['Волшебный_шар', '8ball', 'MagicBall', '8Ball'])
-    async def Magicball(ctx, *arg):
+import discord
+import random
+import json
+from discord.ext import commands
+
+class ball(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command(aliases=['Волшебный_шар', '8ball', 'MagicBall', '8Ball'])
+    async def Magicball(self, ctx, *arg):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -28,3 +31,6 @@ def setup(bot):
                 description="*Нет!*",
                 color=COLOR
             ))
+
+def setup(bot):
+    bot.add_cog(ball(bot))

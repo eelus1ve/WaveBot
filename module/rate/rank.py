@@ -1,13 +1,14 @@
-def setup(bot):
-    import discord
-    import json
-    from discord.ext import commands
-    from easy_pil import Editor, load_image_async, Font
-    from typing import Optional
-    from discord import File
-
-    @bot.command()
-    async def rank(ctx: commands.Context, user: Optional[discord.Member]):
+import discord
+import json
+from discord.ext import commands
+from easy_pil import Editor, load_image_async, Font
+from typing import Optional
+from discord import File
+class rank(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
+    async def rank(self, ctx: commands.Context, user: Optional[discord.Member]):
         userr = user or ctx.author
         with open("users.json", "r") as f:
             data = json.load(f)
@@ -64,3 +65,5 @@ def setup(bot):
 
         card = File(fp=background.image_bytes, filename="D:/Windows/Рабочий стол/wave1/module/rate/set/zCARD.png")
         await ctx.send(file=card)
+def setup(bot):
+    bot.add_cog(rank(bot))

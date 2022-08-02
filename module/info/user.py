@@ -1,16 +1,15 @@
-config = {
-    'prefix': '!' #поиграться с префиксами
-}
-def setup(bot):
-    import discord
-    import json
-    from discord import Spotify
-    from discord.utils import get
-    from discord.ext import commands
-    from BTSET import ADMINS
+import discord
+import json
+from discord import Spotify
+from discord.utils import get
+from discord.ext import commands
+from BTSET import ADMINS
 
-    @bot.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
-    async def user(ctx, member: discord.Member = None):
+class user(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
+    async def user(self, ctx, member: discord.Member = None):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -56,3 +55,6 @@ def setup(bot):
         emb.set_thumbnail(url=member.avatar_url)
         emb.set_footer(text=f'ID: {member.id}')
         await ctx.send(embed=emb)
+
+def setup(bot):
+    bot.add_cog(user(bot))    

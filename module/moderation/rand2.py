@@ -1,17 +1,13 @@
-
-
-
-def setup(bot):
-    import discord
-    from discord.ext import commands
-    from discord_components import Select, SelectOption
-    from email.errors import InvalidMultipartContentTransferEncodingDefect
-    import json
-
-    @bot.command()
+import discord
+from discord.ext import commands
+from discord_components import Select, SelectOption
+import json
+class select(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def select(ctx, arg=None):
-        global a
+    async def select(self, ctx, arg=None):
         with open('users.json', 'r') as file:
             data = json.load(file)
             COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -38,8 +34,8 @@ def setup(bot):
                     ]
                 )
 
-    @bot.event
-    async def on_select_option(interaction):
+    @commands.Cog.listener('on_select_option')
+    async def ion_select_option(self, interaction):
         try:
             with open('users.json', 'r') as file:
                 data = json.load(file)
@@ -65,17 +61,17 @@ def setup(bot):
                     ))
 
                 try:
-                    print(str([ii for ii in roles[str(interaction.component.placeholder)][0] if not(ii in interaction.values)]), '1')
                     await a.remove_roles([interaction.guild.get_role(role_id=int(ii)) for ii in roles[str(interaction.component.placeholder)][0] if not(ii in interaction.values)])
-                except InvalidMultipartContentTransferEncodingDefect:
+                except:
                     pass
                     
                 try:
                     
                     await a.add_roles([interaction.guild.get_role(int(i)) for i in interaction.values])
-                except InvalidMultipartContentTransferEncodingDefect:
+                except:
                     pass
-        except InvalidMultipartContentTransferEncodingDefect:
+        except:
             pass
 
-            
+def setup(bot):
+    bot.add_cog(select(bot))

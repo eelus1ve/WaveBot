@@ -1,11 +1,11 @@
-def setup(bot):
-    
-    import discord
-    import json
-    from discord.ext import commands
-    
-    @bot.command()
-    async def vote(ctx, *arg):
+import discord
+import json
+from discord.ext import commands
+class vote(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
+    async def vote(self, ctx, *arg):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -23,3 +23,6 @@ def setup(bot):
         
         for i in range(len(title)):
             await ms.add_reaction(em[i])
+
+def setup(bot):
+        bot.add_cog(vote(bot))

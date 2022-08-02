@@ -1,11 +1,11 @@
-
-def setup(bot):
-    import discord
-    import json
-    from discord.ext import commands
-
-    @bot.listen('on_message')
-    async def my_message(message):
+import discord
+import json
+from discord.ext import commands
+class mrate(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.Cog.listener('on_message')
+    async def my_message(self, message):
         try:
             with open('users.json', 'r') as file:
                 data = json.load(file)
@@ -57,3 +57,5 @@ def setup(bot):
                             json.dump(data, f, indent=4)
         except:
             pass
+def setup(bot):
+    bot.add_cog(mrate(bot))

@@ -1,14 +1,14 @@
-def setup(bot):
-
-    import discord
-    from operator import index
-    from discord.ext import commands
-    from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption
-    from discord.utils import get
-    import asyncio
-    import json
-
-    @bot.command()
+import discord
+from operator import index
+from discord.ext import commands
+from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption
+from discord.utils import get
+import asyncio
+import json
+class stngs(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
     @commands.has_permissions(administrator=True)
     async def settings(ctx, arg=None, clArg=None, roleClass=None, emo=None):
         with open('users.json', 'r') as file:
@@ -677,7 +677,5 @@ def setup(bot):
                             )
             await ctx.send(embed=emb)
 
-
-
-
-
+def setup(bot):
+    bot.add_cog(stngs(bot))
