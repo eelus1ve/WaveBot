@@ -106,6 +106,7 @@ async def on_command_error(ctx, error):
     with open('users.json', 'r') as file:
         dataServerID = json.load(file)
         ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
     if isinstance(error, commands.errors.CommandNotFound):
         found = re.findall(r'Command \s*"([^\"]*)"', str(error))
         await ctx.send(embed=discord.Embed(
