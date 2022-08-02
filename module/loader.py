@@ -1,18 +1,18 @@
-def setup(bot):
+import discord
+import json
+import os
+import asyncio
+from discord.ext import commands
+from BTSET import TOKEN, ADMINS
 
-    import discord
-    import json
-    import os
-    import asyncio
-    from discord.ext import commands
-    from BTSET import TOKEN, ADMINS
+dir_name1 = "D:\Windows\Рабочий стол\wave1\module"
 
-    dir_name1 = "D:\Windows\Рабочий стол\wave1\module"
-    
-    list = []
-
-    @bot.command()
-    async def load(ctx, arg = None):
+list = []
+class loader(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.command()
+    async def load(self, ctx, arg = None):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -31,7 +31,7 @@ def setup(bot):
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
                                     if not(filename[:-3] in list):
                                         list.append(f'{filename[:-3]}')           
-                                        bot.load_extension(f'module.{dirs}.{filename[:-3]}')
+                                        self.bot.load_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
                                         pass
                     msg = await ctx.send(embed=discord.Embed(
@@ -50,7 +50,7 @@ def setup(bot):
                                 if filename.endswith(".py"):
                                     if not(filename[:-3] in list):
                                         list.append(f'{filename[:-3]}')
-                                        bot.load_extension(f'module.{dirs}.{filename[:-3]}')
+                                        self.bot.load_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
                                         pass
                     msg = await ctx.send(embed=discord.Embed(
@@ -84,8 +84,8 @@ def setup(bot):
                 color=ErCOLOR
             ))
 
-    @bot.command()
-    async def reload(ctx, arg = None):
+    @commands.command()
+    async def reload(self, ctx, arg = None):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -103,7 +103,7 @@ def setup(bot):
                             for filename in mods:
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
                                     if f'{filename[:-3]}' in list:         
-                                        bot.reload_extension(f'module.{dirs}.{filename[:-3]}')
+                                        self.bot.reload_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
                                         msg = await ctx.send(embed=discord.Embed(
                                             title="Ошибка",
@@ -125,7 +125,7 @@ def setup(bot):
                             for filename in mods:
                                 if filename.endswith(".py"):
                                     if f'{filename[:-3]}' in list:
-                                        bot.reload_extension(f'module.{dirs}.{filename[:-3]}')
+                                        self.bot.reload_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
                                         pass
                     msg = await ctx.send(embed=discord.Embed(
@@ -159,8 +159,8 @@ def setup(bot):
                 color=ErCOLOR
             ))
 
-    @bot.command()
-    async def unload(ctx, arg = None):
+    @commands.command()
+    async def unload(self, ctx, arg = None):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -179,7 +179,7 @@ def setup(bot):
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
                                     if f'{filename[:-3]}' in list:
                                         list.remove(f'{filename[:-3]}')            
-                                        bot.unload_extension(f'module.{dirs}.{filename[:-3]}')
+                                        self.bot.unload_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
                                         msg = await ctx.send(embed=discord.Embed(
                                         title="Ошибка",
@@ -202,7 +202,7 @@ def setup(bot):
                                 if filename.endswith(".py"):
                                     if f'{filename[:-3]}' in list:
                                         list.remove(f'{filename[:-3]}')
-                                        bot.unload_extension(f'module.{dirs}.{filename[:-3]}')
+                                        self.bot.unload_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
                                         pass
                     msg = await ctx.send(embed=discord.Embed(
@@ -237,8 +237,8 @@ def setup(bot):
                 color=ErCOLOR
             ))
 
-    @bot.command()
-    async def mods(ctx, arg = None):
+    @commands.command()
+    async def mods(self, ctx, arg = None):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -255,4 +255,5 @@ def setup(bot):
                     description=f"*У вас не достаточно прав!*" ,
                     color=ErCOLOR
                     ))
-
+def setup(bot):
+    bot.add_cog(loader(bot))

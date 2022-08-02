@@ -10,7 +10,7 @@ class stngs(commands.Cog):
         self.bot = bot
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def settings(ctx, arg=None, clArg=None, roleClass=None, emo=None):
+    async def settings(self, ctx, arg=None, clArg=None, roleClass=None, emo=None):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             roles =  dataServerID[str(ctx.author.guild.id)]['JoinRoles']

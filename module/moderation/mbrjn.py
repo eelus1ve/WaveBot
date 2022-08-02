@@ -20,7 +20,7 @@ class mbrjn(commands.Cog):
         if len(rls) != 0:
             f = len(rls)
             n = 0
-            for n in f:
+            while n != f:
                 rl = mbr.guild.get_role(int(rls[n]))
                 n = n + 1
                 await mbr.add_roles(rl)
