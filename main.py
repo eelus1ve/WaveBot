@@ -100,20 +100,6 @@ async def a(ctx):
         title="Степ не волнуйся все плохо)",
         color=COLOR
         ))
-
-@bot.event
-async def on_command_error(ctx, error):
-    with open('users.json', 'r') as file:
-        dataServerID = json.load(file)
-        ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-        pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
-    if isinstance(error, commands.errors.CommandNotFound):
-        found = re.findall(r'Command \s*"([^\"]*)"', str(error))
-        await ctx.send(embed=discord.Embed(
-            title="Ошибка",
-            description=f"*Команды `{''.join(found)}` не существует*",
-            color = ErCOLOR
-        ))
 #=======================================================================================================================
 #           1)рейтинг (--)
 #           3)присоединение и отключение учасника

@@ -12,7 +12,7 @@ class ball(commands.Cog):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-        randball = random.randint(1, 3) #мб сюда if добвать на arg?
+        randball = random.randint(1, 3)
         if randball == 1:
             await ctx.send(embed=discord.Embed(
                 title="Шар судьбы говорит: ",

@@ -33,9 +33,6 @@ class leaders(commands.Cog):
         )
 
         for amt in total_xp:
-            print(total_xp)
-            print(l)
-            print(amt)
             id_ = int(str(l[amt]).split(";")[0])
             level = int(str(l[amt]).split(";")[1])
             xp = int(str(l[amt]).split(";")[2])
