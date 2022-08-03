@@ -238,7 +238,7 @@ class loader(commands.Cog):
             ))
 
     @commands.command()
-    async def mods(self, ctx, arg = None):
+    async def mods(self, ctx):
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
@@ -246,7 +246,7 @@ class loader(commands.Cog):
         if str(ctx.author.id) in ADMINS:
             await ctx.send(embed=discord.Embed(
                 title="Список загруженых модулей",
-                description=f"{list}",
+                description=f"```{', '.join(list)}```",
                 color=COLOR
             ))
         else:
