@@ -32,14 +32,18 @@ class loader(commands.Cog):
                                     if not(filename[:-3] in list):
                                         list.append(f'{filename[:-3]}')           
                                         self.bot.load_extension(f'module.{dirs}.{filename[:-3]}')
+                                        await ctx.send(embed=discord.Embed(
+                                            title="Успешно",
+                                            description=f"*модуль {arg} успешно загружен!*",
+                                            color=COLOR
+                                        ))
                                     else:
-                                        pass
-                    msg = await ctx.send(embed=discord.Embed(
-                        title="Успешно",
-                        description=f"*модуль {arg} успешно загружен!*",
-                        color=COLOR
-                    ))
-                #------------------------------------все модули
+                                        await ctx.send(embed=discord.Embed(
+                                            title="Ошибка",
+                                            description=f"*модуль {arg} уже был загружен!*",
+                                            color=COLOR
+                                        ))
+                    #------------------------------------все модули
                 elif arg == 'all':
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
@@ -101,20 +105,20 @@ class loader(commands.Cog):
                             dir_name2 = f"D:\Windows\Рабочий стол\wave1\module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
-                                if filename.endswith(".py") and filename[:-3] == str(arg):
-                                    if f'{filename[:-3]}' in list:         
+                                if filename.endswith(".py"):
+                                    if f'{arg}' in list:         
                                         self.bot.reload_extension(f'module.{dirs}.{filename[:-3]}')
+                                        await ctx.send(embed=discord.Embed(
+                                        title="Успешно",
+                                        description=f"*модуль {arg} успешно перезагружен!*",
+                                        color=COLOR
+                                    ))
                                     else:
                                         msg = await ctx.send(embed=discord.Embed(
                                             title="Ошибка",
-                                            description=f"*Модуль {arg} не был загружен!*",
+                                            description=f"*Модуль {arg} не существует!*",
                                             color=COLOR
                                         ))
-                    msg = await ctx.send(embed=discord.Embed(
-                        title="Успешно",
-                        description=f"*модуль {arg} успешно перезагружен!*",
-                        color=COLOR
-                    ))
                 #------------------------------------все модули
                 elif arg == 'all':
                     modules = os.listdir(dir_name1)
@@ -180,17 +184,17 @@ class loader(commands.Cog):
                                     if f'{filename[:-3]}' in list:
                                         list.remove(f'{filename[:-3]}')            
                                         self.bot.unload_extension(f'module.{dirs}.{filename[:-3]}')
+                                        await ctx.send(embed=discord.Embed(
+                                            title="Успешно",
+                                            description=f"*модуль {arg} успешно отключен!*",
+                                            color=COLOR
+                                        ))
                                     else:
                                         msg = await ctx.send(embed=discord.Embed(
                                         title="Ошибка",
                                         description=f"*Модуль {arg} не был загружен!*",
                                         color=COLOR
                                     ))
-                    msg = await ctx.send(embed=discord.Embed(
-                        title="Успешно",
-                        description=f"*модуль {arg} успешно отключен!*",
-                        color=COLOR
-                    ))
                 #------------------------------------все модули
                 elif arg == 'all':
                     modules = os.listdir(dir_name1)
