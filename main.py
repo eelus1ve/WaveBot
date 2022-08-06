@@ -2,7 +2,7 @@
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!
 import asyncio
-from BTSET import TOKEN, ADMINS, BOTVERSION
+from BTSET import ADMINS, BOTVERSION
 from discord.ext import commands
 from msilib.schema import Component
 import py_compile
@@ -18,7 +18,8 @@ from discord.utils import get
 from distutils.log import error
 import re
 from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption
-
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 #=======================================================================================================================
 intents=discord.Intents.all()
 def get_prefix(bot, message):
@@ -100,6 +101,32 @@ async def a(ctx):
         title="Степ не волнуйся все плохо)",
         color=COLOR
         ))
+@bot.event
+async def on_command_error(ctx, error):
+    with open('users.json', 'r') as file:
+        dataServerID = json.load(file)
+        ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+    if isinstance(error, commands.errors.CommandNotFound):
+        found = re.findall(r'Command \s*"([^\"]*)"', str(error))
+        await ctx.send(embed=discord.Embed(
+            title="Ошибка",
+            description=f"*Команды `{''.join(found)}` не существует*",
+            color = ErCOLOR
+        ))
+    if isinstance(error, commands.errors.MemberNotFound):
+        found = re.findall(r'Member \s*"([^\"]*)"', str(error))
+        await ctx.send(embed=discord.Embed(
+            title="Ошибка",
+            description=f"*Участник `{''.join(found)}` не найден*",
+            color = ErCOLOR
+        ))
+    else:
+        await ctx.send(embed=discord.Embed(
+            title="Ошибка",
+            description=f"`{''.join(error)}`",
+            color = ErCOLOR
+        ))
 #=======================================================================================================================
 #           1)рейтинг (--)
 #           3)присоединение и отключение учасника
@@ -109,8 +136,9 @@ async def a(ctx):
 #           7)сайт          global
 #           8)Переделать румы
 #           9)Шахматы
+#           10)Токен переместить из модуля
 #=======================================================================================================================
 
 #=======================================================================================================================
-bot.run(TOKEN)
+bot.run(os.getenv('TOKEN'))
 #=======================================================================================================================
