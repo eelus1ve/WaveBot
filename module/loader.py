@@ -3,7 +3,7 @@ import json
 import os
 import asyncio
 from discord.ext import commands
-from BTSET import ADMINS
+from BTSET import ADMINS, IGNORE
 
 dir_name1 = "D:\Windows\Рабочий стол\wave1\module"
 
@@ -29,7 +29,7 @@ class loader(commands.Cog):
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
-                                    if not(filename[:-3] in list):
+                                    if not(filename[:-3] in list) and not(filename[:-3] in IGNORE):
                                         list.append(f'{filename[:-3]}')           
                                         self.bot.load_extension(f'module.{dirs}.{filename[:-3]}')
                     if filename[:-3] in list:
@@ -53,7 +53,7 @@ class loader(commands.Cog):
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):
-                                    if not(filename[:-3] in list):
+                                    if not(filename[:-3] in list) and not(filename[:-3] in IGNORE):
                                         list.append(f'{filename[:-3]}')
                                         self.bot.load_extension(f'module.{dirs}.{filename[:-3]}')
                                     else:
@@ -162,7 +162,7 @@ class loader(commands.Cog):
         except:
             msg = await ctx.send(embed=discord.Embed(
                 title="Ошибка",
-                description="*Модуль:* " + arg + " *уже был загружен*",
+                description="",
                 color=ErCOLOR
             ))
 
