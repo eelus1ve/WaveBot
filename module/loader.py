@@ -3,7 +3,7 @@ import json
 import os
 import asyncio
 from discord.ext import commands
-from BTSET import TOKEN, ADMINS
+from BTSET import ADMINS
 
 dir_name1 = "D:\Windows\Рабочий стол\wave1\module"
 
