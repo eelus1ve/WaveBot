@@ -9,6 +9,7 @@ from easy_pil import Editor, load_image_async, Font
 from typing import Optional
 from discord import File
 from distutils.log import error
+import re
 class Score(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -226,17 +227,23 @@ class Score(commands.Cog):
             pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
             
         if isinstance(error, commands.errors.MemberNotFound):
-            for member in ctx.guild.members:
-                    with open('users.json', 'w') as file:
-                        dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['LvL'] = 1
-                        dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['SCR'] = 0
-                        json.dump(dataServerID, file, indent=4)
-            await ctx.send(embed=discord.Embed(
-                title=f'Успешно',
-                description=f'Все участники этого сервера потерял свой ранк!',
-                color=COLOR
-            ))
-    
-
+            found = re.findall(r'Member \s*"([^\"]*)"', str(error))
+            if found == ["all"]:
+                for member in ctx.guild.members:
+                        with open('users.json', 'w') as file:
+                            dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['LvL'] = 1
+                            dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['SCR'] = 0
+                            json.dump(dataServerID, file, indent=4)
+                await ctx.send(embed=discord.Embed(
+                    title=f'Успешно',
+                    description=f'Все участники этого сервера потерял свой ранк!',
+                    color=COLOR
+                ))
+            else:
+                await ctx.send(embed=discord.Embed(
+            title="Ошибка",
+            description=f"*Участник `{''.join(found)}` не найден*",
+            color = ErCOLOR
+        ))
 def setup(bot):
     bot.add_cog(Score(bot))

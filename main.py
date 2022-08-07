@@ -114,13 +114,13 @@ async def on_command_error(ctx, error):
             description=f"*Команды `{''.join(found)}` не существует*",
             color = ErCOLOR
         ))
-    if isinstance(error, commands.errors.MemberNotFound):
+    '''if isinstance(error, commands.errors.MemberNotFound):
         found = re.findall(r'Member \s*"([^\"]*)"', str(error))
         await ctx.send(embed=discord.Embed(
             title="Ошибка",
             description=f"*Участник `{''.join(found)}` не найден*",
             color = ErCOLOR
-        ))
+        ))'''
 #=======================================================================================================================
 #           1)рейтинг (--)
 #           3)присоединение и отключение учасника
