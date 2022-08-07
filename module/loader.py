@@ -264,5 +264,23 @@ class loader(commands.Cog):
                     description=f"*У вас не достаточно прав!*" ,
                     color=ErCOLOR
                     ))
+    @commands.command()
+    async def ignore_mods(self, ctx):
+        with open('users.json', 'r') as file:
+                dataServerID = json.load(file)
+                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        if str(ctx.author.id) in ADMINS:
+            await ctx.send(embed=discord.Embed(
+                title="Список игнорируемых модулей",
+                description=f"```{', '.join(IGNORE)}```",
+                color=COLOR
+            ))
+        else:
+            msg = await ctx.send(embed=discord.Embed(
+                    title="Ошибка",
+                    description=f"*У вас не достаточно прав!*" ,
+                    color=ErCOLOR
+                    ))
 def setup(bot):
     bot.add_cog(loader(bot))
