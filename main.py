@@ -121,12 +121,6 @@ async def on_command_error(ctx, error):
             description=f"*Участник `{''.join(found)}` не найден*",
             color = ErCOLOR
         ))
-    else:
-        await ctx.send(embed=discord.Embed(
-            title="Ошибка",
-            description=f"`{''.join(error)}`",
-            color = ErCOLOR
-        ))
 #=======================================================================================================================
 #           1)рейтинг (--)
 #           3)присоединение и отключение учасника

@@ -166,30 +166,77 @@ class Score(commands.Cog):
                 color=COLOR
             ))
     @commands.command()
-    async def set_lvl(self, ctx, user = discord.Member, arg = None):
+    @commands.has_permissions(administrator=True)
+    async def set_lvl(self, ctx, mr: discord.Member = None, arg = None):
         try:
-            userr = user #or ctx.author
             with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            if not(arg<0):
+            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+            if not(int(arg)<0):
                 with open('users.json', 'w') as file:
-                    dataServerID[str(userr.guild.id)]['USERS'][str(userr.id)]['LvL'] = arg
+                    dataServerID[str(mr.guild.id)]['USERS'][str(mr.id)]['LvL'] = int(arg)
                     json.dump(dataServerID, file, indent=4)
                 await ctx.send(embed=discord.Embed(
                     title=f'Успешно',
-                    description='',
+                    description=f'Участнику {mr} был выдан {arg} уровень!',
                     color=COLOR
                 ))
             else:
                 await ctx.send(embed=discord.Embed(
                     title=f'Ошибка',
-                    description='',
+                    description='Нельзя поставить лвл меньше или равный 0',
                     color=ErCOLOR
                 ))
         except:
             pass
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def clear_rank(self, ctx, mr: discord.Member = None):
+        try:
+            mrr = mr or ctx.author
+            with open('users.json', 'r') as file:
+                dataServerID = json.load(file)
+            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+            with open('users.json', 'w') as file:
+                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = 1
+                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 0
+                json.dump(dataServerID, file, indent=4)
+            await ctx.send(embed=discord.Embed(
+                title=f'Успешно',
+                description=f'Участник {mrr} отчистил свой ранк!',
+                color=COLOR
+            ))
+            '''else:
+                await ctx.send(embed=discord.Embed(
+                    title=f'Ошибка',
+                    description='',
+                    color=ErCOLOR
+                ))'''
+        except:
+            pass
+    @clear_rank.error
+    async def error(self, ctx, error):
+        with open('users.json', 'r') as file:
+            dataServerID = json.load(file)
+            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+            AdminchennelID = int(dataServerID[str(ctx.author.guild.id)]['idAdminchennel'], 16)
+            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+            
+        if isinstance(error, commands.errors.MemberNotFound):
+            for member in ctx.guild.members:
+                    with open('users.json', 'w') as file:
+                        dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['LvL'] = 1
+                        dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['SCR'] = 0
+                        json.dump(dataServerID, file, indent=4)
+            await ctx.send(embed=discord.Embed(
+                title=f'Успешно',
+                description=f'Все участники этого сервера потерял свой ранк!',
+                color=COLOR
+            ))
+    
 
 def setup(bot):
     bot.add_cog(Score(bot))
