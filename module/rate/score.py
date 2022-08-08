@@ -209,12 +209,6 @@ class Score(commands.Cog):
                 description=f'Участник {mrr.name} отчистил свой ранк!',
                 color=COLOR
             ))
-            '''else:
-                await ctx.send(embed=discord.Embed(
-                    title=f'Ошибка',
-                    description='',
-                    color=ErCOLOR
-                ))'''
         except:
             pass
     @clear_rank.error
