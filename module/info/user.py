@@ -3,19 +3,19 @@ import json
 from discord import Spotify
 from discord.utils import get
 from discord.ext import commands
+from typing import Optional
 from BTSET import ADMINS
 
 class user(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
-    async def user(self, ctx, member: discord.Member = None):
+    async def user(self, ctx: commands.Context, memberr: Optional[discord.Member]):
+        member = memberr or ctx.author
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-        if not(member):
-            member = ctx.author
-            pass
+        
         mr = None
         if member.activities:
             for i in member.activities:

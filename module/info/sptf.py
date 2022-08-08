@@ -1,13 +1,14 @@
 import discord
 from discord import Spotify
 import json
+from typing import Optional
 from discord.ext import commands
 
 class sptf(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
-    async def spotify(self, ctx, user: discord.Member = None):
+    async def spotify(self, ctx: commands.Context, user: Optional[discord.Member]):
         with open('users.json', 'r') as file:
             data = json.load(file)
             COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
