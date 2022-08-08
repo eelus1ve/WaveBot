@@ -19,7 +19,9 @@ from distutils.log import error
 import re
 from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption
 from dotenv import load_dotenv, find_dotenv
+
 load_dotenv(find_dotenv())
+
 #=======================================================================================================================
 intents=discord.Intents.all()
 def get_prefix(bot, message):
@@ -29,6 +31,8 @@ def get_prefix(bot, message):
     return prefix
 bot =ComponentsBot(command_prefix = get_prefix, intents=intents)
 bot.remove_command('help')
+#=======================================================================================================================
+
 #=======================================================================================================================
 @bot.event
 async def on_ready():
@@ -90,8 +94,9 @@ async def on_ready():
                     json.dump(dat, file, indent=4)
                     
         await asyncio.sleep(20)
-        
+#=======================================================================================================================
 
+#=======================================================================================================================
 @bot.command()
 async def a(ctx):
     with open('users.json', 'r') as file:
@@ -101,6 +106,9 @@ async def a(ctx):
         title="Степ не волнуйся все плохо)",
         color=COLOR
         ))
+#=======================================================================================================================
+
+#=======================================================================================================================
 @bot.event
 async def on_command_error(ctx, error):
     with open('users.json', 'r') as file:
@@ -121,6 +129,8 @@ async def on_command_error(ctx, error):
             description=f"*Участник `{''.join(found)}` не найден*",
             color = ErCOLOR
         ))'''
+#=======================================================================================================================
+
 #=======================================================================================================================
 #           1)рейтинг (--)
 #           3)присоединение и отключение учасника
