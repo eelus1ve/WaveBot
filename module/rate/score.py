@@ -23,7 +23,7 @@ class Score(commands.Cog):
             with open('users.json', 'r') as file:
                 SCR = dataServerID[str(mr.guild.id)]['USERS'][str(mr.id)]['SCR']
             await ctx.send(embed=discord.Embed(
-                title=f'Количество очков {mr}',
+                title=f'Количество очков {mr.name}',
                 description=f'{SCR}',
                 color=COLOR
             ))
@@ -31,7 +31,7 @@ class Score(commands.Cog):
             with open('users.json', 'r') as file:
                 SCR = dataServerID[str(ctx.author.guild.id)]['USERS'][str(ctx.author.id)]['SCR']
             await ctx.send(embed=discord.Embed(
-                title=f'Количество очков {ctx.author}',
+                title=f'Количество очков {ctx.author.name}',
                 description=f'{SCR}',
                 color=COLOR
             ))
@@ -55,7 +55,7 @@ class Score(commands.Cog):
                         
                     await ctx.send(embed=discord.Embed(
                         title='Успешно',
-                        description=f'{mr} получил {arg} очков!',
+                        description=f'{mr.name} получил {arg} очков!',
                         color=COLOR
                     ))
                 else:
@@ -114,7 +114,7 @@ class Score(commands.Cog):
                             json.dump(dataServerID, file, indent=4)
                     await ctx.send(embed=discord.Embed(
                         title='Успешно',
-                        description=f'{mr} потерял {arg} очков!',
+                        description=f'{mr.name} потерял {arg} очков!',
                         color=COLOR
                     ))
                 else:
@@ -163,7 +163,7 @@ class Score(commands.Cog):
                 json.dump(dataServerID, file, indent=4)
             await ctx.send(embed=discord.Embed(
                 title='Успешно',
-                description=f'{mrr} потерял все очки!',
+                description=f'{mrr.name} потерял все очки!',
                 color=COLOR
             ))
     @commands.command()
@@ -180,13 +180,13 @@ class Score(commands.Cog):
                     json.dump(dataServerID, file, indent=4)
                 await ctx.send(embed=discord.Embed(
                     title=f'Успешно',
-                    description=f'Участнику {mr} был выдан {arg} уровень!',
+                    description=f'Участнику {mr.name} был выдан {arg} уровень!',
                     color=COLOR
                 ))
             else:
                 await ctx.send(embed=discord.Embed(
                     title=f'Ошибка',
-                    description='Нельзя поставить лвл меньше или равный 0',
+                    description='Нельзя поставить лвл меньше или равный 0 ',
                     color=ErCOLOR
                 ))
         except:
@@ -206,7 +206,7 @@ class Score(commands.Cog):
                 json.dump(dataServerID, file, indent=4)
             await ctx.send(embed=discord.Embed(
                 title=f'Успешно',
-                description=f'Участник {mrr} отчистил свой ранк!',
+                description=f'Участник {mrr.name} отчистил свой ранк!',
                 color=COLOR
             ))
             '''else:
