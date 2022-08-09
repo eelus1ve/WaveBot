@@ -1,7 +1,6 @@
 import discord
 import json
 import os
-import asyncio
 from discord.ext import commands
 from BTSET import ADMINS, IGNORE
 
