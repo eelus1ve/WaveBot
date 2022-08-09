@@ -2,7 +2,7 @@ import discord
 import json
 import os
 from discord.ext import commands
-from BTSET import ADMINS, IGNORE
+from BTSET import ADMINS
 
 dir_name1 = "D:\Windows\Рабочий стол\wave1\module"
 
@@ -17,6 +17,7 @@ class loader(commands.Cog):
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
                 prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        from BTSET import IGNORE
         try:
             # -----------------------------селект
             if str(ctx.author.id) in ADMINS:
@@ -186,18 +187,12 @@ class loader(commands.Cog):
                                     if f'{filename[:-3]}' in list:
                                         list.remove(f'{filename[:-3]}')            
                                         self.bot.unload_extension(f'module.{dirs}.{filename[:-3]}')
-                    if f'{filename[:-3]}' in list:
+                    if not(f'{filename[:-3]}' in list):
                         await ctx.send(embed=discord.Embed(
                             title="Успешно",
                             description=f"*модуль {arg} успешно отключен!*",
                             color=COLOR
                         ))
-                    else:
-                        msg = await ctx.send(embed=discord.Embed(
-                        title="Ошибка",
-                        description=f"*Модуль {arg} не был загружен!*",
-                        color=ErCOLOR
-                    ))
                 #------------------------------------все модули
                 elif arg == 'all':
                     modules = os.listdir(dir_name1)
@@ -269,6 +264,7 @@ class loader(commands.Cog):
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
                 ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        from BTSET import IGNORE
         if str(ctx.author.id) in ADMINS:
             await ctx.send(embed=discord.Embed(
                 title="Список игнорируемых модулей",

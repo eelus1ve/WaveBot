@@ -7,10 +7,12 @@ import discord
 import json
 import os
 import asyncio
+from discord.utils import get
 from distutils.log import error
 import re
 from discord_components import ComponentsBot
 from dotenv import load_dotenv, find_dotenv
+from BTSET import ADMINS
 
 load_dotenv(find_dotenv())
 

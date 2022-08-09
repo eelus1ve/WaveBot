@@ -1,6 +1,7 @@
 import discord
 import json
 from discord.ext import commands
+from discord.utils import get
 
 class mbrjn(commands.Cog):
     def __init__(self, bot):
@@ -12,12 +13,8 @@ class mbrjn(commands.Cog):
             COLOR = int(dataServerID[str(mbr.guild.id)]['COLOR'], 16)
             rls = dataServerID[str(mbr.guild.id)]['JoinRoles']
         if len(rls) != 0:
-            f = len(rls)
-            n = 0
-            while n != f:
-                rl = mbr.guild.get_role(int(rls[n]))
-                n = n + 1
-                await mbr.add_roles(rl)
+            for role in rls:
+                await mbr.add_roles(mbr.guild.get_role(int(role)))
         else:
             pass
         if len(dataServerID[str(mbr.guild.id)]['JNMSG']) != 0:
