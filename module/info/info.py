@@ -8,7 +8,6 @@ class info(commands.Cog):
         self.bot = bot
     @commands.command(aliases =['Инфо', 'инфо', 'ИНФО'])
     async def info(self, ctx): #и кста я сегодня пиццу ел!!! #молодец что пиццу ел а теперь мафию пиши
-        list = []
         with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)

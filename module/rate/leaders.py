@@ -1,13 +1,6 @@
 import discord
 import json
-import asyncio
-import random
-import os
-from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
 from discord.ext import commands
-from easy_pil import Editor, load_image_async, Font
-from typing import Optional
-from discord import File
 class leaders(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

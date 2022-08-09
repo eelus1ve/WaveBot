@@ -2,22 +2,14 @@
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!
 import asyncio
-from BTSET import ADMINS, BOTVERSION
 from discord.ext import commands
-from msilib.schema import Component
-import py_compile
 import discord
-import random
 import json
-import time
 import os
-import sys
 import asyncio
-from discord import Spotify
-from discord.utils import get
 from distutils.log import error
 import re
-from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption
+from discord_components import ComponentsBot
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())

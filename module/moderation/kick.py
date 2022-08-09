@@ -41,7 +41,5 @@ class kick(commands.Cog):
                 description="*У вас недостаточно прав!*",
                 color = ErCOLOR
             ))
-
-
 def setup(bot):
     bot.add_cog(kick(bot))

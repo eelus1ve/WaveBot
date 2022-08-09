@@ -1,7 +1,6 @@
 import discord
 import json
 from discord import Spotify
-from discord.utils import get
 from discord.ext import commands
 from typing import Optional
 from BTSET import ADMINS
