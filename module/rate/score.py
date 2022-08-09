@@ -2,7 +2,6 @@ import discord
 import json
 from discord.ext import commands
 from typing import Optional
-from typing import Optional
 from distutils.log import error
 import re
 class Score(commands.Cog):
