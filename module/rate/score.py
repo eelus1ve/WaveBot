@@ -8,21 +8,7 @@ class Score(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
-    async def score(self, ctx: commands.Context, mr: Optional[discord.Member]):
-        mrr = mr or ctx.author
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-        COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-        with open('users.json', 'r') as file:
-            SCR = dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR']
-        await ctx.send(embed=discord.Embed(
-            title=f'Количество очков {mrr.name}',
-            description=f'{SCR}',
-            color=COLOR
-        ))
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def add_score(self, ctx: commands.Context, mr: Optional[discord.Member], arg = None):
+    async def score(self, ctx: commands.Context, mr: Optional[discord.Member], arg: Optional[str]):
         try:
             mrr = mr or ctx.author
             with open('users.json', 'r') as file:
@@ -30,62 +16,58 @@ class Score(commands.Cog):
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
             ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
             pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+            SCR = dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR']
+            LVL = dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL']
 
-            if int(arg) < 10001 and arg != None:
-                with open('users.json', 'r') as file:
-                    SCR = dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR']
-                dermo = int(SCR) + int(arg)
-                with open('users.json', 'w') as file:
-                    dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(dermo) 
-                    json.dump(dataServerID, file, indent=4)
-                    
+            if not(arg):
                 await ctx.send(embed=discord.Embed(
-                    title='Успешно',
-                    description=f'{mrr.name} получил {arg} очков!',
+                    title=f'Количество очков {mrr.name}',
+                    description=f'{SCR}',
                     color=COLOR
                 ))
-            else:
-                await ctx.send(embed=discord.Embed(
-                    title='Ошибка',
-                    description=f'Максимально количество выданого опыта не может привешать 10000!',
-                    color=ErCOLOR
-                ))
-        except:
-            await ctx.send(embed=discord.Embed(
-                title='Ошибка',
-                description=f'Использование: {pref}add_score (@Учасник) (кол-во опыта)',
-                color=ErCOLOR
-            ))
-    @add_score.error
-    async def error(self, ctx, error):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-        ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-        pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
-            
-        if isinstance(error, commands.errors.MemberNotFound):
-            await ctx.send(embed=discord.Embed(
-                title='Ошибка',
-                description=f'Использование: {pref}add_score (@Учасник) (кол-во опыта)',
-                color=ErCOLOR
-            ))
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def remove_score(self, ctx: commands.Context, mr: Optional[discord.Member], arg = None):
-        try:
-            mrr = mr or ctx.author
-            with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-                pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
-                if int(arg) < 10001 and arg != None:
-                    with open('users.json', 'r') as file:
-                        SCR = dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR']
-                    dermo = int(SCR) - int(arg)
-                    if not(dermo<0):
+
+            elif arg.startswith('+'):
+                argg = arg.replace('+', '')
+                if int(argg) < 10001 and arg != None:
+                    dermo = int(SCR) + int(argg)
+                    if int(dermo+SCR) >= ((int(LVL)+1)*100):
+                        print((LVL*100+dermo)//100)#дописать формулу
                         with open('users.json', 'w') as file:
-                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 0
+                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 1#подставиить переменую
+                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = 1#подставиить переменую
+                            json.dump(dataServerID, file, indent=4)
+                            
+                        await ctx.send(embed=discord.Embed(
+                            title='Успешно',
+                            description=f'{mrr.name} получил {argg} очков!',
+                            color=COLOR
+                        ))
+                    else:
+                        with open('users.json', 'w') as file:
+                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(dermo) 
+                            json.dump(dataServerID, file, indent=4)
+                            
+                        await ctx.send(embed=discord.Embed(
+                            title='Успешно',
+                            description=f'{mrr.name} получил {argg} очков!',
+                            color=COLOR
+                        ))
+                else:
+                    await ctx.send(embed=discord.Embed(
+                        title='Ошибка',
+                        description=f'Максимально количество выданого опыта не может привешать 10000!',
+                        color=ErCOLOR
+                    ))
+
+            elif arg.startswith('-'):
+                argg = arg.replace('-', '')
+                if int(argg) < 10001 and arg != None:
+                    dermo = int(SCR) - int(argg)
+                    if dermo<0:
+                        res = ((int(LVL)+1)*100) - dermo
+                        with open('users.json', 'w') as file:
+                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = res
+                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] -= 1
                             json.dump(dataServerID, file, indent=4)
                     else:
                         with open('users.json', 'w') as file:
@@ -93,34 +75,39 @@ class Score(commands.Cog):
                             json.dump(dataServerID, file, indent=4)
                     await ctx.send(embed=discord.Embed(
                         title='Успешно',
-                        description=f'{mrr.name} потерял {arg} очков!',
+                        description=f'{mrr.name} потерял {argg} очков!',
                         color=COLOR
                     ))
                 else:
                     await ctx.send(embed=discord.Embed(
                             title='Ошибка',
-                            description=f'Использование: {pref}remove_score (@Учасник) (кол-во опыта)',
+                            description=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)',
                             color=ErCOLOR
                         ))
+
+            elif not(arg.startswith('-') or arg.startswith('+')):
+                a = int(arg) + 0
+                with open('users.json', 'w') as file:
+                    dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(a)
+                    json.dump(dataServerID, file, indent=4)
+                await ctx.send(embed=discord.Embed(
+                        title='Успешно',
+                        description=f'Участнику {mrr.name} было установлено {int(a)} опыта!',
+                        color=COLOR
+                    ))
+
+            else:
+                await ctx.send(embed=discord.Embed(
+                    title='Ошибка',
+                    description=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)',
+                    color=ErCOLOR
+                ))
         except:
             await ctx.send(embed=discord.Embed(
-                title='Ошибка',
-                description=f'Использование: {pref}remove_score (@Учасник) (кол-во опыта)',
-                color=ErCOLOR
-            ))
-    @remove_score.error
-    async def error(self, ctx, error):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
-            
-        if isinstance(error, commands.errors.MemberNotFound):
-            await ctx.send(embed=discord.Embed(
-                title='Ошибка',
-                description=f'Использование: {pref}remove_score (@Учасник) (кол-во опыта)',
-                color=ErCOLOR
-            ))
+                    title='Ошибка',
+                    description=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)',
+                    color=ErCOLOR
+                ))
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def clear_score(self, ctx: commands.Context, mr: Optional[discord.Member]):

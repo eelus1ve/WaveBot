@@ -52,7 +52,7 @@ class mrate(commands.Cog):
                         await message.channel.send(f"{message.author.mention} получил новый уровень {new_level}!")
                         
                         with open("users.json", "w") as f:
-                            data[str(message.guild.id)]['USERS'][str(message.author.id)]['SCR']=0
+                            data[str(message.guild.id)]['USERS'][str(message.author.id)]['SCR']=0 #написать формулу + переменая
                             data[str(message.guild.id)]['USERS'][str(message.author.id)]['LvL']=new_level
                             json.dump(data, f, indent=4)
         except:
