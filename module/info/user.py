@@ -4,6 +4,7 @@ from discord import Spotify
 from discord.ext import commands
 from typing import Optional
 from BTSET import ADMINS
+import pytz
 
 class user(commands.Cog):
     def __init__(self, bot):
@@ -41,8 +42,8 @@ class user(commands.Cog):
 
         lstdisc.append(f'***Статус:*** {status} \n')
         lstdisc.append(f'***Топ роль:*** {member.top_role.mention} \n')
-        lstdisc.append(f'***Присоединился:*** {member.joined_at.strftime("%d.%m.%y")} \n')
-        lstdisc.append(f'***Дата регистрации:*** {member.created_at.strftime("%d.%m.%y")}\n')
+        lstdisc.append(f"***Присоединился:*** {member.joined_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%d.%m.%y')} \n")
+        lstdisc.append(f"***Дата регистрации:*** {member.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%d.%m.%y')}\n")
         if str(member.id) in ADMINS: lstdisc.append(f'***Разрабочик WaveBot*** \n')
         emb = discord.Embed(title=f'Информация о ***{member.name}***',
                             description="***Основная информация:***\n" + "".join(lstdisc),

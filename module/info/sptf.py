@@ -3,7 +3,6 @@ from discord import Spotify
 import json
 from typing import Optional
 from discord.ext import commands
-from datetime import datetime
 import pytz
 class sptf(commands.Cog):
     def __init__(self, bot):
@@ -24,7 +23,7 @@ class sptf(commands.Cog):
                     embed.set_thumbnail(url=activity.album_cover_url)
                     embed.add_field(name="Исполнитель", value=activity.artist)
                     embed.add_field(name="Альбом", value=activity.album)
-                    embed.set_footer(text=f"Песня началась в {datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%H:%M')}")
+                    embed.set_footer(text=f"Песня началась в {activity.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%H:%M')}")
                     await ctx.send(embed=embed)
 def setup(bot):
     bot.add_cog(sptf(bot))
