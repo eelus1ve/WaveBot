@@ -13,12 +13,19 @@ class dice(commands.Cog):
             dataServerID = json.load(file)
             COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
             
-        await ctx.send(embed=discord.Embed(
+        msg = await ctx.send(embed=discord.Embed(
                 title="Игральная кость говорит:",
                 description=f'{random.randint(1, 6)} и {random.randint(1, 6)}',
                 color = COLOR
             )
         )
-
+        for i in range(5):
+            await msg.edit(
+                embed=discord.Embed(
+                    title="Игральная кость говорит: ",
+                    description=f'{random.randint(1, 6)} и {random.randint(1, 6)}',
+                    color=COLOR
+                )
+            )
 def setup(bot):
     bot.add_cog(dice(bot))

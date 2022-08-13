@@ -4,9 +4,9 @@ import json
 class stngs(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    @commands.command()
+    @commands.command(aliases=['settings'])
     @commands.has_permissions(administrator=True)
-    async def settings(self, ctx, arg=None, clArg=None, roleClass=None, emo=None):
+    async def set(self, ctx, arg=None, clArg=None, roleClass=None, emo=None):
         with open('users.json', 'r') as file:
             dataServerID = json.load(file)
             roles =  dataServerID[str(ctx.author.guild.id)]['JoinRoles']
