@@ -2,10 +2,8 @@
     "547782677793734656": {
         "COLOR": "0x0000FF",
         "ErCOLOR": "0x8B0000",
-        "JoinRoles": [
-            "973357780876546058",
-            "972928848637354015"
-        ],
+        "JoinRoles": [],
+        "ModRoles": [],
         "ROLES": {},
         "actmoduls": "",
         "nCaps": -1,
@@ -27,12 +25,6 @@
         "bar_color": "#ec5252",
         "blend": 1,
         "USERS": {
-            "466609421863354388": {
-                "WARNS": 0,
-                "CAPS": 0,
-                "SCR": 0,
-                "LvL": 1
-            },
             "776179079221084180": {
                 "WARNS": 0,
                 "CAPS": 0,
@@ -232,6 +224,12 @@
                 "LvL": 1
             },
             "352413086096818176": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1
+            },
+            "466609421863354388": {
                 "WARNS": 0,
                 "CAPS": 0,
                 "SCR": 0,
@@ -507,6 +505,7 @@
         "COLOR": "0x0000FF",
         "ErCOLOR": "0x8B0000",
         "JoinRoles": [],
+        "ModRoles": [],
         "ROLES": {},
         "actmoduls": "",
         "nCaps": -1,
@@ -678,6 +677,12 @@
                 "SCR": 0,
                 "LvL": 1
             },
+            "347027993530728448": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1
+            },
             "495221623654318080": {
                 "WARNS": 0,
                 "CAPS": 0,
@@ -762,6 +767,7 @@
         "COLOR": "0x0000FF",
         "ErCOLOR": "0x8B0000",
         "JoinRoles": [],
+        "ModRoles": [],
         "ROLES": {},
         "actmoduls": "",
         "nCaps": -1,
@@ -807,6 +813,7 @@
         "COLOR": "0x0000FF",
         "ErCOLOR": "0x8B0000",
         "JoinRoles": [],
+        "ModRoles": [],
         "ROLES": {},
         "actmoduls": "",
         "nCaps": -1,
@@ -861,8 +868,8 @@
             "466609421863354388": {
                 "WARNS": 0,
                 "CAPS": 0,
-                "SCR": 16,
-                "LvL": 3
+                "SCR": 0,
+                "LvL": 1
             },
             "544279889470291989": {
                 "WARNS": 0,
@@ -918,12 +925,6 @@
                 "SCR": 0,
                 "LvL": 1
             },
-            "981511682960547860": {
-                "WARNS": 0,
-                "CAPS": 0,
-                "SCR": 0,
-                "LvL": 1
-            },
             "984816758441517157": {
                 "WARNS": 0,
                 "CAPS": 0,
@@ -942,6 +943,7 @@
         "COLOR": "0x0000FF",
         "ErCOLOR": "0x8B0000",
         "JoinRoles": [],
+        "ModRoles": [],
         "ROLES": {},
         "actmoduls": "",
         "nCaps": -1,
@@ -993,6 +995,7 @@
         "COLOR": "0x0000FF",
         "ErCOLOR": "0x8B0000",
         "JoinRoles": [],
+        "ModRoles": [],
         "ROLES": {},
         "actmoduls": "",
         "nCaps": -1,

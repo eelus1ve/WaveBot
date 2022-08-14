@@ -25,33 +25,36 @@ class Score(commands.Cog):
                     description=f'{SCR}',
                     color=COLOR
                 ))
-
-            elif arg.startswith('+'):
+        #F
+            elif arg.startswith('+'): #1 лвл не такой как все 0-199 200-299 разряд x2 на 1 лвл
                 argg = arg.replace('+', '')
                 if int(argg) < 10001 and arg != None:
-                    dermo = int(SCR) + int(argg)
-                    if int(dermo+SCR) >= ((int(LVL)+1)*100):
-                        print((LVL*100+dermo)//100)#дописать формулу
-                        with open('users.json', 'w') as file:
-                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 1#подставиить переменую
-                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = 1#подставиить переменую
-                            json.dump(dataServerID, file, indent=4)
-                            
-                        await ctx.send(embed=discord.Embed(
-                            title='Успешно',
-                            description=f'{mrr.name} получил {argg} очков!',
-                            color=COLOR
-                        ))
+                    if LVL == 1:
+                        pass
                     else:
-                        with open('users.json', 'w') as file:
-                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(dermo) 
-                            json.dump(dataServerID, file, indent=4)
-                            
-                        await ctx.send(embed=discord.Embed(
-                            title='Успешно',
-                            description=f'{mrr.name} получил {argg} очков!',
-                            color=COLOR
-                        ))
+                        dermo = int(SCR) + int(argg)
+                        newLvl = ((LVL*100)+dermo)-(LVL+1)*100
+                        xp = ((LVL*100)+dermo) - (newLvl//100+LVL)*100
+                        if newLvl > LVL*100:
+                            with open('users.json', 'w') as file:
+                                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = xp
+                                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = newLvl//100
+                                json.dump(dataServerID, file, indent=4)
+                            await ctx.send(embed=discord.Embed(
+                                title='Успешно',
+                                description=f'{mrr.name} получил {argg} очков!',
+                                color=COLOR
+                            ))
+                        else:
+                            with open('users.json', 'w') as file:
+                                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(dermo) 
+                                json.dump(dataServerID, file, indent=4)
+                                
+                            await ctx.send(embed=discord.Embed(
+                                title='Успешно',
+                                description=f'{mrr.name} получил {argg} очков!',
+                                color=COLOR
+                            ))
                 else:
                     await ctx.send(embed=discord.Embed(
                         title='Ошибка',
@@ -64,10 +67,11 @@ class Score(commands.Cog):
                 if int(argg) < 10001 and arg != None:
                     dermo = int(SCR) - int(argg)
                     if dermo<0:
-                        res = ((int(LVL)+1)*100) - dermo
+                        newLvl = ((LVL*100)+dermo)//100
+                        xp = ((LVL*100)+dermo) - newLvl*100
                         with open('users.json', 'w') as file:
-                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = res
-                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] -= 1
+                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = xp
+                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = newLvl
                             json.dump(dataServerID, file, indent=4)
                     else:
                         with open('users.json', 'w') as file:
@@ -87,14 +91,27 @@ class Score(commands.Cog):
 
             elif not(arg.startswith('-') or arg.startswith('+')):
                 a = int(arg) + 0
-                with open('users.json', 'w') as file:
-                    dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(a)
-                    json.dump(dataServerID, file, indent=4)
-                await ctx.send(embed=discord.Embed(
-                        title='Успешно',
-                        description=f'Участнику {mrr.name} было установлено {int(a)} опыта!',
-                        color=COLOR
-                    ))
+                if arg>= (LVL+1)*100:
+                    newLvl = ((LVL*100)+arg)//100
+                    xp = ((LVL*100)+arg) - newLvl*100
+                    with open('users.json', 'w') as file:
+                        dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xp)
+                        dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(newLvl)
+                        json.dump(dataServerID, file, indent=4)
+                    await ctx.send(embed=discord.Embed(
+                            title='Успешно',
+                            description=f'Участнику {mrr.name} было установлено {int(a)} опыта!',
+                            color=COLOR
+                        ))
+                else:
+                    with open('users.json', 'w') as file:
+                        dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(a)
+                        json.dump(dataServerID, file, indent=4)
+                    await ctx.send(embed=discord.Embed(
+                            title='Успешно',
+                            description=f'Участнику {mrr.name} было установлено {int(a)} опыта!',
+                            color=COLOR
+                        ))
 
             else:
                 await ctx.send(embed=discord.Embed(

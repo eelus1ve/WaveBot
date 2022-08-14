@@ -44,3 +44,23 @@ def setup(bot):
                         color=COLOR
                     )
                 )
+
+
+
+
+
+
+
+                '''global bbb
+    @commands.Cog.listener('on_ready')
+    async def n_ready():
+        global bbb
+        bbb = subprocess.Popen('python bot1.py')
+    @commands.command()
+    async def b(self, ctx):
+        global bbb
+        bbb = subprocess.Popen('python bot1.py')
+    @commands.command()
+    async def bb(self, ctx):
+        global bbb
+        bbb.kill()'''

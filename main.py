@@ -13,7 +13,9 @@ import re
 from discord_components import ComponentsBot
 from dotenv import load_dotenv, find_dotenv
 from BTSET import ADMINS
-
+import subprocess
+import interactions
+from bd import bdpy
 load_dotenv(find_dotenv())
 
 #=======================================================================================================================
@@ -23,6 +25,7 @@ def get_prefix(bot, message):
         data = json.load(file)
     prefix = data[str(message.guild.id)]['PREFIX']
     return prefix
+client = interactions.Client(token=os.getenv('TOKEN'))
 bot =ComponentsBot(command_prefix = get_prefix, intents=intents)
 bot.remove_command('help')
 #=======================================================================================================================
@@ -30,7 +33,7 @@ bot.remove_command('help')
 #=======================================================================================================================
 @bot.event
 async def on_ready():
-    bot.load_extension('module.loader')
+    bot.load_extension('loader')
     print(f'{bot.user.name} connected')
     
     if not os.path.exists('users.json'):
@@ -48,6 +51,7 @@ async def on_ready():
                             'COLOR': '0x0000FF',
                             'ErCOLOR': '0x8B0000',
                             'JoinRoles': [],
+                            'ModRoles': [],
                             'ROLES': {},
                             'actmoduls': '',
                             'nCaps': -1,
@@ -93,17 +97,14 @@ async def on_ready():
 #=======================================================================================================================
 @bot.command()
 async def a(ctx):
-    with open('users.json', 'r') as file:
-        dataServerID = json.load(file)
-        COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
     await ctx.send(embed=discord.Embed(
         title="Степ не волнуйся все плохо)",
-        color=COLOR
+        color=bdpy(ctx)['COLOR']
         ))
 #=======================================================================================================================
 
 #=======================================================================================================================
-@bot.event
+'''@bot.event
 async def on_command_error(ctx, error):
     with open('users.json', 'r') as file:
         dataServerID = json.load(file)
@@ -116,13 +117,16 @@ async def on_command_error(ctx, error):
             description=f"*Команды `{''.join(found)}` не существует*",
             color = ErCOLOR
         ))
-    '''if isinstance(error, commands.errors.MemberNotFound):
+    elif isinstance(error, commands.errors.MemberNotFound):
         found = re.findall(r'Member \s*"([^\"]*)"', str(error))
         await ctx.send(embed=discord.Embed(
             title="Ошибка",
             description=f"*Участник `{''.join(found)}` не найден*",
             color = ErCOLOR
-        ))'''
+        ))
+    elif isinstance(error, commands.errors.CommandInvokeError):
+        pass
+    '''
 #=======================================================================================================================
 
 #=======================================================================================================================
@@ -138,5 +142,12 @@ async def on_command_error(ctx, error):
 #=======================================================================================================================
 
 #=======================================================================================================================
-bot.run(os.getenv('TOKEN'))
+
 #=======================================================================================================================
+loop = asyncio.get_event_loop()
+
+task2 = loop.create_task(bot.start(os.getenv('TOKEN')))
+task1 = loop.create_task(client.start())
+
+gathered = asyncio.gather(task1, task2, loop=loop)
+loop.run_until_complete(gathered)

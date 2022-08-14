@@ -14,15 +14,13 @@ class rank(commands.Cog):
             data = json.load(f)
         xp = data[str(ctx.guild.id)]['USERS'][str(userr.id)]["SCR"]
         lvl = data[str(ctx.guild.id)]['USERS'][str(userr.id)]["LvL"]
-        next_level_xp = (lvl+1) * 100
-        xp_need = next_level_xp
-        xp_have = data[str(ctx.guild.id)]['USERS'][str(userr.id)]["SCR"]
+        nlx = (lvl+1) * 100
         setcard = str(data[str(ctx.guild.id)]['card'])
-        text_color = str(data[str(ctx.guild.id)]['text_color'])
-        bar_color = str(data[str(ctx.guild.id)]['bar_color'])
+        textColor = str(data[str(ctx.guild.id)]['text_color'])
+        barColor = str(data[str(ctx.guild.id)]['bar_color'])
         blend = int(data[str(ctx.guild.id)]['blend'])
 
-        percentage = int(((xp_have * 100)/ xp_need))
+        percentage = int(((xp * 100)/ nlx))
 
         if percentage < 1:
             percentage = 0
@@ -49,18 +47,18 @@ class rank(commands.Cog):
             max_width=650,
             height=40,
             percentage=percentage,
-            fill=bar_color,
+            fill=barColor,
             radius=20,
         )
-        background.text((200, 40), str(userr.name), font=FONT, color=text_color)
+        background.text((200, 40), str(userr.name), font=FONT, color=textColor)
 
-        background.rectangle((200, 100), width=350, height=2, fill=bar_color)
+        background.rectangle((200, 100), width=350, height=2, fill=barColor)
         background.text(
             (200, 130),
             f"Level : {lvl}   "
             + f" XP : {xp} / {(lvl+1) * 100}",
             font=FONT_small,
-            color=text_color,
+            color=textColor,
         )
 
         card = File(fp=background.image_bytes, filename="D:/Windows/Рабочий стол/wave1/module/rate/set/zCARD.png")
