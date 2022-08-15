@@ -1,18 +1,14 @@
 import discord
-import json
 from discord.ext import commands
 from BTSET import BOTVERSION
-
-class help(commands.Cog):
+from BD import bdpy
+class Helppy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases = ['хелп', 'Хелп', 'ХЕЛП'])
     async def help(self, ctx, *arg):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-                pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        COLOR = bdpy(ctx)['COLOR']
+        pref = bdpy(ctx)['PREFIX']
         if arg:
             if arg[0] == 'rand':
                 await ctx.author.send(embed=discord.Embed(
@@ -315,6 +311,6 @@ class help(commands.Cog):
                     color=COLOR
                 ))
 def setup(bot):
-    bot.add_cog(help(bot))
+    bot.add_cog(Helppy(bot))
     
     

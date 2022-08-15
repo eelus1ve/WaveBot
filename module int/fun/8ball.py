@@ -1,14 +1,13 @@
 import random
-import json
 import interactions
-from bd import bdpy
-class ballint(interactions.Extension):
+from BD import bdint
+class Ballint(interactions.Extension):
     def __init__(self, client: interactions.Client) -> None:
         self.client: interactions.Client = client
 
     @interactions.extension_command(
-        name="Magicball",
-        description="Бросить кости",
+        name="magicball",
+        description="Спросить у шара судьбы",
     )
     async def ball(self, ctx, *arg):
         COLOR = bdint(ctx)['COLOR']
@@ -33,4 +32,4 @@ class ballint(interactions.Extension):
             ))
 
 def setup(client):
-    ballint(client)
+    Ballint(client)

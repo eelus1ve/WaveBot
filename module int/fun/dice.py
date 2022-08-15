@@ -1,31 +1,30 @@
-import discord
 import random
-import json
-from discord.ext import commands
+import interactions
+from BD import bdint
 
-class dice(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+class Diceint(interactions.Extension):
+    def __init__(self, client: interactions.Client) -> None:
+        self.client: interactions.Client = client
 
-    @commands.command()
+    @interactions.extension_command(
+        name="dice",
+        description="Бросить кости",
+    )
     async def dice(self, ctx):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
             
-        msg = await ctx.send(embed=discord.Embed(
+        msg = await ctx.send(embeds=interactions.Embed(
                 title="Игральная кость говорит:",
                 description=f'{random.randint(1, 6)} и {random.randint(1, 6)}',
                 color = COLOR
             )
         )
         for i in range(5):
-            await msg.edit(
-                embed=discord.Embed(
+            await msg.edit(embeds=interactions.Embed(
                     title="Игральная кость говорит: ",
                     description=f'{random.randint(1, 6)} и {random.randint(1, 6)}',
                     color=COLOR
                 )
             )
-def setup(bot):
-    bot.add_cog(dice(bot))
+def setup(client):
+    Diceint(client)

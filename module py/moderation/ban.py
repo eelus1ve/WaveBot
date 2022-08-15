@@ -1,18 +1,14 @@
 import discord
 from discord.ext import commands
 from distutils.log import error
-import json
-
-class ban(commands.Cog):
+from BD import bdpy
+class Banpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['бан', 'Бан', 'БАН'])
     @commands.has_permissions(administrator=True)
     async def ban(self, ctx, member: discord.Member, reason = None):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            AdminchennelID = int(dataServerID[str(ctx.author.guild.id)]['idAdminchennel'], 16)
+        COLOR = bdpy(ctx)['COLOR']
         await member.ban(reason=reason)
         await ctx.send(embed=discord.Embed(
                 title="Успешно",
@@ -22,11 +18,8 @@ class ban(commands.Cog):
 
     @ban.error
     async def error(self, ctx, error):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            AdminchennelID = int(dataServerID[str(ctx.author.guild.id)]['idAdminchennel'], 16)
-            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        pref = bdpy(ctx)['PREFIX']
 
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(embed=discord.Embed(
@@ -43,4 +36,4 @@ class ban(commands.Cog):
             ))
             
 def setup(bot):
-    bot.add_cog(ban(bot))
+    bot.add_cog(Banpy(bot))

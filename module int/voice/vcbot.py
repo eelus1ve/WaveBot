@@ -3,15 +3,18 @@ from discord.utils import get
 import json
 from youtube_dl import YoutubeDL
 from discord.ext import commands
-class vcbot(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-    @commands.command(aliases=['я-одинокая-мразь'])
+import interactions
+from BD import bdint
+class Voicbotint(interactions.Extension):
+    def __init__(self, client: interactions.Client) -> None:
+        self.client: interactions.Client = client
+    @interactions.extension_command(
+        name="join",
+        description="Присоединить бота",
+    )
     async def join(self, ctx, chlen = None):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
+        ErCOLOR = bdint(ctx)['ErCOLOR']
         
         global voice
         try:
@@ -22,29 +25,30 @@ class vcbot(commands.Cog):
                 await voice.move_to(channel)
             else:
                 voice = await channel.connect()
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Бот успешно прискоединен в {channel.name}',
                     color=COLOR
                 ))
         except:
-            await ctx.send(embed=discord.Embed(
+            await ctx.send(embeds=interactions.Embed(
                 title="Ошибка",
                 description=f"*{ctx.author.mention} Вы не в голосовом канале !*",
                 color=ErCOLOR
             ))
 
-    @commands.command()
+    @interactions.extension_command(
+        name="leave",
+        description="Отключить бота",
+    )
     async def leave(self, ctx):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
         try:
             channel = ctx.author.voice.channel
             voice = get(self.bot.voice_clients, guild=ctx.guild)
 
             await voice.disconnect()
-            await ctx.send(embed=discord.Embed(
+            await ctx.send(embeds=interactions.Embed(
                     title="Успешно",
                     description="Бот покинул этот канал \n\
                         ||Бот это запомнит||",
@@ -54,12 +58,13 @@ class vcbot(commands.Cog):
             pass
 
 
-    @commands.command(aliases=['p'])
+    @interactions.extension_command(
+        name="play",
+        description="начать проигрывать песню",
+    )
     async def play(self, ctx, url):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
+        ErCOLOR = bdint(ctx)['ErCOLOR']
         vc = get(self.bot.voice_clients, guild=ctx.guild)
         if not(vc.is_playing()) and not(vc.is_paused()):
 
@@ -77,81 +82,84 @@ class vcbot(commands.Cog):
             vc.source = discord.PCMVolumeTransformer(vc.source)
             vc.source.volume = 0.1
 
-            await ctx.send(embed=discord.Embed(
+            await ctx.send(embeds=interactions.Embed(
                     title="Успешно",
                     description=f"Трек запущен!",
                     color=COLOR
                 ))
 
         else:
-            await ctx.send(embed=discord.Embed(
+            await ctx.send(embeds=interactions.Embed(
                     title="Ошибка",
                     description="Трек уже играет!",
                     color=ErCOLOR
                 ))
     
-    @commands.command(aliases=['st'])
+    @interactions.extension_command(
+        name="start",
+        description="Продолжить проигрывание",
+    )
     async def start(self, ctx):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
+        ErCOLOR = bdint(ctx)['ErCOLOR']
         vc = get(self.bot.voice_clients, guild=ctx.guild)
         if not(vc.is_playing()):
             vc.resume()
-            await ctx.send(embed=discord.Embed(
+            await ctx.send(embeds=interactions.Embed(
                     title="Успешно",
                     description="Трек успешно продолжается",
                     color=COLOR
                 ))
         else:
-            await ctx.send(embed=discord.Embed(
+            await ctx.send(embeds=interactions.Embed(
                     title="Ошибка",
                     description="Трек уже играет!",
                     color=ErCOLOR
                 ))
     
-    @commands.command()
+    @interactions.extension_command(
+        name="pause",
+        description="Приостановить проигрываение",
+    )
     async def pause(self, ctx):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
+        ErCOLOR = bdint(ctx)['ErCOLOR']
         vc = get(self.bot.voice_clients, guild=ctx.guild)
         if vc.is_playing():
             vc.pause()
-            await ctx.message.reply(embed=discord.Embed(
+            await ctx.message.reply(embeds=interactions.Embed(
                     title="Успешно",
                     description="Трек успешно поставлен на паузу",
                     color=COLOR
                 ))
         else:
-            await ctx.message.reply(embed=discord.Embed(
+            await ctx.message.reply(embeds=interactions.Embed(
                     title="Ошибка",
                     description="Трек не играет!",
                     color=ErCOLOR
                 ))
 
-    @commands.command(aliases=['skip', 'sk'])
+    @interactions.extension_command(
+        name="stop",
+        description="",      #Степ эт че такое тип скип или тип стоп
+    )
     async def stop(self, ctx):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
+        ErCOLOR = bdint(ctx)['ErCOLOR']
         vc = get(self.bot.voice_clients, guild=ctx.guild)
         if vc.is_playing():
             vc.stop()
-            await ctx.message.reply(embed=discord.Embed(
+            await ctx.message.reply(embeds=interactions.Embed(
                     title="Успешно",
                     description="Трек успешно скипнут",
                     color=COLOR
                 ))
         else:
-            await ctx.message.reply(embed=discord.Embed(
+            await ctx.message.reply(embeds=interactions.Embed(
                     title="Ошибка",
                     description="Трек не играет!",
                     color=ErCOLOR
                 ))
 
-def setup(bot):
-    bot.add_cog(vcbot(bot))
+def setup(client):
+    Voicbotint(client)

@@ -3,22 +3,19 @@ import json
 import os
 from discord.ext import commands
 from BTSET import ADMINS
-
+import interactions
+from BD import bdpy
+from BTSET import IGNORE
 dir_name1py = "D:\Windows\Рабочий стол\wave1\module py"
-dir_name1int = "D:\Windows\Рабочий стол\wave1\module int"
 lstpy = []
-lstint = []
-class loader(commands.Cog):
+class Loaderpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
     async def load(self, ctx, arg = None):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-                prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
-        from BTSET import IGNORE
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        prefix = bdpy(ctx)['PREFIX']
         try:
             # -----------------------------селект
             if str(ctx.author.id) in ADMINS:
@@ -30,20 +27,10 @@ class loader(commands.Cog):
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
-                                    if not(filename[:-3] in lstpy or filename[:-3] in lstint) and not(filename[:-3] in IGNORE):
+                                    if not(filename[:-3] in lstpy) and not(filename[:-3] in IGNORE):
                                         lstpy.append(f'{filename[:-3]}')           
                                         self.bot.load_extension(f'module py.{dirs}.{filename[:-3]}')
-                    modules = os.listdir(dir_name1int)
-                    for dirs in modules:
-                        if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"{dir_name1int}\{dirs}"
-                            mods = os.listdir(dir_name2)
-                            for filename in mods:
-                                if filename.endswith(".py") and filename[:-3] == str(arg):
-                                    if not(filename[:-3] in lstint) and not(filename[:-3] in IGNORE):
-                                        lstint.append(f'{filename[:-3]}')           
-                                        self.bot.load_extension(f'module int.{dirs}.{filename[:-3]}')
-                    if filename[:-3] in lstpy or filename[:-3] in lstint:
+                    if filename[:-3] in lstpy:
                         await ctx.send(embed=discord.Embed(
                             title="Успешно",
                             description=f"*модуль {arg} успешно загружен!*",
@@ -67,18 +54,6 @@ class loader(commands.Cog):
                                     if not(filename[:-3] in lstpy) and not(filename[:-3] in IGNORE):
                                         lstpy.append(f'{filename[:-3]}')
                                         self.bot.load_extension(f'module py.{dirs}.{filename[:-3]}')
-                                    else:
-                                        pass
-                    modules = os.listdir(dir_name1int)
-                    for dirs in modules:
-                        if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"{dir_name1int}\{dirs}"
-                            mods = os.listdir(dir_name2)
-                            for filename in mods:
-                                if filename.endswith(".py"):
-                                    if not(filename[:-3] in lstint) and not(filename[:-3] in IGNORE):
-                                        lstint.append(f'{filename[:-3]}')
-                                        self.bot.load_extension(f'module int.{dirs}.{filename[:-3]}')
                                     else:
                                         pass
                     if arg == 'all':
@@ -115,11 +90,9 @@ class loader(commands.Cog):
 
     @commands.command()
     async def reload(self, ctx, arg = None):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-                prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        prefix = bdpy(ctx)['PREFIX']
         try:
             # -----------------------------селект
             if str(ctx.author.id) in ADMINS:
@@ -133,16 +106,7 @@ class loader(commands.Cog):
                                 if filename.endswith(".py"):
                                     if f'{arg}' in lstpy:         
                                         self.bot.reload_extension(f'module py.{dirs}.{filename[:-3]}')
-                    modules = os.listdir(dir_name1int)
-                    for dirs in modules:
-                        if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"{dir_name1int}\{dirs}"
-                            mods = os.listdir(dir_name2)
-                            for filename in mods:
-                                if filename.endswith(".py"):
-                                    if f'{arg}' in lstint:
-                                        self.bot.reload_extension(f'module int.{dirs}.{filename[:-3]}')
-                    if f'{arg}' in lstpy or f'{arg}' in lstint:
+                    if f'{arg}' in lstpy:
                         await ctx.send(embed=discord.Embed(
                             title="Успешно",
                             description=f"*модуль {arg} успешно перезагружен!*",
@@ -164,17 +128,6 @@ class loader(commands.Cog):
                             for filename in mods:
                                 if filename.endswith(".py"):
                                     if f'{filename[:-3]}' in lstpy:
-                                        self.bot.reload_extension(f'module py.{dirs}.{filename[:-3]}')
-                                    else:
-                                        pass
-                    modules = os.listdir(dir_name1int)
-                    for dirs in modules:
-                        if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"{dir_name1int}\{dirs}"
-                            mods = os.listdir(dir_name2)
-                            for filename in mods:
-                                if filename.endswith(".py"):
-                                    if f'{filename[:-3]}' in lstint:
                                         self.bot.reload_extension(f'module py.{dirs}.{filename[:-3]}')
                                     else:
                                         pass
@@ -211,11 +164,9 @@ class loader(commands.Cog):
 
     @commands.command()
     async def unload(self, ctx, arg = None):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-                prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        prefix = bdpy(ctx)['PREFIX']
         try:
             # -----------------------------селект
             if str(ctx.author.id) in ADMINS:
@@ -230,17 +181,7 @@ class loader(commands.Cog):
                                     if f'{filename[:-3]}' in lstpy:
                                         lstpy.remove(f'{filename[:-3]}')            
                                         self.bot.unload_extension(f'module py.{dirs}.{filename[:-3]}')
-                    modules = os.listdir(dir_name1int)
-                    for dirs in modules:
-                        if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"{dir_name1int}\{dirs}"
-                            mods = os.listdir(dir_name2)
-                            for filename in mods:
-                                if filename.endswith(".py") and filename[:-3] == str(arg):
-                                    if f'{filename[:-3]}' in lstint:
-                                        lstint.remove(f'{filename[:-3]}')            
-                                        self.bot.unload_extension(f'module py.{dirs}.{filename[:-3]}')
-                    if not(f'{filename[:-3]}' in lstpy or f'{filename[:-3]}' in lstint):
+                    if not(f'{filename[:-3]}' in lstpy):
                         await ctx.send(embed=discord.Embed(
                             title="Успешно",
                             description=f"*модуль {arg} успешно отключен!*",
@@ -257,18 +198,6 @@ class loader(commands.Cog):
                                 if filename.endswith(".py"):
                                     if f'{filename[:-3]}' in lstpy:
                                         lstpy.remove(f'{filename[:-3]}')
-                                        self.bot.unload_extension(f'module py.{dirs}.{filename[:-3]}')
-                                    else:
-                                        pass
-                    modules = os.listdir(dir_name1int)
-                    for dirs in modules:
-                        if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"{dir_name1int}\{dirs}"
-                            mods = os.listdir(dir_name2)
-                            for filename in mods:
-                                if filename.endswith(".py"):
-                                    if f'{filename[:-3]}' in lstint:
-                                        lstint.remove(f'{filename[:-3]}')
                                         self.bot.unload_extension(f'module py.{dirs}.{filename[:-3]}')
                                     else:
                                         pass
@@ -307,16 +236,15 @@ class loader(commands.Cog):
 
     @commands.command()
     async def mods(self, ctx):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
         if str(ctx.author.id) in ADMINS:
             await ctx.send(embed=discord.Embed(
                 title="Список загруженых модулей py",
                 description=f"```{', '.join(lstpy)}```",
                 color=COLOR
             ))
+            from loaderint import lstint
             await ctx.send(embed=discord.Embed(
                 title="Список загруженых модулей interactions",
                 description=f"```{', '.join(lstint)}```",
@@ -330,10 +258,8 @@ class loader(commands.Cog):
                     ))
     @commands.command()
     async def ignore_mods(self, ctx):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
         from BTSET import IGNORE
         if str(ctx.author.id) in ADMINS:
             await ctx.send(embed=discord.Embed(
@@ -348,4 +274,4 @@ class loader(commands.Cog):
                     color=ErCOLOR
                     ))
 def setup(bot):
-    bot.add_cog(loader(bot))
+    bot.add_cog(Loaderpy(bot))

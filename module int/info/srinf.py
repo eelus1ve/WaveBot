@@ -1,18 +1,18 @@
+import interactions
 import discord
+from BD import bdint
 from discord.ext import commands
-import json
-
-class srinf(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-    @commands.command()
+class Srinfint(interactions.Extension):
+    def __init__(self, client: interactions.Client) -> None:
+        self.client: interactions.Client = client
+    @interactions.extension_command(
+        name="server info",
+        description="Узнать информацию о сервере",
+    )
     async def server_info(self, ctx):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
             
-        emb = discord.Embed(title=f'Информация о сервере ***{str(ctx.message.guild)}***',
+        emb = interactions.Embed(title=f'Информация о сервере ***{str(ctx.message.guild)}***',
                             description="Основная информация",
                             color=COLOR
                             )
@@ -20,9 +20,12 @@ class srinf(commands.Cog):
         emb.add_field(name='Количество участников: ', value=ctx.message.guild.member_count)
         emb.add_field(name='Владелец: ', value=ctx.message.guild.owner)
         emb.add_field(name='Дата создания: ', value=ctx.message.guild.created_at.strftime("%d.%m.%y"))
-        await ctx.send(embed=emb)
+        await ctx.send(embeds=emb)
 
-    @commands.command() #Доделать. Знаю что доделать делаю делаю и думаю о том что ты пидр ведь мог бы и сам сделать а ты что-то другое делаешь а мне ещё документацию писать я тут сдохну 
+    @interactions.extension_command(
+        name="server info in channels",
+        description="Установить каналы с инфорацией о количестве пользователей",
+    ) #Доделать. Знаю что доделать делаю делаю и думаю о том что ты пидр ведь мог бы и сам сделать а ты что-то другое делаешь а мне ещё документацию писать я тут сдохну 
     async def server_info_channel(self, ctx, arg=None):
         if arg == 'on':
             if not('📊Info📊' in [i.name for i in ctx.guild.categories]):
@@ -37,19 +40,5 @@ class srinf(commands.Cog):
             if '📊Info📊' in [i.name for i in ctx.guild.categories]:
                 [await i.delete() for i in [ii.channels for ii in ctx.guild.categories if ii.name == '📊Info📊'][0]]
                 [await ii.delete() for ii in ctx.guild.categories if ii.name == '📊Info📊']
-
-                
-    @commands.Cog.listener('on_member_join')
-    async def srinfo(self, member):
-        roomNames=[f'👥Members: {len(member.guild.members)}👥', f'🤖Bots: {len([i for i in member.guild.members if i.bot])}🤖', f'👤Humans: {len(member.guild.members) - len([i for i in member.guild.members if i.bot])}👤']
-        if '📊Info📊' in [i.name for i in member.guild.categories]:
-                [await i.edit(name=roomNames.pop(0)) for i in [ii.channels for ii in member.guild.categories if ii.name == '📊Info📊'][0]]
-
-
-    @commands.Cog.listener('on_member_remove')
-    async def an_member_remove(self, member):
-        roomNames=[f'👥Members: {len(member.guild.members)}👥', f'🤖Bots: {len([i for i in member.guild.members if i.bot])}🤖', f'👤Humans: {len(member.guild.members) - len([i for i in member.guild.members if i.bot])}👤']
-        if '📊Info📊' in [i.name for i in member.guild.categories]:
-                [await i.edit(name=roomNames.pop(0)) for i in [ii.channels for ii in member.guild.categories if ii.name == '📊Info📊'][0]]
-def setup(bot):    
-    bot.add_cog(srinf(bot))
+def setup(client):    
+    Srinfint(client)

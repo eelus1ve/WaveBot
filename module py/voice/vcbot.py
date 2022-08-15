@@ -3,15 +3,15 @@ from discord.utils import get
 import json
 from youtube_dl import YoutubeDL
 from discord.ext import commands
-class vcbot(commands.Cog):
+from BD import bdpy
+
+class Vcbotpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['я-одинокая-мразь'])
     async def join(self, ctx, chlen = None):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
         
         global voice
         try:
@@ -36,9 +36,7 @@ class vcbot(commands.Cog):
 
     @commands.command()
     async def leave(self, ctx):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
         try:
             channel = ctx.author.voice.channel
             voice = get(self.bot.voice_clients, guild=ctx.guild)
@@ -56,10 +54,8 @@ class vcbot(commands.Cog):
 
     @commands.command(aliases=['p'])
     async def play(self, ctx, url):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
         vc = get(self.bot.voice_clients, guild=ctx.guild)
         if not(vc.is_playing()) and not(vc.is_paused()):
 
@@ -92,10 +88,8 @@ class vcbot(commands.Cog):
     
     @commands.command(aliases=['st'])
     async def start(self, ctx):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
         vc = get(self.bot.voice_clients, guild=ctx.guild)
         if not(vc.is_playing()):
             vc.resume()
@@ -113,10 +107,8 @@ class vcbot(commands.Cog):
     
     @commands.command()
     async def pause(self, ctx):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
         vc = get(self.bot.voice_clients, guild=ctx.guild)
         if vc.is_playing():
             vc.pause()
@@ -134,10 +126,8 @@ class vcbot(commands.Cog):
 
     @commands.command(aliases=['skip', 'sk'])
     async def stop(self, ctx):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
         vc = get(self.bot.voice_clients, guild=ctx.guild)
         if vc.is_playing():
             vc.stop()
@@ -154,4 +144,4 @@ class vcbot(commands.Cog):
                 ))
 
 def setup(bot):
-    bot.add_cog(vcbot(bot))
+    bot.add_cog(Vcbotpy(bot))

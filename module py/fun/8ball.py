@@ -1,17 +1,14 @@
 import discord
 import random
-import json
 from discord.ext import commands
-
-class ball(commands.Cog):
+from BD import bdpy
+class Ballpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(aliases=['Волшебный_шар', '8ball', 'MagicBall', '8Ball'])
-    async def Magicball(self, ctx, *arg):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+    async def Magicball(self, ctx):
+        COLOR = bdpy(ctx)['COLOR']
         randball = random.randint(1, 3)
         if randball == 1:
             await ctx.send(embed=discord.Embed(
@@ -33,4 +30,4 @@ class ball(commands.Cog):
             ))
 
 def setup(bot):
-    bot.add_cog(ball(bot))
+    bot.add_cog(Ballpy(bot))

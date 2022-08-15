@@ -1,217 +1,216 @@
-import discord
-import json
-from discord.ext import commands
 from BTSET import BOTVERSION
+import interactions
+from BD import bdint
 
-class help(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-    @commands.command(aliases = ['хелп', 'Хелп', 'ХЕЛП'])
+class Helpint(interactions.Extension):
+    def __init__(self, client: interactions.Client) -> None:
+        self.client: interactions.Client = client
+    @interactions.extension_command(
+        name="help",
+        description="Отправит все команды и информацию по использованию их",
+    )
     async def help(self, ctx, *arg):
-        with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-                pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        COLOR = bdint(ctx)['COLOR']
+        pref = bdint(ctx)['PREFIX']
         if arg:
             if arg[0] == 'rand':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]}\n\
                         Генерирует случайное число*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #-----------------------------------------------------------------------
             elif arg[0] == 'info':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} \n\
                         Информация о боте*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #-----------------------------------------------------------------------
             elif arg[0] == 'warn':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref}{arg[0]} (@Учасник) (Причина) \n\
                         Выдать предупреждение пользователю",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #-----------------------------------------------------------------------
             elif arg[0] == 'coin':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} \n\
                         Подбросить монетку*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
                 #------------------------------------------------------------------
             elif arg[0] == 'ban':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} (@Учасник)\n\
                         Забанить человека*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #----------------------------------------------------------------------
             elif arg[0] == 'clear':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} (кол-во сообщений от 1 до 1000)\n\
                         Отчистить чат на какое-то количество сообщений*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #----------------------------------------------------------------------
             elif arg[0] == 'kick':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} (@Учасник)\n\
                         Кикнуть пользователя*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #---------------------------------------------------------------------
             elif arg[0] == 'select':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} (класс) \n\
                         Выдача ролей \n\
                             Настраивать через {pref}settings*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #--------------------------------------------------------------------
             elif arg[0] == 'join':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} ||Временно бессмысленно|| \n\
                         Бот присоединяется к вашему воис чату*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #-------------------------------------------------------------------
             elif arg[0] == 'spotify':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} (@Участник) \n\
                         Показывает что слушает пользователь*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #------------------------------------------------------------------
             elif arg[0] == 'user':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} (@Учасник) \n\
                         Информация об учснике*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #-----------------------------------------------------------------
             elif arg[0] == 'MagicBall':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} \n\
                         Магический шар ответит на ваш вопрос (возможные ответы: да, нет, может быть)*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #-------------------------------------------------------------------
             elif arg[0] == 'server_info':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} \n\
                         Информация о сервере*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #----------------------------------------------------------------------
             elif arg[0] == 'mafia':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} \n\
                         Запускает мафию*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #----------------------------------------------------------------------
             elif arg[0] == 'mafia':
-                await ctx.author.send(embed=discord.Embed(
+                await ctx.author.send(embeds=interactions.Embed(
                     title=f'***{arg[0]}***',
                     description=f"*Использование: {pref} {arg[0]} \n\
                         Запускает мафию*",
                     color=COLOR
                 ))
-                await ctx.send(embed=discord.Embed(
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             #----------------------------------------------------------------------
             elif arg[0] == 'settings':
-                emb = discord.Embed(title=f'Настройка сервера ***{str(ctx.message.guild)}***',
+                emb = interactions.Embed(title=f'Настройка сервера ***{str(ctx.message.guild)}***',
                                 description="***Параметры:*** \n\
                                     add_class (название класса): Добавить класс с ролей\n\
                                     remove_class (название класса): Удалить класс с ролями\n\
@@ -229,14 +228,14 @@ class help(commands.Cog):
                                     join_message (Текмт): Изменить текст отправляемый учаснику при присоединении",
                                 color=COLOR
                                 )
-                await ctx.author.send(embed=emb)
-                await ctx.send(embed=discord.Embed(
+                await ctx.author.send(embeds=emb)
+                await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Информация о комманде {arg[0]} отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
             else:
-                emb = discord.Embed(title='*Список доступных команд:*', 
+                emb = interactions.Embed(title='*Список доступных команд:*', 
                 description =f'***{pref}rand*** — рандомайзер \n\
                 ***{pref}info*** — Информация о боте \n\
                 ***{pref}warn*** — Выдать предупреждение \n\
@@ -266,15 +265,15 @@ class help(commands.Cog):
                 ***{pref}rank*** — Показать ваш ранк на сервере \n\
                 ***{pref}settings*** — Информация о настройке сервера',
                 color=COLOR)
-                await ctx.author.send(embed=emb)
-                await ctx.send(embed=discord.Embed(
+                await ctx.author.send(embeds=emb)
+                await ctx.send(embeds=interactions.Embed(
                     title='Ошибка',
                     description=f'Список доступных комманд отправлен вам в личные сообщения!',
                     color=COLOR
                 ))
         #---------------------------------------------------------------------
         else:
-            emb = discord.Embed(title = str(BOTVERSION) + ' | Навигация по командам',
+            emb = interactions.Embed(title = str(BOTVERSION) + ' | Навигация по командам',
             description = f'Команды: \n\
             ***{pref}rand*** — рандомайзер \n\
             ***{pref}info*** — Информация о боте \n\
@@ -308,13 +307,13 @@ class help(commands.Cog):
             что бы узнать как работает команда по подробнее напишите ***{pref}help*** (название команды)',
             color = COLOR)
             emb.set_thumbnail(url=self.bot.user.avatar_url)
-            await ctx.author.send(embed = emb)
-            await ctx.send(embed=discord.Embed(
+            await ctx.author.send(embeds = emb)
+            await ctx.send(embeds=interactions.Embed(
                     title='Успешно',
                     description=f'Навигация по командам отправлена вам в личные сообщения!',
                     color=COLOR
                 ))
-def setup(bot):
-    bot.add_cog(help(bot))
+def setup(client):
+    Helpint(client)
     
     

@@ -1,26 +1,24 @@
 import discord
-import json
 from discord.ext import commands
 from discord.utils import get
+from BD import bdpy, bdmpy
 
-class mbrjn(commands.Cog):
+class Mbrjnpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.Cog.listener('on_member_join')
-    async def qn_member_join(self, mbr):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(mbr.guild.id)]['COLOR'], 16)
-            rls = dataServerID[str(mbr.guild.id)]['JoinRoles']
+    async def mbrjn(self, mbr):
+        COLOR = bdmpy(mr=mbr)['COLOR']
+        rls = bdmpy(mr=mbr)['JoinRoles']
         if len(rls) != 0:
             for role in rls:
                 await mbr.add_roles(mbr.guild.get_role(int(role)))
         else:
             pass
-        if len(dataServerID[str(mbr.guild.id)]['JNMSG']) != 0:
+        if len(bdmpy(mr=mbr)['JNMSG']) != 0:
             await mbr.send(embed=discord.Embed(
                         title=f'Приветствуем Вас на сервере {mbr.guild.name}',
-                        description=dataServerID[str(mbr.guild.id)]['JNMSG'],
+                        description=bdmpy(mr=mbr)['JNMSG'],
                         color=COLOR
                     ))
         else:
@@ -32,9 +30,7 @@ class mbrjn(commands.Cog):
 
     @commands.command()
     async def is_stream(self, ctx, arg=None):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
         while 1:
             if arg == 'off':
                 break
@@ -47,4 +43,4 @@ class mbrjn(commands.Cog):
                     color=COLOR
                 ))
 def setup(bot):
-    bot.add_cog(mbrjn(bot))
+    bot.add_cog(Mbrjnpy(bot))

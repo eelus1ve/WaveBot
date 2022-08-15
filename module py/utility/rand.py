@@ -1,19 +1,17 @@
 import discord
 import random
-import json
 from discord.ext import commands
+from BD import bdpy
 
-class Rand(commands.Cog):
+class Randpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
     @commands.command(aliases = ['ранд', 'РАНД', 'Ранд'])
     async def rand(self, ctx, arg = None, arg2 = None):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        pref = bdpy(ctx)['PREFIX']
 
         if arg and not(arg2):
             des=random.randint(0, int(arg))
@@ -38,6 +36,6 @@ class Rand(commands.Cog):
                 ))
 
 def setup(bot):
-    bot.add_cog(Rand(bot))
+    bot.add_cog(Randpy(bot))
 
     

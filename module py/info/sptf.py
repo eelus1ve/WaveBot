@@ -1,17 +1,15 @@
 import discord
 from discord import Spotify
-import json
 from typing import Optional
 from discord.ext import commands
+from BD import bdpy
 import pytz
-class sptf(commands.Cog):
+class Sptfpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
     async def spotify(self, ctx: commands.Context, user: Optional[discord.Member]):
-        with open('users.json', 'r') as file:
-            data = json.load(file)
-        COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
         userr = user or ctx.author
         if userr.activities:
             for activity in userr.activities:
@@ -26,4 +24,4 @@ class sptf(commands.Cog):
                     embed.set_footer(text=f"Песня началась в {activity.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%H:%M')}")
                     await ctx.send(embed=embed)
 def setup(bot):
-    bot.add_cog(sptf(bot))
+    bot.add_cog(Sptfpy(bot))

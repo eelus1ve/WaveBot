@@ -1,16 +1,12 @@
 import discord
 from discord.ext import commands
-import json
-
-class srinf(commands.Cog):
+from BD import bdpy
+class Srinfpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
     async def server_info(self, ctx):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
             
         emb = discord.Embed(title=f'Информация о сервере ***{str(ctx.message.guild)}***',
                             description="Основная информация",
@@ -40,16 +36,16 @@ class srinf(commands.Cog):
 
                 
     @commands.Cog.listener('on_member_join')
-    async def srinfo(self, member):
+    async def srinf_join(self, member):
         roomNames=[f'👥Members: {len(member.guild.members)}👥', f'🤖Bots: {len([i for i in member.guild.members if i.bot])}🤖', f'👤Humans: {len(member.guild.members) - len([i for i in member.guild.members if i.bot])}👤']
         if '📊Info📊' in [i.name for i in member.guild.categories]:
                 [await i.edit(name=roomNames.pop(0)) for i in [ii.channels for ii in member.guild.categories if ii.name == '📊Info📊'][0]]
 
 
     @commands.Cog.listener('on_member_remove')
-    async def an_member_remove(self, member):
+    async def srinf_remove(self, member):
         roomNames=[f'👥Members: {len(member.guild.members)}👥', f'🤖Bots: {len([i for i in member.guild.members if i.bot])}🤖', f'👤Humans: {len(member.guild.members) - len([i for i in member.guild.members if i.bot])}👤']
         if '📊Info📊' in [i.name for i in member.guild.categories]:
                 [await i.edit(name=roomNames.pop(0)) for i in [ii.channels for ii in member.guild.categories if ii.name == '📊Info📊'][0]]
 def setup(bot):    
-    bot.add_cog(srinf(bot))
+    bot.add_cog(Srinfpy(bot))

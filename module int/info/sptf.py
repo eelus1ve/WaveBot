@@ -1,22 +1,22 @@
-import discord
+import interactions
+from BD import bdint
 from discord import Spotify
-import json
 from typing import Optional
-from discord.ext import commands
 import pytz
-class sptf(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-    @commands.command()
-    async def spotify(self, ctx: commands.Context, user: Optional[discord.Member]):
-        with open('users.json', 'r') as file:
-            data = json.load(file)
-        COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
-        userr = user or ctx.author
+class Spotifyint(interactions.Extension):
+    def __init__(self, client: interactions.Client) -> None:
+        self.client: interactions.Client = client
+    @interactions.extension_command(
+        name="spotify",
+        description="Узнать что слушает пользователь",
+    )
+    async def spotify(self, ctx: interactions.Context, user: Optional[interactions.Member]):
+        COLOR = bdint(ctx)['COLOR']
+        userr = user or ctx
         if userr.activities:
             for activity in userr.activities:
                 if isinstance(activity, Spotify):
-                    embed = discord.Embed(
+                    embed = interactions.Embed(
                         title=f"{userr.name}'s Spotify",
                         description="Слушает {}".format(activity.title),
                         color=COLOR)#0x008000)
@@ -24,6 +24,6 @@ class sptf(commands.Cog):
                     embed.add_field(name="Исполнитель", value=activity.artist)
                     embed.add_field(name="Альбом", value=activity.album)
                     embed.set_footer(text=f"Песня началась в {activity.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%H:%M')}")
-                    await ctx.send(embed=embed)
-def setup(bot):
-    bot.add_cog(sptf(bot))
+                    await ctx.send(embeds=embed)
+def setup(client):
+    Spotifyint(client)

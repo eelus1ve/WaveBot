@@ -1,20 +1,19 @@
 import discord
-import json
 from discord.ext import commands
-class leaders(commands.Cog):
+from BD import bdpy
+
+class Leaderspy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
     async def leaders(self, ctx, range_num=10):
-        with open("users.json", "r") as f:
-            data = json.load(f)
-        COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
         l = {}
         total_xp = []
-        for userid in data[str(ctx.guild.id)]['USERS']:
-            xp = int(data[str(ctx.guild.id)]['USERS'][str(userid)]['SCR'])+(sum([i for i in range((int(data[str(ctx.guild.id)]['USERS'][str(userid)]['LvL']) + 1))])*100)
+        for userid in bdpy(ctx)['USERS']:
+            xp = bdpy(ctx)['USERS'][str(userid)]['SCR']+(sum([i for i in range((bdpy(ctx)['USERS'][str(userid)]['LvL']) + 1)])*100)
 
-            l[xp] = f"{userid};{data[str(ctx.guild.id)]['USERS'][str(userid)]['LvL']};{data[str(ctx.guild.id)]['USERS'][str(userid)]['SCR']}"
+            l[xp] = f"{userid};{bdpy(ctx)['USERS'][str(userid)]['LvL']};{bdpy(ctx)['USERS'][str(userid)]['SCR']}"
             total_xp.append(xp)
 
         total_xp = sorted(total_xp, reverse=True)
@@ -43,4 +42,4 @@ class leaders(commands.Cog):
                     index += 1
         await ctx.send(embed = mbed)
 def setup(bot):
-    bot.add_cog(leaders(bot))
+    bot.add_cog(Leaderspy(bot))

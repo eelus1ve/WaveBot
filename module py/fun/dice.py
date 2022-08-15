@@ -1,17 +1,15 @@
 import discord
 import random
-import json
 from discord.ext import commands
+from BD import bdpy
 
-class dice(commands.Cog):
+class Dicepy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
     async def dice(self, ctx):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdpy(ctx)['COLOR']
             
         msg = await ctx.send(embed=discord.Embed(
                 title="Игральная кость говорит:",
@@ -28,4 +26,4 @@ class dice(commands.Cog):
                 )
             )
 def setup(bot):
-    bot.add_cog(dice(bot))
+    bot.add_cog(Dicepy(bot))

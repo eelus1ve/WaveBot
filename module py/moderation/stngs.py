@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import json
-class stngs(commands.Cog):
+class Stngspy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['settings'])
@@ -674,4 +674,4 @@ class stngs(commands.Cog):
             await ctx.send(embed=emb)
 
 def setup(bot):
-    bot.add_cog(stngs(bot))
+    bot.add_cog(Stngspy(bot))

@@ -1,20 +1,22 @@
 import discord
-import json
 from discord.ext import commands
 from typing import Optional
-class Avatar(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-    @commands.command()
+import interactions
+from BD import bdint
+class Avatarint(interactions.Extension):
+    def __init__(self, client: interactions.Client) -> None:
+        self.client: interactions.Client = client
+    @interactions.extension_command(
+        name="avatar",
+        description="Показать аватар пользователя",
+    )
     async def avatar(self, ctx: commands.Context, user: Optional[discord.Member]):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-        COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdint(ctx)['COLOR']
         userr = user or ctx.author
-        emb = discord.Embed(title=f'Аватар {userr.name}',
+        emb = interactions.Embed(title=f'Аватар {userr.name}',
                             color=COLOR
                             )
         emb.set_image(url=userr.avatar_url)
-        await ctx.send(embed=emb)
-def setup(bot):
-    bot.add_cog(Avatar(bot))
+        await ctx.send(embeds=emb)
+def setup(client):
+    Avatarint(client)

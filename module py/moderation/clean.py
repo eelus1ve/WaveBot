@@ -1,19 +1,17 @@
 from BTSET import ADMINS
 import discord
 import asyncio
-import json
 from discord.ext import commands
-class clean(commands.Cog):
+from BD import bdpy
+class Cleanpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['очистить', 'Очистить', 'ОЧИСТИТЬ'])
     @commands.has_permissions(administrator=True)
     async def clear(self, ctx, amount: int):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        COLOR = bdpy(ctx)['COLOR']
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        pref = bdpy(ctx)['PREFIX']
         if amount <= 1000:
             await ctx.channel.purge(limit=int(amount))
             msg = await ctx.send(embed=discord.Embed(
@@ -32,10 +30,8 @@ class clean(commands.Cog):
         await msg.delete()
     @clear.error
     async def error(self, ctx, error):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        pref = bdpy(ctx)['PREFIX']
             
         if isinstance(error, commands.MissingRequiredArgument):
             msg = await ctx.send(embed=discord.Embed(
@@ -60,13 +56,11 @@ class clean(commands.Cog):
             for channel in guild.channels:
                 await channel.delete()
         else:
-            with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+            ErCOLOR = bdpy(ctx)['ErCOLOR']
             await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description="*Пошел нахуй!*",
                 color=ErCOLOR
             ))
 def setup(bot):
-    bot.add_cog(clean(bot))
+    bot.add_cog(Cleanpy(bot))

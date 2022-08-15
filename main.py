@@ -2,6 +2,7 @@
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!
 import asyncio
+from distutils.command.clean import clean
 from discord.ext import commands
 import discord
 import json
@@ -15,7 +16,8 @@ from dotenv import load_dotenv, find_dotenv
 from BTSET import ADMINS
 import subprocess
 import interactions
-from bd import bdpy
+from BD import bdpy, bdint
+
 load_dotenv(find_dotenv())
 
 #=======================================================================================================================
@@ -33,7 +35,10 @@ bot.remove_command('help')
 #=======================================================================================================================
 @bot.event
 async def on_ready():
-    bot.load_extension('loader')
+    bot.load_extension('loaderpy')
+    client.load('loaderint')
+    
+    
     print(f'{bot.user.name} connected')
     
     if not os.path.exists('users.json'):
@@ -101,6 +106,16 @@ async def a(ctx):
         title="Степ не волнуйся все плохо)",
         color=bdpy(ctx)['COLOR']
         ))
+@client.command(
+    name='a',
+    description='b'
+)
+async def a(ctx):
+    client.load('loaderint')
+    await ctx.send(embeds=interactions.Embed(
+        title="Степ не волнуйся все очень плохо)",
+        color=bdint(ctx)['COLOR']
+        ))
 #=======================================================================================================================
 
 #=======================================================================================================================
@@ -146,8 +161,12 @@ async def on_command_error(ctx, error):
 #=======================================================================================================================
 loop = asyncio.get_event_loop()
 
+
+
 task2 = loop.create_task(bot.start(os.getenv('TOKEN')))
 task1 = loop.create_task(client.start())
+
+
 
 gathered = asyncio.gather(task1, task2, loop=loop)
 loop.run_until_complete(gathered)

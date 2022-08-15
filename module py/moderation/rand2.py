@@ -1,20 +1,17 @@
 import discord
 from discord.ext import commands
 from discord_components import Select, SelectOption
-import json
-class select(commands.Cog):
+from BD import bdpy, bdmpy
+
+class Selectpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def select(self, ctx, arg=None):
-        with open('users.json', 'r') as file:
-            data = json.load(file)
-            COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(data[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            AdminchennelID = data[str(ctx.author.guild.id)]['idAdminchennel']
-            roles = data[str(ctx.author.guild.id)]['ROLES']
-            selftitle = data[str(ctx.author.guild.id)]['SelfTitle']
+        COLOR = bdpy(ctx)['COLOR']
+        roles = bdpy(ctx)['ROLES']
+        selftitle = bdpy(ctx)['SelfTitle']
 
         if arg == None: #сам сюда что-то делай (мне лень)
             pass
@@ -37,12 +34,9 @@ class select(commands.Cog):
     @commands.Cog.listener('on_select_option')
     async def ion_select_option(self, interaction):
         try:
-            with open('users.json', 'r') as file:
-                data = json.load(file)
-                COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(data[str(interaction.guild.id)]['ErCOLOR'], 16)
-                AdminchennelID = data[str(interaction.guild.id)]['idAdminchennel']
-                roles = data[str(interaction.guild.id)]['ROLES']
+            COLOR = bdmpy(mr=interaction)['COLOR']
+            ErCOLOR = bdmpy(mr=interaction)['ErCOLOR']
+            roles = bdmpy(mr=interaction)['ROLES']
 
             if interaction.component.placeholder in [k for k in roles.keys()]:
                 a = interaction.author
@@ -61,17 +55,17 @@ class select(commands.Cog):
                     ))
 
                 try:
-                    await a.remove_roles([interaction.guild.get_role(role_id=int(ii)) for ii in roles[str(interaction.component.placeholder)][0] if not(ii in interaction.values)])
+                    await a.remove_roles(*[interaction.guild.get_role(role_id=int(ii)) for ii in roles[str(interaction.component.placeholder)][0] if not(ii in interaction.values)])
                 except:
                     pass
                     
                 try:
                     
-                    await a.add_roles([interaction.guild.get_role(int(i)) for i in interaction.values])
+                    await a.add_roles(*[interaction.guild.get_role(int(i)) for i in interaction.values])
                 except:
                     pass
         except:
             pass
 
 def setup(bot):
-    bot.add_cog(select(bot))
+    bot.add_cog(Selectpy(bot))

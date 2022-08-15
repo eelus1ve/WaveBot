@@ -1,21 +1,18 @@
 import random
-import json
 import interactions
-from interactions import Modal, TextInput, TextStyleType
+from BD import bdint
 
-class Rand(interactions.Extension):
-    def __init__(self, bot):
-        self.bot = bot
+class Randdint(interactions.Extension):
+    def __init__(self, client: interactions.Client) -> None:
+        self.client: interactions.Client = client
     @interactions.extension_command(
         name="rand",
-        description="Заебал",
+        description="Получить случайное число",
     )
     async def rand(self, ctx: interactions.CommandContext, arg = None, arg2 = None):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-        COLOR = int(dataServerID[str(ctx.guild_id)]['COLOR'], 16)
-        ErCOLOR = int(dataServerID[str(ctx.guild_id)]['ErCOLOR'], 16)
-        pref = str(dataServerID[str(ctx.guild_id)]['PREFIX'])
+        COLOR = bdint(ctx)['COLOR']
+        ErCOLOR = bdint(ctx)['ErCOLOR']
+        pref = bdint(ctx)['PREFIX']
 
         if arg and not(arg2):
             des=random.randint(0, int(arg))
@@ -24,7 +21,7 @@ class Rand(interactions.Extension):
         elif not(arg):
             des=random.randint(0, 100)
         else:
-            await ctx.send(interactions.Embed(
+            await ctx.send(embeds=interactions.Embed(
                     title="Ошибка",
                     description=f'Использование {pref}rand (число1) [число2]\n\n\
                         Пример с одним числом: {pref}rand 100\n\
@@ -39,6 +36,6 @@ class Rand(interactions.Extension):
                     color = COLOR,
                 ))
 def setup(bot):
-    Rand(bot)
+    Randdint(bot)
 
     

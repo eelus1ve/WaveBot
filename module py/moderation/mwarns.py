@@ -2,22 +2,24 @@ import discord
 import json
 from discord.ext import commands
 from discord.utils import get
-class mwarns(commands.Cog):
+from BD import bdpy
+
+class Mwarnspy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.Cog.listener('on_message')
-    async def ion_message(self, message):
+    async def mwarns(self, message):
         try:
             with open('users.json', 'r') as file:
                 data = json.load(file)
-                COLOR = int(data[str(message.author.guild.id)]['COLOR'], 16)
-                idAdminchennel = int(data[str(message.author.guild.id)]['idAdminchennel'])
-                nWarns = int(data[str(message.author.guild.id)]['nWarns'])
-                nCaps = int(data[str(message.author.guild.id)]['nCaps'])
-                BADWORDS = data[str(message.author.guild.id)]['BADWORDS']
-                LINKS = data[str(message.author.guild.id)]['LINKS']
-                WARN = []
-                WARN.extend(BADWORDS); WARN.extend(LINKS)
+            COLOR = bdpy(ctx=message)['COLOR']
+            idAdminchennel = bdpy(ctx=message)['idAdminchennel']
+            nWarns = bdpy(ctx=message)['nWarns']
+            nCaps = bdpy(ctx=message)['nCaps']
+            BADWORDS = bdpy(ctx=message)['BADWORDS']
+            LINKS = bdpy(ctx=message)['LINKS']
+            WARN = []
+            WARN.extend(BADWORDS); WARN.extend(LINKS)
             for i in range(0, len(WARN)):
                 if WARN[i] in message.content.lower():
                     
@@ -73,4 +75,4 @@ class mwarns(commands.Cog):
         except:
             pass
 def setup(bot):
-    bot.add_cog(mwarns(bot))
+    bot.add_cog(Mwarnspy(bot))

@@ -1,31 +1,29 @@
-import discord
 import random
-import json
-from discord.ext import commands
+import interactions
+from BD import bdint
+class Coinint(interactions.Extension):
+    def __init__(self, client: interactions.Client) -> None:
+        self.client: interactions.Client = client
 
-class coin(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @commands.command(aliases=['монетка', 'Монетка', 'МОНЕТКА'])
+    @interactions.extension_command(
+        name="coin",
+        description="Подбросить монетку",
+    )
     async def coin(self, ctx, *arg):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-
+        COLOR = bdint(ctx)['COLOR']
         if random.randint(1, 2) == 1:
-            await ctx.send(embed=discord.Embed(
+            await ctx.send(embeds=interactions.Embed(
                 title="Выпал: ",
                 description="*Орел*",
                 color=COLOR
             ))
         else:
-            await ctx.send(embed=discord.Embed(
+            await ctx.send(embeds=interactions.Embed(
                 title="Выпала: ",
                 description="*Решка*",
                 color=COLOR
             ))
 
-def setup(bot):
-    bot.add_cog(coin(bot))
+def setup(client):
+    Coinint(client)
 

@@ -1,24 +1,23 @@
 import discord
-import json
 from discord.ext import commands
 from easy_pil import Editor, load_image_async, Font
 from typing import Optional
 from discord import File
-class rank(commands.Cog):
+from BD import bdpy
+
+class Rankpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
     async def rank(self, ctx: commands.Context, user: Optional[discord.Member]):
         userr = user or ctx.author
-        with open("users.json", "r") as f:
-            data = json.load(f)
-        xp = data[str(ctx.guild.id)]['USERS'][str(userr.id)]["SCR"]
-        lvl = data[str(ctx.guild.id)]['USERS'][str(userr.id)]["LvL"]
+        xp = bdpy(ctx)['USERS'][str(userr.id)]["SCR"]
+        lvl = bdpy(ctx)['USERS'][str(userr.id)]["LvL"]
         nlx = (lvl+1) * 100
-        setcard = str(data[str(ctx.guild.id)]['card'])
-        textColor = str(data[str(ctx.guild.id)]['text_color'])
-        barColor = str(data[str(ctx.guild.id)]['bar_color'])
-        blend = int(data[str(ctx.guild.id)]['blend'])
+        setcard = bdpy(ctx)['card']
+        textColor = bdpy(ctx)['text_color']
+        barColor = bdpy(ctx)['bar_color']
+        blend = bdpy(ctx)['blend']
 
         percentage = int(((xp * 100)/ nlx))
 
@@ -64,4 +63,4 @@ class rank(commands.Cog):
         card = File(fp=background.image_bytes, filename="D:/Windows/Рабочий стол/wave1/module/rate/set/zCARD.png")
         await ctx.send(file=card)
 def setup(bot):
-    bot.add_cog(rank(bot))
+    bot.add_cog(Rankpy(bot))

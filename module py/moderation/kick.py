@@ -1,19 +1,15 @@
 import discord
-import json
 from discord.ext import commands
 from distutils.log import error
+from BD import bdpy
 
-class kick(commands.Cog):
+class Kickpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['кик', 'Кик', 'КИК'])
     @commands.has_permissions(administrator=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None, amount=1):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            AdminchennelID = int(dataServerID[str(ctx.author.guild.id)]['idAdminchennel'], 16)
-            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        COLOR = bdpy(ctx)['COLOR']
         await ctx.channel.purge(limit=int(amount))
         await member.kick(reason=reason)
         await ctx.send(embed=discord.Embed(
@@ -23,11 +19,9 @@ class kick(commands.Cog):
             ))
     @kick.error
     async def error(self, ctx, error):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            AdminchennelID = int(dataServerID[str(ctx.author.guild.id)]['idAdminchennel'], 16)
-            pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        pref = bdpy(ctx)['PREFIX']
+
             
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(embed=discord.Embed(
@@ -42,4 +36,4 @@ class kick(commands.Cog):
                 color = ErCOLOR
             ))
 def setup(bot):
-    bot.add_cog(kick(bot))
+    bot.add_cog(Kickpy(bot))

@@ -1,20 +1,18 @@
 import discord
-import json
 from discord import Spotify
 from discord.ext import commands
 from typing import Optional
 from BTSET import ADMINS
 import pytz
+from BD import bdpy, bdmpy
 
-class user(commands.Cog):
+class Userpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
     async def user(self, ctx: commands.Context, memberr: Optional[discord.Member]):
         member = memberr or ctx.author
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+        COLOR = bdpy(ctx=ctx)['COLOR']
         
         mr = None
         if member.activities:
@@ -22,9 +20,9 @@ class user(commands.Cog):
                 if str(i.type) == 'ActivityType.playing':
                     mr = i
 
-        warns = dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['WARNS']
-        score = dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['SCR']
-        LVL = dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['LvL']
+        warns = bdmpy(mr=member)['USERS'][str(member.id)]['WARNS']
+        score = bdmpy(mr=member)['USERS'][str(member.id)]['SCR']
+        LVL = bdmpy(mr=member)['USERS'][str(member.id)]['LvL']
 
         lstdisc = [f'\n***Имя пользователя:***  {member.name}#{member.discriminator} \n']
 
@@ -57,4 +55,4 @@ class user(commands.Cog):
         await ctx.send(embed=emb)
 
 def setup(bot):
-    bot.add_cog(user(bot))    
+    bot.add_cog(Userpy(bot))    

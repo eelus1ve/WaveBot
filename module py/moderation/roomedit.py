@@ -5,17 +5,15 @@ from interactions import Modal, TextInput
 import json
 import asyncio
 from discord.ext import commands
-class roomedit(commands.Cog):
+from BD import bdpy, bdmpy
+
+class Roomeditpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def room(self, ctx):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-            SelfRoom = int(dataServerID[str(ctx.author.guild.id)]['selfRoom'])
+        COLOR = bdpy(ctx)['COLOR']
 
         emb = discord.Embed(title='***⚙️ Управление приватными комнатами***',
                             description='👑 - назначить нового создателя комнаты \n\
@@ -239,4 +237,4 @@ class roomedit(commands.Cog):
                         pass
                     await ms.delete()
 def setup(bot):
-    bot.add_cog(roomedit(bot))
+    bot.add_cog(Roomeditpy(bot))
