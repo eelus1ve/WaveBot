@@ -13,7 +13,7 @@ class Rankint(interactions.Extension):
         name="rank",
         description="Показаь ваш текущий ранк",
     )
-    async def rank(self, ctx: commands.Context, user: Optional[discord.Member]):
+    async def rank(self, ctx: commands.Context, user: Optional[interactions.Member]):
         userr = user or ctx.author
         xp = bdint(ctx)['USERS'][str(userr.id)]["SCR"]
         lvl = bdint(ctx)['USERS'][str(userr.id)]["LvL"]

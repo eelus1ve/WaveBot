@@ -12,7 +12,7 @@ class Warnsint(interactions.Extension):
         name="warn",
         description="Выдать перепреждение учаснику",
     )
-    async def warn(self, ctx, member: discord.Member, reason: str):
+    async def warn(self, ctx, member: interactions.Member, reason: str):
             COLOR = bdint(ctx)['COLOR']
             nWarns = bdint(ctx)['nWarns']
             BADWORDS = bdint(ctx)['BADWORDS']
@@ -70,7 +70,7 @@ class Warnsint(interactions.Extension):
         name="unwarn",
         description="Удалить предупреждение у учатсника",
     )
-    async def unwarn(self, ctx, member: discord.Member):
+    async def unwarn(self, ctx, member: interactions.Member):
         with open('users.json', 'w') as file:
             data = json.load(file)
         COLOR = bdint(ctx)['COLOR']
@@ -118,7 +118,7 @@ class Warnsint(interactions.Extension):
         name="clear warns",
         description="Отчистить предупреждения у участника",
     )
-    async def clear_warns(self, ctx, member: discord.Member):
+    async def clear_warns(self, ctx, member: interactions.Member):
         COLOR = bdint(ctx)['COLOR']
         BADWORDS = bdint(ctx)['BADWORDS']
         LINKS = bdint(ctx)['LINKS']
