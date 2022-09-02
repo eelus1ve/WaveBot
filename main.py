@@ -1,17 +1,10 @@
 #=============================================================================================импорты
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!5
-import asyncio
-from discord.ext import commands
 import discord
 import json
 import os
 import asyncio
-from discord.utils import get
-from distutils.log import error
-import re
 from dotenv import load_dotenv, find_dotenv
-from BTSET import ADMINS, embint, embpy
-import subprocess
 import interactions
 from BD import bdpy, bdint
 from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption, error
@@ -51,60 +44,6 @@ async def on_ready():
                     file.write('{}')
                 print("Пока json")
     await bot.change_presence(activity=discord.Game('Portal 2'))
-    while 1:
-        dtaa = {}
-        for guild in bot.guilds:
-            with open('users.json', 'r') as file:
-                data = json.load(file)
-                if not(str(guild.id) in [k for k in data.keys()]):
-                    data.update({
-                        guild.id: {
-                            'COLOR': '0x0000FF',
-                            'ErCOLOR': '0x8B0000',
-                            'AUDIT': {},
-                            'AUDIT_CHANNEL': '0',
-                            'JoinRoles': [],
-                            'ModRoles': [],
-                            'ROLES': {},
-                            'actmoduls': '',
-                            'nCaps': -1,
-                            'nWarns': 10,
-                            'idAdminchennel': '0',
-                            'idMainch': '0',
-                            'selfRoom': '0',
-                            'BADWORDS': [],
-                            'LINKS': [],
-                            'PREFIX': '~',
-                            'JNMSG': '',
-                            'SelfTitle': '*Выберите ваши роли:* ',
-                            'Selfrooms': {},
-                            'Mafrooms': {},
-                            'IgnoreChannels': [[], []],
-                            'IgnoreRoles': [[], []],
-                            'card': 'wave.png',
-                            'text_color': '#d0ed2b',
-                            'bar_color': '#ec5252',
-                            'blend': 1,
-                            'USERS': {},
-                        }})
-
-            with open('users.json', 'w') as file:
-                json.dump(data, file, indent=4)
-            for member in guild.members:
-                with open('users.json', 'r') as file:
-                    dat = json.load(file)
-                if not(str(member.id) in [str(k) for k in dat[str(guild.id)]['USERS'].keys()]):
-                    dat[str(guild.id)]['USERS'].update({
-                        str(member.id): {
-                            'WARNS': 0,
-                            'CAPS': 0,
-                            "SCR": 0,
-                            'LvL': 1
-                        }})
-                with open('users.json', 'w') as file:
-                    json.dump(dat, file, indent=4)
-                    
-        await asyncio.sleep(20)
 #=======================================================================================================================
 
 #=======================================================================================================================
