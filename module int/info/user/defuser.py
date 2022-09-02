@@ -1,18 +1,16 @@
-import discord
-from discord import Spotify
-from discord.ext import commands
-from typing import Optional
+from discord.utils import get
+from BD import bdint
 from BTSET import ADMINS
+from discord import Spotify
 import pytz
-from BD import bdpy, bdmpy
-
-class Userpy(commands.Cog):
+import interactions
+from discord.ext import commands
+class Defuser(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    @commands.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
-    async def user(self, ctx: commands.Context, memberr: Optional[discord.Member]):
-        member = memberr or ctx.author
-        COLOR = bdpy(ctx=ctx)['COLOR']
+    def duser(ctx, userid):
+        member = ctx.message.server.get_member(userid)
+        COLOR = bdint(ctx)['COLOR']
         
         mr = None
         if member.activities:
@@ -20,9 +18,9 @@ class Userpy(commands.Cog):
                 if str(i.type) == 'ActivityType.playing':
                     mr = i
 
-        warns = bdmpy(mr=member)['USERS'][str(member.id)]['WARNS']
-        score = bdmpy(mr=member)['USERS'][str(member.id)]['SCR']
-        LVL = bdmpy(mr=member)['USERS'][str(member.id)]['LvL']
+        warns = bdint(ctx)['USERS'][str(member.id)]['WARNS']
+        score = bdint(ctx)['USERS'][str(member.id)]['SCR']
+        LVL = bdint(ctx)['USERS'][str(member.id)]['LvL']
 
         lstdisc = [f'\n***Имя пользователя:***  {member.name}#{member.discriminator} \n']
 
@@ -43,16 +41,15 @@ class Userpy(commands.Cog):
         lstdisc.append(f"***Присоединился:*** {member.joined_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%d.%m.%y')} \n")
         lstdisc.append(f"***Дата регистрации:*** {member.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%d.%m.%y')}\n")
         if str(member.id) in ADMINS: lstdisc.append(f'***Разрабочик WaveBot*** \n')
-        emb = discord.Embed(title=f'Информация о ***{member.name}***',
+        emb = interactions.Embed(title=f'Информация о ***{member.name}***',
                             description="***Основная информация:***\n" + "".join(lstdisc),
                             color=COLOR
                             )
         emb.add_field(name='***XP***', value=score, inline=True)
         emb.add_field(name='***LVL***', value=LVL, inline=True) #добавить if
         emb.add_field(name='***Предупреждения***', value=warns, inline=True)
-        emb.set_thumbnail(url=member.avatar_url)
+        emb.set_thumbnail(url=member.avatar)
         emb.set_footer(text=f'ID: {member.id}')
-        await ctx.send(embed=emb)
-
+        return emb
 def setup(bot):
-    bot.add_cog(Userpy(bot))    
+    bot.add_cog(Defuser(bot))  

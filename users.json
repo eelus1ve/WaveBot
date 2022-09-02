@@ -18,19 +18,19 @@
         "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
         "Selfrooms": {},
         "Mafrooms": {},
-        "IgnoreChannels": [],
-        "IgnoreRoles": [],
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
         "card": "wave.png",
         "text_color": "#d0ed2b",
         "bar_color": "#ec5252",
         "blend": 1,
         "USERS": {
-            "466609421863354388": {
-                "WARNS": 0,
-                "CAPS": 0,
-                "SCR": 0,
-                "LvL": 1
-            },
             "776179079221084180": {
                 "WARNS": 0,
                 "CAPS": 0,
@@ -229,7 +229,7 @@
                 "SCR": 0,
                 "LvL": 1
             },
-            "352413086096818176": {
+            "466609421863354388": {
                 "WARNS": 0,
                 "CAPS": 0,
                 "SCR": 0,
@@ -266,12 +266,6 @@
                 "LvL": 1
             },
             "786296552620556329": {
-                "WARNS": 0,
-                "CAPS": 0,
-                "SCR": 0,
-                "LvL": 1
-            },
-            "968837189972676669": {
                 "WARNS": 0,
                 "CAPS": 0,
                 "SCR": 0,
@@ -463,6 +457,12 @@
                 "SCR": 0,
                 "LvL": 1
             },
+            "477572063146541057": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1
+            },
             "747389258393714729": {
                 "WARNS": 0,
                 "CAPS": 0,
@@ -498,6 +498,12 @@
                 "CAPS": 0,
                 "SCR": 0,
                 "LvL": 1
+            },
+            "772352799139823626": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1
             }
         }
     },
@@ -520,8 +526,14 @@
         "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
         "Selfrooms": {},
         "Mafrooms": {},
-        "IgnoreChannels": [],
-        "IgnoreRoles": [],
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
         "card": "wave.png",
         "text_color": "#d0ed2b",
         "bar_color": "#ec5252",
@@ -782,8 +794,14 @@
         "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
         "Selfrooms": {},
         "Mafrooms": {},
-        "IgnoreChannels": [],
-        "IgnoreRoles": [],
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
         "card": "wave.png",
         "text_color": "#d0ed2b",
         "bar_color": "#ec5252",
@@ -810,31 +828,99 @@
         }
     },
     "981257625696075896": {
-        "COLOR": "0x0000FF",
+        "COLOR": "0xFFFFFF",
         "ErCOLOR": "0x8B0000",
         "JoinRoles": [],
         "ModRoles": [],
-        "ROLES": {},
+        "ROLES": {
+            "A": [
+                [
+                    "981852396420464691",
+                    "981879690245574678"
+                ],
+                [
+                    0,
+                    0
+                ]
+            ],
+            "B": [
+                [
+                    "981879690245574678"
+                ],
+                [
+                    0
+                ]
+            ]
+        },
         "actmoduls": "",
         "nCaps": -1,
         "nWarns": 10,
-        "idAdminchennel": "0",
+        "idAdminchennel": "1014190006325215313",
         "idMainch": "0",
-        "selfRoom": "0",
-        "BADWORDS": [],
+        "selfRoom": {
+            "ct": "1014189222128787537",
+            "ctp": "1014189226075635793",
+            "vc": "1014189223563235338",
+            "tc": "1014189225001893888"
+        },
+        "BADWORDS": [
+            "\u043b\u043b\u043b",
+            "\u0433\u0435\u0439",
+            "\u0445\u0445\u0445"
+        ],
         "LINKS": [],
         "PREFIX": "~",
         "JNMSG": "",
         "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
         "Selfrooms": {},
-        "Mafrooms": {},
-        "IgnoreChannels": [],
-        "IgnoreRoles": [],
+        "Mafrooms": {
+            "1014191891933298748": {
+                "Settings": {
+                    "actRoles": [
+                        "\u0434\u043e\u043a\u0442\u043e\u0440",
+                        "\u0448\u0435\u0440\u0438\u0444",
+                        "\u043b\u044e\u0431\u043e\u0432\u043d\u0438\u0446\u0430",
+                        "\u0434\u043e\u043d-\u043c\u0430\u0444\u0438\u0438",
+                        "\u043c\u0430\u043d\u044c\u044f\u043a",
+                        "\u043a\u043e\u043c\u0438\u0441\u0441\u0430\u0440",
+                        "\u043b\u0443\u043d\u0430\u0442\u0438\u043a",
+                        "\u0430\u0434\u0432\u043e\u043a\u0430\u0442",
+                        "\u043e\u0431\u043e\u0440\u043e\u0442\u0435\u043d\u044c",
+                        "\u0437\u0435\u0440\u043a\u0430\u043b\u043e",
+                        "\u0441\u0442\u0443\u0434\u0435\u043d\u0442",
+                        "\u0436\u0443\u0440\u043d\u0430\u043b\u0438\u0441\u0442"
+                    ],
+                    "mafs": 1
+                },
+                "ownMaf": 758734389072625685,
+                "MEMBERS": {}
+            }
+        },
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
         "card": "wave.png",
         "text_color": "#d0ed2b",
         "bar_color": "#ec5252",
         "blend": 1,
         "USERS": {
+            "758734389072625685": {
+                "WARNS": 3,
+                "CAPS": 0,
+                "SCR": 297,
+                "LvL": 3
+            },
+            "466609421863354388": {
+                "WARNS": 5,
+                "CAPS": 0,
+                "SCR": 287,
+                "LvL": 2
+            },
             "224930494314315776": {
                 "WARNS": 0,
                 "CAPS": 0,
@@ -865,12 +951,6 @@
                 "SCR": 0,
                 "LvL": 1
             },
-            "466609421863354388": {
-                "WARNS": 0,
-                "CAPS": 0,
-                "SCR": 0,
-                "LvL": 1
-            },
             "544279889470291989": {
                 "WARNS": 0,
                 "CAPS": 0,
@@ -886,7 +966,7 @@
             "583722104059592757": {
                 "WARNS": 0,
                 "CAPS": 0,
-                "SCR": 0,
+                "SCR": 5,
                 "LvL": 1
             },
             "666768779174346782": {
@@ -896,12 +976,6 @@
                 "LvL": 1
             },
             "742045972280115231": {
-                "WARNS": 0,
-                "CAPS": 0,
-                "SCR": 0,
-                "LvL": 1
-            },
-            "758734389072625685": {
                 "WARNS": 0,
                 "CAPS": 0,
                 "SCR": 0,
@@ -925,11 +999,17 @@
                 "SCR": 0,
                 "LvL": 1
             },
-            "984816758441517157": {
+            "981511682960547860": {
                 "WARNS": 0,
                 "CAPS": 0,
                 "SCR": 0,
                 "LvL": 1
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 999,
+                "LvL": 13
             },
             "992771455500681307": {
                 "WARNS": 0,
@@ -958,8 +1038,14 @@
         "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
         "Selfrooms": {},
         "Mafrooms": {},
-        "IgnoreChannels": [],
-        "IgnoreRoles": [],
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
         "card": "wave.png",
         "text_color": "#d0ed2b",
         "bar_color": "#ec5252",
@@ -1010,8 +1096,14 @@
         "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
         "Selfrooms": {},
         "Mafrooms": {},
-        "IgnoreChannels": [],
-        "IgnoreRoles": [],
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
         "card": "wave.png",
         "text_color": "#d0ed2b",
         "bar_color": "#ec5252",
@@ -1024,6 +1116,66 @@
                 "LvL": 1
             },
             "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1
+            }
+        }
+    },
+    "981511419042361344": {
+        "COLOR": "0x0000FF",
+        "ErCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": [],
+        "ROLES": {},
+        "actmoduls": "",
+        "nCaps": -1,
+        "nWarns": 10,
+        "idAdminchennel": "0",
+        "idMainch": "0",
+        "selfRoom": "0",
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "USERS": {
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1
+            },
+            "666768779174346782": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1
+            },
+            "758734389072625685": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1
+            },
+            "981511682960547860": {
                 "WARNS": 0,
                 "CAPS": 0,
                 "SCR": 0,

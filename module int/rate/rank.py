@@ -8,13 +8,22 @@ import interactions
 from BD import bdint
 class Rankint(interactions.Extension):
     def __init__(self, client: interactions.Client) -> None:
-        self.client: interactions.Client = client
+        self.client = client
+    
     @interactions.extension_command(
         name="rank",
-        description="Показаь ваш текущий ранк",
+        description="abrakodabra",
+        options= [
+        {
+            "name": "user",
+            "description": "Serch animal",
+            "type": 6,
+            "required": True
+        }]
     )
-    async def rank(self, ctx: commands.Context, user: Optional[interactions.Member]):
-        userr = user or ctx.author
+    
+    async def rank(self, ctx: interactions.context, user: interactions.Member):
+        userr = user
         xp = bdint(ctx)['USERS'][str(userr.id)]["SCR"]
         lvl = bdint(ctx)['USERS'][str(userr.id)]["LvL"]
         nlx = (lvl+1) * 100
@@ -28,9 +37,9 @@ class Rankint(interactions.Extension):
         if percentage < 1:
             percentage = 0
         
-        background = Editor(f"D:/Windows/Рабочий стол/wave1/module/rate/img/{setcard}")
+        background = Editor(f"D:/Windows/Рабочий стол/wave1/module int/rate/img/{setcard}")
     
-        profile = await load_image_async(str(userr.avatar_url))
+        profile = await load_image_async(userr.avatar)
 
         profile = Editor(profile).resize((150, 150)).circle_image()
         
@@ -39,7 +48,7 @@ class Rankint(interactions.Extension):
 
         
         if blend == 1:
-            ima = Editor("D:/Windows/Рабочий стол/wave1/module/rate/set/zBLACK.png")
+            ima = Editor("D:/Windows/Рабочий стол/wave1/module int/rate/set/zBLACK.png")
             background.blend(image=ima, alpha=.5, on_top=False)
 
         background.paste(profile.image, (30, 30))
@@ -64,7 +73,7 @@ class Rankint(interactions.Extension):
             color=textColor,
         )
 
-        card = File(fp=background.image_bytes, filename="D:/Windows/Рабочий стол/wave1/module/rate/set/zCARD.png")
+        card = File(fp=background.image_bytes, filename="D:/Windows/Рабочий стол/wave1/module int/rate/set/zCARD.png")
         await ctx.send(files=card)
 def setup(client):
     Rankint(client)

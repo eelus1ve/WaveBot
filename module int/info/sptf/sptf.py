@@ -8,9 +8,16 @@ class Spotifyint(interactions.Extension):
         self.client: interactions.Client = client
     @interactions.extension_command(
         name="spotify",
-        description="Узнать что слушает пользователь",
+        description="suka",
+        options= [
+        {
+            "name": "user",
+            "description": "Serch animal",
+            "type": 6,
+            "required": True
+        }]
     )
-    async def spotify(self, ctx: interactions.Context, user: Optional[interactions.Member]):
+    async def spotify(self, ctx: interactions.context, user: Optional[interactions.Member]):
         COLOR = bdint(ctx)['COLOR']
         userr = user or ctx
         if userr.activities:

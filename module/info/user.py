@@ -1,31 +1,37 @@
+from dis import disco
+from http import client
+from multiprocessing.connection import Client
+from os import lseek
+import discord
 from discord import Spotify
+from discord.ext import commands
 from typing import Optional
 from BTSET import ADMINS
 import pytz
+from BD import bdpy, bdmpy, bdint
 import interactions
-from BD import bdint
-import discord
+from discord.utils import get
+from discord_components import ComponentsBot
 
-class Userint(interactions.Extension):
-    def __init__(self, client: interactions.Client) -> None:
-        self.client: interactions.Client = client
-    @interactions.extension_command(
-        name="user",
-        description="Пишет информацию о пользователе",
-    )
-    async def user(self, ctx, memberr: Optional[interactions.Member]):
-        member = memberr or ctx
-        COLOR = bdint(ctx)['COLOR']
-        
+
+class Duser(commands.Cog):
+    def __init__(self, bot: ComponentsBot):
+        self.bot: ComponentsBot = bot
+    @commands.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
+    async def user(self, ctx: commands.Context, memberr: Optional[discord.Member]):
+        # member = await self.bot.get_user(int(member.id))
+        interactions.PresenceActivityType
+        member = memberr or ctx.author
         mr = None
         if member.activities:
             for i in member.activities:
                 if str(i.type) == 'ActivityType.playing':
                     mr = i
 
-        warns = bdint(ctx)['USERS'][str(member.id)]['WARNS']
-        score = bdint(ctx)['USERS'][str(member.id)]['SCR']
-        LVL = bdint(ctx)['USERS'][str(member.id)]['LvL']
+        warns = bdmpy(mr=member)['USERS'][str(member.id)]['WARNS']
+        score = bdmpy(mr=member)['USERS'][str(member.id)]['SCR']
+        LVL = bdmpy(mr=member)['USERS'][str(member.id)]['LvL']
+        COLOR = bdpy(ctx)['COLOR'] or bdint(ctx)['COLOR']
 
         lstdisc = [f'\n***Имя пользователя:***  {member.name}#{member.discriminator} \n']
 
@@ -46,7 +52,7 @@ class Userint(interactions.Extension):
         lstdisc.append(f"***Присоединился:*** {member.joined_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%d.%m.%y')} \n")
         lstdisc.append(f"***Дата регистрации:*** {member.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%d.%m.%y')}\n")
         if str(member.id) in ADMINS: lstdisc.append(f'***Разрабочик WaveBot*** \n')
-        emb = interactions.Embed(title=f'Информация о ***{member.name}***',
+        emb = discord.Embed(title=f'Информация о ***{member.name}***',
                             description="***Основная информация:***\n" + "".join(lstdisc),
                             color=COLOR
                             )
@@ -55,7 +61,31 @@ class Userint(interactions.Extension):
         emb.add_field(name='***Предупреждения***', value=warns, inline=True)
         emb.set_thumbnail(url=member.avatar_url)
         emb.set_footer(text=f'ID: {member.id}')
-        await ctx.send(embeds=emb)
+        await ctx.send(embed=emb)
+class Iuser(interactions.Extension):
+    def __init__(self, client: interactions.Client):
+        self.client: interactions.Client = client
+    @interactions.extension_command(
+        name="user",
+        description="abrakodabra",
+        options= [
+        {
+            "name": "user",
+            "description": "Serch animal",
+            "type": 6,
+            "required": True
+        }]
+    )
+    async def user(self, ctx: interactions.context, user: interactions.Member):
+        memberr=user
+        return(memberr)
 
-def setup(client):
-    Userint(client) 
+class Dduser(commands.Cog):
+    def __init__(self, bot: ComponentsBot):
+        self.bot: ComponentsBot = bot
+
+def setup(sbot):
+    if str(sbot).startswith('<i'):
+        Iuser(sbot)
+    elif str(sbot).startswith('<d'):
+        sbot.add_cog(Duser(sbot))
