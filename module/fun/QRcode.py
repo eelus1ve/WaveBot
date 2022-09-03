@@ -12,8 +12,10 @@ class CreateQR(commands.Cog):
     @commands.command()
     async def get_qr(self, ctx: discord.ext.commands.Context, *arg):
         im = qrcode.make(''.join(arg)).get_image()
-        byte_im = im.tobitmap()
-        await ctx.send(file=discord.File(fp=))
+        bt = io.BytesIO()
+        im.save(bt, format="PNG")
+        bt.seek(0)
+        await ctx.send(file=discord.File(bt, filename='lox.png'))
 
 
 def setup(bot):

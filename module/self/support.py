@@ -42,7 +42,9 @@ class Suppot(commands.Cog):
             ])
     @commands.Cog.listener('on_select_option')
     async def main_support_select(self, interaction: discord_components.Interaction):
+        print(1)
         if interaction.component.placeholder == 'Выберете что Вам нужно':
+            print(0)
             try:
                 def check(message: discord.Message):
                     return message.author == interaction.author and not message.guild
@@ -57,7 +59,7 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='idea', text=ms.content)
 
                     await ms.author.send('спасибо за идею она будет рассмотренни в течении недели')
-                    adm_user = await self.bot.fetch_user(466609421863354388)
+                    adm_user = await self.bot.fetch_user(user_id=466609421863354388)
                     await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
 
                 elif interaction.values[0] == 'que':
@@ -91,7 +93,7 @@ class Suppot(commands.Cog):
 
                     Suppot.support_json_writer(member=interaction.author, reason='message', text=ms.content)
 
-                    await ms.author.send('ожидайте ответа в течении' + '999999'*1000 + 'дней')
+                    await ms.author.send('ожидайте ответа в течении 9999999999999999999999 дней')
                     adm_user = await self.bot.fetch_user(466609421863354388)
                     await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
             except IndexError:
