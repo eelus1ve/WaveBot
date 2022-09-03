@@ -33,6 +33,16 @@ async def on_ready():
     
     
     print(f'{bot.user.name} connected')
+
+    if not os.path.exists('glb_vote.json'):
+        with open('glb_vote.json', 'w') as file:
+            file.write('{"votes"}')
+    else:
+        with open('glb_vote.json', 'r') as file:
+            if not file.read():
+                with open('glb_vote.json', 'w') as file:
+                    file.write('{}')
+                    print("Пока json(vote)")
     
     if not os.path.exists('users.json'):
         with open('users.json', 'w') as file:
@@ -136,7 +146,7 @@ async def btst_start(ctx):
     settings_names = ['настроить роли', 'добавить класс ролей', 'настроить цвет', 'настроить цвет ошибок',
                       'канал администратора', 'кол-во капсов для предупреждения', 'кол-во варнов для бана', 'добавить плохое слово', 'префикс', 'указать свой текст при выборе ролей',
                       'настроить роли при входе на сервер', 'список join ролей', 'убрать плохое слово',
-                      'создать "свои комнаты"', 'музыка']
+                      'создать "свои комнаты"', 'музыка', 'добавить канал с инфорацией']
 
     await ctx.send(components=SelectMenu(
         custom_id='btst1',
