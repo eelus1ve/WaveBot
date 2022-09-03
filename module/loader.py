@@ -4,7 +4,7 @@ import os
 from discord.ext import commands
 from BTSET import ADMINS
 
-dir_name1 = "\module"
+dir_name1 = ".module"
 
 list = []
 class loader(commands.Cog):
@@ -13,10 +13,10 @@ class loader(commands.Cog):
     @commands.command()
     async def load(self, ctx, arg = None):
         with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-                prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+            dataServerID = json.load(file)
+            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
+            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+            prefix = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
         from BTSET import IGNORE
         try:
             # -----------------------------селект
@@ -25,7 +25,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"module\{dirs}"
+                            dir_name2 = f".module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
@@ -46,10 +46,12 @@ class loader(commands.Cog):
                         ))
                     #------------------------------------все модули
                 elif arg == 'all':
+                    print(0)
                     modules = os.listdir(dir_name1)
+                    print(modules)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"module\{dirs}"
+                            dir_name2 = f".module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):
@@ -83,7 +85,7 @@ class loader(commands.Cog):
                         color=ErCOLOR
                         ))
 
-        except:
+        except IndentationError:
             msg = await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description="*Модуль:* " + arg + " *уже был загружен*",
@@ -104,7 +106,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"module\{dirs}"
+                            dir_name2 = f".module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):
@@ -127,7 +129,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"module\{dirs}"
+                            dir_name2 = f".module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):
@@ -180,7 +182,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"D:module\{dirs}"
+                            dir_name2 = f".module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
@@ -198,7 +200,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"module\{dirs}"
+                            dir_name2 = f".module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):

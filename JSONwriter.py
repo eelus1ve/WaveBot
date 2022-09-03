@@ -1,9 +1,59 @@
 import json
 from discord.ext import commands
+import os
 
 class Json_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+        if not os.path.exists('support.json'):
+            with open('support.json', 'w') as file:
+                json.dump({
+                    'idea': {},
+                    'que': {},
+                    'err': {},
+                    'message': {}
+                }, file, indent=4)
+        else:
+            with open('support.json', 'r') as file:
+                if not file.read():
+                    with open('support.json', 'w') as file:
+                        json.dump({
+                            'idea': {},
+                            'que': {},
+                            'err': {},
+                            'message': {}
+                        }, file, indent=4)
+                    print("Пока json(support)")
+
+        if not os.path.exists('glb_vote.json'):
+            with open('glb_vote.json', 'w') as file:
+                file.write('{"votes"}')
+        else:
+            with open('glb_vote.json', 'r') as file:
+                if not file.read():
+                    with open('glb_vote.json', 'w') as file:
+                        file.write('{}')
+                        print("Пока json(vote)")
+
+        if not os.path.exists('users.json'):
+            with open('users.json', 'w') as file:
+                file.write('{}')
+        else:
+            with open('users.json', 'r') as file:
+                if not file.read():
+                    with open('users.json', 'w') as file:
+                        file.write('{}')
+                    print("Пока json")
+
+        if not os.path.exists('music.json'):
+            with open('music.json', 'w') as file:
+                file.write('{}')
+        else:
+            with open('music.json', 'r') as file:
+                if not file.read():
+                    with open('music.json', 'w') as file:
+                        file.write('{}')
 
     def jsonwrite(self):
         for guild in self.bot.guilds:

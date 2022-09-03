@@ -34,25 +34,7 @@ async def on_ready():
     
     print(f'{bot.user.name} connected')
 
-    if not os.path.exists('glb_vote.json'):
-        with open('glb_vote.json', 'w') as file:
-            file.write('{"votes"}')
-    else:
-        with open('glb_vote.json', 'r') as file:
-            if not file.read():
-                with open('glb_vote.json', 'w') as file:
-                    file.write('{}')
-                    print("Пока json(vote)")
-    
-    if not os.path.exists('users.json'):
-        with open('users.json', 'w') as file:
-            file.write('{}')
-    else:
-        with open('users.json', 'r') as file:
-            if not file.read():
-                with open('users.json', 'w') as file:
-                    file.write('{}')
-                print("Пока json")
+
     await bot.change_presence(activity=discord.Game('Portal 2'))
 #=======================================================================================================================
 

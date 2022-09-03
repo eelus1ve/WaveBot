@@ -11,26 +11,6 @@ class Suppot(commands.Cog):
     def __init__(self, bot):
         self.bot: discord_components.ComponentsBot = bot
 
-        if not os.path.exists('support.json'):
-            with open('support.json', 'w') as file:
-                json.dump({
-                    'idea': {},
-                    'que': {},
-                    'err': {},
-                    'message': {}
-                }, file, indent=4)
-        else:
-            with open('support.json', 'r') as file:
-                if not file.read():
-                    with open('support.json', 'w') as file:
-                        json.dump({
-                            'idea': {},
-                            'que': {},
-                            'err': {},
-                            'message': {}
-                        }, file, indent=4)
-                    print("Пока json(support)")
-
     def support_json_writer(member: discord.Member, reason: str, text: str):
         with open('support.json', 'r') as file:
             sup_data = json.load(file)
@@ -96,6 +76,6 @@ class Suppot(commands.Cog):
 
             Suppot.support_json_writer(member=interaction.author, reason='message', text=ms.content)
 
-def serup(bot):
+def setup(bot):
     bot.add_cog(Suppot(bot))
 

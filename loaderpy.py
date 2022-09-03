@@ -6,7 +6,7 @@ from BTSET import ADMINS
 import interactions
 from BD import bdpy
 from BTSET import IGNORE
-dir_name1py = "D:\Windows\Рабочий стол\wave1\module"
+dir_name1py = "module"
 lstpy = []
 class Loaderpy(commands.Cog):
     def __init__(self, bot):
@@ -192,7 +192,7 @@ class Loaderpy(commands.Cog):
                     modules = os.listdir(dir_name1py)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"D:\Windows\Рабочий стол\wave1\module\{dirs}"
+                            dir_name2 = f"module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):

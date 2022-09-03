@@ -13,13 +13,13 @@ class Wile():
         self.bot = bot
 
     def res_copy(self):
-        #os.popen(f'copy {} ')
-        pass
+        for i in os.listdir(''):
+            if i.endswith('.json'):
+                os.system(f'copy {i} rezerv\{i[:-5]}rez.json')
 
     def while_true(self):
         while 1:
-            time.sleep(60)
-
+            time.sleep(10)
             Wile.res_copy()
 
 
