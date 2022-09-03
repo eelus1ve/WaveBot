@@ -1,5 +1,7 @@
 #=============================================================================================импорты
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!5
+import multiprocessing
+
 import discord
 import json
 import os
@@ -33,6 +35,7 @@ async def on_ready():
     # client.reload('module.rate.score')
     client.load('module.voice.vcbot')
     client.reload('module.voice.vcbot')
+    bot.load_extension('system.while')
     
     
     print(f'{bot.user.name} connected')
@@ -640,6 +643,7 @@ async def opasn(ctx, shrt):
         data[str(ctx.guild_id)]['SelfTitle'] = shrt
         json.dump(data, file, indent=4)
     await ctx.send(f"*Текст выбора ролей успешно изменён на {shrt}*", ephemeral=True)
+
 
 def main():
 
