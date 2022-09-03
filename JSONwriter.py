@@ -88,6 +88,7 @@ class Json_write(commands.Cog):
                             'text_color': '#d0ed2b',
                             'bar_color': '#ec5252',
                             'blend': 1,
+                            'FirstRole': '',
                             'USERS': {},
                         }})
 
