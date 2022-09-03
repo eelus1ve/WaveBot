@@ -57,6 +57,8 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='idea', text=ms.content)
 
                     await ms.author.send('спасибо за идею она будет рассмотренни в течении недели')
+                    adm_user = await self.bot.fetch_user(466609421863354388)
+                    await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
 
                 elif interaction.values[0] == 'que':
                     await interaction.send(embed=discord.Embed(
@@ -68,6 +70,8 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='que', text=ms.content)
 
                     await ms.author.send('ответ будет дан в течении двух дней')
+                    adm_user = await self.bot.fetch_user(466609421863354388)
+                    await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
 
                 elif interaction.values[0] == 'err':
                     await interaction.send(embed=discord.Embed(
@@ -79,6 +83,8 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='err', text=ms.content)
 
                     await ms.author.send('спасибо за помощь в поисках ошибок бота')
+                    adm_user = await self.bot.fetch_user(466609421863354388)
+                    await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
 
                 elif interaction.values[0] == 'message':
                     ms: discord.Message = await self.bot.wait_for('message', check=check)
@@ -86,6 +92,8 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='message', text=ms.content)
 
                     await ms.author.send('ожидайте ответа в течении' + '999999'*1000 + 'дней')
+                    adm_user = await self.bot.fetch_user(466609421863354388)
+                    await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
             except IndexError:
                 pass
 
