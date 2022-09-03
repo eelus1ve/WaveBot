@@ -19,7 +19,10 @@ intents=discord.Intents.all()
 def get_prefix(bot, message):
     with open('users.json', 'r') as file:
         data = json.load(file)
-    prefix = data[str(message.guild.id)]['PREFIX']
+    try:
+        prefix = data[str(message.guild.id)]['PREFIX']
+    except AttributeError:
+        prefix = '~'
     return prefix
 client = interactions.Client(token=os.getenv('TOKEN'))
 bot =ComponentsBot(command_prefix = get_prefix, intents=intents)
@@ -484,15 +487,18 @@ async def sel_opt(interaction: interactions.ComponentContext, int_val):
 # =======================================================================================================================================   roles
 @bot.event
 async def on_select_option(interaction):
-    with open('users.json', 'r') as file:
-        data = json.load(file)
-        COLOR = int(data[str(interaction.guild_id)]['COLOR'], 16)
+    try:
+        with open('users.json', 'r') as file:
+            data = json.load(file)
+            COLOR = int(data[str(interaction.guild_id)]['COLOR'], 16)
 
-    serverRoles = []
-    for i in range(0, len(interaction.guild.roles),
-                   24):  # первый важный комент !!!!!!!!!!!!!!!!!!!!!!!!! нужно при случаи ошибки заменить на 25!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        serverRoles.append(interaction.guild.roles[
-                           i:i + 24])  # второй важный комент !!!!!!!!!!!!!!!!!!!!!!!!! нужно при случаи ошибки заменить на 25!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        serverRoles = []
+        for i in range(0, len(interaction.guild.roles),
+                       24):  # первый важный комент !!!!!!!!!!!!!!!!!!!!!!!!! нужно при случаи ошибки заменить на 25!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            serverRoles.append(interaction.guild.roles[
+                               i:i + 24])  # второй важный комент !!!!!!!!!!!!!!!!!!!!!!!!! нужно при случаи ошибки заменить на 25!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    except:
+        pass
 
     if interaction.component.placeholder == 'Укажите классы в которые вы хотите добавить роли':
         for i in interaction.values:
@@ -643,6 +649,11 @@ async def opasn(ctx, shrt):
         data[str(ctx.guild_id)]['SelfTitle'] = shrt
         json.dump(data, file, indent=4)
     await ctx.send(f"*Текст выбора ролей успешно изменён на {shrt}*", ephemeral=True)
+
+# @bot.event
+# async def on_error(ctx, err):
+#     print('ошибка', ':', ctx)
+#     print(err)
 
 
 def main():

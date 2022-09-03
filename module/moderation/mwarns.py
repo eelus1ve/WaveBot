@@ -21,9 +21,9 @@ class Mwarnspy(commands.Cog):
             BADWORDS = bdpy(ctx=message)['BADWORDS']
             LINKS = bdpy(ctx=message)['LINKS']
             WARN = []
-            WARN.extend(BADWORDS); WARN.extend(LINKS)
-            warns = bdpy(ctx)['USERS'][str(memberr.id)]['WARNS']
-            nWarns = bdpy(ctx)['nWarns']
+            # WARN.extend(BADWORDS); WARN.extend(LINKS)
+            # warns = bdpy(ctx)['USERS'][str(memberr.id)]['WARNS']
+            # nWarns = bdpy(ctx)['nWarns']
             for i in range(0, len(WARN)):
                 #badwords + links==============================================================
                 if WARN[i] in message.content.lower():
