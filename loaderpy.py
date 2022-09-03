@@ -81,10 +81,10 @@ class Loaderpy(commands.Cog):
                         color=ErCOLOR
                         ))
 
-        except:
+        except Exception as Exept:
             msg = await ctx.send(embed=discord.Embed(
-                title="Ошибка",
-                description="*Модуль:* " + arg + " *уже был загружен*",
+                title=f"Ошибка-{Exept}",
+                description="*Модуль:* " + arg + " *уже был загружен*)",
                 color=ErCOLOR
             ))
 
@@ -155,9 +155,9 @@ class Loaderpy(commands.Cog):
                         description=f"*У вас не достаточно прав!*" ,
                         color=ErCOLOR
                         ))
-        except:
+        except Exception as Except:
             msg = await ctx.send(embed=discord.Embed(
-                title="Ошибка",
+                title=f"Ошибка-{Except}",
                 description="",
                 color=ErCOLOR
             ))
@@ -227,9 +227,9 @@ class Loaderpy(commands.Cog):
                         color=ErCOLOR
                         ))
 
-        except:
+        except Exception as Except:
             msg = await ctx.send(embed=discord.Embed(
-                title="Ошибка",
+                title=f"Ошибка-{Except}",
                 description="*Модуль:* " + arg + " *уже был отключен*",
                 color=ErCOLOR
             ))

@@ -40,41 +40,44 @@ class Suppot(commands.Cog):
             ])
     @commands.Cog.listener('on_select_option')
     async def main_support_select(self, interaction: discord_components.Interaction):
+        try:
+            def check(message: discord.Message):
+                return message.author == interaction.author and not message.guild
 
-        def check(message: discord.Message):
-            return message.author == interaction.author and not message.guild
+            if interaction.values[0] == 'idea':
+                await interaction.send(embed=discord.Embed(
+                    title='Напишите Вашу идею'
+                ))
 
-        if interaction.values[0] == 'idea':
-            await interaction.send(embed=discord.Embed(
-                title='Напишите Вашу идею'
-            ))
+                ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-            ms: discord.Message = await self.bot.wait_for('message', check=check)
+                Suppot.support_json_writer(member=interaction.author, reason='idea', text=ms.content)
 
-            Suppot.support_json_writer(member=interaction.author, reason='idea', text=ms.content)
+            elif interaction.values[0] == 'que':
+                await interaction.send(embed=discord.Embed(
+                    title='Напишите Ваш вопрос'
+                ))
 
-        elif interaction.values[0] == 'que':
-            await interaction.send(embed=discord.Embed(
-                title='Напишите Ваш вопрос'
-            ))
+                ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-            ms: discord.Message = await self.bot.wait_for('message', check=check)
+                Suppot.support_json_writer(member=interaction.author, reason='que', text=ms.content)
 
-            Suppot.support_json_writer(member=interaction.author, reason='que', text=ms.content)
+            elif interaction.values[0] == 'err':
+                await interaction.send(embed=discord.Embed(
+                    title='Напишите найденную вами ошибку'
+                ))
 
-        elif interaction.values[0] == 'err':
-            await interaction.send(embed=discord.Embed(
-                title='Напишите найденную вами ошибку'
-            ))
+                ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-            ms: discord.Message = await self.bot.wait_for('message', check=check)
+                Suppot.support_json_writer(member=interaction.author, reason='err', text=ms.content)
 
-            Suppot.support_json_writer(member=interaction.author, reason='err', text=ms.content)
+            elif interaction.values[0] == 'message':
+                ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-        elif interaction.values[0] == 'message':
-            ms: discord.Message = await self.bot.wait_for('message', check=check)
+                Suppot.support_json_writer(member=interaction.author, reason='message', text=ms.content)
+        except IndexError:
+            pass
 
-            Suppot.support_json_writer(member=interaction.author, reason='message', text=ms.content)
 
 def setup(bot):
     bot.add_cog(Suppot(bot))

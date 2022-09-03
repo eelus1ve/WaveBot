@@ -1,24 +1,5 @@
-from unicodedata import category
 import discord
-from operator import index
-from discord.ext import commands
-from discord_components import DiscordComponents, ComponentsBot, Button, Select
-from discord_components import SelectOption as Sel
-from discord.utils import get
-from email.errors import InvalidMultipartContentTransferEncodingDefect
-import asyncio
 import json
-from discord_components import ComponentsBot
-import interactions
-from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption, Option
-from youtube_dl import YoutubeDL
-import os
-import discord
-from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
-import interactions
-from interactions import Modal, TextInput
-import json
-import asyncio
 from discord.ext import commands
 from BD import bdmpy
 from BTSET import embpy
@@ -103,11 +84,14 @@ class Roomedit(commands.Cog):
 
     @commands.Cog.listener('on_button_click')
     async def aon_button_click(self, interaction):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            ownRoom = int(
-                dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)])
-            print(str(interaction.component.emoji))
+        try:
+            with open('users.json', 'r') as file:
+                dataServerID = json.load(file)
+                ownRoom = int(
+                    dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)])
+                print(str(interaction.component.emoji))
+        except KeyError:
+            pass
 
         if str(interaction.component.emoji) == '👑':
             await interaction.send('укажите нового создателя этого канала @участник ')

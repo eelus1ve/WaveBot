@@ -57,7 +57,7 @@ class Json_write(commands.Cog):
 
     def jsonwrite(self):
         for guild in self.bot.guilds:
-            with open('../WaveBot-main/users.json', 'r') as file:
+            with open('users.json', 'r') as file:
                 data = json.load(file)
                 if not (str(guild.id) in [k for k in data.keys()]):
                     data.update({

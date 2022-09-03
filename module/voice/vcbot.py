@@ -55,7 +55,9 @@ class Add_music(interactions.Extension):
         await ctx.send('успешно', ephemeral=True)
 
 class Player_edit():
-    async def player_edit(gld: discord.Guild, chlen: discord.TextChannel):#==================================================================================================================    plaer edit
+    def __init__(self, bot):
+        self.bot = bot
+    async def player_edit(self, gld: discord.Guild, chlen: discord.TextChannel):#==================================================================================================================    plaer edit
         try:
             start_time = time.time()
             with open('music.json', 'r') as file:
@@ -104,7 +106,7 @@ class Player_edit():
                                    value=f'{main_info.get("title", None)} \n {int(float(song_time) / 60)}:{int((float(song_time) / 60 - int(float(song_time) / 60)) * 60)}')
 
                     embd.add_field(name='потом', value=f'{next_info.get("title", None)}' + ''.join(song_list), inline=False)
-                    embd.add_field(name='name', value=f'{StringProgressBar.progressBar.splitBar(int(song_time*100), int((time.time() - start_time)*100), size=25)[0]}', inline=False)
+                    embd.add_field(name='.', value=f'{StringProgressBar.progressBar.splitBar(int(song_time*100), int((time.time() - start_time)*100), size=25)[0]}', inline=False)
 
                     await player.edit(embed=embd)
 
@@ -154,23 +156,21 @@ class Auto_resume():
             with open('music.json', 'w') as file:
                 json.dump(data, file, indent=4)
 
-            vc.play(discord.FFmpegPCMAudio(executable="ffmpeg/bin/ffmpeg.exe", source=url, **FFMPEG_OPTIONS))
+            vc.play(discord.FFmpegPCMAudio(executable="module/voice/ffmpeg/bin/ffmpeg.exe", source=url, **FFMPEG_OPTIONS))
             vc.source = discord.PCMVolumeTransformer(vc.source)
 
 
             async def timer_for_song():
                 await asyncio.sleep(float(song_time))
                 player_writer.cancel()
-                await Auto_resume.after_song(vc)
+                await Auto_resume(bot=self.bot).after_song(vc)
 
-            player_writer = asyncio.create_task(Player_edit.player_edit(gld, chlen))
+            player_writer = asyncio.create_task(Player_edit(self.bot).player_edit(gld, chlen))
             timer = asyncio.create_task(timer_for_song())
             new_song_write = asyncio.create_task(new_song(gld))
 
             @commands.Cog.listener('on_button_click')
             async def iion_button_click(interaction: discord_components.Interaction):
-                with open('music.json', 'r') as file:
-                    data: dict = json.load(file)
 
                 emo = interaction.component.emoji
                 vc: discord.VoiceClient = get(self.bot.voice_clients, guild=self.bot.get_guild(interaction.guild_id))
@@ -225,21 +225,19 @@ class Auto_resume():
             with open('music.json', 'w') as file:
                 json.dump(data, file, indent=4)
 
-            vc.play(discord.FFmpegPCMAudio(executable="ffmpeg/bin/ffmpeg.exe", source=url, **FFMPEG_OPTIONS))
+            vc.play(discord.FFmpegPCMAudio(executable="module/voice/ffmpeg/bin/ffmpeg.exe", source=url, **FFMPEG_OPTIONS))
             vc.source = discord.PCMVolumeTransformer(vc.source)
 
             async def timer_for_song():
                 await asyncio.sleep(float(song_time) + 2)
-                await Auto_resume.after_song(vc)
+                await Auto_resume(bot=self.bot).after_song(vc)
 
             timer = asyncio.create_task(timer_for_song())
-            player_writer = asyncio.create_task(Player_edit.player_edit(gld, chlen))
+            player_writer = asyncio.create_task(Player_edit(self.bot).player_edit(gld, chlen))
             new_song_write = asyncio.create_task(new_song(gld))
 
             @commands.Cog.listener('on_button_click')
             async def iion_button_click(interaction: discord_components.Interaction):
-                with open('music.json', 'r') as file:
-                    data: dict = json.load(file)
 
                 emo = interaction.component.emoji
                 vc: discord.VoiceClient = get(self.bot.voice_clients, guild=self.bot.get_guild(interaction.guild_id))
@@ -262,9 +260,7 @@ class Button_start(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()#==================================================================================================================    play
-    async def play(ctx):
-        with open('music.json', 'r') as file:
-            data: dict = json.load(file)
+    async def play(self, ctx):
         await ctx.message.author.voice.channel.connect()
 
     @commands.Cog.listener('on_button_click')#==================================================================================================================    button
@@ -281,11 +277,11 @@ class Button_start(commands.Cog):
 
         if str(emo) == '▶' and vc.is_playing():
             vc.stop()
-            await Auto_resume.after_song(vc)
+            await Auto_resume(bot=self.bot).after_song(vc)
 
         elif str(emo) == '⏯':
             if not vc.is_playing() and not vc.is_paused():
-                await Auto_resume.after_song(vc)
+                await Auto_resume(bot=self.bot).after_song(vc)
             elif vc.is_paused():
                 vc.resume()
             elif vc.is_playing() and not vc.is_paused():
@@ -314,6 +310,6 @@ class Button_start(commands.Cog):
 
 def setup(bot):
     if str(bot).startswith('<d'):
-        pass
+        bot.add_cog(Button_start(bot))
     elif str(bot).startswith('<i'):
         Add_music(bot)

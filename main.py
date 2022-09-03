@@ -28,8 +28,11 @@ bot.remove_command('help')
 @bot.event
 async def on_ready():
     bot.load_extension('loaderpy')
-    client.load('module.rate.score')
-    client.reload('module.rate.score')
+    bot.load_extension('JSONwriter')
+    # client.load('module.rate.score')
+    # client.reload('module.rate.score')
+    client.load('module.voice.vcbot')
+    client.reload('module.voice.vcbot')
     
     
     print(f'{bot.user.name} connected')
@@ -47,27 +50,7 @@ async def a(ctx, user: discord.Member):
         title="Степ не волнуйся все плохо)",
         color=bdpy(ctx)['COLOR']
         ))
-@bot.command()
-async def b(ctx):
-    client.reload('module.moderation.warns')
-    await ctx.send(embed=discord.Embed(
-        title="Степ не волнуйся все пиздец плохо)",
-        color=bdpy(ctx)['COLOR']
-        ))
-@bot.command()
-async def c(ctx):
-    client.load('module.rate.score')
-    await ctx.send(embed=discord.Embed(
-        title="Степ не волнуйся все пиздец плохо)",
-        color=bdpy(ctx)['COLOR']
-        ))
-@bot.command()
-async def d(ctx):
-    client.reload('module.rate.score')
-    await ctx.send(embed=discord.Embed(
-        title="Степ не волнуйся все пиздец плохо)",
-        color=bdpy(ctx)['COLOR']
-        ))
+
 @client.command(
     name='a',
     description='b'
@@ -135,7 +118,7 @@ async def btst_start(ctx):
         options=[SelectOption(label=i, value=i) for i in settings_names],
         placeholder='выберете настройки',
         max_values=1,
-        min_values=0
+        min_values=1
     ))
 
 @client.component('btst1')
@@ -173,17 +156,20 @@ async def sel_opt(interaction: interactions.ComponentContext, int_val):
             else:
 
                 with open('music.json', 'r') as file:
-                    data: dict = json.load(file)
-                    if not (ctx.id in data):                                                      #тут ерор
-                        data.update(
-                            {
-                                int(ctx.id): {
-                                    'songs': [],
-                                    'pl_id': None,
-                                    'chl_id': None
-                                }
+                    data_mus: dict = json.load(file)
+                if not(str(ctx.id) in [i for i in data_mus.keys()]):
+                    data_mus.update(
+                        {
+                            ctx.id: {
+                                'songs': [],
+                                'pl_id': None,
+                                'chl_id': None
                             }
-                        )
+                        }
+                    )
+
+                with open('music.json', 'w') as file:
+                    json.dump(data_mus, file, indent=4)
 
                 await interaction.send('успешно', ephemeral=True)
                 ctg = await ctx.create_category(name='music')
@@ -194,22 +180,20 @@ async def sel_opt(interaction: interactions.ComponentContext, int_val):
                     description=f'=================================',
                     colour=0x00FFFF
                 )
-                embd.add_field(name='сейчас играет:', value='n')
-                embd.add_field(name='потом:', value='n')
-                embd.add_field(name='песню поставил:', value='n')
+                embd.add_field(name='сейчас играет:', value='ничего')
 
                 comp = [
                     [
-                        Button(emoji='◀', style=1),
-                        Button(emoji='⏯', style=1),
-                        Button(emoji='▶', style=1),
-                        Button(emoji='🔀', style=1)
+                        Button(emoji='◀', style=2),
+                        Button(emoji='⏯', style=2),
+                        Button(emoji='▶', style=2),
+                        Button(emoji='🔀', style=2)
                     ],
                     [
-                        Button(emoji='🔁', style=1),
-                        Button(emoji='🔊', style=1),
-                        Button(emoji='🔈', style=1),
-                        Button(emoji='🔇', style=1)
+                        Button(emoji='🔁', style=2),
+                        Button(emoji='🔊', style=2),
+                        Button(emoji='🔈', style=2),
+                        Button(emoji='🔇', style=2)
                     ]
                 ]
 
@@ -221,6 +205,7 @@ async def sel_opt(interaction: interactions.ComponentContext, int_val):
                 with open('music.json', 'r') as file:
                     data_mus = json.load(file)
                     data_mus[str(ctx.id)]['pl_id'] = msc_player.id
+                    data_mus[str(ctx.id)]['chl_id'] = txt_cnlen.id
                 with open('music.json', 'w') as file:
                     json.dump(data_mus, file, indent=4)
 
