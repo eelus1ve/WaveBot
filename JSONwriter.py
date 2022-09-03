@@ -112,19 +112,19 @@ class Json_write(commands.Cog):
 
     @commands.Cog.listener('on_member_join')
     async def n_mr_join(self, ctx):
-        Json_write.jsonwrite()
+        Json_write(self.bot).jsonwrite()
 
     @commands.Cog.listener('on_member_remove')
     async def on_meove(self, ctx):
-        Json_write.jsonwrite()
+        Json_write(self.bot).jsonwrite()
 
     @commands.Cog.listener('on_guild_join')
     async def on_gld_jn(self, ctx):
-        Json_write.jsonwrite()
+        Json_write(self.bot).jsonwrite()
 
     @commands.Cog.listener('on_guild_remove')
     async def on_gld_remove(self, ctx):
-        Json_write.jsonwrite()
+        Json_write(self.bot).jsonwrite()
 
 def setup(bot):
     bot.add_cog(Json_write(bot))
