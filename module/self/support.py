@@ -78,6 +78,23 @@ class Suppot(commands.Cog):
         except IndexError:
             pass
 
+class SupportAnswer(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def admin_request(self, ctx):
+        await ctx.send(components=[
+            Select(
+                max_values=1,
+                min_values=1,
+                placeholder='чё смотреть хочешь?',
+                options=[
+                    SelectOption()
+                ]
+            )
+        ])
+
 
 def setup(bot):
     bot.add_cog(Suppot(bot))

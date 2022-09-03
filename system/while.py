@@ -6,16 +6,18 @@ import subprocess
 import discord_components
 from discord.ext import commands
 from discord_components import ComponentsBot
+import datetime
 
 def res_copy():
-    for i in os.listdir('.'):
-        if i.endswith('.json'):
-            subprocess.call(fr'copy {i} system\rezerv\{i[:-5]}_rez.json', shell=True, stdout=subprocess.DEVNULL)
+    if not int(datetime.datetime.now().time().hour):
+        for i in os.listdir('.'):
+            if i.endswith('.json'):
+                subprocess.call(fr'copy {i} system\rezerv\{i[:-5]}_rez.json', shell=True, stdout=subprocess.DEVNULL)
 
 def prnt():
     while 1:
         res_copy()
-        time.sleep(60*5)
+        time.sleep(60)
 
 class Wile_on(commands.Cog):
     def __init__(self, bot):
