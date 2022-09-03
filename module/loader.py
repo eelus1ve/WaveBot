@@ -4,7 +4,7 @@ import os
 from discord.ext import commands
 from BTSET import ADMINS
 
-dir_name1 = "D:\Windows\Рабочий стол\wave1\module"
+dir_name1 = "\module"
 
 list = []
 class loader(commands.Cog):
@@ -25,7 +25,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"D:\Windows\Рабочий стол\wave1\module\{dirs}"
+                            dir_name2 = f"module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
@@ -49,7 +49,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"D:\Windows\Рабочий стол\wave1\module\{dirs}"
+                            dir_name2 = f"module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):
@@ -104,7 +104,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"D:\Windows\Рабочий стол\wave1\module\{dirs}"
+                            dir_name2 = f"module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):
@@ -127,7 +127,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"D:\Windows\Рабочий стол\wave1\module\{dirs}"
+                            dir_name2 = f"module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):
@@ -180,7 +180,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"D:\Windows\Рабочий стол\wave1\module\{dirs}"
+                            dir_name2 = f"D:module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py") and filename[:-3] == str(arg):
@@ -198,7 +198,7 @@ class loader(commands.Cog):
                     modules = os.listdir(dir_name1)
                     for dirs in modules:
                         if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
-                            dir_name2 = f"D:\Windows\Рабочий стол\wave1\module\{dirs}"
+                            dir_name2 = f"module\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
                                 if filename.endswith(".py"):
