@@ -55,6 +55,15 @@ class Json_write(commands.Cog):
                     with open('music.json', 'w') as file:
                         file.write('{}')
 
+        if not os.path.exists('anmess.json'):
+            with open('anmess.json', 'w') as file:
+                file.write('{}')
+        else:
+            with open('anmess.json', 'r') as file:
+                if not file.read():
+                    with open('anmess.json', 'w') as file:
+                        file.write('{}')
+
     def jsonwrite(self):
         for guild in self.bot.guilds:
             with open('users.json', 'r') as file:

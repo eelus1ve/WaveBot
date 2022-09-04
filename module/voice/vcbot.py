@@ -307,7 +307,7 @@ class Button_start(commands.Cog):
             elif str(emo) == '◀' and vc.is_playing():
                 vc.stop()
                 await Auto_resume.befor_song(vc)
-        except AttributeError:
+        except:
             pass
 
 
