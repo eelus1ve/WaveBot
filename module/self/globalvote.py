@@ -37,9 +37,13 @@ class GlobalVote(commands.Cog):
                 for gld in [k for k in vt_data.keys() if k != 'votes']:
                     chlen = self.bot.get_channel(vt_data[gld]['info_id'])
 
+                    argg = []
+                    for i in arg:
+                        argg.append(i + ' ')
+
                     await chlen.send(embed=discord.Embed(
                         title='***ВНИМАНИЕ***',
-                        description=''.join(arg),
+                        description=''.join(argg),
                         colour=0xFFFF00
                     ))
 

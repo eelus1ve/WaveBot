@@ -7,6 +7,7 @@ from discord_components import DiscordComponents, ComponentsBot, Button, Select
 from discord_components import SelectOption
 import json
 import os
+from BTSET import ADMINS
 
 
 class Suppot(commands.Cog):
@@ -105,58 +106,61 @@ class SupportAnswer(commands.Cog):
 
     @commands.command()
     async def admin_request(self, ctx):
-        with open('support.json', 'r') as file:
-            sup_data = json.load(file)
-        await ctx.send(components=[
-            Select(
-                max_values=1,
-                min_values=1,
-                placeholder='чё смотреть хочешь?',
-                options=[
-                    SelectOption(label=f'{key}', value=key) for key in sup_data if sup_data[key]
-                ]
-            )
-        ])
-
-    @commands.Cog.listener('on_select_option')
-    async def vbhyfd(self, interaction):
-        if interaction.component.placeholder == 'чё смотреть хочешь?':
+        if str(ctx.author.id) in ADMINS:
             with open('support.json', 'r') as file:
                 sup_data = json.load(file)
-
-            int_val = sup_data[interaction.values[0]]
-
-            await interaction.send(components=[
+            await ctx.send(components=[
                 Select(
                     max_values=1,
                     min_values=1,
-                    placeholder='кого смотреть хочешь?',
+                    placeholder='чё смотреть хочешь?',
                     options=[
-                        SelectOption(label=f'{await self.bot.fetch_user(int(key))}', value=f'{interaction.values[0]}/*/*/{key}') for key in int_val if int_val[key]
+                        SelectOption(label=f'{key}', value=key) for key in sup_data if sup_data[key]
                     ]
                 )
             ])
 
     @commands.Cog.listener('on_select_option')
+    async def vbhyfd(self, interaction):
+        if str(interaction.author.id) in ADMINS:
+            if interaction.component.placeholder == 'чё смотреть хочешь?':
+                with open('support.json', 'r') as file:
+                    sup_data = json.load(file)
+
+                int_val = sup_data[interaction.values[0]]
+
+                await interaction.send(components=[
+                    Select(
+                        max_values=1,
+                        min_values=1,
+                        placeholder='кого смотреть хочешь?',
+                        options=[
+                            SelectOption(label=f'{await self.bot.fetch_user(int(key))}', value=f'{interaction.values[0]}/*/*/{key}') for key in int_val if int_val[key]
+                        ]
+                    )
+                ])
+
+    @commands.Cog.listener('on_select_option')
     async def vbhyffdd(self, interaction):
-        if interaction.component.placeholder == 'кого смотреть хочешь?':
-            with open('support.json', 'r') as file:
-                sup_data = json.load(file)
+        if str(interaction.author.id) in ADMINS:
+            if interaction.component.placeholder == 'кого смотреть хочешь?':
+                with open('support.json', 'r') as file:
+                    sup_data = json.load(file)
 
-            int_val = interaction.values[0].split('/*/*/')
-            in_mess = sup_data[int_val[0]][int_val[1]]
-            member = await self.bot.fetch_user(int(int_val[1]))
+                int_val = interaction.values[0].split('/*/*/')
+                in_mess = sup_data[int_val[0]][int_val[1]]
+                member = await self.bot.fetch_user(int(int_val[1]))
 
-            await interaction.send(f'{in_mess} \n\nпиши ответ')
-            await asyncio.sleep(3)
-            await interaction.send()
+                await interaction.send(f'{in_mess} \n\nпиши ответ')
+                await asyncio.sleep(3)
+                await interaction.send()
 
-            def check(message: discord.Message):
-                return message.author == interaction.author and not message.guild
+                def check(message: discord.Message):
+                    return message.author == interaction.author and not message.guild
 
-            ms: discord.Message = await self.bot.wait_for('message', check=check)
+                ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-            await member.send(ms.content)
+                await member.send(ms.content)
 
 
 

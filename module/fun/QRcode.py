@@ -11,7 +11,11 @@ class CreateQR(commands.Cog):
 
     @commands.command()
     async def get_qr(self, ctx: discord.ext.commands.Context, *arg):
-        im = qrcode.make(''.join(arg)).get_image()
+        argg = []
+        for i in arg:
+            argg.append(i + ' ')
+
+        im = qrcode.make(''.join(argg)).get_image()
         bt = io.BytesIO()
         im.save(bt, format="PNG")
         bt.seek(0)

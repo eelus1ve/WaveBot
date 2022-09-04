@@ -46,6 +46,7 @@ class Warnspy(commands.Cog):
         emb.add_field(name='Канал:', value='Не определён', inline=True)
         emb.add_field(name='Нарушитель:', value=member.mention, inline=True)
         emb.add_field(name='Причина:', value=f'{reason}', inline=True)
+        emb.set_footer(text=f'Нарушение выдано {ctx.author.name}#{ctx.author.discriminator} ID модератора: {ctx.author.id}')
         await get(ctx.guild.text_channels, id=int(data[str(ctx.author.guild.id)]['idAdminchennel'])).send(embed=emb)
         #====================================================================
         #rep
@@ -274,7 +275,8 @@ class Warnsint(interactions.Extension):
         with open('users.json', 'r') as file:
             data = json.load(file)
         COLOR = bdint(ctx)['COLOR']
-        nWarns = bdint(ctx)['nWarns']
+        warns = bdpy(ctx)['USERS'][str(memberr.id)]['WARNS']
+        nWarns = bdpy(ctx)['nWarns']
         idAdminchennel = bdint(ctx)['idAdminchennel']
         #====================================================================
         #audit
@@ -331,7 +333,7 @@ class Warnsint(interactions.Extension):
         await memberr.send(embed=emb)                                                                               #найти юзера
         #====================================================================
         if data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['WARNS'] >= nWarns:
-            await member.ban(reason='Вы привысили допустимое количество нарушений')                                 #найти юзера
+            await memberr.ban(reason='Вы привысили допустимое количество нарушений')                                 #найти юзера
         #====================================================================
 def setup(bot):
     if str(bot).startswith('<d'):
