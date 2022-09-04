@@ -152,8 +152,7 @@ class SupportAnswer(commands.Cog):
                 member = await self.bot.fetch_user(int(int_val[1]))
 
                 await interaction.send(f'{in_mess} \n\nпиши ответ')
-                await asyncio.sleep(3)
-                await interaction.send()
+
 
                 def check(message: discord.Message):
                     return message.author == interaction.author and not message.guild
@@ -161,6 +160,11 @@ class SupportAnswer(commands.Cog):
                 ms: discord.Message = await self.bot.wait_for('message', check=check)
 
                 await member.send(ms.content)
+
+                del sup_data[int_val[0]][int_val[1]]
+
+                with open('support.json', 'w') as file:
+                    json.dump(sup_data, file, indent=4)
 
 
 

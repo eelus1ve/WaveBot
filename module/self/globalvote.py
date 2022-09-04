@@ -57,7 +57,7 @@ class GlobalVote(commands.Cog):
                     await chlen.send(embed=discord.Embed(
                         title='***Сообщение от WAVE team***',
                         description=''.join(arg),
-                        colour=0xFFFF00
+                        colour=0xFFF000
                     ))
 
 
