@@ -146,13 +146,13 @@ class Loaderpy(commands.Cog):
                     else:
                         msg = await ctx.send(embed=discord.Embed(
                             title="Ошибка",
-                            description=f"*Моудля {arg} не существует!*" ,
+                            description=f"*Моудля {arg} не существует!*",
                             color=ErCOLOR
                             ))
             else:
                 msg = await ctx.send(embed=discord.Embed(
                         title="Ошибка",
-                        description=f"*У вас не достаточно прав!*" ,
+                        description=f"*У вас не достаточно прав!*",
                         color=ErCOLOR
                         ))
         except Exception as Except:
@@ -244,12 +244,12 @@ class Loaderpy(commands.Cog):
                 description=f"```{', '.join(lstpy)}```",
                 color=COLOR
             ))
-            from loaderint import lstint
-            await ctx.send(embed=discord.Embed(
-                title="Список загруженых модулей interactions",
-                description=f"```{', '.join(lstint)}```",
-                color=COLOR
-            ))
+            # from loaderint import lstint
+            # await ctx.send(embed=discord.Embed(
+            #     title="Список загруженых модулей interactions",
+            #     description=f"```{', '.join(lstint)}```",
+            #     color=COLOR
+            # ))
         else:
             msg = await ctx.send(embed=discord.Embed(
                     title="Ошибка",
