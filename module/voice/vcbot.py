@@ -268,44 +268,47 @@ class Button_start(commands.Cog):
         with open('music.json', 'r') as file:
             data: dict = json.load(file)
 
-        user = interaction.author
-        messageid = data[str(interaction.guild.id)]['pl_id']
-        channel: discord.TextChannel = interaction.channel
-        message = await channel.fetch_message(messageid)
-        emo = interaction.component.emoji
-        vc: discord.VoiceClient = get(self.bot.voice_clients, guild=self.bot.get_guild(interaction.guild_id))
+        try:
+            user = interaction.author
+            messageid = data[str(interaction.guild.id)]['pl_id']
+            channel: discord.TextChannel = interaction.channel
+            message = await channel.fetch_message(messageid)
+            emo = interaction.component.emoji
+            vc: discord.VoiceClient = get(self.bot.voice_clients, guild=self.bot.get_guild(interaction.guild_id))
 
-        if str(emo) == '▶' and vc.is_playing():
-            vc.stop()
-            await Auto_resume(bot=self.bot).after_song(vc)
-
-        elif str(emo) == '⏯':
-            if not vc.is_playing() and not vc.is_paused():
+            if str(emo) == '▶' and vc.is_playing():
+                vc.stop()
                 await Auto_resume(bot=self.bot).after_song(vc)
-            elif vc.is_paused():
-                vc.resume()
-            elif vc.is_playing() and not vc.is_paused():
-                vc.pause()
 
-        elif str(emo) == '⏹' and vc.is_playing():
-            vc.stop()
+            elif str(emo) == '⏯':
+                if not vc.is_playing() and not vc.is_paused():
+                    await Auto_resume(bot=self.bot).after_song(vc)
+                elif vc.is_paused():
+                    vc.resume()
+                elif vc.is_playing() and not vc.is_paused():
+                    vc.pause()
 
-        elif str(emo) == '🔊' and vc.is_playing():
-            vc.source.volume = float(vc.source._volume) + 0.2
+            elif str(emo) == '⏹' and vc.is_playing():
+                vc.stop()
+
+            elif str(emo) == '🔊' and vc.is_playing():
+                vc.source.volume = float(vc.source._volume) + 0.2
 
 
-        elif str(emo) == '🔈' and vc.is_playing():
-            vc.source.volume = float(vc.source._volume) - 0.2
+            elif str(emo) == '🔈' and vc.is_playing():
+                vc.source.volume = float(vc.source._volume) - 0.2
 
-        elif str(emo) == '🔇' and vc.is_playing():
-            if vc.source._volume != 0:
-                vc.source.volume = 0
-            else:
-                vc.source.volume = 0.3
+            elif str(emo) == '🔇' and vc.is_playing():
+                if vc.source._volume != 0:
+                    vc.source.volume = 0
+                else:
+                    vc.source.volume = 0.3
 
-        elif str(emo) == '◀' and vc.is_playing():
-            vc.stop()
-            await Auto_resume.befor_song(vc)
+            elif str(emo) == '◀' and vc.is_playing():
+                vc.stop()
+                await Auto_resume.befor_song(vc)
+        except AttributeError:
+            pass
 
 
 def setup(bot):
