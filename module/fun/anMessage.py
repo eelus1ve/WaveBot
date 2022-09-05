@@ -41,6 +41,15 @@ class Get_message(commands.Cog):
         adm_chlen = await self.bot.fetch_channel(1015940035503214593)
         await adm_chlen.send(f'{ms1.author.name}#{ms1.author.discriminator} отправил сообщение для {ms1.content} с содержанием: \n\n{ms2.content}', components=[Button(label='одобрить'), Button(label='послать')])
 
+    @commands.Cog.listener('on_button_click')
+    async def zxcvbnmsdfghjkhgfd(self, interaction: discord_components.Interaction):
+        if interaction.component.label == 'одобрить':
+            await SendMessage(self.bot).send_mess(GetMember(self.bot).get_mem(interaction.message.content.split('\n\n')[0].split()[4]), interaction.message.content.split('\n\n')[1])
+            await interaction.message.delete()
+        elif interaction.component.label == 'послать':
+            await SendMessage(self.bot).not_send_mess(GetMember(self.bot).get_mem(interaction.message.content.split('\n\n')[0].split()[0]))
+            await interaction.message.delete()
+
 
 
 
@@ -58,15 +67,6 @@ class GetMember:
 class SendMessage:
     def __init__(self, bot):
         self.bot = bot
-    
-    @commands.Cog.listener('on_button_click')
-    async def zxcvbnmsdfghjkhgfd(self, interaction: discord_components.Interaction):
-        if interaction.component.label == 'одобрить':
-            await SendMessage(self.bot).send_mess(GetMember(self.bot).get_mem(interaction.message.content.split('\n\n')[0].split()[4]), interaction.message.content.split('\n\n')[1])
-            await interaction.message.delete()
-        elif interaction.component.label == 'послать':
-            await SendMessage(self.bot).not_send_mess(GetMember(self.bot).get_mem(interaction.message.content.split('\n\n')[0].split()[0]))
-            await interaction.message.delete()
 
     async def send_mess(self, member, content: discord.Member):
         await member.send(embed=discord.Embed(

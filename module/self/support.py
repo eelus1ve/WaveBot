@@ -10,6 +10,7 @@ from discord_components import SelectOption
 import json
 import os
 from BTSET import ADMINS
+from module.fun.anMessage import GetMember
 
 
 class Suppot(commands.Cog):
@@ -59,8 +60,6 @@ class Suppot(commands.Cog):
 
                     ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-                    Suppot.support_json_writer(member=interaction.author, reason='idea', text=ms.content)
-
                     await ms.author.send('спасибо за идею она будет рассмотренни в течении недели')
                     await Suppot(self.bot).send_to_moder(ms.author, 'идею', ms.content)
 
@@ -71,9 +70,8 @@ class Suppot(commands.Cog):
 
                     ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-                    Suppot.support_json_writer(member=interaction.author, reason='que', text=ms.content)
-
                     await ms.author.send('ответ будет дан в течении двух дней')
+                    await Suppot(self.bot).send_to_moder(ms.author, 'вопрос', ms.content)
 
                 elif interaction.values[0] == 'err':
                     await interaction.send(embed=discord.Embed(
@@ -82,99 +80,76 @@ class Suppot(commands.Cog):
 
                     ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-                    Suppot.support_json_writer(member=interaction.author, reason='err', text=ms.content)
-
                     await ms.author.send('спасибо за помощь в поисках ошибок бота')
+                    await Suppot(self.bot).send_to_moder(ms.author, 'ошибку', ms.content)
 
                 elif interaction.values[0] == 'message':
+                    await interaction.send(embed=discord.Embed(
+                        title='Напишите сообщение'
+                    ))
+
                     ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-                    Suppot.support_json_writer(member=interaction.author, reason='message', text=ms.content)
-
                     await ms.author.send('ожидайте ответа в течении 9999999999999999999999 дней')
+                    await Suppot(self.bot).send_to_moder(ms.author, 'сообщение', ms.content)
             except IndexError:
                 pass
     
-    async def send_to_moder(self, member, type, message):
+    async def send_to_moder(self, member, type_mes, message):
         adm_chlen = await self.bot.fetch_channel(1015940035503214593)
-        await adm_chlen.send(f'Пользователь {member.name} отправил {type} c содержанием \n\n\n{message}', components=[
+        await adm_chlen.send(f'Пользователь {member.name}#{member.discriminator} отправил {type_mes} c содержанием \n\n\n{message}', components=[
             Button(label='принять(с сообщением)'),
             Button(label='принять(без сообщения)'),
-            Button(label='принять(отклонить)')
+            Button(label='отклонить')
         ])
 
 
-'''class SupportAnswer(commands.Cog):
+class SupportAnswer(commands.Cog):
     def __init__(self, bot):
         self.bot: discord_components.ComponentsBot = bot
 
-    @commands.command()
-    async def admin_request(self, ctx):
-        if str(ctx.author.id) in ADMINS:
-            with open('support.json', 'r') as file:
-                sup_data = json.load(file)
-            await ctx.send(components=[
-                Select(
-                    max_values=1,
-                    min_values=1,
-                    placeholder='чё смотреть хочешь?',
-                    options=[
-                        SelectOption(label=f'{key}', value=key) for key in sup_data if sup_data[key]
-                    ]
-                )
-            ])
+    async def send_answer(self, member, his_q, ans, ans_mem='WAVE_bot'):
+        await member.send(embed=discord.Embed(
+            title=f'{his_q}\n\nВам ответил {ans_mem}',
+            description=ans
+        ))
 
-    @commands.Cog.listener('on_select_option')
-    async def vbhyfd(self, interaction):
+    @commands.Cog.listener('on_button_click')
+    async def answer(self, interaction: discord_components.Interaction):
         if str(interaction.author.id) in ADMINS:
-            if interaction.component.placeholder == 'чё смотреть хочешь?':
-                with open('support.json', 'r') as file:
-                    sup_data = json.load(file)
 
-                int_val = sup_data[interaction.values[0]]
+            def check(message: discord.Message):
+                return message.author == interaction.author and interaction.channel == message.channel
 
-                await interaction.send(components=[
-                    Select(
-                        max_values=1,
-                        min_values=1,
-                        placeholder='кого смотреть хочешь?',
-                        options=[
-                            SelectOption(label=f'{await self.bot.fetch_user(int(key))}', value=f'{interaction.values[0]}/*/*/{key}') for key in int_val if int_val[key]
-                        ]
-                    )
-                ])
-
-    @commands.Cog.listener('on_select_option')
-    async def vbhyffdd(self, interaction):
-        if str(interaction.author.id) in ADMINS:
-            if interaction.component.placeholder == 'кого смотреть хочешь?':
-                with open('support.json', 'r') as file:
-                    sup_data = json.load(file)
-
-                int_val = interaction.values[0].split('/*/*/')
-                in_mess = sup_data[int_val[0]][int_val[1]]
-                member = await self.bot.fetch_user(int(int_val[1]))
-
-                await interaction.send(f'{in_mess} \n\nпиши ответ')
-
-
-                def check(message: discord.Message):
-                    return message.author == interaction.author and not message.guild
+            if interaction.component.label == 'принять(с сообщением)':
+                await interaction.send('ответ пиши')
 
                 ms: discord.Message = await self.bot.wait_for('message', check=check)
 
-                await member.send(ms.content)
+                await SupportAnswer(self.bot).send_answer(GetMember(self.bot).get_mem(interaction.message.content.split()[1]), interaction.message.content.split('\n\n\n')[1], ms.content, f'{ms.author.name}#{ms.author.discriminator}')
 
-                del sup_data[int_val[0]][int_val[1]]
+                await interaction.message.delete()
+                await ms.delete()
 
-                with open('support.json', 'w') as file:
-                    json.dump(sup_data, file, indent=4)
-'''
+            elif interaction.component.label == 'принять(без сообщения)':
 
+                ms: str = 'Cпасибо мы обязательно прислушаемся к Вам'
 
+                await SupportAnswer(self.bot).send_answer(GetMember(self.bot).get_mem(interaction.message.content.split()[1]), interaction.message.content.split('\n\n\n')[1], ms)
 
+                await interaction.message.delete()
+
+            elif interaction.component.label == 'отклонить':
+
+                ms: str = 'Cпасибо, но мы вынуждены сообщить что ваша идея скорее всего будет проигнорирована'
+
+                await SupportAnswer(self.bot).send_answer(
+                    GetMember(self.bot).get_mem(interaction.message.content.split()[1]),
+                    interaction.message.content.split('\n\n\n')[1], ms)
+
+                await interaction.message.delete()
 
 def setup(bot):
     bot.add_cog(Suppot(bot))
-    #bot.add_cog(SupportAnswer(bot))
+    bot.add_cog(SupportAnswer(bot))
 
