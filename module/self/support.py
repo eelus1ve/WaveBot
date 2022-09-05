@@ -1,4 +1,6 @@
 import asyncio
+from cProfile import label
+from msilib.schema import Component
 
 import discord
 import discord_components
@@ -60,8 +62,7 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='idea', text=ms.content)
 
                     await ms.author.send('спасибо за идею она будет рассмотренни в течении недели')
-                    adm_user = await self.bot.fetch_user(user_id=466609421863354388)
-                    await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
+                    await Suppot(self.bot).send_to_moder(ms.author, 'идею', ms.content)
 
                 elif interaction.values[0] == 'que':
                     await interaction.send(embed=discord.Embed(
@@ -73,8 +74,6 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='que', text=ms.content)
 
                     await ms.author.send('ответ будет дан в течении двух дней')
-                    adm_user = await self.bot.fetch_user(466609421863354388)
-                    await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
 
                 elif interaction.values[0] == 'err':
                     await interaction.send(embed=discord.Embed(
@@ -86,8 +85,6 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='err', text=ms.content)
 
                     await ms.author.send('спасибо за помощь в поисках ошибок бота')
-                    adm_user = await self.bot.fetch_user(466609421863354388)
-                    await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
 
                 elif interaction.values[0] == 'message':
                     ms: discord.Message = await self.bot.wait_for('message', check=check)
@@ -95,12 +92,19 @@ class Suppot(commands.Cog):
                     Suppot.support_json_writer(member=interaction.author, reason='message', text=ms.content)
 
                     await ms.author.send('ожидайте ответа в течении 9999999999999999999999 дней')
-                    adm_user = await self.bot.fetch_user(466609421863354388)
-                    await adm_user.send('ОТВЕТЬ МРАЗЬ ТЕБЕ ВОПРОС ЗАДАЛИ')
             except IndexError:
                 pass
+    
+    async def send_to_moder(self, member, type, message):
+        adm_chlen = await self.bot.fetch_channel(1015940035503214593)
+        await adm_chlen.send(f'Пользователь {member.name} отправил {type} c содержанием \n\n\n{message}', components=[
+            Button(label='принять(с сообщением)'),
+            Button(label='принять(без сообщения)'),
+            Button(label='принять(отклонить)')
+        ])
 
-class SupportAnswer(commands.Cog):
+
+'''class SupportAnswer(commands.Cog):
     def __init__(self, bot):
         self.bot: discord_components.ComponentsBot = bot
 
@@ -165,12 +169,12 @@ class SupportAnswer(commands.Cog):
 
                 with open('support.json', 'w') as file:
                     json.dump(sup_data, file, indent=4)
-
+'''
 
 
 
 
 def setup(bot):
     bot.add_cog(Suppot(bot))
-    bot.add_cog(SupportAnswer(bot))
+    #bot.add_cog(SupportAnswer(bot))
 
