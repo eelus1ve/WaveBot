@@ -5,6 +5,8 @@ import discord
 from discord.ext import commands
 from distutils.log import error
 from BD import bdpy
+from BTSET import embpy
+from discord.utils import get
 from typing import Optional
 import datetime
 import pytz
@@ -13,42 +15,46 @@ class Banpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['бан', 'Бан', 'БАН'])
-    @commands.has_permissions(administrator=True)
-    async def ban(self, ctx, member: discord.Member, reason = None):
-        COLOR = bdpy(ctx)['COLOR']
-        await member.ban(reason=reason)
-        
-        #====================================================================
-        #audit
-        #====================================================================
-        emb=discord.Embed(
-            title='Блокировка участника',
-            description=f'Учасник {member.name}#{memebr.discriminator} был заблокирован!\nПричина: {reason}',
-            timestamp=moscow_time,
-            color=COLOR
-        )
-        emb.set_footer(text=f'Модератор заблокировавший участника {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
-        await get(message.guild.text_channels, id=int(idAdminchennel)).send(embed=emb)
-        #====================================================================
-        #rep
-        #====================================================================
-        await ctx.send(embed=discord.Embed(
-                title="Успешно",
-                description=f"*{member.mention} был забанен !*",
+    async def ban(self, ctx: commands.Context, member: discord.Member, reason = None):
+        if bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Bans']['Ban'] == "True" or ctx.author.guild_permissions.administrator:
+            COLOR = bdpy(ctx)['COLOR']
+            idAdminchennel = bdpy(ctx)['idAdminchennel']
+            await member.ban(reason=reason)
+            
+            #====================================================================
+            #audit
+            #====================================================================
+            if bdpy(ctx)['idAdminchennel'] in ctx.guild.channels: #and bdpy(ctx)['Modules']['Audit']:
+                emb=discord.Embed(
+                    title='Блокировка участника',
+                    description=f'Учасник {member.name}#{member.discriminator} был заблокирован!\nПричина: {reason}',
+                    timestamp=moscow_time,
+                    color=COLOR
+                )
+                emb.set_footer(text=f'Модератор заблокировавший участника {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
+                await get(ctx.guild.text_channels, id=int(idAdminchennel)).send(embed=emb)
+            #====================================================================
+            #rep
+            #====================================================================
+            await ctx.send(embed=discord.Embed(
+                    title="Успешно",
+                    description=f"*{member.mention} был забанен !*",
+                    timestamp=moscow_time,
+                    color=COLOR
+                ), delete_after=10.0)
+            #====================================================================
+            #ls
+            #====================================================================
+            emb=discord.Embed(
+                title='Вас заблокировали',
+                description=f'Вы были заблокированы на сервере {ctx.guild.name}!\nПричина: {reason}',
                 timestamp=moscow_time,
                 color=COLOR
-            ))
-        #====================================================================
-        #ls
-        #====================================================================
-        emb=discord.Embed(
-            title='Вас заблокировали',
-            description=f'Вы были заблокированы на сервере {ctx.guild.name}!\nПричина: {reason}',
-            timestamp=moscow_time,
-            color=COLOR
-        )
-        emb.set_footer(text=f'Модератор исключивший вас {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
-        await member.send(embed=emb)
+            )
+            emb.set_footer(text=f'Модератор исключивший вас {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
+            await member.send(embed=emb)
+        else:
+            await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
         #====================================================================
 
 

@@ -1,4 +1,6 @@
 from asyncio import tasks
+from decimal import Inexact
+from re import T
 from turtle import rt
 from unicodedata import category
 import discord
@@ -66,12 +68,15 @@ class Roomedit(commands.Cog):
     # )
 
 
-    @commands.Cog.listener('on_voice_state_update')
+    @commands.Cog.listener('on_voice_state_update')                     #тут все идеальнео можно больше не трогать
     async def roomedit_move_on_voice_state_update(self, member, defore, after):
         try:
             with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
             role = bdmpy(mr=member)['FirstRole']
+            if not(role in member.guild.roles):
+                role = member.guild.roles[0]
+
             try:
                 SelfRooms = dataServerID[str(defore.channel.guild.id)]['Selfrooms']
                 SelfRoom = int(dataServerID[str(defore.channel.guild.id)]['selfRoom']["vc"])
@@ -85,11 +90,7 @@ class Roomedit(commands.Cog):
                     ow1 = discord.PermissionOverwrite()
                     ow1.connect = True
                     ow1.view_channel = True
-                    if role in member.guild.roles:
-                        TARGET=role
-                    else:
-                        TARGET = member.guild.roles[0]
-                    await member.voice.channel.set_permissions(target=TARGET, overwrite=ow1)
+                    await member.voice.channel.set_permissions(target=role, overwrite=ow1)
                     dataServerID[str(member.guild.id)]['Selfrooms'].update({
                         str(chlen.id): str(member.id)})
                 with open('users.json', 'w') as file:
@@ -101,11 +102,7 @@ class Roomedit(commands.Cog):
                     ow1 = discord.PermissionOverwrite()
                     ow1.connect = True
                     ow1.view_channel = True
-                    if role in member.guild.roles:
-                        TARGET=role
-                    else:
-                        TARGET = member.guild.roles[0]
-                    await member.voice.channel.set_permissions(target=TARGET, overwrite=ow1)
+                    await member.voice.channel.set_permissions(target=role, overwrite=ow1)
                     dataServerID[str(member.guild.id)]['Selfrooms'].update({
                         str(chlen.id): str(member.id)})
                 with open('users.json', 'w') as file:
@@ -120,20 +117,19 @@ class Roomedit(commands.Cog):
         except:
             pass
 
-    async def roomedit_on_button_click(self, interaction):
+    async def roomedit_on_button_click(self, interaction):                         #эту санину надо переписать!
         if str(interaction.author.id) == bdpy(ctx=interaction)['Selfrooms'][str(interaction.author.voice.channel.id)]:
             role = bdmpy(mr=interaction.author)['FirstRole']
-            if role in interaction.guild.roles:
-                TARGET=role
-            else:
-                TARGET = interaction.guild.roles[0]
+            if not(role in interaction.guild.roles):
+                role = interaction.guild.roles[0]
+
             async def write():
                 ow2 = discord.PermissionOverwrite()            
-                if interaction.channel.overwrites_for(TARGET).send_messages:
+                if interaction.channel.overwrites_for(role).send_messages:
                     ow2.send_messages = False
                 else:
                     ow2.send_messages = True
-                await interaction.channel.set_permissions(target=TARGET, overwrite=ow2)
+                await interaction.channel.set_permissions(target=role, overwrite=ow2)
             with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 ownRoom = int(dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)])
@@ -186,22 +182,26 @@ class Roomedit(commands.Cog):
 
 
             elif str(interaction.component.emoji) == '👥':
-                await interaction.send(embed = embpy(ctx=interaction, comp='n', des='напишите число участников'))
+                await interaction.send(embed = embpy(ctx=interaction, comp='n', des='напишите число участников от 0 до 99'))
                 await write()
                 def check(msg: discord.Message):
                     return msg.author == interaction.author and msg.channel == interaction.channel and msg.author == interaction.guild.get_member(ownRoom)
 
                 ms = await self.bot.wait_for(event='message', check=check)
                 await write()
+                # if int(ms.content) <= 99:
                 try:
                     await ms.author.voice.channel.edit(user_limit=int(ms.content))
                     await interaction.send(embed = embpy(ctx=interaction, comp='s', des=f'Количество людей в комнате ограничено на {ms.content}'))
                 except TypeError:
                     await interaction.send(embed = embpy(ctx=interaction, comp='e', des='Укажите число от 1 до 99'))
+                # else:
+                    # await interaction.send(embed = embpy(ctx=interaction, comp='e', des=f'Укажите число от 1 до 99'))
                 await ms.delete()
+                
 
             elif str(interaction.component.emoji) == '🔒':
-                fr = TARGET
+                fr = role
                 pr = interaction.author.voice.channel.overwrites_for(fr)
                 if interaction.author.voice.channel.overwrites_for(fr).connect:
                     pr.connect = False
@@ -213,7 +213,7 @@ class Roomedit(commands.Cog):
                 await interaction.author.voice.channel.set_permissions(target=fr, overwrite=pr)
 
             elif str(interaction.component.emoji) == '✏️':
-                botmes = await interaction.send(embed = embpy(ctx=interaction, comp='n', des='напишите новое название комнаты'))
+                await interaction.send(embed = embpy(ctx=interaction, comp='n', des='напишите новое название комнаты'))
                 await write()
                 def check(msg: discord.Message):
                     return msg.author == interaction.author and msg.channel == interaction.channel and msg.author == interaction.guild.get_member(ownRoom)
@@ -221,12 +221,11 @@ class Roomedit(commands.Cog):
                 ms = await self.bot.wait_for(event='message', check=check)
                 await write()
                 await ms.author.voice.channel.edit(name=f'{ms.content}')
-                await botmes.edit('123')
                 await ms.delete()
 
 
             elif str(interaction.component.emoji) == '👁‍🗨':
-                fr = TARGET
+                fr = role
                 pr = interaction.author.voice.channel.overwrites_for(fr)
                 
                 if interaction.author.voice.channel.overwrites_for(fr).view_channel:
@@ -291,11 +290,37 @@ class Roomedit(commands.Cog):
         
     @commands.Cog.listener('on_voice_state_update')
     async def roomedit_mute_on_voice_state_update(self, member, before, after):
-        Selfrooms = bdmpy(mr=member)['Selfrooms']
         try:
+            Selfrooms = bdmpy(mr=member)['Selfrooms']
             if (not(after) and not(before.channel.permissions_for(member).speak) and str(before.channel.id) in [k for k in Selfrooms.keys()]) or (after.channel != before.channel and not(before.channel.permissions_for(member).speak) and str(before.channel.id) in [k for k in Selfrooms.keys()]):
                     await member.edit(mute = False)
         except:
             pass
+        
+# class Roomeditint(interactions.Extension):
+#     def __init__(self, client):
+#         self.client = client
+    
+#     @interactions.extension_listener('on_button_click')
+#     async def ddddd(self, interaction):
+#         print(interaction)
+#         print(dir(interaction))
+#         if str(interaction.component.emoji) == '👥':
+#             await interaction.popup(Modal(
+#                             custom_id='button1',
+#                             title=' ',
+#                             components=[
+#                                 TextInput(
+#                                     style=TextStyleType.SHORT,
+#                                     custom_id='qwertyuiop',
+#                                     label='число'
+#                                 )
+#                             ]
+#                         ))
+
+
 def setup(bot):
-    bot.add_cog(Roomedit(bot))
+    if str(bot).startswith('<d'):
+        bot.add_cog(Roomedit(bot))
+    # elif str(bot).startswith('<i'):
+    #     Roomeditint(bot)

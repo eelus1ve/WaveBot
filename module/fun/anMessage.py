@@ -38,7 +38,7 @@ class Get_message(commands.Cog):
             color=0x0000FF
         ))
 
-        adm_chlen = await self.bot.fetch_channel(1015940035503214593)
+        adm_chlen = await self.bot.fetch_channel(1023514594414690324)
         await adm_chlen.send(f'{ms1.author.name}#{ms1.author.discriminator} отправил сообщение для {ms1.content} с содержанием: \n\n{ms2.content}', components=[Button(label='одобрить'), Button(label='послать')])
 
     @commands.Cog.listener('on_button_click')

@@ -5,7 +5,7 @@ from BD import bdpy, bdint
 
 BOTVERSION = '***ALPHA 1.0***'
 ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
-IGNORE = ['error', 'btst', 'mafia', 'warns', 'ban', 'kick', 'mwarns']
+IGNORE = ['error', 'mafia', 'warns', 'ban', 'kick', 'mwarns', '2048']
 
 def embpy(ctx, comp, des):
     try:

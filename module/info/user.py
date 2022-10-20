@@ -20,7 +20,7 @@ class Duser(commands.Cog):
     @commands.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
     async def user(self, ctx: commands.Context, memberr: Optional[discord.Member]):
         # member = await self.bot.get_user(int(member.id))
-        interactions.PresenceActivityType
+        # interactions.PresenceActivityType
         member = memberr or ctx.author
         mr = None
         if member.activities:
@@ -40,7 +40,7 @@ class Duser(commands.Cog):
         if member.activities:
             for activity in member.activities:
                 if isinstance(activity, Spotify):
-                    lstdisc.append(f'***Слушает:*** {activity.artist} — {activity.title} \n')
+                    lstdisc.append(f'***Слушает:*** {activity.artist} — [{activity.title}](https://open.spotify.com/track/{activity.track_id}) \n')
 
         if str(member.status) == 'dnd': status = 'Не беспокоить'
         elif str(member.status) == 'offline': status = 'Не в сети'
@@ -56,36 +56,15 @@ class Duser(commands.Cog):
                             description="***Основная информация:***\n" + "".join(lstdisc),
                             color=COLOR
                             )
+        # if bdpy(ctx)['Modules']['Rank']:
+        # if bdpy(ctx)['Modules']['Warns']:   
         emb.add_field(name='***XP***', value=score, inline=True)
         emb.add_field(name='***LVL***', value=LVL, inline=True) #добавить if
         emb.add_field(name='***Предупреждения***', value=warns, inline=True)
+        
         emb.set_thumbnail(url=member.avatar_url)
         emb.set_footer(text=f'ID: {member.id}')
         await ctx.send(embed=emb)
-class Iuser(interactions.Extension):
-    def __init__(self, client: interactions.Client):
-        self.client: interactions.Client = client
-    @interactions.extension_command(
-        name="user",
-        description="abrakodabra",
-        options= [
-        {
-            "name": "user",
-            "description": "Serch animal",
-            "type": 6,
-            "required": True
-        }]
-    )
-    async def user(self, ctx: interactions.context, user: interactions.Member):
-        memberr=user
-        return(memberr)
-
-class Dduser(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
-        self.bot: ComponentsBot = bot
 
 def setup(sbot):
-    if str(sbot).startswith('<i'):
-        Iuser(sbot)
-    elif str(sbot).startswith('<d'):
-        sbot.add_cog(Duser(sbot))
+    sbot.add_cog(Duser(sbot))

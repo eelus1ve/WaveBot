@@ -19,27 +19,24 @@ FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconne
                     'options': '-vn'}
 
 
-class Add_music(interactions.Extension):
-    def __init__(self, client):
-        self.client = client
+class Add_music:
+    def __init__(self, bot):
+        self.bot: discord_components.ComponentsBot = bot
 
-    @interactions.extension_command(
-        name='music',
-        description='.......',
-        options=[Option(
-            name="msc",
-            description="......",
-            type=3,
-            required=True
-        )])
-    async def add_msc(self, ctx: interactions.CommandContext, msc: str):
+    async def add_msc(self, ctx: commands.Context, inter):
+
+        def check(message):
+            return message.author == inter.author and message.channel == inter.channel
+
+        ms = await self.bot.wait_for('message', check=check)
+        msc = ms.content
 
         with open('music.json', 'r') as file:
             data: dict = json.load(file)
-            if not (ctx.guild_id in data):
+            if not (str(ctx.guild.id) in data):
                 data.update(
                     {
-                        int(ctx.guild_id): {
+                        int(ctx.guild.id): {
                             'songs': [msc],
                             'pl_id': None,
                             'chl_id': None
@@ -47,17 +44,17 @@ class Add_music(interactions.Extension):
                     }
                 )
             else:
-                data[ctx.guild_id]['songs'].append(msc)
+                data[str(ctx.guild.id)]['songs'].append(msc)
 
         with open('music.json', 'w') as file:
             json.dump(data, file, indent=4)
 
-        await ctx.send('успешно', ephemeral=True)
+        await ms.delete()
 
 class Player_edit():
     def __init__(self, bot):
         self.bot = bot
-    async def player_edit(self, gld: discord.Guild, chlen: discord.TextChannel):#==================================================================================================================    plaer edit
+    async def player_edit(self, gld: discord.Guild, chlen: discord.TextChannel):#=========================================================    plaer edit
         try:
             start_time = time.time()
             with open('music.json', 'r') as file:
@@ -307,7 +304,11 @@ class Button_start(commands.Cog):
             elif str(emo) == '◀' and vc.is_playing():
                 vc.stop()
                 await Auto_resume.befor_song(vc)
-        except:
+
+            elif str(emo) == '➕':
+                await interaction.send('напишите название')
+                await Add_music(self.bot).add_msc(ctx=interaction, inter=interaction)
+        except InvalidMultipartContentTransferEncodingDefect:
             pass
 
 

@@ -1,14 +1,9 @@
-import asyncio
-from cProfile import label
-from msilib.schema import Component
-
 import discord
 import discord_components
 from discord.ext import commands
 from discord_components import DiscordComponents, ComponentsBot, Button, Select
 from discord_components import SelectOption
 import json
-import os
 from BTSET import ADMINS
 from module.fun.anMessage import GetMember
 
@@ -96,7 +91,7 @@ class Suppot(commands.Cog):
                 pass
     
     async def send_to_moder(self, member, type_mes, message):
-        adm_chlen = await self.bot.fetch_channel(1015940035503214593)
+        adm_chlen = await self.bot.fetch_channel(1023514594414690324)
         await adm_chlen.send(f'Пользователь {member.name}#{member.discriminator} отправил {type_mes} c содержанием \n\n\n{message}', components=[
             Button(label='принять(с сообщением)'),
             Button(label='принять(без сообщения)'),
