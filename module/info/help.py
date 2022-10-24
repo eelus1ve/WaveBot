@@ -70,7 +70,7 @@ class Helppy(commands.Cog):
 
         else:
             emb = discord.Embed(title='*Список доступных команд:*',
-            description = f'\n'.join([str(i) + ' - ' + str(Helppy.help_dict[i]) for i in Helppy.help_dict]),
+            description = f'\n'.join([i for i in Helppy.help_dict]),
             color=COLOR)
             await ctx.author.send(embed=emb)
             await ctx.send(embed=discord.Embed(
