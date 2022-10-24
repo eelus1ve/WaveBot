@@ -28,7 +28,7 @@ class Json_write(commands.Cog):
 
         if not os.path.exists('glb_vote.json'):
             with open('glb_vote.json', 'w') as file:
-                file.write('{"votes"}')
+                file.write('{}')
         else:
             with open('glb_vote.json', 'r') as file:
                 if not file.read():
@@ -75,8 +75,9 @@ class Json_write(commands.Cog):
                             'ErCOLOR': '0x8B0000',
                             'AUDIT': {},
                             'AUDIT_CHANNEL': '0',
+                            'FirstRole': '0',
                             'JoinRoles': [],
-                            'ModRoles': [],
+                            'ModRoles': {},
                             'ROLES': {},
                             'actmoduls': '',
                             'nCaps': -1,

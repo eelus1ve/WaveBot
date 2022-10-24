@@ -437,17 +437,16 @@ def setup(bot: discord_components.ComponentsBot):
                 await ms.delete()
 
             elif arg == 'создать "свои комнаты"':
-                chlen_krokodila = interaction
+                chlen_krokodila = interaction.channel
 
                 if data[str(interaction.guild.id)]['selfRoom'] != '0':
                     for category in interaction.guild.categories:
                         [await chnl.delete() for chnl in category.channels if
                          str(category.id) == data[str(interaction.guild.id)]['selfRoom']["ct"]]
                     [await i.delete() for i in interaction.guild.categories if
-                     str(i.id) == data[str(interaction.guild.id)]['selfRoom']["ct"] or str(i.id) ==
-                     data[str(interaction.guild.id)]['selfRoom']["ctp"]]
+                     str(i.id) == data[str(interaction.guild.id)]['selfRoom']["ct"] or str(i.id) == data[str(interaction.guild.id)]['selfRoom']["ctp"]]
                     data[str(interaction.guild.id)]['selfRoom'] = '0'
-                    await chlen_krokodila.send(embed=discord.Embed(title='Успешно',
+                    await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
                                                                    description='Канал для создания комнат удалён',
                                                                    color=COLOR))
                 else:
@@ -485,6 +484,9 @@ def setup(bot: discord_components.ComponentsBot):
                     data[str(interaction.guild.id)]['selfRoom'] = {"ct": str(ct.id), "ctp": str(ctp.id),
                                                                    "vc": str(vcch.id),
                                                                    "tc": str(chn.id)}
+                    ow2 = discord.PermissionOverwrite()
+                    ow2.send_messages = False
+                    await chn.set_permissions(target=interaction.guild.roles[0], overwrite=ow2) 
                     await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
                                                                    description='Канал для создания комнат создан',
                                                                    color=COLOR))

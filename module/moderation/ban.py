@@ -4,8 +4,7 @@ from tkinter.tix import INTEGER
 import discord
 from discord.ext import commands
 from distutils.log import error
-from BD import bdpy
-from BTSET import embpy
+from BTSET import embpy, bdpy
 from discord.utils import get
 from typing import Optional
 import datetime
@@ -16,7 +15,11 @@ class Banpy(commands.Cog):
         self.bot = bot
     @commands.command(aliases=['бан', 'Бан', 'БАН'])
     async def ban(self, ctx: commands.Context, member: discord.Member, reason = None):
-        if bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Bans']['Ban'] == "True" or ctx.author.guild_permissions.administrator:
+        if bdpy(ctx)['ModRoles'] != {}:
+            quest = bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Bans']['Ban'] == "True" or ctx.author.guild_permissions.administrator
+        else:
+            quest = ctx.author.guild_permissions.administrator
+        if quest:
             COLOR = bdpy(ctx)['COLOR']
             idAdminchennel = bdpy(ctx)['idAdminchennel']
             await member.ban(reason=reason)
@@ -56,6 +59,13 @@ class Banpy(commands.Cog):
         else:
             await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
         #====================================================================
+
+def setup(bot):
+    bot.add_cog(Banpy(bot))
+
+
+
+
 
 
     # @commands.command(aliases=['бан', 'Бан', 'БАН'])
@@ -97,5 +107,3 @@ class Banpy(commands.Cog):
                 color = ErCOLOR
             ))'''
             
-def setup(bot):
-    bot.add_cog(Banpy(bot))

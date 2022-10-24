@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
-from BD import bdpy, bdmpy
+from BTSET import bdpy, bdmpy
 
 class Mbrjnpy(commands.Cog):
     def __init__(self, bot):

@@ -2,10 +2,8 @@ import discord
 import json
 import os
 from discord.ext import commands
-from BTSET import ADMINS
+from BTSET import ADMINS, IGNORE, bdpy
 import interactions
-from BD import bdpy
-from BTSET import IGNORE
 dir_name1py = "module"
 lstpy = []
 class Loaderpy(commands.Cog):

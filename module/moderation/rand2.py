@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord_components import Select, SelectOption
-from BD import bdpy, bdmpy
+from BTSET import bdpy, bdmpy
 from discord_components import SelectOption as Sel
 
 class Selectpy(commands.Cog):

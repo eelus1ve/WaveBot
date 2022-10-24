@@ -1,7 +1,7 @@
 import discord
 import random
 from discord.ext import commands
-from BD import bdpy
+from BTSET import bdpy
 
 class Randpy(commands.Cog):
     def __init__(self, bot):

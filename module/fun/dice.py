@@ -1,7 +1,7 @@
 import discord
 import random
 from discord.ext import commands
-from BD import bdpy
+from BTSET import bdpy
 
 class Dicepy(commands.Cog):
     def __init__(self, bot):

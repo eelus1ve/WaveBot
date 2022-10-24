@@ -2,7 +2,7 @@ import discord
 import json
 from discord.ext import commands
 from discord.utils import get
-from BD import bdpy
+from BTSET import bdpy
 
 class Mwarnspy(commands.Cog):
     def __init__(self, bot):

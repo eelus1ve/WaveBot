@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from BD import bdpy
+from BTSET import bdpy
 class Srinfpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

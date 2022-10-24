@@ -24,8 +24,7 @@ from interactions import Modal, TextInput
 import json
 import asyncio
 from discord.ext import commands
-from BD import bdmpy, bdpy
-from BTSET import embpy
+from BTSET import embpy, bdmpy, bdpy
 rtask = None
 class Roomedit(commands.Cog):
     def __init__(self, bot):
@@ -51,7 +50,23 @@ class Roomedit(commands.Cog):
     #                         🎙 - ограничить/выдать право говорить',
     #                         color = COLOR)
     #     await ctx.send(embed=emb,
-    #     components = [
+    #     compo
+    # 
+    # nents = 
+    # 
+    # [
+                            #                Button(emoji=await stb_gld.fetch_emoji(1020971032309403758)),
+                            #                Button(emoji=await stb_gld.fetch_emoji(1020971040416993280)),
+                            #                Button(emoji=await stb_gld.fetch_emoji(1020971037741043713)),
+                            #                Button(emoji=await stb_gld.fetch_emoji(1020971036252053524))
+                            #            ],
+                            #            [
+                            #                Button(emoji=await stb_gld.fetch_emoji(1020971043856330782)),
+                            #                Button(emoji=await stb_gld.fetch_emoji(1020971035014746162)),
+                            #                Button(emoji=await stb_gld.fetch_emoji(1020971033756450866)),
+                            #                Button(emoji=await stb_gld.fetch_emoji(1020971039141920819))
+                            #            ]
+                            # ][
     #         [
     #             Button(emoji = '👑', style=1),
     #             Button(emoji = '🗒', style=1),
@@ -66,6 +81,7 @@ class Roomedit(commands.Cog):
     #         ]
     #     ]
     # )
+
 
 
     @commands.Cog.listener('on_voice_state_update')                     #тут все идеальнео можно больше не трогать
@@ -117,44 +133,44 @@ class Roomedit(commands.Cog):
         except:
             pass
 
-    async def roomedit_on_button_click(self, interaction):                         #эту санину надо переписать!
+    async def roomedit_on_button_click(self, interaction):                     #эту санину надо переписать!
+        stb_gld: discord.Guild = self.bot.get_guild(id=981511419042361344)
         if str(interaction.author.id) == bdpy(ctx=interaction)['Selfrooms'][str(interaction.author.voice.channel.id)]:
             role = bdmpy(mr=interaction.author)['FirstRole']
             if not(role in interaction.guild.roles):
                 role = interaction.guild.roles[0]
-
-            async def write():
-                ow2 = discord.PermissionOverwrite()            
-                if interaction.channel.overwrites_for(role).send_messages:
+            async def write(n): #не if else а числа
+                ow2 = discord.PermissionOverwrite()
+                if n == 2:
                     ow2.send_messages = False
                 else:
                     ow2.send_messages = True
-                await interaction.channel.set_permissions(target=role, overwrite=ow2)
+                await interaction.channel.set_permissions(target=interaction.author, overwrite=ow2)
             with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
                 ownRoom = int(dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)])
 
-            if str(interaction.component.emoji) == '👑': #тут селект
+            if str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971032309403758)): #тут селект
                 await interaction.send(embed=embpy(ctx=interaction, comp='n', des='Укажите нового создателя этого канала @участник '))
-                await write()
+                await write(1)
                 def check(msg: discord.Message):
                     return msg.author == interaction.author and msg.channel == interaction.channel and msg.author == interaction.guild.get_member(ownRoom)
 
                 ms = await self.bot.wait_for(event='message', check=check)
-                await write()
+                await write(2)
                 dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)] = [str(i.id) for i in ms.author.voice.channel.members if ms.content == i.mention][0]
                 with open('users.json', 'w') as file:
                     json.dump(dataServerID, file, indent=4)
                 await ms.delete()
 
-            elif str(interaction.component.emoji) == '🗒':
+            elif str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971040416993280)):
                 await interaction.send(embed=embpy(ctx=interaction, comp='n', des='Напишите @участник которому хотите ограничить право входить в комнату'))
-                await write()
+                await write(1)
                 def check(msg: discord.Message):
                     return msg.author == interaction.author and msg.channel == interaction.channel and msg.author == interaction.guild.get_member(ownRoom)
 
                 ms = await self.bot.wait_for(event='message', check=check)
-                await write()
+                await write(2)
                 pr = discord.PermissionOverwrite()
                 if [i for i in ms.guild.members if ms.content == i.mention][0] in interaction.guild.members:
                     if [i for i in ms.guild.members if ms.content == i.mention][0] in ms.author.voice.channel.members:
@@ -181,14 +197,14 @@ class Roomedit(commands.Cog):
                     await ms.delete()
 
 
-            elif str(interaction.component.emoji) == '👥':
+            elif str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971037741043713)):
                 await interaction.send(embed = embpy(ctx=interaction, comp='n', des='напишите число участников от 0 до 99'))
-                await write()
+                await write(1)
                 def check(msg: discord.Message):
                     return msg.author == interaction.author and msg.channel == interaction.channel and msg.author == interaction.guild.get_member(ownRoom)
 
                 ms = await self.bot.wait_for(event='message', check=check)
-                await write()
+                await write(2)
                 # if int(ms.content) <= 99:
                 try:
                     await ms.author.voice.channel.edit(user_limit=int(ms.content))
@@ -200,7 +216,7 @@ class Roomedit(commands.Cog):
                 await ms.delete()
                 
 
-            elif str(interaction.component.emoji) == '🔒':
+            elif str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971036252053524)):
                 fr = role
                 pr = interaction.author.voice.channel.overwrites_for(fr)
                 if interaction.author.voice.channel.overwrites_for(fr).connect:
@@ -212,19 +228,19 @@ class Roomedit(commands.Cog):
 
                 await interaction.author.voice.channel.set_permissions(target=fr, overwrite=pr)
 
-            elif str(interaction.component.emoji) == '✏️':
+            elif str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971043856330782)):
                 await interaction.send(embed = embpy(ctx=interaction, comp='n', des='напишите новое название комнаты'))
-                await write()
+                await write(1)
                 def check(msg: discord.Message):
                     return msg.author == interaction.author and msg.channel == interaction.channel and msg.author == interaction.guild.get_member(ownRoom)
 
                 ms = await self.bot.wait_for(event='message', check=check)
-                await write()
+                await write(2)
                 await ms.author.voice.channel.edit(name=f'{ms.content}')
                 await ms.delete()
 
 
-            elif str(interaction.component.emoji) == '👁‍🗨':
+            elif str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971035014746162)):
                 fr = role
                 pr = interaction.author.voice.channel.overwrites_for(fr)
                 
@@ -237,26 +253,26 @@ class Roomedit(commands.Cog):
 
                 await interaction.author.voice.channel.set_permissions(target=fr, overwrite=pr)
 
-            elif str(interaction.component.emoji) == '🚪': #селект
+            elif str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971033756450866)): #селект
                 await interaction.send(embed = embpy(ctx=interaction, comp='s', des='напишите @участник  которого хотите выгнать'))
-                await write()
+                await write(1)
                 def check(msg: discord.Message):
                     return msg.author == interaction.author and msg.channel == interaction.channel and msg.author == interaction.guild.get_member(ownRoom)
 
                 ms = await self.bot.wait_for(event='message', check=check)
-                await write()
+                await write(2)
                 [await i.move_to(None) for i in ms.author.voice.channel.members if ms.content == i.mention]
                 await ms.delete()
 
 
-            elif str(interaction.component.emoji) == '🎙':  #селект
+            elif str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971039141920819)):  #селект
                 await interaction.send(embed = embpy(ctx=interaction, comp='n', des='напишите @участник которому хотите ограничить право говорить'))
-                await write()
+                await write(1)
                 def check(msg: discord.Message):
                     return msg.author == interaction.author and msg.channel == interaction.channel and msg.author == interaction.guild.get_member(ownRoom)
 
                 ms = await self.bot.wait_for(event='message', check=check)
-                await write()
+                await write(2)
                 pr = discord.PermissionOverwrite()
                 
                 if interaction.author.voice.channel.permissions_for([i for i in ms.author.voice.channel.members if ms.content == i.mention][0]).speak:

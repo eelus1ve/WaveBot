@@ -6,9 +6,8 @@ import discord
 from discord import Spotify
 from discord.ext import commands
 from typing import Optional
-from BTSET import ADMINS
+from BTSET import ADMINS, bdpy, bdmpy, bdint
 import pytz
-from BD import bdpy, bdmpy, bdint
 import interactions
 from discord.utils import get
 from discord_components import ComponentsBot

@@ -1,7 +1,7 @@
 import discord
-from BTSET import BOTVERSION, ADMINS
+from BTSET import BOTVERSION, ADMINS, bdpy
 from discord.ext import commands
-from BD import bdpy
+ 
 class Infopy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

@@ -3,7 +3,7 @@ import random
 import discord
 from discord_components import ComponentsBot, Button, Select
 from discord.ext import commands
-from BD import bdpy
+from BTSET import bdpy
 
 
 class Game2048(commands.Cog):
@@ -11,14 +11,30 @@ class Game2048(commands.Cog):
         self.bot: ComponentsBot = bot
 
     lang_num = [0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-    lang_emo = ['⬛', '🐭', '🐷', '🐺', '🦯', '🦽', '🚶', '🏃', '⛹', '🥉', '🥈', '🥇']
+    lang_emo = []
 
     @commands.command()
     async def p2048(self, ctx):
         COLOR = bdpy(ctx)['COLOR']
         
+        stb_gld: discord.Guild = self.bot.get_guild(id=981511419042361344)
+        e0 = str(await stb_gld.fetch_emoji(1034165149105389568))
+        e2 = str(await stb_gld.fetch_emoji(1032695398848008274))
+        e4 = str(await stb_gld.fetch_emoji(1032695400316026939))
+        e8 = str(await stb_gld.fetch_emoji(1032695401582690304))
+        e16 = str(await stb_gld.fetch_emoji(1034159672627826838))
+        e32 = str(await stb_gld.fetch_emoji(1034159670811705375))
+        e64 = str(await stb_gld.fetch_emoji(1034159669641490533))
+        e128 = str(await stb_gld.fetch_emoji(1032695394179764384))
+        e256 = str(await stb_gld.fetch_emoji(1032695395651964979))
+        e512 = str(await stb_gld.fetch_emoji(1032695397010898944))
+        e1024= str(await stb_gld.fetch_emoji(1032695402903912559))
+        e2048 = str(await stb_gld.fetch_emoji(1032695404443218051))
+        lsd = [e0, e2, e4, e8, e16, e32, e64, e128, e256, e512, e1024, e2048]
+        Game2048.lang_emo.extend(lsd)
         body = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         randomaizer(body)
+
         trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
         des=[]
         for i in trans:
@@ -47,7 +63,8 @@ class Game2048(commands.Cog):
                 await interaction.edit_origin()
                 text = interaction.message.embeds[0].description
                 text = text.replace('\n', '')
-                body = [[Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[12:16]]]
+                text = text.split('<')[1:]
+                body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
                 
                 for strng in body:
                     for iiii in range(3):
@@ -68,6 +85,7 @@ class Game2048(commands.Cog):
                             strng[i - 1] = a
                 randomaizer(body)
                 trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
+
                 for i in trans:
                     des.append(str(''.join(map(str, i)) + str('\n')))
                 emb = discord.Embed(title='2048',
@@ -80,8 +98,8 @@ class Game2048(commands.Cog):
                 await interaction.edit_origin()
                 text = interaction.message.embeds[0].description
                 text = text.replace('\n', '')
-                body = [[Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[12:16]]]
-
+                text = text.split('<')[1:]
+                body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
 
                 for ind in range(4):
                     for iiii in range(3):
@@ -114,8 +132,8 @@ class Game2048(commands.Cog):
                 await interaction.edit_origin()
                 text = interaction.message.embeds[0].description
                 text = text.replace('\n', '')
-                body = [[Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[12:16]]]
-
+                text = text.split('<')[1:]
+                body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
 
                 for strng in body:
                     strng.reverse()
@@ -150,8 +168,8 @@ class Game2048(commands.Cog):
                 await interaction.edit_origin()
                 text = interaction.message.embeds[0].description
                 text = text.replace('\n', '')
-                body = [[Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index(i)] for i in text[12:16]]]
-
+                text = text.split('<')[1:]
+                body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
 
                 body.reverse()
                 for ind in range(4):
@@ -189,8 +207,9 @@ class Game2048(commands.Cog):
                 await interaction.message.edit(embed=emb)
 
             elif game_over(body):
-                emb = discord.Embed(title='2048',
-                description='Поражение!',
+                asd = body[0] + body[1] + body[2] + body[3]
+                emb = discord.Embed(title='2048 - Поражение!',
+                description=f'Вы набрали {sum(asd)} очков (Ваше максимальное значение {max(asd)})',
                 color = COLOR)
                 await interaction.message.edit(embed=emb)
         

@@ -1,16 +1,14 @@
-from BTSET import ADMINS
+from BTSET import ADMINS, embpy, bdpy
 import discord
 import asyncio
 from discord.ext import commands
-from BD import bdpy
-from BTSET import embpy
 class Cleanpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(aliases=['очистить', 'Очистить', 'ОЧИСТИТЬ'])
     async def clear(self, ctx, amount: int):
         if bdpy(ctx)['ModRoles'] != {}:
-            quest = bdpy(ctx)['ModRoles'][[str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0]]['Warns']['Warn'] == "True" or ctx.author.guild_permissions.administrator
+            quest = bdpy(ctx)['ModRoles'][[str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0]]['Clear'] == "True" or ctx.author.guild_permissions.administrator
         else:
             quest = ctx.author.guild_permissions.administrator
         if quest:

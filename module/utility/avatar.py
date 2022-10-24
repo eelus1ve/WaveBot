@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from typing import Optional
-from BD import bdpy
+from BTSET import bdpy
 
 class Avatarpy(commands.Cog):
     def __init__(self, bot):

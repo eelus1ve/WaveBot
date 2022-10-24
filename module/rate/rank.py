@@ -1,13 +1,11 @@
-from code import interact
 import discord
 from discord.ext import commands
 from easy_pil import Editor, load_image_async, Font
 from typing import Optional
 from discord import File
-from BD import bdpy, bdint
-import interactions
+from BTSET import bdpy, bdint
+# import interactions
 from PIL import Image, ImageFont, ImageDraw
-from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption
 
 
 class Rankpy(commands.Cog):
@@ -34,8 +32,8 @@ class Rankpy(commands.Cog):
 
         profile = Editor(profile).resize((150, 150)).circle_image()
         
-        FONT = ImageFont.truetype('allFonts.otf', 50) #Font.caveat(size=60)
-        FONT_small = ImageFont.truetype('centurygothic.ttf', 50) #Font.caveat(size=50)
+        FONT = ImageFont.truetype('system/Fonts/allFonts.otf', 50) #Font.caveat(size=60)
+        FONT_small = ImageFont.truetype('system/Fonts/centurygothic.ttf', 50) #Font.caveat(size=50)
 
         
         if blend == 1:

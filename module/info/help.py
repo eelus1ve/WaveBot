@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-from BTSET import BOTVERSION
-from BD import bdpy
+from BTSET import BOTVERSION, bdpy
 class Helppy(commands.Cog):
 
     help_dict = {

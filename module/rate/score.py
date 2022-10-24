@@ -1,4 +1,3 @@
-from email.errors import InvalidMultipartContentTransferEncodingDefect
 import discord
 import json
 from discord.ext import commands
@@ -10,9 +9,10 @@ import interactions
 from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption
 import datetime
 import pytz
+from BTSET import embint, embpy, bdint, bdpy
+
 moscow_time = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
-from BD import bdint, bdpy
-from BTSET import embint, embpy
+
 n = {}
 
 class Score_commands(commands.Cog):
@@ -30,15 +30,19 @@ class Score_commands(commands.Cog):
     @commands.command()
     async def score(self, ctx: commands.Context, mr: Optional[discord.Member], arg: Optional[str]):
         try:
-            if bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Rate']['Score'] == "True" or ctx.author.guild_permissions.administrator:
+            if bdpy(ctx)['ModRoles'] != {}:
+                quest = bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Rate']['Score'] == "True" or ctx.author.guild_permissions.administrator
+            else:
+                quest = ctx.author.guild_permissions.administrator
+            if quest:
                 mrr = mr or ctx.author
                 with open('users.json', 'r') as file:
                     dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-                pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
-                SCR = dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR']
-                LVL = dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL']
+                COLOR = bdpy(ctx)['COLOR']
+                ErCOLOR =  bdpy(ctx)['ErCOLOR']
+                pref =  bdpy(ctx)['PREFIX']
+                SCR =  bdpy(ctx)['USERS'][str(mrr.id)]['SCR']
+                LVL =  bdpy(ctx)['USERS'][str(mrr.id)]['LvL']
                 idAdminchennel = bdpy(ctx)['idAdminchennel']
 
                 if not(arg):
@@ -202,7 +206,7 @@ class Score_commands(commands.Cog):
                     ))
             else:
                 await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
-        except InvalidMultipartContentTransferEncodingDefect:
+        except:
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)',
@@ -210,7 +214,11 @@ class Score_commands(commands.Cog):
             ))
     @commands.command()
     async def clear_score(self, ctx: commands.Context, mr: Optional[discord.Member]):
-        if bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Rate']['ClearScore'] == "True" or ctx.author.guild_permissions.administrator:
+        if bdpy(ctx)['ModRoles'] != {}:
+            quest = bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Rate']['ClearScore'] == "True" or ctx.author.guild_permissions.administrator
+        else:
+            quest = ctx.author.guild_permissions.administrator
+        if quest:
             mrr = mr or ctx.author
             with open('users.json', 'r') as file:
                 dataServerID = json.load(file)
@@ -228,7 +236,11 @@ class Score_commands(commands.Cog):
     @commands.command()
     async def set_lvl(self, ctx: commands.Context, mr: Optional[discord.Member], arg = None):
         try:
-            if bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Rate']['SetLvl'] == "True" or ctx.author.guild_permissions.administrator:
+            if bdpy(ctx)['ModRoles'] != {}:
+                quest = bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Rate']['SetLvl'] == "True" or ctx.author.guild_permissions.administrator
+            else:
+                quest = ctx.author.guild_permissions.administrator
+            if quest:
                 mrr = mr or ctx.author
                 with open('users.json', 'r') as file:
                     dataServerID = json.load(file)
@@ -256,7 +268,11 @@ class Score_commands(commands.Cog):
     @commands.command()
     async def clear_rank(self, ctx: commands.Context, mr: Optional[discord.Member]):
         try:
-            if bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Rate']['CLearRank'] == "True" or ctx.author.guild_permissions.administrator:
+            if bdpy(ctx)['ModRoles'] != {}:
+                quest = bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]['Rate']['CLearRank'] == "True" or ctx.author.guild_permissions.administrator
+            else:
+                quest = ctx.author.guild_permissions.administrator
+            if quest:
                 mrr = mr or ctx.author
                 with open('users.json', 'r') as file:
                     dataServerID = json.load(file)
