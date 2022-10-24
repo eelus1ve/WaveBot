@@ -604,20 +604,20 @@ async def a(ctx: commands.Context):
 
 
 #=======================================================================================================================
-# @bot.event
-# async def on_command_error(ctx, error):
-#     with open('users.json', 'r') as file:
-#         dataServerID = json.load(file)
-#         ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-#         pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
-    # if isinstance(error, commands.errors.CommandNotFound):
-    #     print(error)
-    #     found = re.findall(r'Command \s*"([^\"]*)"', str(error))
-    #     await ctx.send(embed=discord.Embed(
-    #         title="Ошибка",
-    #         description=f"*Команды `{''.join(found)}` не существует*",
-    #         color = ErCOLOR
-    #     ))
+@bot.event
+async def on_command_error(ctx, error):
+    with open('users.json', 'r') as file:
+        dataServerID = json.load(file)
+        ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+    if isinstance(error, commands.errors.CommandNotFound):
+        print(error)
+        found = re.findall(r'Command \s*"([^\"]*)"', str(error))
+        await ctx.send(embed=discord.Embed(
+            title="Ошибка",
+            description=f"*Команды `{''.join(found)}` не существует*",
+            color = ErCOLOR
+        ))
     # elif isinstance(error, commands.errors.MemberNotFound):
     #     found = re.findall(r'Member \s*"([^\"]*)"', str(error))
     #     await ctx.send(embed=discord.Embed(
