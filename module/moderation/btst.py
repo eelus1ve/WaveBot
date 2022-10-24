@@ -437,16 +437,17 @@ def setup(bot: discord_components.ComponentsBot):
                 await ms.delete()
 
             elif arg == 'создать "свои комнаты"':
-                chlen_krokodila = interaction.channel
+                chlen_krokodila = interaction
 
                 if data[str(interaction.guild.id)]['selfRoom'] != '0':
                     for category in interaction.guild.categories:
                         [await chnl.delete() for chnl in category.channels if
-                         category.id == data[str(interaction.guild.id)]['selfRoom']["ct"]]
+                         str(category.id) == data[str(interaction.guild.id)]['selfRoom']["ct"]]
                     [await i.delete() for i in interaction.guild.categories if
-                     i.id == data[str(interaction.guild.id)]['selfRoom']["ct"]]
+                     str(i.id) == data[str(interaction.guild.id)]['selfRoom']["ct"] or str(i.id) ==
+                     data[str(interaction.guild.id)]['selfRoom']["ctp"]]
                     data[str(interaction.guild.id)]['selfRoom'] = '0'
-                    await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
+                    await chlen_krokodila.send(embed=discord.Embed(title='Успешно',
                                                                    description='Канал для создания комнат удалён',
                                                                    color=COLOR))
                 else:
