@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord_components import Select, SelectOption
-from BTSET import bdpy, bdmpy
+from BTSET import bdpy, bdmpy, BD
 from discord_components import SelectOption as Sel
 
 class Selectpy(commands.Cog):
@@ -39,7 +39,7 @@ class Selectpy(commands.Cog):
             ErCOLOR = bdmpy(mr=interaction)['ErCOLOR']
             roles = bdmpy(mr=interaction)['ROLES']
             import json
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
             #========================================Часть мейна=====================================================
             if interaction.component.placeholder.startswith('Укажите'):
@@ -74,7 +74,7 @@ class Selectpy(commands.Cog):
                         color=COLOR
                     ))
 
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                   json.dump(data, file, indent=4) 
             #========================================================================================================
             elif interaction.component.placeholder in [k for k in roles.keys()]:

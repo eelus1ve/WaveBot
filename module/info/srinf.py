@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from BTSET import bdpy
+from BTSET import bdpy, embpy, BD
 class Srinfpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -29,10 +29,12 @@ class Srinfpy(commands.Cog):
                 pr = discord.PermissionOverwrite()
                 pr.connect = False
                 [await chlen.set_permissions(target=ctx.guild.roles[0], overwrite=pr) for chlen in ct.channels]
-        if arg == 'off':
+        elif arg == 'off':
             if '📊Info📊' in [i.name for i in ctx.guild.categories]:
                 [await i.delete() for i in [ii.channels for ii in ctx.guild.categories if ii.name == '📊Info📊'][0]]
                 [await ii.delete() for ii in ctx.guild.categories if ii.name == '📊Info📊']
+        else:
+            await ctx.send(embed=embpy(ctx, comp='e', des='уажите аргумент'))
 
                 
     @commands.Cog.listener('on_member_join')

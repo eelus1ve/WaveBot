@@ -24,7 +24,7 @@ from interactions import Modal, TextInput
 import json
 import asyncio
 from discord.ext import commands
-from BTSET import embpy, bdmpy, bdpy
+from BTSET import embpy, bdmpy, bdpy, BD
 rtask = None
 class Roomedit(commands.Cog):
     def __init__(self, bot):
@@ -33,11 +33,11 @@ class Roomedit(commands.Cog):
     # @commands.command()
     # @commands.has_permissions(administrator=True)
     # async def room(self, ctx):
-    #     with open('users.json', 'r') as file:
-    #         dataServerID = json.load(file)
-    #         COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-    #         ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-    #         SelfRoom = int(dataServerID[str(ctx.author.guild.id)]['selfRoom'])
+    #     with open(f'{BD}users.json', 'r') as file:
+    #         data = json.load(file)
+    #         COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
+    #         ErCOLOR = int(data[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+    #         SelfRoom = int(data[str(ctx.author.guild.id)]['selfRoom'])
 
     #     emb = discord.Embed(title='***⚙️ Управление приватными комнатами***',
     #                         description='👑 - назначить нового создателя комнаты \n\
@@ -87,49 +87,44 @@ class Roomedit(commands.Cog):
     @commands.Cog.listener('on_voice_state_update')                     #тут все идеальнео можно больше не трогать
     async def roomedit_move_on_voice_state_update(self, member, defore, after):
         try:
-            with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
+            with open(f'{BD}users.json', 'r') as file:
+                data = json.load(file)
             role = bdmpy(mr=member)['FirstRole']
             if not(role in member.guild.roles):
                 role = member.guild.roles[0]
-
             try:
-                SelfRooms = dataServerID[str(defore.channel.guild.id)]['Selfrooms']
-                SelfRoom = int(dataServerID[str(defore.channel.guild.id)]['selfRoom']["vc"])
+                SelfRooms = data[str(defore.channel.guild.id)]['Selfrooms']
+                SelfRoom = int(data[str(defore.channel.guild.id)]['selfRoom']["vc"])
             except:
-                SelfRooms = dataServerID[str(after.channel.guild.id)]['Selfrooms']
-                SelfRoom = int(dataServerID[str(after.channel.guild.id)]['selfRoom']["vc"])
+                SelfRooms = data[str(after.channel.guild.id)]['Selfrooms']
+                SelfRoom = int(data[str(after.channel.guild.id)]['selfRoom']["vc"])
             try:
                 if after.channel.id == SelfRoom:
-                    chlen = await after.channel.guild.create_voice_channel(name=f'{member.name}', category=[i for i in member.guild.categories if i.id == int(dataServerID[str(after.channel.guild.id)]['selfRoom']["ctp"])][0])
+                    chlen = await after.channel.guild.create_voice_channel(name=f'{member.name}', category=[i for i in member.guild.categories if i.id == int(data[str(after.channel.guild.id)]['selfRoom']["ctp"])][0])
                     await member.move_to(chlen)
                     ow1 = discord.PermissionOverwrite()
                     ow1.connect = True
                     ow1.view_channel = True
                     await member.voice.channel.set_permissions(target=role, overwrite=ow1)
-                    dataServerID[str(member.guild.id)]['Selfrooms'].update({
+                    data[str(member.guild.id)]['Selfrooms'].update({
                         str(chlen.id): str(member.id)})
-                with open('users.json', 'w') as file:
-                    json.dump(dataServerID, file, indent=4)
             except:
                 if defore.channel.id == SelfRoom:
-                    chlen = await after.channel.guild.create_voice_channel(name=f'{member.name}', category=[i for i in member.guild.categories if i.id == int(dataServerID[str(after.channel.guild.id)]['selfRoom']["ctp"])][0])
+                    chlen = await after.channel.guild.create_voice_channel(name=f'{member.name}', category=[i for i in member.guild.categories if i.id == int(data[str(after.channel.guild.id)]['selfRoom']["ctp"])][0])
                     await member.move_to(chlen)
                     ow1 = discord.PermissionOverwrite()
                     ow1.connect = True
                     ow1.view_channel = True
                     await member.voice.channel.set_permissions(target=role, overwrite=ow1)
-                    dataServerID[str(member.guild.id)]['Selfrooms'].update({
+                    data[str(member.guild.id)]['Selfrooms'].update({
                         str(chlen.id): str(member.id)})
-                with open('users.json', 'w') as file:
-                    json.dump(dataServerID, file, indent=4)
 
             if defore.channel.name in [i.name for i in defore.channel.guild.voice_channels if i.id in [int(k) for k in SelfRooms.keys()]]:
                 if not (defore.channel.members):
                     await defore.channel.delete()
-                    dataServerID[str(member.guild.id)]['Selfrooms'].pop(str(defore.channel.id))
-                with open('users.json', 'w') as file:
-                    json.dump(dataServerID, file, indent=4)
+                    data[str(member.guild.id)]['Selfrooms'].pop(str(defore.channel.id))
+            with open(f'{BD}users.json', 'w') as file:
+                json.dump(data, file, indent=4)
         except:
             pass
 
@@ -146,9 +141,9 @@ class Roomedit(commands.Cog):
                 else:
                     ow2.send_messages = True
                 await interaction.channel.set_permissions(target=interaction.author, overwrite=ow2)
-            with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-                ownRoom = int(dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)])
+            with open(f'{BD}users.json', 'r') as file:
+                data = json.load(file)
+                ownRoom = int(bdpy(ctx=interaction)['Selfrooms'][str(interaction.author.voice.channel.id)])
 
             if str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971032309403758)): #тут селект
                 await interaction.send(embed=embpy(ctx=interaction, comp='n', des='Укажите нового создателя этого канала @участник '))
@@ -158,9 +153,9 @@ class Roomedit(commands.Cog):
 
                 ms = await self.bot.wait_for(event='message', check=check)
                 await write(2)
-                dataServerID[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)] = [str(i.id) for i in ms.author.voice.channel.members if ms.content == i.mention][0]
-                with open('users.json', 'w') as file:
-                    json.dump(dataServerID, file, indent=4)
+                data[str(interaction.guild.id)]['Selfrooms'][str(interaction.author.voice.channel.id)] = [str(i.id) for i in ms.author.voice.channel.members if ms.content == i.mention][0]
+                with open(f'{BD}users.json', 'w') as file:
+                    json.dump(data, file, indent=4)
                 await ms.delete()
 
             elif str(interaction.component.emoji) == str(await stb_gld.fetch_emoji(1020971040416993280)):

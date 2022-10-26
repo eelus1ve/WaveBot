@@ -73,7 +73,7 @@ class Helppy(commands.Cog):
             color=COLOR)
             await ctx.author.send(embed=emb)
             await ctx.send(embed=discord.Embed(
-                title='Ошибка',
+                title='Успешно',
                 description=f'Список доступных комманд отправлен вам в личные сообщения!',
                 color=COLOR
             ))

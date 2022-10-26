@@ -2,7 +2,7 @@ from time import sleep
 import discord
 from discord.ext import commands
 import json
-from BTSET import embpy, bdmpy, bdpy
+from BTSET import embpy, bdmpy, bdpy, BD
 import asyncio
 
 class Stngspy(commands.Cog):
@@ -12,7 +12,7 @@ class Stngspy(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def set(self, ctx: commands.Context, arg=None, clArg=None, roleClass=None, emo=None):
         
-        with open('users.json', 'r') as file:
+        with open(f'{BD}users.json', 'r') as file:
             data = json.load(file)
         roles = data[str(ctx.author.guild.id)]['JoinRoles']
         COLOR = data[str(ctx.author.guild.id)]['COLOR']
@@ -537,7 +537,7 @@ class Stngspy(commands.Cog):
                                 join_roles: Список всех ролей в автовыдаче",
                             )
             
-        with open('users.json', 'w') as file:
+        with open(f'{BD}users.json', 'w') as file:
             json.dump(data, file, indent=4)
         if description1:
             await ctx.send(embed=embpy(ctx, comp='s', des=description1))

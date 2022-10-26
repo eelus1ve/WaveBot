@@ -9,7 +9,7 @@ import interactions
 from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption
 import datetime
 import pytz
-from BTSET import embint, embpy, bdint, bdpy
+from BTSET import embint, embpy, bdint, bdpy, BD
 
 moscow_time = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
 
@@ -35,9 +35,9 @@ class Score_commands(commands.Cog):
             else:
                 quest = ctx.author.guild_permissions.administrator
             if quest:
+                with open(f'{BD}users.json', 'r') as file:
+                    data = json.load(file)
                 mrr = mr or ctx.author
-                with open('users.json', 'r') as file:
-                    dataServerID = json.load(file)
                 COLOR = bdpy(ctx)['COLOR']
                 ErCOLOR =  bdpy(ctx)['ErCOLOR']
                 pref =  bdpy(ctx)['PREFIX']
@@ -64,10 +64,8 @@ class Score_commands(commands.Cog):
                         else:
                             level = (-3+d)/2
                         xpp = xp - (400+100*(int(level-1)))/2*int(level)
-                        with open('users.json', 'w') as file:
-                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xpp)
-                            dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(level+1)
-                            json.dump(dataServerID, file, indent=4)
+                        data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xpp)
+                        data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(level+1)
                         #====================================================================
                         #audit
                         #====================================================================
@@ -107,10 +105,8 @@ class Score_commands(commands.Cog):
                             level = (-3+d)/2
                         xpp = xp - (400+100*(int(level-1)))/2*int(level)
                         if str(level).startswith('-') or str(xpp).startswith('-'):
-                            with open('users.json', 'w') as file:
-                                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 0
-                                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = 1
-                                json.dump(dataServerID, file, indent=4)
+                            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 0
+                            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = 1
                             #====================================================================
                             #audit
                             #====================================================================
@@ -134,10 +130,10 @@ class Score_commands(commands.Cog):
                             #ls
                             #====================================================================
                         else:
-                            with open('users.json', 'w') as file:
-                                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xpp)
-                                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(level+1)
-                                json.dump(dataServerID, file, indent=4)
+                            
+                            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xpp)
+                            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(level+1)
+                                
                             #====================================================================
                             #audit
                             #====================================================================
@@ -171,10 +167,10 @@ class Score_commands(commands.Cog):
                     a = int(arg) + 0
                     newLvl = ((LVL*100)+arg)//100
                     xp = ((LVL*100)+arg) - newLvl*100
-                    with open('users.json', 'w') as file:
-                        dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xp)
-                        dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(newLvl)
-                        json.dump(dataServerID, file, indent=4)
+                    
+                    data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xp)
+                    data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(newLvl)
+                        
                     #====================================================================
                     #audit
                     #====================================================================
@@ -204,6 +200,8 @@ class Score_commands(commands.Cog):
                         description=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)',
                         color=ErCOLOR
                     ))
+                with open(f'{BD}users.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             else:
                 await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
         except:
@@ -219,18 +217,18 @@ class Score_commands(commands.Cog):
         else:
             quest = ctx.author.guild_permissions.administrator
         if quest:
+            with open(f'{BD}users.json', 'r') as file:
+                data = json.load(file)
             mrr = mr or ctx.author
-            with open('users.json', 'r') as file:
-                dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            with open('users.json', 'w') as file:
-                dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(0)
-                json.dump(dataServerID, file, indent=4)
+            COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
+            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(0)
             await ctx.send(embed=discord.Embed(
                 title='Успешно',
                 description=f'{mrr.name} потерял все очки!',
                 color=COLOR
             ))
+            with open(f'{BD}users.json', 'w') as file:
+                json.dump(data, file, indent=4)
         else:
             await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
     @commands.command()
@@ -241,15 +239,14 @@ class Score_commands(commands.Cog):
             else:
                 quest = ctx.author.guild_permissions.administrator
             if quest:
+                with open(f'{BD}users.json', 'r') as file:
+                    data = json.load(file)
                 mrr = mr or ctx.author
-                with open('users.json', 'r') as file:
-                    dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+                
+                COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
+                ErCOLOR = int(data[str(ctx.author.guild.id)]['ErCOLOR'], 16)
                 if not(int(arg)<0):
-                    with open('users.json', 'w') as file:
-                        dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(arg)
-                        json.dump(dataServerID, file, indent=4)
+                    data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(arg)
                     await ctx.send(embed=discord.Embed(
                         title=f'Успешно',
                         description=f'Участнику {mrr.name} был выдан {arg} уровень!',
@@ -261,6 +258,8 @@ class Score_commands(commands.Cog):
                         description='Нельзя поставить лвл меньше или равный 0 ',
                         color=ErCOLOR
                     ))
+                with open(f'{BD}users.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             else:
                 await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
         except:
@@ -274,42 +273,42 @@ class Score_commands(commands.Cog):
                 quest = ctx.author.guild_permissions.administrator
             if quest:
                 mrr = mr or ctx.author
-                with open('users.json', 'r') as file:
-                    dataServerID = json.load(file)
-                COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-                with open('users.json', 'w') as file:
-                    dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = 1
-                    dataServerID[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 0
-                    json.dump(dataServerID, file, indent=4)
+                with open(f'{BD}users.json', 'r') as file:
+                    data = json.load(file)
+                COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
+                data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = 1
+                data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 0
                 await ctx.send(embed=discord.Embed(
                     title=f'Успешно',
                     description=f'Участник {mrr.name} отчистил свой ранк!',
                     color=COLOR
                 ))
+                with open(f'{BD}users.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             else:
                 await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
         except:
             pass
     @clear_rank.error
     async def error(self, ctx, error):
-        with open('users.json', 'r') as file:
-            dataServerID = json.load(file)
-            COLOR = int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16)
-            ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
+        with open(f'{BD}users.json', 'r') as file:
+            data = json.load(file)
+        COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
+        ErCOLOR = int(data[str(ctx.author.guild.id)]['ErCOLOR'], 16)
             
         if isinstance(error, commands.errors.MemberNotFound):
             found = re.findall(r'Member \s*"([^\"]*)"', str(error))
             if found == ["all"]:
                 for member in ctx.guild.members:
-                        with open('users.json', 'w') as file:
-                            dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['LvL'] = 1
-                            dataServerID[str(member.guild.id)]['USERS'][str(member.id)]['SCR'] = 0
-                            json.dump(dataServerID, file, indent=4)
+                    data[str(member.guild.id)]['USERS'][str(member.id)]['LvL'] = 1
+                    data[str(member.guild.id)]['USERS'][str(member.id)]['SCR'] = 0
                 await ctx.send(embed=discord.Embed(
                     title=f'Успешно',
                     description=f'Все участники этого сервера потерял свой ранк!',
                     color=COLOR
                 ))
+                with open(f'{BD}users.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             else:
                 await ctx.send(embed=discord.Embed(
                     title="Ошибка",
@@ -344,7 +343,7 @@ class Score_interactions(interactions.Extension):
     @interactions.extension_modal('Score')
     async def scrya(self, ctx: interactions.CommandContext, shrt):
         print(ctx.author.avatar)
-        with open('users.json', 'r') as file:
+        with open(f'{BD}users.json', 'r') as file:
             data = json.load(file)
         SCR = bdint(ctx)['USERS'][str(n[str(ctx.author.id)][0])]['SCR']
         LVL = bdint(ctx)['USERS'][str(n[str(ctx.author.id)][0])]['LvL']
@@ -359,7 +358,7 @@ class Score_interactions(interactions.Extension):
             else:
                 level = (-3+d)/2
             xpp = xp - (400+100*(int(level-1)))/2*int(level)
-            with open('users.json', 'w') as file:
+            with open(f'{BD}users.json', 'w') as file:
                 data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['SCR'] = int(xpp)
                 data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['LvL'] = int(level+1)
                 json.dump(data, file, indent=4)
@@ -376,12 +375,12 @@ class Score_interactions(interactions.Extension):
                 level = (-3+d)/2
             xpp = xp - (400+100*(int(level-1)))/2*int(level)
             if str(level).startswith('-') or str(xpp).startswith('-'):
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['SCR'] = 0
                     data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['LvL'] = 1
                     json.dump(data, file, indent=4)
             else:
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['SCR'] = int(xpp)
                     data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['LvL'] = int(level+1)
                     json.dump(data, file, indent=4)

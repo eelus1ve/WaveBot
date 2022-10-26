@@ -20,6 +20,7 @@ class Duser(commands.Cog):
     async def user(self, ctx: commands.Context, memberr: Optional[discord.Member]):
         # member = await self.bot.get_user(int(member.id))
         # interactions.PresenceActivityType
+        print(1)
         member = memberr or ctx.author
         mr = None
         if member.activities:
@@ -30,7 +31,7 @@ class Duser(commands.Cog):
         warns = bdmpy(mr=member)['USERS'][str(member.id)]['WARNS']
         score = bdmpy(mr=member)['USERS'][str(member.id)]['SCR']
         LVL = bdmpy(mr=member)['USERS'][str(member.id)]['LvL']
-        COLOR = bdpy(ctx)['COLOR'] or bdint(ctx)['COLOR']
+        COLOR = bdpy(ctx)['COLOR']
 
         lstdisc = [f'\n***Имя пользователя:***  {member.name}#{member.discriminator} \n']
 
@@ -63,6 +64,7 @@ class Duser(commands.Cog):
         
         emb.set_thumbnail(url=member.avatar_url)
         emb.set_footer(text=f'ID: {member.id}')
+        print(2)
         await ctx.send(embed=emb)
 
 def setup(sbot):

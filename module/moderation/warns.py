@@ -10,7 +10,7 @@ import interactions
 from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption
 import datetime
 import pytz
-from BTSET import embint, embpy, bdpy, bdint
+from BTSET import embint, embpy, bdpy, bdint, BD
 moscow_time = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
 n = {}
 class Warnspy(commands.Cog):
@@ -31,13 +31,10 @@ class Warnspy(commands.Cog):
                 WARN.extend(BADWORDS); WARN.extend(LINKS)
                 warns = bdpy(ctx)['USERS'][str(memberr.id)]['WARNS']
                 nWarns = bdpy(ctx)['nWarns']
-
                 member = memberr
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
-                    data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] += 1
-                    json.dump(data, file, indent=4)
+                data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] += 1
                 #====================================================================
                 #audit
                 #====================================================================
@@ -78,6 +75,8 @@ class Warnspy(commands.Cog):
                 if data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] >= nWarns:
                     await member.ban(reason='Вы привысили допустимое количество нарушений')
                 #====================================================================
+                with open(f'{BD}users.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             else:
                 await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
         except:
@@ -117,11 +116,9 @@ class Warnspy(commands.Cog):
                 WARN.extend(BADWORDS); WARN.extend(LINKS)
                 nWarns = bdpy(ctx)['nWarns']
                 warns = bdpy(ctx)['USERS'][str(memberr.id)]['WARNS']
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
-                    data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] -= 1
-                    json.dump(data, file, indent=4)
+                data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] -= 1
                 #====================================================================
                 #audit
                 #====================================================================
@@ -157,6 +154,8 @@ class Warnspy(commands.Cog):
                 emb.add_field(name='Текущее кол-во нарушений', value=f'{warns}/{nWarns}', inline=True)
                 emb.set_footer(text=f'Нарушение снято учасником{ctx.author.name}#{ctx.author.discriminator} ID модератора: {ctx.author.id}')
                 await memberr.send(embed=emb)
+                with open(f'{BD}users.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             else:
                 await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
         except:
@@ -197,11 +196,9 @@ class Warnspy(commands.Cog):
                 WARN.extend(BADWORDS); WARN.extend(LINKS)
                 warns = bdpy(ctx)['USERS'][str(memberr.id)]['WARNS']
                 nWarns = bdpy(ctx)['nWarns']
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
-                    data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] = 0
-                    json.dump(data, file, indent=4)
+                data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] = 0
                 #====================================================================
                 #audit
                 #====================================================================
@@ -237,6 +234,8 @@ class Warnspy(commands.Cog):
                 emb.add_field(name='Текущее кол-во нарушений', value=f'{warns}/{nWarns}', inline=True)
                 emb.set_footer(text=f'Нарушения сняты участником{ctx.author.name}#{ctx.author.discriminator} ID модератора: {ctx.author.id}')
                 await memberr.send(embed=emb)
+                with open(f'{BD}users.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             else:
                 await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
         except:
@@ -295,7 +294,7 @@ class Warnsint(interactions.Extension):
             await ctx.send(embeds = embint(ctx, comp='e', des=f'У вас недостаточно прав!'), ephemeral=True)
     @interactions.extension_modal('warns')
     async def wrn(self, ctx: interactions.CommandContext, shrt):
-        with open('users.json', 'r') as file:
+        with open(f'{BD}users.json', 'r') as file:
             data = json.load(file)
         COLOR = bdint(ctx)['COLOR']
         nWarns = bdint(ctx)['nWarns']
@@ -327,7 +326,7 @@ class Warnsint(interactions.Extension):
             for i in d:
                 if str(i.id) == str(idAdminchennel):
                     await i.send(embeds=emb)
-            with open('users.json', 'w') as file:
+            with open(f'{BD}users.json', 'w') as file:
                 data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['WARNS'] +=1
                 json.dump(data, file, indent=4)
             for i in [k for k in n.keys()]:

@@ -1,5 +1,5 @@
 import json
-from BTSET import bdpy
+from BTSET import bdpy, BD
 from discord.ext import commands
 
 class mrate(commands.Cog):
@@ -8,7 +8,7 @@ class mrate(commands.Cog):
     @commands.Cog.listener('on_message')
     async def my_message(self, message):
         try:
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
                 IgnoreChannels = bdpy(ctx=message)['IgnoreChannels']
                 IgnoreRoles = bdpy(ctx=message)['IgnoreRoles']
@@ -40,7 +40,7 @@ class mrate(commands.Cog):
                 
                     data[str(message.guild.id)]['USERS'][str(message.author.id)]['SCR']=0 #написать формулу + переменая
                     data[str(message.guild.id)]['USERS'][str(message.author.id)]['LvL']=new_level
-                with open("users.json", "w") as f:
+                with open(f'{BD}users.json', 'w') as f:
                     json.dump(data, f, indent=4)
         except:
             pass

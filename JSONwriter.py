@@ -1,13 +1,12 @@
 import json
 from discord.ext import commands
 import os
-
+from BTSET import BD
 class Json_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-        if not os.path.exists('support.json'):
-            with open('support.json', 'w') as file:
+        if not os.path.exists(f'{BD}support.json'):
+            with open(f'{BD}support.json', 'w') as file:
                 json.dump({
                     'idea': {},
                     'que': {},
@@ -15,9 +14,9 @@ class Json_write(commands.Cog):
                     'message': {}
                 }, file, indent=4)
         else:
-            with open('support.json', 'r') as file:
+            with open(f'{BD}support.json', 'r') as file:
                 if not file.read():
-                    with open('support.json', 'w') as file:
+                    with open(f'{BD}support.json', 'w') as file:
                         json.dump({
                             'idea': {},
                             'que': {},
@@ -26,47 +25,47 @@ class Json_write(commands.Cog):
                         }, file, indent=4)
                     print("Пока json(support)")
 
-        if not os.path.exists('glb_vote.json'):
-            with open('glb_vote.json', 'w') as file:
+        if not os.path.exists(f'{BD}glb_vote.json'):
+            with open(f'{BD}glb_vote.json', 'w') as file:
                 file.write('{}')
         else:
-            with open('glb_vote.json', 'r') as file:
+            with open(f'{BD}glb_vote.json', 'r') as file:
                 if not file.read():
-                    with open('glb_vote.json', 'w') as file:
+                    with open(f'{BD}glb_vote.json', 'w') as file:
                         file.write('{}')
                         print("Пока json(vote)")
 
-        if not os.path.exists('users.json'):
-            with open('users.json', 'w') as file:
+        if not os.path.exists(f'{BD}users.json'):
+            with open(f'{BD}users.json', 'w') as file:
                 file.write('{}')
         else:
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 if not file.read():
-                    with open('users.json', 'w') as file:
+                    with open(f'{BD}users.json', 'w') as file:
                         file.write('{}')
                     print("Пока json")
 
-        if not os.path.exists('music.json'):
-            with open('music.json', 'w') as file:
+        if not os.path.exists(f'{BD}music.json'):
+            with open(f'{BD}music.json', 'w') as file:
                 file.write('{}')
         else:
-            with open('music.json', 'r') as file:
+            with open(f'{BD}music.json', 'r') as file:
                 if not file.read():
-                    with open('music.json', 'w') as file:
+                    with open(f'{BD}music.json', 'w') as file:
                         file.write('{}')
 
-        if not os.path.exists('anmess.json'):
-            with open('anmess.json', 'w') as file:
+        if not os.path.exists(f'{BD}anmess.json'):
+            with open(f'{BD}anmess.json', 'w') as file:
                 file.write('{}')
         else:
-            with open('anmess.json', 'r') as file:
+            with open(f'{BD}anmess.json', 'r') as file:
                 if not file.read():
-                    with open('anmess.json', 'w') as file:
+                    with open(f'{BD}anmess.json', 'w') as file:
                         file.write('{}')
 
     def jsonwrite(self):
         for guild in self.bot.guilds:
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
                 if not (str(guild.id) in [k for k in data.keys()]):
                     data.update({
@@ -102,10 +101,10 @@ class Json_write(commands.Cog):
                             'USERS': {},
                         }})
 
-            with open('users.json', 'w') as file:
+            with open(f'{BD}users.json', 'w') as file:
                 json.dump(data, file, indent=4)
             for member in guild.members:
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     dat = json.load(file)
                 if not (str(member.id) in [str(k) for k in dat[str(guild.id)]['USERS'].keys()]):
                     dat[str(guild.id)]['USERS'].update({
@@ -115,7 +114,7 @@ class Json_write(commands.Cog):
                             "SCR": 0,
                             'LvL': 1
                         }})
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     json.dump(dat, file, indent=4)
 
 

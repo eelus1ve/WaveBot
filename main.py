@@ -9,7 +9,6 @@ import interactions
 from discord_components import ComponentsBot, Button, Select
 from pydoc import cli
 import discord
-import json
 import os
 import asyncio
 from BTSET import bdpy, embpy
@@ -22,10 +21,8 @@ load_dotenv(find_dotenv())
 #=======================================================================================================================
 intents=discord.Intents.all()
 def get_prefix(bot, message):
-    with open('users.json', 'r') as file:
-        data = json.load(file)
     try:
-        prefix = data[str(message.guild.id)]['PREFIX']
+        prefix = bdpy(ctx=message)['PREFIX']
     except AttributeError:
         prefix = '~'
     return prefix
@@ -56,7 +53,7 @@ async def on_ready():
 @bot.command()
 async def a(ctx: commands.Context):
     # client.load('module.moderation.warns')
-    await ctx.send(embed=embpy(ctx, comp='s', des=f'хуй'))
+    await ctx.send(embed=embpy(ctx, comp='s', des=f'Степа все плохо'))
 
 #===================================================================================================
 # @client.command(
@@ -606,10 +603,8 @@ async def a(ctx: commands.Context):
 #=======================================================================================================================
 @bot.event
 async def on_command_error(ctx, error):
-    with open('users.json', 'r') as file:
-        dataServerID = json.load(file)
-        ErCOLOR = int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16)
-        pref = str(dataServerID[str(ctx.author.guild.id)]['PREFIX'])
+    ErCOLOR = bdpy(ctx)['ErCOLOR']
+    pref = bdpy(ctx)['PREFIX']
     if isinstance(error, commands.errors.CommandNotFound):
         print(error)
         found = re.findall(r'Command \s*"([^\"]*)"', str(error))
