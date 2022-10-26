@@ -34,7 +34,7 @@ bot.remove_command('help')
 #=======================================================================================================================
 @bot.event
 async def on_ready():
-    bot.load_extension('loaderpy')
+    bot.load_extension('module.loader')
     bot.load_extension('JSONwriter')
     # client.load('module.rate.score')
     # client.reload('module.rate.score')
