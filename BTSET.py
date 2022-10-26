@@ -6,7 +6,7 @@ import json
 BOTVERSION = '***ALPHA 1.0***'
 ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
 IGNORE = ['error', 'mafia', 'vcbot', 'xo']
-BD = 'system/Bd/'
+BD = 'system/Database/'
 
 
 def bdpy(ctx):
