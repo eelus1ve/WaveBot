@@ -35,7 +35,7 @@ bot.remove_command('help')
 @bot.event
 async def on_ready():
     bot.load_extension('module.loader')
-    bot.load_extension('JSONwriter')
+    bot.load_extension('system.JSONwriter')
     # client.load('module.rate.score')
     # client.reload('module.rate.score')
     client.load('module.voice.vcbot')
