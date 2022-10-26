@@ -103,6 +103,7 @@ def bdint(ctx):
         "USERS": data[str(ctx.guild_id)]['USERS']
     }
 
+
 def embpy(ctx, comp, des):
     try:
         if comp == 's':
@@ -142,4 +143,3 @@ def embint(ctx, comp, des):
     except:
         pass
     return(emb)
-
