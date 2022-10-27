@@ -18,6 +18,7 @@ import re
 
 load_dotenv(find_dotenv())
 
+
 #=======================================================================================================================
 intents=discord.Intents.all()
 def get_prefix(bot, message):
