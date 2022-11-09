@@ -54,24 +54,24 @@ async def on_ready():
 @bot.command()
 async def a(ctx: commands.Context):
     # client.load('module.moderation.warns')
-    await ctx.send(embed=embpy(ctx, comp='s', des=f'Степа все плохо'))
+    await embpy(ctx, comp='s', des=f'Степа все плохо')
 
 #===================================================================================================
 
 
 #=======================================================================================================================
-@bot.event
-async def on_command_error(ctx, error):
-    ErCOLOR = bdpy(ctx)['ErCOLOR']
-    pref = bdpy(ctx)['PREFIX']
-    if isinstance(error, commands.errors.CommandNotFound):
-        print(error)
-        found = re.findall(r'Command \s*"([^\"]*)"', str(error))
-        await ctx.send(embed=discord.Embed(
-            title="Ошибка",
-            description=f"*Команды `{''.join(found)}` не существует*",
-            color = ErCOLOR
-        ))
+# @bot.event
+# async def on_command_error(ctx, error):
+#     ErCOLOR = bdpy(ctx)['ErCOLOR']
+#     pref = bdpy(ctx)['PREFIX']
+#     if isinstance(error, commands.errors.CommandNotFound):
+#         print(error)
+#         found = re.findall(r'Command \s*"([^\"]*)"', str(error))
+#         await ctx.send(embed=discord.Embed(
+#             title="Ошибка",
+#             description=f"*Команды `{''.join(found)}` не существует*",
+#             color = ErCOLOR
+#         ))
     # elif isinstance(error, commands.errors.MemberNotFound):
     #     found = re.findall(r'Member \s*"([^\"]*)"', str(error))
     #     await ctx.send(embed=discord.Embed(

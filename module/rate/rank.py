@@ -3,7 +3,7 @@ from discord.ext import commands
 from easy_pil import Editor, load_image_async, Font
 from typing import Optional
 from discord import File
-from BTSET import bdpy, bdint
+from BTSET import bdpy
 # import interactions
 from PIL import Image, ImageFont, ImageDraw
 

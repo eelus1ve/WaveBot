@@ -22,7 +22,7 @@ class Sptfpy(commands.Cog):
             if str(userr.status) ==  'offline':
                 await ctx.send(f"{userr.mention} офлайн!")
             else:
-                await ctx.send(embed=embpy(ctx, comp='s', des=f'Пользователь {userr.name} сейчас не слушает спотифай!'))
+                await embpy(ctx, comp='e', des=f'Пользователь {userr.name} сейчас не слушает спотифай!', time=10.00)
         else:
             embed = discord.Embed(
                 title=f"{userr.name}'s Spotify",

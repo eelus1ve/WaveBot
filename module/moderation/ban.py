@@ -39,12 +39,8 @@ class Banpy(commands.Cog):
             #====================================================================
             #rep
             #====================================================================
-            await ctx.send(embed=discord.Embed(
-                    title="Успешно",
-                    description=f"*{member.mention} был забанен !*",
-                    timestamp=moscow_time,
-                    color=COLOR
-                ), delete_after=10.0)
+            await embpy(ctx, comp='s', des=f"*{member.mention} был забанен !*", time=10.00)
+                    
             #====================================================================
             #ls
             #====================================================================
@@ -57,7 +53,7 @@ class Banpy(commands.Cog):
             emb.set_footer(text=f'Модератор исключивший вас {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
             await member.send(embed=emb)
         else:
-            await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
         #====================================================================
 
 def setup(bot):

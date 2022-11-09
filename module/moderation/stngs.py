@@ -2,7 +2,7 @@ from time import sleep
 import discord
 from discord.ext import commands
 import json
-from BTSET import embpy, bdmpy, bdpy, BD
+from BTSET import embpy, bdpy, BD
 import asyncio
 
 class Stngspy(commands.Cog):
@@ -16,7 +16,6 @@ class Stngspy(commands.Cog):
             data = json.load(file)
         roles = data[str(ctx.author.guild.id)]['JoinRoles']
         COLOR = data[str(ctx.author.guild.id)]['COLOR']
-        ErCOLOR = data[str(ctx.author.guild.id)]['ErCOLOR']
         prefix = data[str(ctx.author.guild.id)]['PREFIX']
         description1 = 0
         description2 = 0
@@ -338,181 +337,181 @@ class Stngspy(commands.Cog):
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Kick'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Kick'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Ban':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Bans']['Ban'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Bans']['Ban'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Unban':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Bans']['UnBan'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Bans']['UnBan'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Tempban':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Bans']['TempBan'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Bans']['TempBan'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Warn':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Warns']['Warn'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Warns']['Warn'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Unwarn':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Warns']['UnWarn'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Warns']['UnWarn'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Tempwarn':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Warns']['TempWarn'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Warns']['TempWarn'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Clearwarn':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Warns']['ClearWarn'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Warns']['ClearWarn'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Settings':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Settings'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Settings'] = 'False' 
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Clear':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Clear'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Clear'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Score':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Rate']['Score'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Rate']['Score'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Clearscore':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Rate']['ClearScore'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Rate']['ClearScore'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Set_lvl':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Rate']['SetLvl'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Rate']['SetLvl'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Clear_rank':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Rate']['ClearRank'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Rate']['ClearRank'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Temprole':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Roles']['TempRole'] = 'True' 
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Roles']['TempRole'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 elif clArg == 'Giverole':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Roles']['GiveRole'] = 'True'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Roles']['GiveRole'] = 'False'
-                            await ctx.send(embed = embpy(ctx, comp='s', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                            await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
-                        await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                        await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
             except:
-                await ctx.send(embed = embpy(ctx, comp='e', des=f''))                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
+                await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                 
 
         else:
@@ -540,11 +539,11 @@ class Stngspy(commands.Cog):
         with open(f'{BD}users.json', 'w') as file:
             json.dump(data, file, indent=4)
         if description1:
-            await ctx.send(embed=embpy(ctx, comp='s', des=description1))
+            await embpy(ctx, comp='s', des=description1)
         if description2:
-            await ctx.send(embed=embpy(ctx, comp='e', des=description2))
+            await embpy(ctx, comp='e', des=description2)
         if title:
-            await ctx.send(embed=embpy(ctx, comp='n', des=title))
+            await embpy(ctx, comp='n', des=title)
         
 def setup(bot):
     bot.add_cog(Stngspy(bot))

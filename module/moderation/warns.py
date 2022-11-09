@@ -78,26 +78,18 @@ class Warnspy(commands.Cog):
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(data, file, indent=4)
             else:
-                await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
+                await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
         except:
-            await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
 
 
     #======================ERROR=======================================
     @warn.error
     async def error(self, ctx: commands.Context, error):
-        ErCOLOR = bdpy(ctx)['ErCOLOR']
         pref = bdpy(ctx)['PREFIX']
-        BADWORDS = bdpy(ctx)['BADWORDS']
-        LINKS = bdpy(ctx)['LINKS']
-        WARN = []
-        WARN.extend(BADWORDS); WARN.extend(LINKS)
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(embed=discord.Embed(
-                title="Ошибка",
-                description=f"*Использование: {pref}warn (@Участник) (Причина)",
-                color=ErCOLOR
-            ), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f"*Использование: {pref}warn (@Участник) (Причина)", time=10.00)
+                
     #======================ERROR=======================================
 
     @commands.command()
@@ -136,12 +128,8 @@ class Warnspy(commands.Cog):
                 #====================================================================
                 #rep
                 #==================================================================== 
-                await ctx.send(embed=discord.Embed(
-                    title="Успешно",
-                    description="Предупреждение снято!",
-                    timestamp=ctx.message.created_at,
-                    color=COLOR
-                ), delete_after=10.0)
+                await embpy(ctx, comp='s', des="Предупреждение снято!", time=10.00)
+                    
                 #====================================================================
                 #ls
                 #====================================================================
@@ -157,26 +145,19 @@ class Warnspy(commands.Cog):
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(data, file, indent=4)
             else:
-                await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
+                await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
         except:
-            await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
         #====================================================================
 
     #======================ERROR=======================================
     @unwarn.error
     async def error(self, ctx: commands.Context, error):
-        ErCOLOR = bdpy(ctx)['ErCOLOR']
         pref = bdpy(ctx)['PREFIX']
-        BADWORDS = bdpy(ctx)['BADWORDS']
-        LINKS = bdpy(ctx)['LINKS']
-        WARN = []
-        WARN.extend(BADWORDS); WARN.extend(LINKS)
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(embed=discord.Embed(
-                title="Ошибка",
-                description=f"*Использование: {pref}unwarn (@Участник)",
-                color=ErCOLOR
-            ), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f"*Использование: {pref}unwarn (@Участник)", time=10.00)
+                
+
     #======================ERROR=======================================
 
     @commands.command()
@@ -216,12 +197,7 @@ class Warnspy(commands.Cog):
                 #====================================================================
                 #rep
                 #====================================================================
-                await ctx.send(embed=discord.Embed(
-                    title="Успешно",
-                    description="Предупреждения сняты!",
-                    timestamp=ctx.message.created_at,
-                    color=COLOR
-                ), delete_after=10.0)
+                await embpy(ctx, comp='s', des="Предупреждения сняты!", time=10.00)
                 #====================================================================
                 #ls
                 #====================================================================
@@ -237,9 +213,9 @@ class Warnspy(commands.Cog):
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(data, file, indent=4)
             else:
-                await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
+                await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
         except:
-            await ctx.send(embed = embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
             #====================================================================
 
 
@@ -253,12 +229,9 @@ class Warnspy(commands.Cog):
         WARN = []
         WARN.extend(BADWORDS); WARN.extend(LINKS)
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(embed=discord.Embed(
-                title="Ошибка",
-                description=f"*Использование: {pref}clear_warns (@Участник)",
-                color=ErCOLOR
-
-            ), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f"*Использование: {pref}clear_warns (@Участник)", time=10.00)
+                
+            
     #======================ERROR=======================================
 
 

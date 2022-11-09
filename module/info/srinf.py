@@ -34,7 +34,7 @@ class Srinfpy(commands.Cog):
                 [await i.delete() for i in [ii.channels for ii in ctx.guild.categories if ii.name == '📊Info📊'][0]]
                 [await ii.delete() for ii in ctx.guild.categories if ii.name == '📊Info📊']
         else:
-            await ctx.send(embed=embpy(ctx, comp='e', des='уажите аргумент'))
+            await embpy(ctx, comp='e', des='уажите аргумент', time=10.00)
 
                 
     @commands.Cog.listener('on_member_join')

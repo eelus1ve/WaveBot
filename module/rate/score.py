@@ -27,7 +27,7 @@ class Score_commands(commands.Cog):
             reason = f'{argg} очков опыта'
         return reason
 
-    @commands.command()
+    @commands.command() #ПЕРЕПИСАТЬ ПОЛНОСТЬЮ!!!!!!!!!!!!!!!!!!!!!!!!
     async def score(self, ctx: commands.Context, mr: Optional[discord.Member], arg: Optional[str]):
         try:
             if bdpy(ctx)['ModRoles'] != {}:
@@ -195,21 +195,15 @@ class Score_commands(commands.Cog):
                     #====================================================================
 
                 else:
-                    await ctx.send(embed=discord.Embed(
-                        title='Ошибка',
-                        description=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)',
-                        color=ErCOLOR
-                    ))
+                    await embpy(ctx, comp='e', des=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)', time=10.00)
+                        
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(data, file, indent=4)
             else:
-                await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
+                await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
         except:
-            await ctx.send(embed=discord.Embed(
-                title='Ошибка',
-                description=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)',
-                color=ErCOLOR
-            ))
+            await embpy(ctx, comp='e', des=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)', time=10.00)
+                
     @commands.command()
     async def clear_score(self, ctx: commands.Context, mr: Optional[discord.Member]):
         if bdpy(ctx)['ModRoles'] != {}:
@@ -222,15 +216,11 @@ class Score_commands(commands.Cog):
             mrr = mr or ctx.author
             COLOR = int(data[str(ctx.author.guild.id)]['COLOR'], 16)
             data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(0)
-            await ctx.send(embed=discord.Embed(
-                title='Успешно',
-                description=f'{mrr.name} потерял все очки!',
-                color=COLOR
-            ))
+            await embpy(ctx, comp='s', des=f'{mrr.name} потерял все очки!', time=10.00)
             with open(f'{BD}users.json', 'w') as file:
                 json.dump(data, file, indent=4)
         else:
-            await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
+            await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
     @commands.command()
     async def set_lvl(self, ctx: commands.Context, mr: Optional[discord.Member], arg = None):
         try:
@@ -261,7 +251,7 @@ class Score_commands(commands.Cog):
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(data, file, indent=4)
             else:
-                await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
+                await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
         except:
             pass
     @commands.command()
@@ -286,7 +276,7 @@ class Score_commands(commands.Cog):
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(data, file, indent=4)
             else:
-                await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'))
+                await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
         except:
             pass
     @clear_rank.error
