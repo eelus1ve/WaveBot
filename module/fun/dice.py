@@ -17,7 +17,7 @@ class Dicepy(commands.Cog):
                 color = COLOR
             )
         )
-        for i in range(5):
+        for _ in range(5):
             await msg.edit(
                 embed=discord.Embed(
                     title="Игральная кость говорит: ",
