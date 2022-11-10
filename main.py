@@ -39,8 +39,8 @@ async def on_ready():
     bot.load_extension('system.JSONwriter')
     # client.load('module.rate.score')
     # client.reload('module.rate.score')
-    client.load('module.voice.vcbot')
-    client.reload('module.voice.vcbot')
+    client.load('module.moderation.warns')
+    client.reload('module.moderation.warns')
     bot.load_extension('system.while')
     
     
@@ -53,7 +53,7 @@ async def on_ready():
 #=======================================================================================================================
 @bot.command()
 async def a(ctx: commands.Context):
-    # client.load('module.moderation.warns')
+    client.load('module.moderation.warns')
     await embpy(ctx, comp='s', des=f'Степа все плохо')
 
 #===================================================================================================
