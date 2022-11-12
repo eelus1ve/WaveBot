@@ -1,4 +1,4 @@
-from multiprocessing.resource_sharer import stop
+from multiprocessing.resource_sharer import stop #гит игнор чекнуть че не так
 import discord
 from discord import Spotify, File
 from typing import Optional
