@@ -27,8 +27,12 @@ def get_prefix(bot, message):
     except AttributeError:
         prefix = '~'
     return prefix
+
+def mention_and_prefix(bot, message):
+    return commands.when_mentioned(bot, msg=message) + list(get_prefix(bot, message))
+        
 client = interactions.Client(token=os.getenv('TOKEN'))
-bot =ComponentsBot(command_prefix = get_prefix, intents=intents)
+bot =ComponentsBot(command_prefix = mention_and_prefix, intents=intents)
 bot.remove_command('help')
 #=======================================================================================================================
 
@@ -37,15 +41,13 @@ bot.remove_command('help')
 async def on_ready():
     bot.load_extension('module.loader')
     bot.load_extension('system.JSONwriter')
-    # client.load('module.rate.score')
-    # client.reload('module.rate.score')
-    client.load('module.moderation.warns')
-    client.reload('module.moderation.warns')
     bot.load_extension('system.while')
-    
-    
-    print(f'{bot.user.name} connected')
 
+    client.load('module.interactions.interactions')
+    client.reload('module.interactions.interactions')
+    
+
+    print(f'{bot.user.name} connected')
 
     await bot.change_presence(activity=discord.Game('Portal 2'))
 #=======================================================================================================================
@@ -53,12 +55,23 @@ async def on_ready():
 #=======================================================================================================================
 @bot.command()
 async def a(ctx: commands.Context):
-    client.load('module.moderation.warns')
+    client.load('module.interactions.interactions')
     await embpy(ctx, comp='s', des=f'Степа все плохо')
 
 #===================================================================================================
 
+# while 1:
+#     lsd = ['1: Мониторинг сервера', '2: Изменить игру']
+#     print('\n'.join(lsd))
+#     n1 = input()
+#     if int(n1) == 1:
+#         print('Напишите id сервера которого вы хотите отслеживать. Чтобы перестать отслеживать напишите 0')
+#         n2 = input()
+#         voic_up = 1
+#         n3 = input()
 
+
+    
 #=======================================================================================================================
 # @bot.event
 # async def on_command_error(ctx, error):

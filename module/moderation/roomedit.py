@@ -304,7 +304,7 @@ class Roomedit(commands.Cog):
         try:
             Selfrooms = bdpy(ctx=member)['Selfrooms']
             if (not(after) and not(before.channel.permissions_for(member).speak) and str(before.channel.id) in [k for k in Selfrooms.keys()]) or (after.channel != before.channel and not(before.channel.permissions_for(member).speak) and str(before.channel.id) in [k for k in Selfrooms.keys()]):
-                    await member.edit(mute = False)
+                await member.edit(mute = False)
         except:
             pass
         

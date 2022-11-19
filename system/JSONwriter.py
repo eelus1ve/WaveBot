@@ -112,7 +112,8 @@ class Json_write(commands.Cog):
                             'WARNS': 0,
                             'CAPS': 0,
                             "SCR": 0,
-                            'LvL': 1
+                            'LvL': 1,
+                            "TIME": 0.00
                         }})
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(dat, file, indent=4)

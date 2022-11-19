@@ -11,7 +11,6 @@ from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOpti
 import datetime
 import pytz
 from BTSET import embint, embpy, bdpy, bdint, BD
-moscow_time = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
 n = {}
 class Warnspy(commands.Cog):
     def __init__(self, bot):
@@ -234,106 +233,5 @@ class Warnspy(commands.Cog):
             
     #======================ERROR=======================================
 
-
-class Warnsint(interactions.Extension):
-    def __init__(self, client):
-        self.client = client
-        
-    @interactions.extension_message_command(
-        name='warns'
-    )
-    async def warns_int(self, ctx: interactions.CommandContext):
-        try:
-            if bdpy(ctx)['ModRoles'] != {}:
-                quest = bdpy(ctx)['ModRoles'][[str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0]]['Warns']['Warn'] == "True" or ctx.author.guild_permissions.administrator
-            else:
-                quest = ctx.author.guild_permissions.administrator
-            if quest:
-                n.update({str(ctx.author.id): [str(ctx.target.author.id), str(ctx.target.author.mention), str(ctx.target.content), str(ctx.target.timestamp.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%H:%M || %d.%m.%y')), str(ctx.target.channel_id)]})
-                await ctx.popup(Modal(
-                        custom_id='warns',
-                        title=' ',
-                        components=[
-                            TextInput(
-                                style=TextStyleType.SHORT,
-                                custom_id='qwertyuiop',
-                                label='тип нарушения'
-                            )
-                        ]
-                    ))
-            else:
-                await ctx.send(embeds = embint(ctx, comp='e', des=f'У вас недостаточно прав!'), ephemeral=True)
-        except:
-            await ctx.send(embeds = embint(ctx, comp='e', des=f'У вас недостаточно прав!'), ephemeral=True)
-    @interactions.extension_modal('warns')
-    async def wrn(self, ctx: interactions.CommandContext, shrt):
-        with open(f'{BD}users.json', 'r') as file:
-            data = json.load(file)
-        COLOR = bdint(ctx)['COLOR']
-        nWarns = bdint(ctx)['nWarns']
-        warns = bdpy(ctx)['USERS'][str(memberr.id)]['WARNS']
-        idAdminchennel = bdint(ctx)['idAdminchennel']
-        #====================================================================
-        #audit
-        #====================================================================
-        if bdpy(ctx)['idAdminchennel'] in [str(i.id) for i in ctx.guild.channels]:
-            emb = interactions.Embed(
-                title='Нарушение',
-                description=f"*Ранее, у нарушителя было уже {bdint(ctx)['USERS'][str(n[str(ctx.author.id)][0])]['WARNS'] - 1} нарушений, после {nWarns} он будет забанен!*",
-                timestamp=moscow_time,
-                color=COLOR
-            )
-            
-            emb.add_field(name='Сообщение нарушителя:', value=str(n[str(ctx.author.id)][2]), inline=True)
-            emb.add_field(name='Время нарушения:', value=n[str(ctx.author.id)][3])
-            a = await ctx.get_guild()
-            b = await a.get_all_channels()
-            for i in b:
-                if str(i.id) == str(n[str(ctx.author.id)][4]):
-                    emb.add_field(name='Канал:', value=i.mention, inline=True)
-            emb.add_field(name='Нарушитель:', value=n[str(ctx.author.id)][1], inline=True)
-            emb.add_field(name='Тип нарушения:', value=str(shrt), inline=True)
-            emb.set_footer(text=f'Нарушение выдал учасник {ctx.author.name}, ID учасника: {ctx.author.id}')
-            c = await ctx.get_guild()
-            d = await c.get_all_channels()
-            for i in d:
-                if str(i.id) == str(idAdminchennel):
-                    await i.send(embeds=emb)
-            with open(f'{BD}users.json', 'w') as file:
-                data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['WARNS'] +=1
-                json.dump(data, file, indent=4)
-            for i in [k for k in n.keys()]:
-                if i == str(ctx.author.id):
-                    n.pop(i)
-        #====================================================================
-        #rep
-        #====================================================================
-        await ctx.send(embeds=interactions.Embed(
-            title='Успешно',
-            description=f'Предупреждение успешно выдано участнику {n[str(ctx.author.id)][1]}!',
-            timestamp=ctx.message.created_at,
-            color=COLOR
-        ), ephemeral=True)
-        #====================================================================
-        #ls
-        #====================================================================
-        emb=discord.Embed(
-            title='Нарушение',
-            description=f'Вы получили нарушение на сервере ***{ctx.guild.name}***\nПричина: {shrt}',
-            timestamp=ctx.message.created_at,
-            color = COLOR
-        )
-        emb.add_field(name='Текущее кол-во нарушений', value=f'{warns}/{nWarns}', inline=True)
-        emb.set_footer(text=f'Нарушение выдано {ctx.author.name}#{ctx.author.discriminator} ID модератора: {ctx.author.id}')
-        memberr = [ i for i in ctx.guild.get_all_mambers() if str(i.id) == str(n[str(ctx.author.id)][0])][0]
-        await memberr.send(embed=emb)                                                                               #найти юзера
-        #====================================================================
-        if data[str(ctx.guild_id)]['USERS'][str(n[str(ctx.author.id)][0])]['WARNS'] >= nWarns:
-            await memberr.ban(reason='Вы привысили допустимое количество нарушений')                                 #найти юзера
-        #====================================================================
-
 def setup(bot):
-    if str(bot).startswith('<d'):
         bot.add_cog(Warnspy(bot))
-    elif str(bot).startswith('<i'):
-        Warnsint(bot)
