@@ -10,10 +10,10 @@ class mrate(commands.Cog):
         try:
             with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
-                IgnoreChannels = bdpy(ctx=message)['IgnoreChannels']
-                IgnoreRoles = bdpy(ctx=message)['IgnoreRoles']
-                pref = str(data[str(message.author.guild.id)]['PREFIX'])
-            if not(message.content.startswith(pref) or str(message.channel.id) in IgnoreChannels or True in [str(ii) in IgnoreRoles for ii in [i.id for i in message.author.roles]] or message.author.bot):
+            IgnoreChannels = bdpy(ctx=message)['IgnoreChannels']
+            IgnoreRoles = bdpy(ctx=message)['IgnoreRoles']
+            pref = str(data[str(message.author.guild.id)]['PREFIX'])
+            if not(message.content.startswith(pref) or (str(self.bot.user.mention) in message.content) or str(message.channel.id) in IgnoreChannels or True in [str(ii) in IgnoreRoles for ii in [i.id for i in message.author.roles]] or message.author.bot):
 
                 xp = bdpy(ctx=message)['USERS'][str(message.author.id)]['SCR']
                 lvl = bdpy(ctx=message)['USERS'][str(message.author.id)]['LvL']
