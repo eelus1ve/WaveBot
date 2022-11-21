@@ -21,7 +21,7 @@ load_dotenv(find_dotenv())
 
 #=======================================================================================================================
 intents=discord.Intents.all()
-def get_prefix(bot, message):
+def get_prefix(message):
     try:
         prefix = bdpy(ctx=message)['PREFIX']
     except AttributeError:
@@ -29,7 +29,7 @@ def get_prefix(bot, message):
     return prefix
 
 def mention_and_prefix(bot, message):
-    return commands.when_mentioned(bot, msg=message) + list(get_prefix(bot, message))
+    return commands.when_mentioned(bot, msg=message) + list(get_prefix(message))
         
 client = interactions.Client(token=os.getenv('TOKEN'))
 bot =ComponentsBot(command_prefix = mention_and_prefix, intents=intents)

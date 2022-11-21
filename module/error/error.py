@@ -540,3 +540,33 @@
 #         data[str(ctx.guild_id)]['SelfTitle'] = shrt
 #         json.dump(data, file, indent=4)
 #     await ctx.send(f"*Текст выбора ролей успешно изменён на {shrt}*", ephemeral=True)
+
+import discord
+from discord.ext import commands
+from BTSET import bdpy
+import re
+class Erpy(commands):
+    def __init__(self, bot):
+        self.bot = bot
+    @commands.Cog.listener('on_command_error')
+    async def er_on_command_error(self, ctx, error):
+        ErCOLOR = bdpy(ctx)['ErCOLOR']
+        pref = bdpy(ctx)['PREFIX']
+        if isinstance(error, commands.errors.CommandNotFound):
+            print(error)
+            found = re.findall(r'Command \s*"([^\"]*)"', str(error))
+            await ctx.send(embed=discord.Embed(
+                title="Ошибка",
+                description=f"*Команды `{''.join(found)}` не существует*",
+                color = ErCOLOR
+            ))
+        elif isinstance(error, commands.errors.MemberNotFound):
+            found = re.findall(r'Member \s*"([^\"]*)"', str(error))
+            await ctx.send(embed=discord.Embed(
+                title="Ошибка",
+                description=f"*Участник `{''.join(found)}` не найден*",
+                color = ErCOLOR
+            ))
+        elif isinstance(error, commands.errors.CommandInvokeError):
+            pass
+    
