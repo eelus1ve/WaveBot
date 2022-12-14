@@ -1,108 +1,79 @@
-import interactions
 import discord
+from discord.ext import commands
 import json
+from typing import Optional
+
+ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
+BOTVERSION = '***ALPHA 1.0***'
+BETATESTERS = ['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176', '406124614729859073', '496021942877552660', '539848793693224970', '544279889470291989', '547077175308713994', '583722104059592757', '666768779174346782', '858638662160613376', '992771455500681307']
+BD = 'system/Database/'
+IGNORE = ['error', 'mafia', 'vcbot', 'xo', 'interactions']
 
 def bdpy(ctx):
-    with open('users.json', 'r') as file:
-        dataServerID = json.load(file)
+    with open(f'{BD}users.json', 'r') as file:
+        data = json.load(file)
     return {
-        "COLOR": int(dataServerID[str(ctx.author.guild.id)]['COLOR'], 16),
-        "ErCOLOR": int(dataServerID[str(ctx.author.guild.id)]['ErCOLOR'], 16),
-        "JoinRoles": dataServerID[str(ctx.author.guild.id)]['JoinRoles'],
-        "ModRoles": dataServerID[str(ctx.author.guild.id)]['ModRoles'],
-        "ROLES": dataServerID[str(ctx.author.guild.id)]['ROLES'],
-        "FirstRole": dataServerID[str(ctx.author.guild.id)]['FirstRole'],
-        "actmoduls": dataServerID[str(ctx.author.guild.id)]['actmoduls'],
-        "nCaps": dataServerID[str(ctx.author.guild.id)]['nCaps'],
-        "nWarns": dataServerID[str(ctx.author.guild.id)]['nWarns'],
-        "idAdminchennel": dataServerID[str(ctx.author.guild.id)]['idAdminchennel'],
-        "idMainch": dataServerID[str(ctx.author.guild.id)]['idMainch'],
-        "selfRoom": dataServerID[str(ctx.author.guild.id)]['selfRoom'],
-        "BADWORDS": dataServerID[str(ctx.author.guild.id)]['BADWORDS'],
-        "LINKS": dataServerID[str(ctx.author.guild.id)]['LINKS'],
-        "PREFIX": dataServerID[str(ctx.author.guild.id)]['PREFIX'],
-        "JNMSG": dataServerID[str(ctx.author.guild.id)]['JNMSG'],
-        "SelfTitle": dataServerID[str(ctx.author.guild.id)]['SelfTitle'],
-        "Selfrooms": dataServerID[str(ctx.author.guild.id)]['Selfrooms'],
-        "Mafrooms": dataServerID[str(ctx.author.guild.id)]['Mafrooms'],
-        "IgnoreChannels": dataServerID[str(ctx.author.guild.id)]['IgnoreChannels'],
-        "IgnoreRoles": dataServerID[str(ctx.author.guild.id)]['IgnoreRoles'],
-        "card": dataServerID[str(ctx.author.guild.id)]['card'],
-        "text_color": dataServerID[str(ctx.author.guild.id)]['text_color'],
-        "bar_color": dataServerID[str(ctx.author.guild.id)]['bar_color'],
-        "blend": dataServerID[str(ctx.author.guild.id)]['blend'],
-        "USERS": dataServerID[str(ctx.author.guild.id)]['USERS']
-    }
-def bdmpy(mr):
-    with open('users.json', 'r') as file:
-        dataServerID = json.load(file)
-    return {
-        "COLOR": int(dataServerID[str(mr.guild.id)]['COLOR'], 16),
-        "ErCOLOR": int(dataServerID[str(mr.guild.id)]['ErCOLOR'], 16),
-        "JoinRoles": dataServerID[str(mr.guild.id)]['JoinRoles'],
-        "ModRoles": dataServerID[str(mr.guild.id)]['ModRoles'],
-        "ROLES": dataServerID[str(mr.guild.id)]['ROLES'],
-        "FirstRole": dataServerID[str(mr.guild.id)]['FirstRole'],
-        "actmoduls": dataServerID[str(mr.guild.id)]['actmoduls'],
-        "nCaps": dataServerID[str(mr.guild.id)]['nCaps'],
-        "nWarns": dataServerID[str(mr.guild.id)]['nWarns'],
-        "idAdminchennel": dataServerID[str(mr.guild.id)]['idAdminchennel'],
-        "idMainch": dataServerID[str(mr.guild.id)]['idMainch'],
-        "selfRoom": dataServerID[str(mr.guild.id)]['selfRoom'],
-        "BADWORDS": dataServerID[str(mr.guild.id)]['BADWORDS'],
-        "LINKS": dataServerID[str(mr.guild.id)]['LINKS'],
-        "PREFIX": dataServerID[str(mr.guild.id)]['PREFIX'],
-        "JNMSG": dataServerID[str(mr.guild.id)]['JNMSG'],
-        "SelfTitle": dataServerID[str(mr.guild.id)]['SelfTitle'],
-        "Selfrooms": dataServerID[str(mr.guild.id)]['Selfrooms'],
-        "Mafrooms": dataServerID[str(mr.guild.id)]['Mafrooms'],
-        "IgnoreChannels": dataServerID[str(mr.guild.id)]['IgnoreChannels'],
-        "IgnoreRoles": dataServerID[str(mr.guild.id)]['IgnoreRoles'],
-        "card": dataServerID[str(mr.guild.id)]['card'],
-        "text_color": dataServerID[str(mr.guild.id)]['text_color'],
-        "bar_color": dataServerID[str(mr.guild.id)]['bar_color'],
-        "blend": dataServerID[str(mr.guild.id)]['blend'],
-        "USERS": dataServerID[str(mr.guild.id)]['USERS']
+        "COLOR": int(data[str(ctx.guild.id)]['COLOR'], 16),
+        "ErCOLOR": int(data[str(ctx.guild.id)]['ErCOLOR'], 16),
+        "JoinRoles": data[str(ctx.guild.id)]['JoinRoles'],
+        "ModRoles": data[str(ctx.guild.id)]['ModRoles'],
+        "ROLES": data[str(ctx.guild.id)]['ROLES'],
+        "FirstRole": data[str(ctx.guild.id)]['FirstRole'],
+        "actmoduls": data[str(ctx.guild.id)]['actmoduls'],
+        "nCaps": data[str(ctx.guild.id)]['nCaps'],
+        "nWarns": data[str(ctx.guild.id)]['nWarns'],
+        "idAdminchennel": data[str(ctx.guild.id)]['idAdminchennel'],
+        "idMainch": data[str(ctx.guild.id)]['idMainch'],
+        "selfRoom": data[str(ctx.guild.id)]['selfRoom'],
+        "BADWORDS": data[str(ctx.guild.id)]['BADWORDS'],
+        "LINKS": data[str(ctx.guild.id)]['LINKS'],
+        "PREFIX": data[str(ctx.guild.id)]['PREFIX'],
+        "JNMSG": data[str(ctx.guild.id)]['JNMSG'],
+        "SelfTitle": data[str(ctx.guild.id)]['SelfTitle'],
+        "Selfrooms": data[str(ctx.guild.id)]['Selfrooms'],
+        "Mafrooms": data[str(ctx.guild.id)]['Mafrooms'],
+        "IgnoreChannels": data[str(ctx.guild.id)]['IgnoreChannels'],
+        "IgnoreRoles": data[str(ctx.guild.id)]['IgnoreRoles'],
+        "card": data[str(ctx.guild.id)]['card'],
+        "text_color": data[str(ctx.guild.id)]['text_color'],
+        "bar_color": data[str(ctx.guild.id)]['bar_color'],
+        "blend": data[str(ctx.guild.id)]['blend'],
+        "USERS": data[str(ctx.guild.id)]['USERS']
     }
 def bdint(ctx):
-    with open('users.json', 'r') as file:
-        dataServerID = json.load(file)
+    with open(f'{BD}users.json', 'r') as file:
+        data = json.load(file)
     return {
-        "COLOR": int(dataServerID[str(ctx.guild_id)]['COLOR'], 16),
-        "ErCOLOR": int(dataServerID[str(ctx.guild_id)]['ErCOLOR'], 16),
-        "JoinRoles": dataServerID[str(ctx.guild_id)]['JoinRoles'],
-        "ModRoles": dataServerID[str(ctx.guild_id)]['ModRoles'],
-        "ROLES": dataServerID[str(ctx.guild_id)]['ROLES'],
-        "FirstRole": dataServerID[str(ctx.guild_id)]['FirstRole'],
-        "actmoduls": dataServerID[str(ctx.guild_id)]['actmoduls'],
-        "nCaps": dataServerID[str(ctx.guild_id)]['nCaps'],
-        "nWarns": dataServerID[str(ctx.guild_id)]['nWarns'],
-        "idAdminchennel": dataServerID[str(ctx.guild_id)]['idAdminchennel'],
-        "idMainch": dataServerID[str(ctx.guild_id)]['idMainch'],
-        "selfRoom": dataServerID[str(ctx.guild_id)]['selfRoom'],
-        "BADWORDS": dataServerID[str(ctx.guild_id)]['BADWORDS'],
-        "LINKS": dataServerID[str(ctx.guild_id)]['LINKS'],
-        "PREFIX": dataServerID[str(ctx.guild_id)]['PREFIX'],
-        "JNMSG": dataServerID[str(ctx.guild_id)]['JNMSG'],
-        "SelfTitle": dataServerID[str(ctx.guild_id)]['SelfTitle'],
-        "Selfrooms": dataServerID[str(ctx.guild_id)]['Selfrooms'],
-        "Mafrooms": dataServerID[str(ctx.guild_id)]['Mafrooms'],
-        "IgnoreChannels": dataServerID[str(ctx.guild_id)]['IgnoreChannels'],
-        "IgnoreRoles": dataServerID[str(ctx.guild_id)]['IgnoreRoles'],
-        "card": dataServerID[str(ctx.guild_id)]['card'],
-        "text_color": dataServerID[str(ctx.guild_id)]['text_color'],
-        "bar_color": dataServerID[str(ctx.guild_id)]['bar_color'],
-        "blend": dataServerID[str(ctx.guild_id)]['blend'],
-        "USERS": dataServerID[str(ctx.guild_id)]['USERS']
+        "COLOR": int(data[str(ctx.guild_id)]['COLOR'], 16),
+        "ErCOLOR": int(data[str(ctx.guild_id)]['ErCOLOR'], 16),
+        "JoinRoles": data[str(ctx.guild_id)]['JoinRoles'],
+        "ModRoles": data[str(ctx.guild_id)]['ModRoles'],
+        "ROLES": data[str(ctx.guild_id)]['ROLES'],
+        "FirstRole": data[str(ctx.guild_id)]['FirstRole'],
+        "actmoduls": data[str(ctx.guild_id)]['actmoduls'],
+        "nCaps": data[str(ctx.guild_id)]['nCaps'],
+        "nWarns": data[str(ctx.guild_id)]['nWarns'],
+        "idAdminchennel": data[str(ctx.guild_id)]['idAdminchennel'],
+        "idMainch": data[str(ctx.guild_id)]['idMainch'],
+        "selfRoom": data[str(ctx.guild_id)]['selfRoom'],
+        "BADWORDS": data[str(ctx.guild_id)]['BADWORDS'],
+        "LINKS": data[str(ctx.guild_id)]['LINKS'],
+        "PREFIX": data[str(ctx.guild_id)]['PREFIX'],
+        "JNMSG": data[str(ctx.guild_id)]['JNMSG'],
+        "SelfTitle": data[str(ctx.guild_id)]['SelfTitle'],
+        "Selfrooms": data[str(ctx.guild_id)]['Selfrooms'],
+        "Mafrooms": data[str(ctx.guild_id)]['Mafrooms'],
+        "IgnoreChannels": data[str(ctx.guild_id)]['IgnoreChannels'],
+        "IgnoreRoles": data[str(ctx.guild_id)]['IgnoreRoles'],
+        "card": data[str(ctx.guild_id)]['card'],
+        "text_color": data[str(ctx.guild_id)]['text_color'],
+        "bar_color": data[str(ctx.guild_id)]['bar_color'],
+        "blend": data[str(ctx.guild_id)]['blend'],
+        "USERS": data[str(ctx.guild_id)]['USERS']
     }
 
 
-BOTVERSION = '***ALPHA 1.0***'
-ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
-IGNORE = ['error', 'mafia', 'vcbot', 'globalvote', 'xo']
-
-def embpy(ctx, comp, des):
-    try:
+async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Optional[discord.Member] = None):
         if comp == 's':
             emb = discord.Embed(
                 title='Успешно',
@@ -120,24 +91,23 @@ def embpy(ctx, comp, des):
                 title=des,
                 color=bdpy(ctx)['COLOR']
             )
-    except:
-        pass
-    return(emb)
+        if member:
+            if time:
+                await member.send(embed=emb, delete_after=time)
+                
+            else:
+                await member.send(embed=emb)
+        else:
+            if time:
+                await ctx.send(embed=emb, delete_after=time)
+            else:
+                await ctx.send(embed=emb)
+
 def embint(ctx, comp, des):
     try:
         if comp == 's':
-            emb = interactions.Embed(
-                title='Успешно',
-                description=des,
-                color=bdint(ctx)['COLOR']
-            )
+            pass
         elif comp == 'e':
-            emb = interactions.Embed(
-                title='Ошибка',
-                description=des,
-                color=bdint(ctx)['ErCOLOR']
-            )
+            pass
     except:
         pass
-    return(emb)
-

@@ -1,24 +1,24 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
-from BTSET import bdpy, bdmpy
+from BTSET import bdpy
 
 class Mbrjnpy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.Cog.listener('on_member_join')
     async def mbrjn(self, mbr):
-        COLOR = bdmpy(mr=mbr)['COLOR']
-        rls = bdmpy(mr=mbr)['JoinRoles']
+        COLOR = bdpy(ctx=mbr)['COLOR']
+        rls = bdpy(ctx=mbr)['JoinRoles']
         if len(rls) != 0:
             for role in rls:
                 await mbr.add_roles(mbr.guild.get_role(int(role)))
         else:
             pass
-        if len(bdmpy(mr=mbr)['JNMSG']) != 0:
+        if len(bdpy(ctx=mbr)['JNMSG']) != 0:
             await mbr.send(embed=discord.Embed(
                         title=f'Приветствуем Вас на сервере {mbr.guild.name}',
-                        description=bdmpy(mr=mbr)['JNMSG'],
+                        description=bdpy(ctx=mbr)['JNMSG'],
                         color=COLOR
                     ))
         else:

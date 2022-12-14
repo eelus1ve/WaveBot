@@ -4,7 +4,7 @@ from discord.ext import commands
 from typing import Optional
 
 from setuptools import Command
-from BTSET import bdpy
+from BTSET import BotSetup
 
 lang_num = [0, 1, 2]
 lang_emo = []

@@ -10,24 +10,10 @@ class Ballpy(commands.Cog):
     async def Magicball(self, ctx):
         COLOR = bdpy(ctx)['COLOR']
         randball = random.randint(1, 3)
-        if randball == 1:
-            await ctx.send(embed=discord.Embed(
-                title="Шар судьбы говорит: ",
-                description="*Да!*",
-                color=COLOR
-            ))
-        elif randball == 2:
-            await ctx.send(embed=discord.Embed(
-                title="Шар судьбы говорит: ",
-                description="*Может быть.*",
-                color=COLOR
-            ))
-        else:
-            await ctx.send(embed=discord.Embed(
-                title="Шар судьбы говорит: ",
-                description="*Нет!*",
-                color=COLOR
-            ))
-
+        await ctx.send(embed=discord.Embed(
+            title="Шар судьбы говорит: ",
+            description="*Да!*" if randball == 1 else False or "*Может быть.*" if randball == 2 else False or "*Нет!*" if randball == 3 else False,
+            color=COLOR
+        ))
 def setup(bot):
     bot.add_cog(Ballpy(bot))

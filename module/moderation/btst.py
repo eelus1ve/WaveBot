@@ -4,6 +4,7 @@ from discord_components import DiscordComponents, ComponentsBot, Button, Select,
 from email.errors import InvalidMultipartContentTransferEncodingDefect
 import json
 import discord_components
+from BTSET import BD
 
 def setup(bot: discord_components.ComponentsBot):
 
@@ -78,7 +79,7 @@ def setup(bot: discord_components.ComponentsBot):
         gld: discord.Guild = interaction.guild
         channels = gld.channels
 
-        with open('users.json', 'r') as file:
+        with open(f'{BD}users.json', 'r') as file:
             data = json.load(file)
             roles = data[str(interaction.guild.id)]['JoinRoles']
             COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
@@ -103,7 +104,7 @@ def setup(bot: discord_components.ComponentsBot):
         gld: discord.Guild = interaction.guild
         channels = gld.channels
 
-        with open('users.json', 'r') as file:
+        with open(f'{BD}users.json', 'r') as file:
             data = json.load(file)
             roles = data[str(interaction.guild.id)]['JoinRoles']
             COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
@@ -308,10 +309,10 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
                 if not (ms.content in data[str(interaction.guild.id)]['ROLES']):
-                    with open('users.json', 'w') as file:
+                    with open(f'{BD}users.json', 'w') as file:
                         data[str(interaction.guild.id)]['ROLES'].update({ms.content: [[], []]})
                         json.dump(data, file, indent=4)
 
@@ -330,9 +331,9 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(interaction.guild.id)]['COLOR'] = '0x' + ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
@@ -350,9 +351,9 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(interaction.guild.id)]['ErCOLOR'] = '0x' + ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
@@ -396,9 +397,9 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(interaction.guild.id)]['nCaps'] = ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
@@ -415,9 +416,9 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(interaction.guild.id)]['nWarns'] = ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
@@ -434,9 +435,9 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(interaction.guild.id)]['BADWORDS'].append(ms.content)
                     json.dump(data, file, indent=4)
                 await ms.delete()
@@ -453,10 +454,10 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
                 if ms.channel in data[str(interaction.guild.id)]['BADWORDS']:
-                    with open('users.json', 'w') as file:
+                    with open(f'{BD}users.json', 'w') as file:
                         data[str(interaction.guild.id)]['BADWORDS'].pop(
                             data[str(interaction.guild.id)]['BADWORDS'].index(ms.content))
                         json.dump(data, file, indent=4)
@@ -520,7 +521,7 @@ def setup(bot: discord_components.ComponentsBot):
                     await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
                                                                    description='Канал для создания комнат создан',
                                                                    color=COLOR))
-                    with open('users.json', 'w') as file:
+                    with open(f'{BD}users.json', 'w') as file:
                         json.dump(data, file, indent=4)
 
                     await btst_set_def(interaction)
@@ -536,9 +537,9 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(interaction.guild.id)]['PREFIX'] = ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
@@ -555,9 +556,9 @@ def setup(bot: discord_components.ComponentsBot):
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                with open('users.json', 'w') as file:
+                with open(f'{BD}users.json', 'w') as file:
                     data[str(interaction.guild.id)]['SelfTitle'] = ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
@@ -595,7 +596,7 @@ def setup(bot: discord_components.ComponentsBot):
 
             elif arg == 'classes':
                 pass
-                '''with open('users.json', 'r') as file:
+                '''with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
                     Classes = data[str(interaction.guild.id)]['ROLES']
                 emb = discord.Embed(title=f'Успешно',
@@ -603,7 +604,7 @@ def setup(bot: discord_components.ComponentsBot):
                     color=COLOR)
                 n = 0
                 while len(Classes) != n:
-                    with open('users.json', 'r') as file:
+                    with open(f'{BD}users.json', 'r') as file:
                         ClassesRoles = data[str(interaction.guild.id)]['ROLES'][str(Classes[n])][0]
                     emb.add_field(name=f'{str(Classes[n])}', value=''.join(ClassesRoles), inline=True)
                     n += 1
@@ -640,7 +641,7 @@ def setup(bot: discord_components.ComponentsBot):
                 with open('glb_vote.json', 'w') as file:
                     json.dump(vt_data, file, indent=4)
 
-            with open('users.json', 'w') as file:
+            with open(f'{BD}users.json', 'w') as file:
                 json.dump(data, file, indent=4)
 
             await btst_set_def(interaction)
@@ -649,7 +650,7 @@ def setup(bot: discord_components.ComponentsBot):
     async def on_select_option(interaction: discord_components.Interaction):
         try:
             old_emb = interaction.message.embeds[0]
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
                 COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
 
@@ -703,17 +704,17 @@ def setup(bot: discord_components.ComponentsBot):
                 color=COLOR
             ))
 
-        with open('users.json', 'w') as file:
+        with open(f'{BD}users.json', 'w') as file:
             json.dump(data, file, indent=4)
 
         await btst_set_def(interaction)
 
             # ==========================================================================================================================   IDA
         if interaction.component.placeholder.startswith('выберете канал который хотите сделать каналом администратора'):
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
             data[str(interaction.guild.id)]['idAdminchennel'] = interaction.values[0]
-            with open('users.json', 'w') as file:
+            with open(f'{BD}users.json', 'w') as file:
                 json.dump(data, file, indent=4)
             await interaction.send(embed=discord.Embed(
                 title="Успешно",
@@ -724,11 +725,11 @@ def setup(bot: discord_components.ComponentsBot):
         # # =======================================================================================================================    join roles
         if interaction.component.placeholder.startswith(
                 'Укажите роли которые будут выдоваться участникам при входе на сервер'):
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
             data[str(interaction.guild.id)]['JoinRoles'] = interaction.values
             await interaction.send('роли выбранны')
-            with open('users.json', 'w') as file:
+            with open(f'{BD}users.json', 'w') as file:
                 json.dump(data, file, indent=4)
 
             await btst_set_def(interaction)

@@ -7,7 +7,7 @@ import discord_components
 from discord.ext import commands
 from discord_components import ComponentsBot
 import datetime
-import JSONwriter
+from system import JSONwriter
 
 def res_copy():
     if not int(datetime.datetime.now().time().hour) and int(datetime.datetime.now().minute) <= 1:

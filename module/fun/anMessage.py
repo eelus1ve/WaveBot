@@ -1,6 +1,4 @@
 import datetime
-import json
-
 import discord_components
 from discord_components import ComponentsBot
 import discord

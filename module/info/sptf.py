@@ -1,4 +1,4 @@
-from multiprocessing.resource_sharer import stop
+from multiprocessing.resource_sharer import stop #гит игнор чекнуть че не так
 import discord
 from discord import Spotify, File
 from typing import Optional
@@ -22,7 +22,7 @@ class Sptfpy(commands.Cog):
             if str(userr.status) ==  'offline':
                 await ctx.send(f"{userr.mention} офлайн!")
             else:
-                await ctx.send(embed=embpy(ctx, comp='s', des=f'Пользователь {userr.name} сейчас не слушает спотифай!'))
+                await embpy(ctx, comp='e', des=f'Пользователь {userr.name} сейчас не слушает спотифай!', time=10.00)
         else:
             embed = discord.Embed(
                 title=f"{userr.name}'s Spotify",

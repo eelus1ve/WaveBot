@@ -2,7 +2,7 @@ import discord
 import json
 from discord.ext import commands
 from discord.utils import get
-from BTSET import bdpy
+from BTSET import bdpy, BD
 
 class Mwarnspy(commands.Cog):
     def __init__(self, bot):
@@ -12,7 +12,7 @@ class Mwarnspy(commands.Cog):
     @commands.Cog.listener('on_message')
     async def mwarns(self, message):
         try:
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
             COLOR = bdpy(ctx=message)['COLOR']
             idAdminchennel = bdpy(ctx=message)['idAdminchennel']
@@ -34,9 +34,7 @@ class Mwarnspy(commands.Cog):
                         await message.delete()
                         pass
                     else:
-                        with open('users.json', 'w') as file:
-                            data[str(message.guild.id)]['USERS'][str(message.author.id)]['WARNS'] +=1
-                            json.dump(data, file, indent=4)
+                        data[str(message.guild.id)]['USERS'][str(message.author.id)]['WARNS'] +=1
 
 
                         #====================================================================
@@ -98,18 +96,12 @@ class Mwarnspy(commands.Cog):
 
             #Caps===================================================================
             if message.content.isupper():
-                with open('users.json', 'r') as file:
+                with open(f'{BD}users.json', 'r') as file:
                     data = json.load(file)
-                    
-                with open('users.json', 'w') as file:
-                    data[str(message.guild.id)]['USERS'][str(message.author.id)]['CAPS'] += 1
-                    json.dump(data, file, indent=4)
-
+                data[str(message.guild.id)]['USERS'][str(message.author.id)]['CAPS'] += 1
                 if data[str(message.guild.id)]['USERS'][str(message.author.id)]['CAPS'] >= int(nCaps):
-                    with open('users.json', 'w') as file:
-                        data[str(message.guild.id)]['USERS'][str(message.author.id)]['CAPS'] = 0
-                        data[str(message.guild.id)]['USERS'][str(message.author.id)]['WARNS'] += 1
-                        json.dump(data, file, indent=4)
+                    data[str(message.guild.id)]['USERS'][str(message.author.id)]['CAPS'] = 0
+                    data[str(message.guild.id)]['USERS'][str(message.author.id)]['WARNS'] += 1
                     #====================================================================
                     #audit
                     #====================================================================
@@ -161,6 +153,8 @@ class Mwarnspy(commands.Cog):
                     #message_delete=======
                     await message.delete()
                     #=====================
+            with open(f'{BD}users.json', 'w') as file:
+                json.dump(data, file, indent=4)
         except:
             pass
 

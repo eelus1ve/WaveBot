@@ -34,12 +34,8 @@ class Kickpy(commands.Cog):
             #====================================================================
             #rep
             #====================================================================
-            await ctx.send(embed=discord.Embed(
-                    title="Успешно",
-                    description=f"*{member.mention} был кикнут!*",
-                    timestamp=moscow_time,
-                    color=COLOR
-                ), delete_after=10.0)
+            await embpy(ctx, comp='s', des=f"*{member.mention} был кикнут!*", time=10.00)
+                    
             #====================================================================
             #ls
             #====================================================================
@@ -55,17 +51,13 @@ class Kickpy(commands.Cog):
             await ctx.channel.purge(limit=int(amount))
             await member.kick(reason=reason)
         else:
-            await ctx.send(embpy(ctx, comp='e', des=f'У вас недостаточно прав!'), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
     @kick.error
     async def error(self, ctx, error):
         ErCOLOR = bdpy(ctx)['ErCOLOR']
         pref = bdpy(ctx)['PREFIX']
             
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(embed=discord.Embed(
-                title="Ошибка",
-                description=f"*Использование:* {pref}*kick (@Участник)*",
-                color = ErCOLOR
-            ), delete_after=10.0)
+            await embpy(ctx, comp='e', des=f"*Использование:* {pref}*kick (@Участник)*", time=10.00)
 def setup(bot):
     bot.add_cog(Kickpy(bot))

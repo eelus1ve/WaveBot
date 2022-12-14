@@ -137,7 +137,7 @@ class Game2048(commands.Cog):
 
                 for strng in body:
                     strng.reverse()
-                    for iiii in range(3):
+                    for _ in range(3):
                         for i in range(len(strng)):
                             if strng[i] and i and not strng[i - 1]:
                                 a = strng[i]

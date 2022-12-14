@@ -1,5 +1,5 @@
 import json
-from BTSET import bdpy
+from BTSET import bdpy, BD
 from discord.ext import commands
 
 class mrate(commands.Cog):
@@ -8,12 +8,12 @@ class mrate(commands.Cog):
     @commands.Cog.listener('on_message')
     async def my_message(self, message):
         try:
-            with open('users.json', 'r') as file:
+            with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
-                IgnoreChannels = bdpy(ctx=message)['IgnoreChannels']
-                IgnoreRoles = bdpy(ctx=message)['IgnoreRoles']
-                pref = str(data[str(message.author.guild.id)]['PREFIX'])
-            if not(message.content.startswith(pref) or str(message.channel.id) in IgnoreChannels or True in [str(ii) in IgnoreRoles for ii in [i.id for i in message.author.roles]] or message.author.bot):
+            IgnoreChannels = bdpy(ctx=message)['IgnoreChannels']
+            IgnoreRoles = bdpy(ctx=message)['IgnoreRoles']
+            pref = str(data[str(message.author.guild.id)]['PREFIX'])
+            if not(message.content.startswith(pref) or (str(self.bot.user.mention) in message.content) or str(message.channel.id) in IgnoreChannels or True in [str(ii) in IgnoreRoles for ii in [i.id for i in message.author.roles]] or message.author.bot):
 
                 xp = bdpy(ctx=message)['USERS'][str(message.author.id)]['SCR']
                 lvl = bdpy(ctx=message)['USERS'][str(message.author.id)]['LvL']
@@ -40,7 +40,7 @@ class mrate(commands.Cog):
                 
                     data[str(message.guild.id)]['USERS'][str(message.author.id)]['SCR']=0 #написать формулу + переменая
                     data[str(message.guild.id)]['USERS'][str(message.author.id)]['LvL']=new_level
-                with open("users.json", "w") as f:
+                with open(f'{BD}users.json', 'w') as f:
                     json.dump(data, f, indent=4)
         except:
             pass

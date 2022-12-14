@@ -1,14 +1,9 @@
-from dis import disco
-from http import client
-from multiprocessing.connection import Client
-from os import lseek
 import discord
 from discord import Spotify
 from discord.ext import commands
 from typing import Optional
-from BTSET import ADMINS, bdpy, bdmpy, bdint
+from BTSET import ADMINS, bdpy, bdint
 import pytz
-import interactions
 from discord.utils import get
 from discord_components import ComponentsBot
 
@@ -27,10 +22,10 @@ class Duser(commands.Cog):
                 if str(i.type) == 'ActivityType.playing':
                     mr = i
 
-        warns = bdmpy(mr=member)['USERS'][str(member.id)]['WARNS']
-        score = bdmpy(mr=member)['USERS'][str(member.id)]['SCR']
-        LVL = bdmpy(mr=member)['USERS'][str(member.id)]['LvL']
-        COLOR = bdpy(ctx)['COLOR'] or bdint(ctx)['COLOR']
+        warns = bdpy(ctx=member)['USERS'][str(member.id)]['WARNS']
+        score = bdpy(ctx=member)['USERS'][str(member.id)]['SCR']
+        LVL = bdpy(ctx=member)['USERS'][str(member.id)]['LvL']
+        COLOR = bdpy(ctx)['COLOR']
 
         lstdisc = [f'\n***Имя пользователя:***  {member.name}#{member.discriminator} \n']
 
@@ -56,13 +51,17 @@ class Duser(commands.Cog):
                             color=COLOR
                             )
         # if bdpy(ctx)['Modules']['Rank']:
-        # if bdpy(ctx)['Modules']['Warns']:   
-        emb.add_field(name='***XP***', value=score, inline=True)
-        emb.add_field(name='***LVL***', value=LVL, inline=True) #добавить if
-        emb.add_field(name='***Предупреждения***', value=warns, inline=True)
+        # if bdpy(ctx)['Modules']['Warns']:  
+        #потом заменить на list из включеных модулей и проверять нличее включения на севере а не колво xp lvl и warns !!!!!!!!!!!!!
+        if score or LVL:
+            emb.add_field(name='***XP***', value=score, inline=True)
+            emb.add_field(name='***LVL***', value=LVL, inline=True) #добавить if
+        if warns:
+            emb.add_field(name='***Предупреждения***', value=warns, inline=True)
         
         emb.set_thumbnail(url=member.avatar_url)
         emb.set_footer(text=f'ID: {member.id}')
+        
         await ctx.send(embed=emb)
 
 def setup(sbot):
