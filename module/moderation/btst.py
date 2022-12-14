@@ -32,6 +32,47 @@ def setup(bot: discord_components.ComponentsBot):
         'настройка рейтинга': {}
     }
 
+    async def btst_set_def(interaction, f=0):
+        with open('users.json', 'r') as file:
+            data = json.load(file)
+            COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
+
+        emb = discord.Embed(
+            title='―――――――――*Wave Settings*―――――――――――',
+            description='\n',
+            color=COLOR
+        )
+        emb.add_field(name='это настройки WaveBot',
+                      value='Вы можете выбрать раздел или сразу открыть рекомендуемые настройки')
+        if f:
+            await interaction.send(embed=emb, components=[
+            Select(placeholder='рекомендуем настроить', options=[SelectOption(label='f', value='qwertyu')]),
+            [
+                Button(label='модерация'),
+                Button(label='настройка бота'),
+                Button(label='настройка рейтинга')
+            ],
+            [
+                Button(label='<---'),
+                Button(label='OK'),
+                Button(label='--->')
+            ]
+            ])
+        else:
+            await interaction.message.edit(embed=emb, components=[
+                Select(placeholder='рекомендуем настроить', options=[SelectOption(label='f', value='qwertyu')]),
+                [
+                    Button(label='модерация'),
+                    Button(label='настройка бота'),
+                    Button(label='настройка рейтинга')
+                ],
+                [
+                    Button(label='<---'),
+                    Button(label='OK'),
+                    Button(label='--->')
+                ]
+            ])
+
     @bot.command()
     async def btst(interaction):
         gld: discord.Guild = interaction.guild
@@ -55,27 +96,7 @@ def setup(bot: discord_components.ComponentsBot):
                 chlens.append([chlen for chlen in channels if str(chlen.type) == 'ChannelType.GUILD_TEXT'][
                               i:i + 24])  # первый важный комент !!!!!!!!!!!!!!!!!!!!!!!!! нужно при случаи ошибки заменить на 25!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        emb = discord.Embed(
-            title='―――――――――*Wave Settings*―――――――――――',
-            description='\n',
-            color=COLOR
-        )
-        emb.add_field(name='это настройки WaveBot',
-                      value='Вы можете выбрать раздел или сразу открыть рекомендуемые настройки')
-
-        await interaction.send(embed=emb, components=[
-            Select(placeholder='рекомендуем настроить', options=[SelectOption(label='f', value='qwertyu')]),
-            [
-                Button(label='модерация'),
-                Button(label='настройка бота'),
-                Button(label='настройка рейтинга')
-            ],
-            [
-                Button(label='<---'),
-                Button(label='OK'),
-                Button(label='--->')
-            ]
-        ])
+        await btst_set_def(interaction, 1)
 
     @bot.listen('on_button_click')
     async def animation(interaction: discord_components.Interaction):
@@ -102,14 +123,6 @@ def setup(bot: discord_components.ComponentsBot):
 
         if interaction.component.label in ['модерация', 'настройка бота', 'настройка рейтинга', '--->', '<---']: await interaction.edit_origin()
         if interaction.component.label in ['модерация', 'настройка бота', 'настройка рейтинга']:
-            if not interaction.message.embeds[0].description:
-                for i in range(2):
-                    emb = discord.Embed(
-                        title=interaction.message.embeds[0].title,
-                        description='\n.' * i * 5,
-                        color=COLOR
-                    )
-                    await interaction.message.edit(embed=emb)
 
             keys = []
             items = []
@@ -244,6 +257,7 @@ def setup(bot: discord_components.ComponentsBot):
                     msc_player = await txt_cnlen.send(embed=embd, components=comp)
 
                     await vc_clen.connect()
+                    await btst_set_def(interaction)
 
                     with open('music.json', 'r') as file:
                         data_mus = json.load(file)
@@ -280,6 +294,8 @@ def setup(bot: discord_components.ComponentsBot):
                        ]
                    ])
 
+                await interaction.edit_origin()
+
             if arg == 'добавить класс ролей':
                 emb = discord.Embed(
                     title=old_emb.title,
@@ -288,6 +304,7 @@ def setup(bot: discord_components.ComponentsBot):
                 )
                 emb.add_field(name='отправьте сообщение с названием класса', value='страница 1 из 1')
                 await interaction.message.edit(embed=emb)
+
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
@@ -298,6 +315,9 @@ def setup(bot: discord_components.ComponentsBot):
                         data[str(interaction.guild.id)]['ROLES'].update({ms.content: [[], []]})
                         json.dump(data, file, indent=4)
 
+                await ms.delete()
+                await btst_set_def(interaction)
+
             elif arg == 'настроить цвет':
                 emb = discord.Embed(
                     title=old_emb.title,
@@ -306,6 +326,7 @@ def setup(bot: discord_components.ComponentsBot):
                 )
                 emb.add_field(name='отправьте сообщение с цветом в hex', value='страница 1 из 1')
                 await interaction.message.edit(embed=emb)
+                await interaction.edit_origin()
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
@@ -315,6 +336,7 @@ def setup(bot: discord_components.ComponentsBot):
                     data[str(interaction.guild.id)]['COLOR'] = '0x' + ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
+                await btst_set_def(interaction)
 
             elif arg == 'настроить цвет ошибок':
                 emb = discord.Embed(
@@ -324,6 +346,7 @@ def setup(bot: discord_components.ComponentsBot):
                 )
                 emb.add_field(name='отправьте сообщение с цветом в hex', value='страница 1 из 1')
                 await interaction.message.edit(embed=emb)
+                await interaction.edit_origin()
 
                 ms: discord.Message = await bot.wait_for('message', check=check)
 
@@ -333,6 +356,7 @@ def setup(bot: discord_components.ComponentsBot):
                     data[str(interaction.guild.id)]['ErCOLOR'] = '0x' + ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
+                await btst_set_def(interaction)
 
             elif arg == 'канал администратора':
                 emb = discord.Embed(
@@ -343,7 +367,7 @@ def setup(bot: discord_components.ComponentsBot):
                 emb.add_field(name='выберете канал который хотите сделать каналом администратора',
                               value=f'страница 1 из {len(chlens)}')
 
-                await interaction.message.edit(components=[
+                await interaction.message.edit(embed=emb, components=[
                     Select(
                         placeholder='выберете канал который хотите сделать каналом администратора',
                         options=[SelectOption(label=i.name, value=str(i.id)) for i in chlens[0]]
@@ -359,6 +383,7 @@ def setup(bot: discord_components.ComponentsBot):
                         Button(label='--->')
                     ]
                 ])
+                await interaction.edit_origin()
 
             elif arg == 'ncaps':
                 emb = discord.Embed(
@@ -377,6 +402,7 @@ def setup(bot: discord_components.ComponentsBot):
                     data[str(interaction.guild.id)]['nCaps'] = ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
+                await btst_set_def(interaction)
 
             elif arg == 'nwarns':
                 emb = discord.Embed(
@@ -395,6 +421,7 @@ def setup(bot: discord_components.ComponentsBot):
                     data[str(interaction.guild.id)]['nWarns'] = ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
+                await btst_set_def(interaction)
 
             elif arg == 'добавить плохое слово':
                 emb = discord.Embed(
@@ -413,6 +440,7 @@ def setup(bot: discord_components.ComponentsBot):
                     data[str(interaction.guild.id)]['BADWORDS'].append(ms.content)
                     json.dump(data, file, indent=4)
                 await ms.delete()
+                await btst_set_def(interaction)
 
             elif arg == 'убрать плохое слово':
                 emb = discord.Embed(
@@ -435,6 +463,7 @@ def setup(bot: discord_components.ComponentsBot):
                 else:
                     await interaction.send('слова нет')
                 await ms.delete()
+                await btst_set_def(interaction)
 
             elif arg == 'создать "свои комнаты"':
                 chlen_krokodila = interaction.channel
@@ -449,6 +478,7 @@ def setup(bot: discord_components.ComponentsBot):
                     await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
                                                                    description='Канал для создания комнат удалён',
                                                                    color=COLOR))
+                    await btst_set_def(interaction)
                 else:
                     ct = await interaction.guild.create_category(name='ССК', position=1)
                     vcch = await interaction.guild.create_voice_channel(name=f'Создать комнату', category=ct)
@@ -493,6 +523,8 @@ def setup(bot: discord_components.ComponentsBot):
                     with open('users.json', 'w') as file:
                         json.dump(data, file, indent=4)
 
+                    await btst_set_def(interaction)
+
             elif arg == 'префикс':
                 emb = discord.Embed(
                     title=old_emb.title,
@@ -510,6 +542,7 @@ def setup(bot: discord_components.ComponentsBot):
                     data[str(interaction.guild.id)]['PREFIX'] = ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
+                await btst_set_def(interaction)
 
             elif arg == 'Указать свой текст при выборе ролей':
                 emb = discord.Embed(
@@ -528,6 +561,7 @@ def setup(bot: discord_components.ComponentsBot):
                     data[str(interaction.guild.id)]['SelfTitle'] = ms.content
                     json.dump(data, file, indent=4)
                 await ms.delete()
+                await btst_set_def(interaction)
 
             elif arg == 'настроить роли при входе на сервер':
                 emb = discord.Embed(
@@ -609,6 +643,8 @@ def setup(bot: discord_components.ComponentsBot):
             with open('users.json', 'w') as file:
                 json.dump(data, file, indent=4)
 
+            await btst_set_def(interaction)
+
     @bot.event
     async def on_select_option(interaction: discord_components.Interaction):
         try:
@@ -654,6 +690,8 @@ def setup(bot: discord_components.ComponentsBot):
                    ]
                ])
 
+            await interaction.edit_origin()
+
         elif interaction.component.placeholder.startswith('Укажите роли которые вы хотите добавить в класс'):
             data[str(interaction.author.guild.id)]['ROLES'][interaction.component.placeholder.split('*')[1]][
                 0] = interaction.values
@@ -668,6 +706,8 @@ def setup(bot: discord_components.ComponentsBot):
         with open('users.json', 'w') as file:
             json.dump(data, file, indent=4)
 
+        await btst_set_def(interaction)
+
             # ==========================================================================================================================   IDA
         if interaction.component.placeholder.startswith('выберете канал который хотите сделать каналом администратора'):
             with open('users.json', 'r') as file:
@@ -679,6 +719,7 @@ def setup(bot: discord_components.ComponentsBot):
                 title="Успешно",
                 description=f"*Канал администратора изменен на {interaction.values[0]}*",
             ))
+            await btst_set_def(interaction)
 
         # # =======================================================================================================================    join roles
         if interaction.component.placeholder.startswith(
@@ -689,3 +730,5 @@ def setup(bot: discord_components.ComponentsBot):
             await interaction.send('роли выбранны')
             with open('users.json', 'w') as file:
                 json.dump(data, file, indent=4)
+
+            await btst_set_def(interaction)
