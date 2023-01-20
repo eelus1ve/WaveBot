@@ -5,7 +5,7 @@ from email.errors import InvalidMultipartContentTransferEncodingDefect
 import json
 import discord_components
 from BTSET import BD
-from system.btst_settings import SetForBTST, SecSetForBTST
+from system.btst_settings import SetForBTST, SecSetForBTST, ScrollSet
 
 def setup(bot: discord_components.ComponentsBot):
 
@@ -34,6 +34,8 @@ def setup(bot: discord_components.ComponentsBot):
         'настройка рейтинга': {}
     }
 
+    preference_set_for_best = ['канал администратора', 'настроить цвет', 'префикс']
+
     async def btst_set_def(interaction, f=0):
         with open(f'{BD}users.json', 'r') as file:
             data = json.load(file)
@@ -49,7 +51,7 @@ def setup(bot: discord_components.ComponentsBot):
 
         if f:
             await interaction.send(embed=emb, components=[
-            Select(placeholder='рекомендуем настроить', options=[SelectOption(label='f', value='qwertyu')]),
+            Select(placeholder='рекомендуем настроить', options=[SelectOption(label=i, value=i) for i in preference_set_for_best], max_values=1),
             [
                 Button(label='модерация'),
                 Button(label='настройка бота'),
@@ -63,7 +65,7 @@ def setup(bot: discord_components.ComponentsBot):
             ])
         else:
             await interaction.message.edit(embed=emb, components=[
-                Select(placeholder='рекомендуем настроить', options=[SelectOption(label='f', value='qwertyu')]),
+                Select(placeholder='рекомендуем настроить', options=[SelectOption(label=i, value=i) for i in preference_set_for_best], max_values=1),
                 [
                     Button(label='модерация'),
                     Button(label='настройка бота'),
@@ -105,19 +107,7 @@ def setup(bot: discord_components.ComponentsBot):
             )
             emb.add_field(name=f'{keys[0]}', value=f'{items[0]}')
             emb.add_field(name='.', value='**' + "\n".join(keys[1:]) + '**', inline=False)
-            await interaction.message.edit(embed=emb, components=[
-                Select(placeholder='рекомендуем настроить', options=[SelectOption(label='f', value='qwertyu')]),
-                [
-                    Button(label='модерация'),
-                    Button(label='настройка бота'),
-                    Button(label='настройка рейтинга')
-                ],
-                [
-                    Button(label='<---'),
-                    Button(label='OK'),
-                    Button(label='--->')
-                ]
-            ])
+            await interaction.message.edit(embed=emb, components=interaction.message.components)
 
     @bot.listen('on_button_click')
     async def settings_choice(interaction: discord_components.Interaction):
@@ -125,40 +115,43 @@ def setup(bot: discord_components.ComponentsBot):
             data = json.load(file)
             COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
 
-        if interaction.component.label == '--->':
-            old_emb: discord.Embed = interaction.message.embeds[0].description.replace('*', '')
+        try:
+            if interaction.component.label == '--->':
+                old_emb: discord.Embed = interaction.message.embeds[0].description.replace('*', '')
 
-            keys = []
-            keys.append(interaction.message.embeds[0].fields[0].name)
-            keys.extend(interaction.message.embeds[0].fields[1].value.replace('.', '').replace('*', '').split('\n'))
+                keys = []
+                keys.append(interaction.message.embeds[0].fields[0].name)
+                keys.extend(interaction.message.embeds[0].fields[1].value.replace('.', '').replace('*', '').split('\n'))
 
-            keys.append(keys.pop(0))
+                keys.append(keys.pop(0))
 
-            emb = discord.Embed(
-                title=interaction.message.embeds[0].title,
-                description=f'**{old_emb}**',
-                color=COLOR
-            )
-            emb.add_field(name=f'{keys[0]}', value=f'{settings_for_btst[old_emb][keys[0]]}')
-            emb.add_field(name='.', value='**' + "\n".join(keys[1:]) + '**', inline=False)
-            await interaction.message.edit(embed=emb)
+                emb = discord.Embed(
+                    title=interaction.message.embeds[0].title,
+                    description=f'**{old_emb}**',
+                    color=COLOR
+                )
+                emb.add_field(name=f'{keys[0]}', value=f'{settings_for_btst[old_emb][keys[0]]}')
+                emb.add_field(name='.', value='**' + "\n".join(keys[1:]) + '**', inline=False)
+                await interaction.message.edit(embed=emb)
 
-        if interaction.component.label == '<---':
-            old_emb: discord.Embed = interaction.message.embeds[0].description.replace('*', '')
+            if interaction.component.label == '<---':
+                old_emb: discord.Embed = interaction.message.embeds[0].description.replace('*', '')
 
-            keys = []
-            keys.append(interaction.message.embeds[0].fields[0].name)
-            keys.extend(interaction.message.embeds[0].fields[1].value.replace('.', '').replace('*', '').split('\n'))
+                keys = []
+                keys.append(interaction.message.embeds[0].fields[0].name)
+                keys.extend(interaction.message.embeds[0].fields[1].value.replace('.', '').replace('*', '').split('\n'))
 
-            keys.insert(0, keys.pop(-1))
-            emb = discord.Embed(
-                title=interaction.message.embeds[0].title,
-                description=f'**{old_emb}**',
-                color=COLOR
-            )
-            emb.add_field(name=f'{keys[0]}', value=f'{settings_for_btst[old_emb][keys[0]]}')
-            emb.add_field(name='.', value='**' + "\n".join(keys[1:]) + '**', inline=False)
-            await interaction.message.edit(embed=emb)
+                keys.insert(0, keys.pop(-1))
+                emb = discord.Embed(
+                    title=interaction.message.embeds[0].title,
+                    description=f'**{old_emb}**',
+                    color=COLOR
+                )
+                emb.add_field(name=f'{keys[0]}', value=f'{settings_for_btst[old_emb][keys[0]]}')
+                emb.add_field(name='.', value='**' + "\n".join(keys[1:]) + '**', inline=False)
+                await interaction.message.edit(embed=emb)
+        except:
+            pass
 
     @bot.listen('on_button_click')
     async def settings(interaction: discord_components.Interaction):
@@ -167,6 +160,21 @@ def setup(bot: discord_components.ComponentsBot):
             arg = old_emb.fields[0].name
 
             set_btst = SetForBTST(bot, interaction, old_emb, arg)
+
+            await interaction.message.edit(components=[
+                Select(placeholder='рекомендуем настроить',
+                       options=[SelectOption(label=i, value=i) for i in preference_set_for_best], max_values=1),
+                [
+                    Button(label='модерация', disabled=True),
+                    Button(label='настройка бота', disabled=True),
+                    Button(label='настройка рейтинга', disabled=True)
+                ],
+                [
+                    Button(label='<---'),
+                    Button(label='OK'),
+                    Button(label='--->')
+                ]
+            ])
 
             if arg == 'музыка':
                 await set_btst.music()
@@ -240,9 +248,6 @@ def setup(bot: discord_components.ComponentsBot):
             elif arg == 'добавить канал с инфорацией':  # переимовать
                 pass
 
-
-
-
     @bot.listen('on_select_option')
     async def second_set(interaction: discord_components.Interaction):
         try:
@@ -252,7 +257,7 @@ def setup(bot: discord_components.ComponentsBot):
 
             if interaction.component.placeholder == 'Укажите классы в которые вы хотите добавить роли':
                 await sec_set.rolecass_choice()
-                await btst_set_def(interaction)
+                await interaction.edit_origin()
 
             elif interaction.component.placeholder.startswith('Укажите роли которые вы хотите добавить в класс'):
                 await sec_set.role_choice()
@@ -267,5 +272,41 @@ def setup(bot: discord_components.ComponentsBot):
                 await sec_set.join_roles()
                 await btst_set_def(interaction)
 
+        except:
+            pass
+
+    @bot.listen('on_select_option')
+    async def preference_options(interaction):
+        old_emb = interaction.message.embeds[0]
+        arg = old_emb.fields[0].name
+
+        set_btst = SetForBTST(bot, interaction, old_emb, arg)
+
+        if interaction.values[0] == 'канал администратора':
+            await set_btst.admin_clen()
+            await btst_set_def(interaction)
+        elif interaction.values[0] == 'настроить цвет':
+            await set_btst.color_choice()
+            await btst_set_def(interaction)
+        elif interaction.values[0] == 'префикс':
+            await set_btst.prefix()
+            await btst_set_def(interaction)
+
+    @bot.listen('on_button_click')
+    async def scroll_set(interaction):
+        try:
+            old_emb = interaction.message.embeds[0]
+
+            scr_set = ScrollSet(bot, interaction, old_emb)
+
+            if interaction.component.label == '--->':
+                await scr_set.scroll_right()
+
+            if interaction.component.label == '<---':
+                await scr_set.scroll_left()
+
         except InvalidMultipartContentTransferEncodingDefect:
             pass
+
+
+

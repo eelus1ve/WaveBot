@@ -6,12 +6,14 @@ import json
 import discord_components
 from BTSET import BD
 
+
 class CheckMesBTST:
     def __init__(self, interaction):
         self.interaction: discord_components.Interaction = interaction
 
     def check(self, mes: discord.Message):
         return self.interaction.author == mes.author and self.interaction.channel == mes.channel
+
 
 class SetForBTST():
     def __init__(self, bot, interaction, old_emb, arg):
@@ -275,7 +277,7 @@ class SetForBTST():
             description=self.arg,
             color=self.COLOR
         )
-        emb.add_field(name='отправьте сообщение с цветом в hex', value='страница 1 из 1')
+        emb.add_field(name='отправьте сообщение с словом которое Вы хотите исключить из списка badwords', value='страница 1 из 1')
         await self.interaction.message.edit(embed=emb)
 
         ms: discord.Message = await self.bot.wait_for('message', check=self.check.check)
@@ -292,60 +294,54 @@ class SetForBTST():
         await ms.delete()
 
     async def selfrooms(self):
-        chlen_krokodila = self.interaction.channel
+        ctx = [i for i in self.bot.guilds if i.id == self.interaction.guild_id][0]
+        chlen_krokodila = [i for i in ctx.text_channels if i.id == self.interaction.channel_id][0]
 
-        if self.data[str(self.interaction.guild.id)]['selfRoom'] != '0':
-            for category in self.interaction.guild.categories:
-                [await chnl.delete() for chnl in category.channels if
-                 str(category.id) == self.data[str(self.interaction.guild.id)]['selfRoom']["ct"]]
-            [await i.delete() for i in self.interaction.guild.categories if
-             str(i.id) == self.data[str(self.interaction.guild.id)]['selfRoom']["ct"] or str(i.id) ==
-             self.data[str(self.interaction.guild.id)]['selfRoom']["ctp"]]
-            self.data[str(self.interaction.guild.id)]['selfRoom'] = '0'
+        if self.data[str(ctx.id)]['selfRoom'] != '0':
+            for category in ctx.categories:
+                [await chnl.delete() for chnl in category.channels if str(category.id) == self.data[str(ctx.id)]['selfRoom']["ct"]]
+            [await i.delete() for i in ctx.categories if str(i.id) == self.data[str(ctx.id)]['selfRoom']["ct"] or str(i.id) == self.data[str(ctx.id)]['selfRoom']["ctp"]]
+            self.data[str(ctx.id)]['selfRoom'] = '0'
             await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
-                                                           description='Канал для создания комнат удалён',
-                                                           color=self.COLOR))
+            description='Канал для создания комнат удалён',
+            color=self.COLOR))
         else:
-            ct = await self.interaction.guild.create_category(name='ССК', position=1)
-            vcch = await self.interaction.guild.create_voice_channel(name=f'Создать комнату', category=ct)
-            chn = await self.interaction.guild.create_text_channel(name=f'Настройка комнаты', category=ct)
-            ctp = await self.interaction.guild.create_category(name='Свои румы', position=2)
-            emb = discord.Embed(title='***⚙️ Управление приватными комнатами***',
-                                description=f'<:corona1:1020971032309403758> - назначить нового создателя комнаты \n\
-                                    <:notebook1:1020971040416993280> - ограничить/выдать доступ к комнате \n\
-                                    <:meet1:1020971037741043713> - задать новый лимит участников \n\
-                                    <:locker1:1020971036252053524> - закрыть/открыть комнату \n\
-                                    <:pencil1:1020971043856330782> - изменить название комнаты \n\
-                                    <:eye1:1020971035014746162> - скрыть/открыть комнату \n\
-                                    <:door1:1020971033756450866> - выгнать участника из комнаты \n\
-                                    <:microphone1:1020971039141920819> - ограничить/выдать право говорить',
-                                color=self.COLOR)
+
+            ct = await ctx.create_category(name='ССК', position=1)
+            vcch = await ctx.create_voice_channel(name=f'Создать комнату', category=ct)
+            chn = await ctx.create_text_channel(name=f'Настройка комнаты', category=ct)
+            ctp = await ctx.create_category(name='Свои румы', position=2)
             stb_gld: discord.Guild = self.bot.get_guild(id=981511419042361344)
+            emb = discord.Embed(title='***⚙️ Управление приватными комнатами***',
+                                    description=f'<:corona1:1020971032309403758> - назначить нового создателя комнаты \n\
+                        <:notebook1:1020971040416993280> - ограничить/выдать доступ к комнате \n\
+                        <:meet1:1020971037741043713> - задать новый лимит участников \n\
+                        <:locker1:1020971036252053524> - закрыть/открыть комнату \n\
+                        <:pencil1:1020971043856330782> - изменить название комнаты \n\
+                        <:eye1:1020971035014746162> - скрыть/открыть комнату \n\
+                        <:door1:1020971033756450866> - выгнать участника из комнаты \n\
+                        <:microphone1:1020971039141920819> - ограничить/выдать право говорить',
+                                    color=self.COLOR)
             await chn.send(embed=emb,
-                           components=[
-                               [
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971032309403758)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971040416993280)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971037741043713)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971036252053524))
-                               ],
-                               [
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971043856330782)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971035014746162)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971033756450866)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971039141920819))
-                               ]
-                           ]
-                           )
-            self.data[str(self.interaction.guild.id)]['selfRoom'] = {"ct": str(ct.id), "ctp": str(ctp.id),
-                                                           "vc": str(vcch.id),
-                                                           "tc": str(chn.id)}
-            ow2 = discord.PermissionOverwrite()
-            ow2.send_messages = False
-            await chn.set_permissions(target=self.interaction.guild.roles[0], overwrite=ow2)
+                        components=[
+                            [
+                                       Button(emoji=await stb_gld.fetch_emoji(1020971032309403758)),
+                                       Button(emoji=await stb_gld.fetch_emoji(1020971040416993280)),
+                                       Button(emoji=await stb_gld.fetch_emoji(1020971037741043713)),
+                                       Button(emoji=await stb_gld.fetch_emoji(1020971036252053524))
+                                   ],
+                                   [
+                                       Button(emoji=await stb_gld.fetch_emoji(1020971043856330782)),
+                                       Button(emoji=await stb_gld.fetch_emoji(1020971035014746162)),
+                                       Button(emoji=await stb_gld.fetch_emoji(1020971033756450866)),
+                                       Button(emoji=await stb_gld.fetch_emoji(1020971039141920819))
+                                   ]
+                        ]
+                        )
+            self.data[str(ctx.id)]['selfRoom'] = {"ct": str(ct.id), "ctp": str(ctp.id), "vc": str(vcch.id), "tc": str(chn.id)}
             await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
-                                                           description='Канал для создания комнат создан',
-                                                           color=self.COLOR))
+            description='Канал для создания комнат создан',
+            color=self.COLOR))
             with open(f'{BD}users.json', 'w') as file:
                 json.dump(self.data, file, indent=4)
 
@@ -474,7 +470,7 @@ class SecSetForBTST():
             color=self.old_emb.color
         )
         emb.add_field(name=f'Укажите роли которые вы хотите добавить в класс {self.interaction.values[0]}',
-                      value=f'страница 1 из {len(self.interaction.values)}')
+                      value=f'страница 1 из {len(self.serverRoles)}')
         await self.interaction.message.edit(embed=emb,
            components=[
                Select(
@@ -529,5 +525,171 @@ class SecSetForBTST():
         with open(f'{BD}users.json', 'w') as file:
             json.dump(data, file, indent=4)
 
+
+class ScrollSet():
+    def __init__(self, bot, interaction, old_emb):
+        self.bot = bot
+        self.interaction: discord_components.Interaction = interaction
+        self.old_emb = old_emb
+        self.check = CheckMesBTST(interaction)
+
+        with open(f'{BD}users.json', 'r') as file:
+            data = json.load(file)
+
+        self.data = data
+        self.roles = data[str(interaction.guild.id)]['JoinRoles']
+        self.COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
+        self.Classes = data[str(interaction.guild.id)]['ROLES']
+        self.chlens = []
+        self.serverRoles = []
+
+        for i in range(0, len(interaction.guild.roles),
+                       24):
+            self.serverRoles.append(interaction.guild.roles[
+                                    i:i + 24])
+
+        for i in range(0, len([chlen for chlen in interaction.guild.text_channels]),
+                       24):
+            self.chlens.append([chlen for chlen in interaction.guild.text_channels][
+                               i:i + 24])
+
+
+    async def scroll_right(self):
+        if self.interaction.message.embeds[0].fields[0].name\
+                .startswith('Укажите роли которые вы хотите добавить в класс')\
+            and int(self.interaction.message.embeds[0].fields[0].value.split()[1]) < len(self.serverRoles):
+            emb = discord.Embed(
+                title=self.old_emb.title,
+                description=self.old_emb.description,
+                color=self.old_emb.color
+            )
+
+            emb.add_field(name=self.interaction.message.embeds[0].fields[0].name,
+                          value=f'страница {int(self.interaction.message.embeds[0].fields[0].value.split()[1]) + 1 if int(self.interaction.message.embeds[0].fields[0].value.split()[1]) < len(self.serverRoles) else self.interaction.message.embeds[0].fields[0].value.split()[1]} из {str(len(self.serverRoles))}')
+
+            await self.interaction.message.edit(embed=emb,
+                components=[
+                    Select(
+                        placeholder=self.interaction.message.embeds[0].fields[0].name,
+                        max_values=len(self.serverRoles[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]),
+                        min_values=0,
+                        options=[SelectOption(label=i.name, value=i.id) for i in
+                                 self.serverRoles[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]]
+                    ),
+                    [
+                        Button(label='модерация'),
+                        Button(label='настройка бота'),
+                        Button(label='настройка рейтинга')
+                    ],
+                    [
+                        Button(label='<---'),
+                        Button(label='OK'),
+                        Button(label='--->')
+                    ]
+                ])
+
+        elif self.interaction.message.embeds[0].fields[0].name\
+                .startswith('выберете канал который хотите сделать каналом администратора')\
+                    and int(self.interaction.message.embeds[0].fields[0].value.split()[1]) < len(self.serverRoles):
+
+            emb = discord.Embed(
+                title=self.old_emb.title,
+                description=self.old_emb.description,
+                color=self.old_emb.color
+            )
+            emb.add_field(name=self.interaction.message.embeds[0].fields[0].name,
+                          value=f'страница {int(self.interaction.message.embeds[0].fields[0].value.split()[1]) + 1 if int(self.interaction.message.embeds[0].fields[0].value.split()[1]) < len(self.chlens) else self.interaction.message.embeds[0].fields[0].value.split()[1]} из {str(len(self.chlens))}')
+
+
+            await self.interaction.message.edit(embed=emb, components=[
+                Select(
+                    placeholder='выберете канал который хотите сделать каналом администратора',
+                    options=[SelectOption(label=i.name, value=i.id) for i in
+                                 self.chlens[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]]
+                ),
+                [
+                    Button(label='модерация'),
+                    Button(label='настройка бота'),
+                    Button(label='настройка рейтинга')
+                ],
+                [
+                    Button(label='<---'),
+                    Button(label='OK'),
+                    Button(label='--->')
+                ]
+            ])
+            await self.interaction.edit_origin()
+
+    async def scroll_left(self):
+        if self.interaction.message.embeds[0].fields[0].name \
+                .startswith('Укажите роли которые вы хотите добавить в класс') \
+                and int(self.interaction.message.embeds[0].fields[0].value.split()[1]) > 1:
+            emb = discord.Embed(
+                title=self.old_emb.title,
+                description=self.old_emb.description,
+                color=self.old_emb.color
+            )
+
+            emb.add_field(name=self.interaction.message.embeds[0].fields[0].name,
+                          value=f'страница {int(self.interaction.message.embeds[0].fields[0].value.split()[1]) - 1} из {str(len(self.serverRoles))}')
+
+            await self.interaction.message.edit(embed=emb,
+                    components=[
+                        Select(
+                            placeholder=self.interaction.message.embeds[0].fields[0].name,
+                            max_values=len(self.serverRoles[int(
+                                self.interaction.message.embeds[0].fields[0].value.split()[
+                                    1])-2]),
+                            min_values=0,
+                            options=[SelectOption(label=i.name, value=i.id) for i in
+                                     self.serverRoles[int(
+                                         self.interaction.message.embeds[0].fields[
+                                             0].value.split()[1])-2]]
+                        ),
+                        [
+                            Button(label='модерация'),
+                            Button(label='настройка бота'),
+                            Button(label='настройка рейтинга')
+                        ],
+                        [
+                            Button(label='<---'),
+                            Button(label='OK'),
+                            Button(label='--->')
+                        ]
+                    ])
+
+        elif self.interaction.message.embeds[0].fields[0].name\
+                .startswith('выберете канал который хотите сделать каналом администратора')\
+                    and int(self.interaction.message.embeds[0].fields[0].value.split()[1]) > 1:
+                emb = discord.Embed(
+                title=self.old_emb.title,
+                description=self.old_emb.description,
+                color=self.old_emb.color
+                )
+
+                emb.add_field(name=self.interaction.message.embeds[0].fields[0].name,
+                            value=f'страница {int(self.interaction.message.embeds[0].fields[0].value.split()[1]) - 1} из {str(len(self.chlens))}')
+
+
+                await self.interaction.message.edit(embed=emb, components=[
+                    Select(
+                        placeholder='выберете канал который хотите сделать каналом администратора',
+                        options=[SelectOption(label=i.name, value=i.id) for i in
+                                     self.chlens[int(
+                                         self.interaction.message.embeds[0].fields[
+                                             0].value.split()[1])-2]]
+                    ),
+                    [
+                        Button(label='модерация'),
+                        Button(label='настройка бота'),
+                        Button(label='настройка рейтинга')
+                    ],
+                    [
+                        Button(label='<---'),
+                        Button(label='OK'),
+                        Button(label='--->')
+                    ]
+                ])
+                await self.interaction.edit_origin()
 
 
