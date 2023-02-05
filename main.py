@@ -1,106 +1,46 @@
-#=============================================================================================импорты
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       --> token стёпы <---             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      #нахуя?       #нужно было!     #нахуя?    #чтобы токен поменять!5
-import multiprocessing
-from discord_components import SelectOption as Sel
-import discord_components
-from discord.ext import commands
-from dotenv import load_dotenv, find_dotenv
-import interactions
-from discord_components import ComponentsBot, Button, Select
-from pydoc import cli
-import discord
 import os
-import asyncio
+import discord
+from discord.ext import commands
 from BTSET import bdpy, embpy
-from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption, error
-import re
+from dotenv import load_dotenv, find_dotenv
+from discord_components import ComponentsBot
 
 
 load_dotenv(find_dotenv())
 
 
-#=======================================================================================================================
 intents=discord.Intents.all()
-def get_prefix(message):
+def get_prefix(bot, message):
     try:
         prefix = bdpy(ctx=message)['PREFIX']
     except AttributeError:
         prefix = '~'
-    return prefix
-
-def mention_and_prefix(bot, message):
-    return commands.when_mentioned(bot, msg=message) + list(get_prefix(message))
+    return commands.when_mentioned(bot, msg=message) + list(prefix)
         
-client = interactions.Client(token=os.getenv('TOKEN'))
-bot =ComponentsBot(command_prefix = mention_and_prefix, intents=intents)
+bot = ComponentsBot(command_prefix = get_prefix, intents=intents)
 bot.remove_command('help')
-#=======================================================================================================================
 
-#=======================================================================================================================
+
 @bot.event
 async def on_ready():
     bot.load_extension('module.loader')
     bot.load_extension('system.JSONwriter')
     bot.load_extension('system.while')
-
-    client.load('module.interactions.interactions')
-    client.reload('module.interactions.interactions')
     
-
+    
     print(f'{bot.user.name} connected')
 
     await bot.change_presence(activity=discord.Game('Portal 2'))
-#=======================================================================================================================
+@bot.event
+async def on_button_click(interaction):
+    print(1)
 
-#=======================================================================================================================
 @bot.command()
 async def a(ctx: commands.Context):
-    client.load('module.interactions.interactions')
     await embpy(ctx, comp='s', des=f'Степа все плохо')
 
-#===================================================================================================
-    
-#=======================================================================================================================
-# @bot.event
-# async def on_command_error(ctx, error):
-#     ErCOLOR = bdpy(ctx)['ErCOLOR']
-#     pref = bdpy(ctx)['PREFIX']
-#     if isinstance(error, commands.errors.CommandNotFound):
-#         print(error)
-#         found = re.findall(r'Command \s*"([^\"]*)"', str(error))
-#         await ctx.send(embed=discord.Embed(
-#             title="Ошибка",
-#             description=f"*Команды `{''.join(found)}` не существует*",
-#             color = ErCOLOR
-#         ))
-    # elif isinstance(error, commands.errors.MemberNotFound):
-    #     found = re.findall(r'Member \s*"([^\"]*)"', str(error))
-    #     await ctx.send(embed=discord.Embed(
-    #         title="Ошибка",
-    #         description=f"*Участник `{''.join(found)}` не найден*",
-    #         color = ErCOLOR
-    #     ))
-    # elif isinstance(error, commands.errors.CommandInvokeError):
-    #     pass
-
-#=======================================================================================================================
-
-
-# @bot.event
-# async def on_error(ctx, err):
-#     print('ошибка', ':', ctx)
-#     print(err)
-
-
 def main():
-
-    loop = asyncio.get_event_loop()
-
-    task2 = loop.create_task(bot.start(os.getenv('TOKEN')))
-    task1 = loop.create_task(client._ready())
-
-    gathered = asyncio.gather(task1, task2, loop=loop)
-    loop.run_until_complete(gathered)
+    bot.run(os.getenv('TOKEN'))
 
 
 if __name__ == '__main__':

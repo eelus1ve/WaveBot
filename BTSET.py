@@ -7,7 +7,149 @@ ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
 BOTVERSION = '***ALPHA 1.0***'
 BETATESTERS = ['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176', '406124614729859073', '496021942877552660', '539848793693224970', '544279889470291989', '547077175308713994', '583722104059592757', '666768779174346782', '858638662160613376', '992771455500681307']
 BD = 'system/Database/'
-IGNORE = ['error', 'mafia', 'vcbot', 'xo', 'interactions']
+IGNORE = ['commands']
+IGNORE_SIMV = ['<WaveEmb>']
+DEFGUILD = {
+    'check': False,
+    'COLOR': '0x0000FF',
+    'ErCOLOR': '0x8B0000',
+    'AUDIT': {},
+    'AUDIT_CHANNEL': '0',
+    'FirstRole': '0',
+    'JoinRoles': [],
+    'ModRoles': {},
+    'ROLES': {},
+    'actmoduls': '',
+    'nCaps': -1,
+    'nWarns': 10,
+    'idAdminchennel': '0',
+    'idMainch': '0',
+    'selfRoom': '0',
+    'BADWORDS': [],
+    'LINKS': [],
+    'PREFIX': '~',
+    'JNMSG': '',
+    'SelfTitle': '*Выберите ваши роли:* ',
+    'Selfrooms': {},
+    'Mafrooms': {},
+    'IgnoreChannels': [[], []],
+    'IgnoreRoles': [[], []],
+    'card': 'wave.png',
+    'text_color': '#d0ed2b',
+    'bar_color': '#ec5252',
+    'blend': 1,
+    'FirstRole': '',
+    'USERS': {},
+}
+DBSTR = [i for i in DEFGUILD.keys() if (type(DEFGUILD[i]) in [str, int, bool])]
+
+
+class Score_presets():
+    def __init__(self, member):
+        self.ignorechannels = bdpy(member)['IgnoreChannels']
+        self.ignoreroles = bdpy(member)['IgnoreRoles']
+        self.score = bdpy(member)['USERS'][str(member.id)]['SCR']
+        self.lvl = bdpy(member)['USERS'][str(member.id)]['LvL']
+        self.idadminchannel = int(bdpy(member)["idAdminchennel"])               #тут для 
+        self.color = bdpy(member)['COLOR']          #это надо для разделения цветов
+        self.ercolor = bdpy(ctx=member)['ErCOLOR']
+        self.prefix: str = bdpy(member)["PREFIX"]
+
+class Moderation():
+    def __init__(self, member):
+        self.warns: int = bdpy(member)['USERS'][str(member.id)]['WARNS']
+        self.nWarns: int = bdpy(member)['nWarns']
+        self.idadminchannel: str = int(bdpy(member)["idAdminchennel"])
+        self.nCaps: int = bdpy(member)['nCaps']
+        self.color = bdpy(member)['COLOR']
+        self.ercolor = bdpy(member)['ErCOLOR']
+        self.prefix: str = bdpy(member)["PREFIX"]
+
+
+class Fun():
+    def __init__(self, ctx):
+        self.color = bdpy(ctx)['COLOR']
+        self.ercolor = bdpy(ctx)['ErCOLOR']
+
+class Info():
+    def __init__(self, ctx):
+        self.color = bdpy(ctx)['COLOR']
+        self.ercolor = bdpy(ctx)['ErCOLOR']
+
+class Utility():
+    def __init__(self, ctx):
+        self.color = bdpy(ctx)['COLOR']
+        self.ercolor = bdpy(ctx)['ErCOLOR']
+
+    
+# class Audit():
+#     def __init__(self, ctx):
+#         self.color = bdpy(ctx)['COLOR']
+#     def auditEmb(self, ctx):
+#         emb = discord.Embed(
+#             title='Нарушение снято!',
+#             description=f"*Ранее, у участника было уже {Moderation(ctx).warns - 1} нарушений, после {Moderation(ctx).nWarns} он будет забанен!*",
+#             timestamp=ctx.message.created_at,
+#             color=self.color
+#         )                                                                                                                   #переписать под unwarn
+#         emb.add_field(name='Канал:', value='Не определён', inline=True)
+#         emb.add_field(name='Участник:', value=ctx.mention, inline=True)
+#         emb.set_footer(text=f'Предупреждение снято участником {ctx.author.name}#{ctx.author.discriminator} ID модератора: {ctx.author.id}')
+        # await get(ctx.guild.text_channels, id=Moderation(member).idadminchannel).send(embed=emb)
+
+# class DateBaseEditor():
+#     def __init__(self, ctx):
+#         self.color = bdpy(ctx)['COLOR']
+#         self.ercolor = bdpy(ctx)['ErCOLOR']
+#         # with open(f'{BD}users.json', 'r') as file:
+#         #     data = json.load(file)
+#         # self.color = int(data[str(ctx.guild.id)]['COLOR'], 16)
+#         # self.ercolor = int(data[str(ctx.guild.id)]['ErCOLOR'], 16)
+#         # self.joinroles = data[str(ctx.guild.id)]['JoinRoles']
+#         # self.modroles = data[str(ctx.guild.id)]['ModRoles']
+#         # self.roles = data[str(ctx.guild.id)]['ROLES']
+#         # self.firstrole = data[str(ctx.guild.id)]['FirstRole']
+#         # self.actmoduls = data[str(ctx.guild.id)]['actmoduls']
+#         # self.ncaps = data[str(ctx.guild.id)]['nCaps']
+#         # self.nwarns = data[str(ctx.guild.id)]['nWarns']
+#         # self.idadminchennel =  data[str(ctx.guild.id)]['idAdminchennel']
+#         # self.idmainch = data[str(ctx.guild.id)]['idMainch']
+#         # self.selfroom = data[str(ctx.guild.id)]['selfRoom']
+#         # self.badwords = data[str(ctx.guild.id)]['BADWORDS']
+#         # self.links = data[str(ctx.guild.id)]['LINKS']
+#         # self.prefix = data[str(ctx.guild.id)]['PREFIX']
+#         # self.jnmsg = data[str(ctx.guild.id)]['JNMSG']
+#         # self.selftitle = data[str(ctx.guild.id)]['SelfTitle']
+#         # self.selfrooms = data[str(ctx.guild.id)]['Selfrooms']
+#         # self.mafrooms =  data[str(ctx.guild.id)]['Mafrooms']
+#         # self.ignorechannels = data[str(ctx.guild.id)]['IgnoreChannels']
+#         # self.ignoreroles = data[str(ctx.guild.id)]['IgnoreRoles']
+#         # self.card =  data[str(ctx.guild.id)]['card']
+#         # self.text_color = data[str(ctx.guild.id)]['text_color']
+#         # self.bar_color = data[str(ctx.guild.id)]['bar_color']
+#         # self.blend = data[str(ctx.guild.id)]['blend']
+#         # self.users = data[str(ctx.guild.id)]['USERS']
+
+
+
+
+
+    def db_write(db: str, ctx: commands.Context, locate: str, arg):
+        with open(f'{BD}{db}.json', 'r') as file:
+            data = json.load(file)
+        if locate in DBSTR:
+            data[locate] = arg
+        else:
+            pass
+        with open(f'{BD}{db}.json', 'w') as file: 
+            json.dump(data, file, indent=4)
+
+    def db_read(db: str, ctx: commands.Context, locate: str):
+        with open(f'{BD}{db}.json', 'r') as file:
+            date = json.load(file)
+        return date[ctx][locate]
+
+
 
 def bdpy(ctx):
     with open(f'{BD}users.json', 'r') as file:
@@ -40,37 +182,61 @@ def bdpy(ctx):
         "blend": data[str(ctx.guild.id)]['blend'],
         "USERS": data[str(ctx.guild.id)]['USERS']
     }
-def bdint(ctx):
-    with open(f'{BD}users.json', 'r') as file:
-        data = json.load(file)
-    return {
-        "COLOR": int(data[str(ctx.guild_id)]['COLOR'], 16),
-        "ErCOLOR": int(data[str(ctx.guild_id)]['ErCOLOR'], 16),
-        "JoinRoles": data[str(ctx.guild_id)]['JoinRoles'],
-        "ModRoles": data[str(ctx.guild_id)]['ModRoles'],
-        "ROLES": data[str(ctx.guild_id)]['ROLES'],
-        "FirstRole": data[str(ctx.guild_id)]['FirstRole'],
-        "actmoduls": data[str(ctx.guild_id)]['actmoduls'],
-        "nCaps": data[str(ctx.guild_id)]['nCaps'],
-        "nWarns": data[str(ctx.guild_id)]['nWarns'],
-        "idAdminchennel": data[str(ctx.guild_id)]['idAdminchennel'],
-        "idMainch": data[str(ctx.guild_id)]['idMainch'],
-        "selfRoom": data[str(ctx.guild_id)]['selfRoom'],
-        "BADWORDS": data[str(ctx.guild_id)]['BADWORDS'],
-        "LINKS": data[str(ctx.guild_id)]['LINKS'],
-        "PREFIX": data[str(ctx.guild_id)]['PREFIX'],
-        "JNMSG": data[str(ctx.guild_id)]['JNMSG'],
-        "SelfTitle": data[str(ctx.guild_id)]['SelfTitle'],
-        "Selfrooms": data[str(ctx.guild_id)]['Selfrooms'],
-        "Mafrooms": data[str(ctx.guild_id)]['Mafrooms'],
-        "IgnoreChannels": data[str(ctx.guild_id)]['IgnoreChannels'],
-        "IgnoreRoles": data[str(ctx.guild_id)]['IgnoreRoles'],
-        "card": data[str(ctx.guild_id)]['card'],
-        "text_color": data[str(ctx.guild_id)]['text_color'],
-        "bar_color": data[str(ctx.guild_id)]['bar_color'],
-        "blend": data[str(ctx.guild_id)]['blend'],
-        "USERS": data[str(ctx.guild_id)]['USERS']
-    }
+    
+class Rool():
+    def __init__(self, ctx):
+        if bdpy(ctx)['ModRoles'] != {}:
+            mods = bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]
+            
+            self.clearRank = mods['Rate']['CLearRank'] == "True" or ctx.author.guild_permissions.administrator
+            self.score = mods['Rate']['Score'] == "True" or ctx.author.guild_permissions.administrator
+            self.setlvl = mods['Rate']['SetLvl'] == "True" or ctx.author.guild_permissions.administrator
+            self.clearScore = mods['Rate']['ClearScore'] == "True" or ctx.author.guild_permissions.administrator
+            self.warn = mods['Warns']['Warn'] == "True" or ctx.author.guild_permissions.administrator
+            self.unwarn = mods['Warns']['UnWarn'] == "True" or ctx.author.guild_permissions.administrator
+            self.clearWarn = mods['Warns']['ClearWarn'] == "True" or ctx.author.guild_permissions.administrator
+            self.kick = mods['Kick'] == "True" or ctx.author.guild_permissions.administrator
+            self.clear = mods['Clear'] == "True" or ctx.author.guild_permissions.administrator
+            self.ban = mods['Bans']['Ban'] == "True" or ctx.author.guild_permissions.administrator
+
+        else:
+            self.clearRank = True if ctx.author.guild_permissions.administrator else False
+            self.score = True if ctx.author.guild_permissions.administrator else False
+            self.setlvl = True if ctx.author.guild_permissions.administrator else False
+            self.clearScore = True if ctx.author.guild_permissions.administrator else False
+            self.warn = True if ctx.author.guild_permissions.administrator else False
+            self.unwarn = True if ctx.author.guild_permissions.administrator else False
+            self.clearWarn = True if ctx.author.guild_permissions.administrator else False
+            self.kick = True if ctx.author.guild_permissions.administrator else False
+            self.clear = True if ctx.author.guild_permissions.administrator else False
+            self.ban = True if ctx.author.guild_permissions.administrator else False
+
+
+    def role(quest):
+        def predicate(ctx: commands.Context):
+            if quest == 'clear' and Rool(ctx).clear and (ctx.channel.id != Moderation(ctx.author).idadminchannel or ctx.author.id == ctx.guild.owner.id):
+                return True
+            elif quest == 'clearRank' and Rool(ctx).clearRank:
+                return True
+            elif quest == 'score' and Rool(ctx).score:
+                return True
+            elif quest == 'setlvl' and Rool(ctx).setlvl:
+                return True
+            elif quest == 'clearScore' and Rool(ctx).clearScore:
+                return True
+            elif quest == 'warn' and Rool(ctx).warn:
+                return True
+            elif quest == 'unwarn' and Rool(ctx).unwarn:
+                return True
+            elif quest == 'clearWarn' and Rool(ctx).clearWarn:
+                return True
+            elif quest == 'kick' and Rool(ctx).kick:
+                return True
+            elif quest == 'ban' and Rool(ctx).ban:
+                return True
+            raise commands.MissingPermissions(['nomoder'])
+        return commands.check(predicate)
+
 
 
 async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Optional[discord.Member] = None):
@@ -102,12 +268,3 @@ async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Opti
                 await ctx.send(embed=emb, delete_after=time)
             else:
                 await ctx.send(embed=emb)
-
-def embint(ctx, comp, des):
-    try:
-        if comp == 's':
-            pass
-        elif comp == 'e':
-            pass
-    except:
-        pass

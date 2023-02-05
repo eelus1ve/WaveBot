@@ -19,7 +19,7 @@ class Loaderpy(commands.Cog):
                 if arg != 'all':
                     modules = os.listdir(dir_name1py)
                     for dirs in modules:
-                        if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")):
+                        if dirs.endswith("") and dirs != "__pycache__" and not(dirs.endswith(".py")) and not(dirs in IGNORE):
                             dir_name2 = f"{dir_name1py}\{dirs}"
                             mods = os.listdir(dir_name2)
                             for filename in mods:
@@ -267,7 +267,7 @@ class Loaderpy(commands.Cog):
         else:
             msg = await ctx.send(embed=discord.Embed(
                     title="Ошибка",
-                    description=f"*У вас н~е достаточно прав!*" ,
+                    description=f"*У вас не достаточно прав!*" ,
                     color=ErCOLOR
                     ))
 def setup(bot):

@@ -1,7 +1,7 @@
 import json
 from discord.ext import commands
 import os
-from BTSET import BD
+from BTSET import BD, DEFGUILD
 class Json_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -69,37 +69,7 @@ class Json_write(commands.Cog):
                 data = json.load(file)
                 if not (str(guild.id) in [k for k in data.keys()]):
                     data.update({
-                        guild.id: {
-                            'COLOR': '0x0000FF',
-                            'ErCOLOR': '0x8B0000',
-                            'AUDIT': {},
-                            'AUDIT_CHANNEL': '0',
-                            'FirstRole': '0',
-                            'JoinRoles': [],
-                            'ModRoles': {},
-                            'ROLES': {},
-                            'actmoduls': '',
-                            'nCaps': -1,
-                            'nWarns': 10,
-                            'idAdminchennel': '0',
-                            'idMainch': '0',
-                            'selfRoom': '0',
-                            'BADWORDS': [],
-                            'LINKS': [],
-                            'PREFIX': '~',
-                            'JNMSG': '',
-                            'SelfTitle': '*Выберите ваши роли:* ',
-                            'Selfrooms': {},
-                            'Mafrooms': {},
-                            'IgnoreChannels': [[], []],
-                            'IgnoreRoles': [[], []],
-                            'card': 'wave.png',
-                            'text_color': '#d0ed2b',
-                            'bar_color': '#ec5252',
-                            'blend': 1,
-                            'FirstRole': '',
-                            'USERS': {},
-                        }})
+                        guild.id: DEFGUILD})
 
             with open(f'{BD}users.json', 'w') as file:
                 json.dump(data, file, indent=4)
