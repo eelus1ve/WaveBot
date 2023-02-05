@@ -24,7 +24,7 @@ class Suppot(commands.Cog):
             json.dump(sup_data, file, indent=4)
 
     @commands.command()
-    async def main_support(self, ctx):
+    async def support(self, ctx):
         if not ctx.guild:
             await ctx.send(components=[
                 Select(
@@ -35,15 +35,13 @@ class Suppot(commands.Cog):
                         SelectOption(label='Предложить идею', value='idea'),
                         SelectOption(label='Вопрос о команде', value='que'),
                         SelectOption(label='Рассказать про ошибку', value='err'),
-                        SelectOption(label='Cooбщение для разработчиков', value='message')
+                        SelectOption(label='Сообщение для разработчиков', value='message')
                     ]
                 )
             ])
     @commands.Cog.listener('on_select_option')
     async def main_support_select(self, interaction: discord_components.Interaction):
-        print(1)
         if interaction.component.placeholder == 'Выберете что Вам нужно':
-            print(0)
             try:
                 def check(message: discord.Message):
                     return message.author == interaction.author and not message.guild

@@ -26,18 +26,13 @@ async def on_ready():
     bot.load_extension('module.loader')
     bot.load_extension('system.JSONwriter')
     bot.load_extension('system.while')
-    
-    
-    print(f'{bot.user.name} connected')
-
     await bot.change_presence(activity=discord.Game('Portal 2'))
-@bot.event
-async def on_button_click(interaction):
-    print(1)
+    print(f'{bot.user.name} connected')
 
 @bot.command()
 async def a(ctx: commands.Context):
     await embpy(ctx, comp='s', des=f'Степа все плохо')
+
 
 def main():
     bot.run(os.getenv('TOKEN'))

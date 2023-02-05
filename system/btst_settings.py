@@ -528,31 +528,30 @@ class SecSetForBTST():
 
 class ScrollSet():
     def __init__(self, bot, interaction, old_emb):
-        if interaction.guild:
-            self.bot = bot
-            self.interaction: discord_components.Interaction = interaction
-            self.old_emb = old_emb
-            self.check = CheckMesBTST(interaction)
+        self.bot = bot
+        self.interaction: discord_components.Interaction = interaction
+        self.old_emb = old_emb
+        self.check = CheckMesBTST(interaction)
 
-            with open(f'{BD}users.json', 'r') as file:
-                data = json.load(file)
+        with open(f'{BD}users.json', 'r') as file:
+            data = json.load(file)
 
-            self.data = data
-            self.roles = data[str(interaction.guild.id)]['JoinRoles']
-            self.COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
-            self.Classes = data[str(interaction.guild.id)]['ROLES']
-            self.chlens = []
-            self.serverRoles = []
+        self.data = data
+        self.roles = data[str(interaction.guild.id)]['JoinRoles']
+        self.COLOR = int(data[str(interaction.guild.id)]['COLOR'], 16)
+        self.Classes = data[str(interaction.guild.id)]['ROLES']
+        self.chlens = []
+        self.serverRoles = []
 
-            for i in range(0, len(interaction.guild.roles),
-                           24):
-                self.serverRoles.append(interaction.guild.roles[
-                                        i:i + 24])
+        for i in range(0, len(interaction.guild.roles),
+                       24):
+            self.serverRoles.append(interaction.guild.roles[
+                                    i:i + 24])
 
-            for i in range(0, len([chlen for chlen in interaction.guild.text_channels]),
-                           24):
-                self.chlens.append([chlen for chlen in interaction.guild.text_channels][
-                                   i:i + 24])
+        for i in range(0, len([chlen for chlen in interaction.guild.text_channels]),
+                       24):
+            self.chlens.append([chlen for chlen in interaction.guild.text_channels][
+                               i:i + 24])
 
 
     async def scroll_right(self):
@@ -693,7 +692,6 @@ class ScrollSet():
                 ])
                 await self.interaction.edit_origin()
 
-
 class SettingsPanel():
     def __init__(self, bot, interaction):
         self.bot = bot
@@ -809,6 +807,4 @@ class SettingsPanel():
         emb.add_field(name=f'{keys[0]}', value=f'{SettingsPanel.settings_for_btst[old_emb][keys[0]]}')
         emb.add_field(name='.', value='**' + "\n".join(keys[1:]) + '**', inline=False)
         await self.interaction.message.edit(embed=emb)
-
-
 
