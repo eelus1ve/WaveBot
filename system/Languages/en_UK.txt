@@ -1,0 +1,73 @@
+/////////////////////////////////////
+//fun
+/////////////////////////////////////
+
+//coin
+coin_result_1 Heads
+coin_result_2 Tails
+coin_title_1 Dropped out
+coin_title_2 Dropped out
+
+//dice
+dice_title The dice says
+dice_des and
+
+//magicball
+magicball_title The ball of fate says
+magicball_des_1 Yes!
+magicball_des_2 Maybe.
+magicball_des_3 No!
+
+//p2048
+p2048_title 2048
+p2048_title_win 2048
+p2048_des_win  Victory!
+p2048_title_loose 2048 - Defeat!
+p2048_des_loose_sum_1 You scored
+p2048_des_loose_sum_2 points.
+p2048_des_loose_max Your maximum value
+
+/////////////////////////////////////
+//info
+/////////////////////////////////////
+
+//botinfo
+botinfo_title Bot
+botinfo_des_1 Welcomes you
+botinfo_des_2 bot.
+botinfo_ver Version
+botinfo_dev Bot Creators
+botinfo_beta-testers Beta Testers
+botinfo_footer developed by Wave-team
+
+//help
+//...
+
+//spotify
+spotify_status_offline offline!
+spotify_listen Listens
+spotify_musician Artist
+spotify_album Album
+spotify_time Song started in
+
+//server_info
+//...
+
+//user
+user_name Username
+user_playing Plays
+user_listening Listening
+user_status Status
+user_status_dnd Do not Disturb
+user_status_offline Offline
+user_status_online Online
+user_status_idle Inactive
+user_top_role Top Role
+user_connected Joined
+user_reged Registration date
+user_dev WaveBot Developer
+user_info_about Information about
+user_some_info Basic Information
+user_xp XP
+user_lvl LVL
+user_warns Warnings
