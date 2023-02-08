@@ -7,6 +7,7 @@ from module.rate.commands.leaders import Leaders
 from module.rate.commands.rank import Rank
 from module.rate.commands.mrate import Mrate
 
+
 class RateSetup(commands.Cog):
     def __init__(self, bot: ComponentsBot):
         self.bot = bot
