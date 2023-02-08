@@ -3,7 +3,7 @@ import random
 import discord
 from discord_components import ComponentsBot, Button, Select
 from discord.ext import commands
-from BTSET import Fun
+from BTSET import Fun, Lang
 
 
 class Game2048(commands.Cog):
@@ -14,7 +14,7 @@ class Game2048(commands.Cog):
     lang_emo = []
 
     async def command_p2048(self, ctx: commands.Context):
-        
+        language = Lang.words(Lang.set_lang(ctx))    
         stb_gld: discord.Guild = self.bot.get_guild(981511419042361344)
         e0 = str(await stb_gld.fetch_emoji(1034165149105389568))
         e2 = str(await stb_gld.fetch_emoji(1032695398848008274))
@@ -37,7 +37,7 @@ class Game2048(commands.Cog):
         des=[]
         for i in trans:
             des.append(str(''.join(map(str, i)) + str('\n')))
-        emb = discord.Embed(title='2048',
+        emb = discord.Embed(title=language['p2048_title'],
                             description=''.join(des),
                             color = Fun(ctx).color)
         await ctx.send(embed=emb,
@@ -54,6 +54,7 @@ class Game2048(commands.Cog):
 
     async def listener_on_button_click_2048(self, interaction):
         if str(interaction.component.emoji) == '⬆️' or str(interaction.component.emoji) == '🔜' or str(interaction.component.emoji) == '⬇️' or str(interaction.component.emoji) == '🔚':
+            language = Lang.words(Lang.set_lang(interaction))
             des=[]
             if str(interaction.component.emoji) == '🔚':
                 await interaction.edit_origin()
@@ -84,13 +85,14 @@ class Game2048(commands.Cog):
 
                 for i in trans:
                     des.append(str(''.join(map(str, i)) + str('\n')))
-                emb = discord.Embed(title='2048',
+                emb = discord.Embed(title=language['p2048_title'],
                                     description=''.join(des),
                                     color = Fun(interaction).color)
                 await interaction.message.edit(embed=emb)
 
 
             elif str(interaction.component.emoji) == '⬆️':
+                language = Lang.words(Lang.set_lang(interaction))
                 await interaction.edit_origin()
                 text = interaction.message.embeds[0].description
                 text = text.replace('\n', '')
@@ -118,13 +120,14 @@ class Game2048(commands.Cog):
                 trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
                 for i in trans:
                     des.append(str(''.join(map(str, i)) + str('\n')))
-                emb = discord.Embed(title='2048',
+                emb = discord.Embed(title=language['p2048_title'],
                                     description=''.join(des),
                                     color = Fun(interaction).color)
                 await interaction.message.edit(embed=emb)
 
 
             elif str(interaction.component.emoji) == '🔜':
+                language = Lang.words(Lang.set_lang(interaction))
                 await interaction.edit_origin()
                 text = interaction.message.embeds[0].description
                 text = text.replace('\n', '')
@@ -154,13 +157,14 @@ class Game2048(commands.Cog):
                 trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
                 for i in trans:
                     des.append(str(''.join(map(str, i)) + str('\n')))
-                emb = discord.Embed(title='2048',
+                emb = discord.Embed(title=language['p2048_title'],
                                     description=''.join(des),
                                     color = Fun(interaction).color)
                 await interaction.message.edit(embed=emb)
 
 
             elif str(interaction.component.emoji) == '⬇️':
+                language = Lang.words(Lang.set_lang(interaction))
                 await interaction.edit_origin()
                 text = interaction.message.embeds[0].description
                 text = text.replace('\n', '')
@@ -190,22 +194,22 @@ class Game2048(commands.Cog):
                 trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
                 for i in trans:
                     des.append(str(''.join(map(str, i)) + str('\n')))
-                emb = discord.Embed(title='2048',
+                emb = discord.Embed(title=language['p2048_title'],
                                     description=''.join(des),
                                     color = Fun(interaction).color)
                 await interaction.message.edit(embed=emb)
 
 
             if game_over(body) == 2:
-                emb = discord.Embed(title='2048',
-                description='Победа!',
+                emb = discord.Embed(title=language['p2048_title_win'],
+                description=language['p2048_des_win'],
                 color = Fun(interaction).color)
                 await interaction.message.edit(embed=emb)
 
             elif game_over(body):
                 asd = body[0] + body[1] + body[2] + body[3]
-                emb = discord.Embed(title='2048 - Поражение!',
-                description=f'Вы набрали {sum(asd)} очков (Ваше максимальное значение {max(asd)})',
+                emb = discord.Embed(title=language['p2048_title_loose'],
+                description='{} {} {}'.format(language['p2048_des_loose_sum_1'], sum(asd), language['p2048_des_loose_sum_2'], language['p2048_des_loose_max'], max(asd)),
                 color = Fun(interaction).color)
                 await interaction.message.edit(embed=emb)
         

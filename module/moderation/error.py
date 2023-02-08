@@ -31,6 +31,7 @@ class BotError(commands.Cog):
             des  = error
         else:
             print(error)
+        des = error
 
         await BotError.embs(self, ctx, des)
 
@@ -111,6 +112,3 @@ class BotError(commands.Cog):
     #                 description=f"*Участник `{''.join(found)}` не найден*",
     #                 color = self.ercolor
     #             ))
-
-def setup(bot):
-    bot.add_cog(BotError(bot))

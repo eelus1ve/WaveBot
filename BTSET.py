@@ -11,6 +11,7 @@ IGNORE = ['commands']
 IGNORE_SIMV = ['<WaveEmb>']
 DEFGUILD = {
     'check': False,
+    'lang': 'ru_RU',
     'COLOR': '0x0000FF',
     'ErCOLOR': '0x8B0000',
     'AUDIT': {},
@@ -155,6 +156,7 @@ def bdpy(ctx):
     with open(f'{BD}users.json', 'r') as file:
         data = json.load(file)
     return {
+        "lang": data[str(ctx.guild.id)]['lang'],
         "COLOR": int(data[str(ctx.guild.id)]['COLOR'], 16),
         "ErCOLOR": int(data[str(ctx.guild.id)]['ErCOLOR'], 16),
         "JoinRoles": data[str(ctx.guild.id)]['JoinRoles'],
@@ -268,3 +270,21 @@ async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Opti
                 await ctx.send(embed=emb, delete_after=time)
             else:
                 await ctx.send(embed=emb)
+
+
+
+
+
+
+class Lang():
+    def set_lang(ctx: commands.Context):
+        return bdpy(ctx)['lang']
+
+    def words(language: str):
+        lang_dict = {}
+        with open(f'system\Languages\\{language}.txt', 'r', encoding = 'utf-8') as f:
+            for line in f:
+                if not(line.startswith('//')):
+                    key, *value = line.split()
+                    lang_dict[key] = ' '.join(value)
+        return lang_dict

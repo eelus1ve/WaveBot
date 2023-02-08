@@ -54,6 +54,3 @@ class RateSetup(commands.Cog):
     @commands.Cog.listener('on_message')
     async def my_message(self, message: discord.Message):
         await Mrate(self.bot).command_my_message(message)
-
-def setup(bot: ComponentsBot):
-    bot.add_cog(RateSetup(bot))

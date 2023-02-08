@@ -57,6 +57,3 @@ class InfoSetup(commands.Cog):
     @commands.Cog.listener('on_button_click')
     async def on_button_click_help(self, interaction: Interaction):
         await Help(self.bot).listener_on_button_click_help(interaction)
-
-def setup(bot):
-    bot.add_cog(InfoSetup(bot))

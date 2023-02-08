@@ -1,0 +1,23 @@
+//
+//fun
+//
+coin_result_1 Орел
+coin_result_2 Решка
+coin_title_1 Выпал:
+coin_title_2 Выпала:
+dice_title Игральная кость говорит:
+dice_des и
+magicball_title Шар судьбы говорит:
+magicball_des_1 Да!
+magicball_des_2 Может быть.
+magicball_des_3 Нет!
+p2048_title 2048
+p2048_title_win 2048
+p2048_des_win Победа!
+p2048_title_loose 2048 - Поражение!
+p2048_des_loose_sum_1 Вы набрали
+p2048_des_loose_sum_2 очков.
+p2048_des_loose_max Ваше максимальное значение
+//
+//info
+//
