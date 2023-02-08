@@ -26,5 +26,5 @@ class UtilitySetup(commands.Cog):
 
     @commands.command()
     async def avatar(self, ctx: commands.Context, memberr: Optional[discord.Member]):
-        member = memberr or ctx.author
+        member: discord.Member = memberr or ctx.author
         await Avatar(self.bot).command_avatar(ctx, member)
