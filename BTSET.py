@@ -284,7 +284,7 @@ class Lang():
         lang_dict = {}
         with open(f'system\Languages\\{language}.txt', 'r', encoding = 'utf-8') as f:
             for line in f:
-                if not(line.startswith('//')):
+                if not(line.startswith('//')) and not(line=='\n'):
                     key, *value = line.split()
                     lang_dict[key] = ' '.join(value)
         return lang_dict
