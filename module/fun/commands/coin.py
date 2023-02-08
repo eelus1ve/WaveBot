@@ -9,9 +9,9 @@ class Coin(commands.Cog):
 
     async def command_coin(self, ctx: commands.Context):
         language = Lang.words(Lang.set_lang(ctx))
-        result = language['coin_result_1'] if random.randint(1, 2) == 1 else Lang.words(language)['coin_result_2']
+        result = random.randint(1, 2)
         await ctx.send(embed=discord.Embed(
-            title=language['coin_title_1'] if result == language['coin_result_1'] else language['coin_title_2'],
-            description=result,
+            title=language[f'coin_title_{result}'],
+            description=language[f'coin_result_{result}'],
             color=Fun(ctx).color
         ))

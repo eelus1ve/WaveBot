@@ -1,16 +1,24 @@
-//
+/////////////////////////////////////
 //fun
-//
+/////////////////////////////////////
+
+//coin
 coin_result_1 Орел
 coin_result_2 Решка
 coin_title_1 Выпал:
 coin_title_2 Выпала:
+
+//dice
 dice_title Игральная кость говорит:
 dice_des и
+
+//magicball
 magicball_title Шар судьбы говорит:
 magicball_des_1 Да!
 magicball_des_2 Может быть.
 magicball_des_3 Нет!
+
+//p2048
 p2048_title 2048
 p2048_title_win 2048
 p2048_des_win Победа!
@@ -18,6 +26,41 @@ p2048_title_loose 2048 - Поражение!
 p2048_des_loose_sum_1 Вы набрали
 p2048_des_loose_sum_2 очков.
 p2048_des_loose_max Ваше максимальное значение
-//
+
+/////////////////////////////////////
 //info
-//
+/////////////////////////////////////
+
+//botinfo
+botinfo_title Бот
+botinfo_des_1 Вас приветствует
+botinfo_des_2 бот.
+botinfo_ver Версия
+botinfo_dev Создатели бота
+botinfo_beta-testers Бета тестеры
+botinfo_footer разработан Wave-team
+
+//help
+//...
+
+//spotify
+//...
+
+//user
+user_name Имя пользователя:
+user_playing Играет:
+user_listening Слушает:
+user_status Статус:
+user_status_dnd Не беспокоить
+user_status_offline Не в сети
+user_status_online В сети
+user_status_idle Неактивен
+user_top_role Топ роль:
+user_connected Присоединился:
+user_reged Дата регистрации:
+user_dev Разрабочик WaveBot
+user_info_about Информация о
+user_some_info Основная информация:
+user_xp XP
+user_lvl LVL
+user_warns Предупреждения

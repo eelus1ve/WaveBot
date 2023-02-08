@@ -14,14 +14,9 @@ class SpotifyInfo(commands.Cog):
     async def command_spotify_info(self, ctx: commands.Context, member: discord.Member):
         spotifyActivity = next((activity for activity in member.activities if isinstance(activity, discord.Spotify)), None)
         if spotifyActivity is None:
-            if str(member.status) ==  'offline':
-                await ctx.send(f"{member.mention} офлайн!")
-            else:
-                await ctx.send(embed=discord.Embed(
-                    title='Ошибка',
-                    description=f'Пользователь {member.name} сейчас не слушает спотифай!',
-                    color=Info(ctx).ercolor
-                ))
+            if not(str(member.status) ==  'offline'):
+                raise commands.BadArgument('no spotify')
+            await ctx.send(f"{member.mention} не в сети!")
         else:
             embed = discord.Embed(
                 title=f"{member.name}'s Spotify",
@@ -40,14 +35,9 @@ class SpotifyInfo(commands.Cog):
         spotifyActivity = next((activity for activity in member.activities if isinstance(activity, Spotify)), None)
 
         if spotifyActivity is None:
-            if str(member.status) ==  'offline':
-                await ctx.send(f"{member.mention} офлайн!")
-            else:
-                await ctx.send(embed=discord.Embed(
-                    title='Успешно',
-                    description=f'Пользователь {member.name} сейчас не слушает спотифай!',
-                    color=Info(ctx).color
-                ))
+            if not(str(member.status) ==  'offline'):
+                raise commands.BadArgument('no spotify')
+            await ctx.send(f"{member.mention} не в сети!")
         else:
             background_img = Image.open('.\\module\\info\\img\\spotify_template1.png')
             albImage = Image.open(requests.get(spotifyActivity.album_cover_url, stream=True).raw).convert('RGBA')

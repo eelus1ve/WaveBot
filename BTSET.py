@@ -60,7 +60,7 @@ class Moderation():
     def __init__(self, member):
         self.warns: int = bdpy(member)['USERS'][str(member.id)]['WARNS']
         self.nWarns: int = bdpy(member)['nWarns']
-        self.idadminchannel: str = int(bdpy(member)["idAdminchennel"])
+        self.idadminchannel: str = bdpy(member)["idAdminchennel"]
         self.nCaps: int = bdpy(member)['nCaps']
         self.color = bdpy(member)['COLOR']
         self.ercolor = bdpy(member)['ErCOLOR']
@@ -135,20 +135,20 @@ class Utility():
 
 
 
-    def db_write(db: str, ctx: commands.Context, locate: str, arg):
-        with open(f'{BD}{db}.json', 'r') as file:
-            data = json.load(file)
-        if locate in DBSTR:
-            data[locate] = arg
-        else:
-            pass
-        with open(f'{BD}{db}.json', 'w') as file: 
-            json.dump(data, file, indent=4)
+    # def db_write(db: str, ctx: commands.Context, locate: str, arg):
+    #     with open(f'{BD}{db}.json', 'r') as file:
+    #         data = json.load(file)
+    #     if locate in DBSTR:
+    #         data[locate] = arg
+    #     else:
+    #         pass
+    #     with open(f'{BD}{db}.json', 'w') as file: 
+    #         json.dump(data, file, indent=4)
 
-    def db_read(db: str, ctx: commands.Context, locate: str):
-        with open(f'{BD}{db}.json', 'r') as file:
-            date = json.load(file)
-        return date[ctx][locate]
+    # def db_read(db: str, ctx: commands.Context, locate: str):
+    #     with open(f'{BD}{db}.json', 'r') as file:
+    #         date = json.load(file)
+    #     return date[ctx][locate]
 
 
 
@@ -214,7 +214,7 @@ class Rool():
             self.ban = True if ctx.author.guild_permissions.administrator else False
 
 
-    def role(quest):
+    def role(quest: str):
         def predicate(ctx: commands.Context):
             if quest == 'clear' and Rool(ctx).clear and (ctx.channel.id != Moderation(ctx.author).idadminchannel or ctx.author.id == ctx.guild.owner.id):
                 return True
@@ -270,9 +270,6 @@ async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Opti
                 await ctx.send(embed=emb, delete_after=time)
             else:
                 await ctx.send(embed=emb)
-
-
-
 
 
 

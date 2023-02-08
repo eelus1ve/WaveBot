@@ -3,7 +3,7 @@ from discord.ext import commands
 from BTSET import Moderation, bdpy
 import re
 from module.moderation.moderation import ModerationSetup
-
+from module.info.info import InfoSetup
 
 class BotError(commands.Cog):
     def __init__(self, bot):
@@ -87,10 +87,18 @@ class BotError(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
-                description=f"*Использование: {pref}clear_warns (@Участник)",
+                description=f"Использование: {pref}clear_warns (@Участник)",
                 color = Moderation(ctx.author).ercolor
             ))
 
+    @InfoSetup.spotify_info.error
+    async def error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(embed=discord.Embed(
+                title='Ошибка',
+                description=f"Пользователь не слушает spotify",
+                color = Moderation(ctx.author).ercolor
+            ))
     # @Score_commands.clear_rank.error
     # async def error(self, ctx, error):
     #     with open(f'{BD}users.json', 'r') as file:
