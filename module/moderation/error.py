@@ -3,6 +3,8 @@ from discord.ext import commands
 from BTSET import Moderation, bdpy
 import re
 from module.moderation.moderation import ModerationSetup
+
+
 class BotError(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -112,5 +114,3 @@ class BotError(commands.Cog):
     #                 color = self.ercolor
     #             ))
 
-def setup(bot):
-    bot.add_cog(BotError(bot))

@@ -28,6 +28,3 @@ class UtilitySetup(commands.Cog):
     async def avatar(self, ctx: commands.Context, memberr: Optional[discord.Member]):
         member = memberr or ctx.author
         await Avatar(self.bot).command_avatar(ctx, member)
-
-def setup(bot: ComponentsBot):
-    bot.add_cog(UtilitySetup(bot))

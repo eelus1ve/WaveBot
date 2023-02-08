@@ -5,7 +5,7 @@ from discord_components import DiscordComponents, ComponentsBot, Button, Select
 from discord_components import SelectOption
 import json
 from BTSET import ADMINS
-from module.fun.anMessage import GetMember
+from module.fun.commands.anMessage import GetMember
 
 
 class Suppot(commands.Cog):
@@ -142,7 +142,4 @@ class SupportAnswer(commands.Cog):
 
                 await interaction.message.delete()
 
-def setup(bot):
-    bot.add_cog(Suppot(bot))
-    bot.add_cog(SupportAnswer(bot))
 

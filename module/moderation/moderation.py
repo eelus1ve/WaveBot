@@ -87,6 +87,3 @@ class ModerationSetup(commands.Cog):
     @commands.Cog.listener('on_voice_state_update')
     async def on_voice_state_update_roomedit_mute(self, member: discord.Member, before, after):
         await Roomedit(self.bot).listener_on_voice_state_update_roomedit_mute(member, before, after)
-
-def setup(bot: ComponentsBot):
-    bot.add_cog(ModerationSetup(bot))

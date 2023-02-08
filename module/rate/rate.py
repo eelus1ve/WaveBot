@@ -7,6 +7,7 @@ from module.rate.commands.leaders import Leaders
 from module.rate.commands.rank import Rank
 from module.rate.commands.mrate import Mrate
 
+
 class RateSetup(commands.Cog):
     def __init__(self, bot: ComponentsBot):
         self.bot = bot
@@ -54,6 +55,3 @@ class RateSetup(commands.Cog):
     @commands.Cog.listener('on_message')
     async def my_message(self, message: discord.Message):
         await Mrate(self.bot).command_my_message(message)
-
-def setup(bot: ComponentsBot):
-    bot.add_cog(RateSetup(bot))

@@ -46,6 +46,3 @@ class FunSetup(commands.Cog):
     @commands.Cog.listener('on_button_click')
     async def on_button_click_anMessage(self, interaction: Interaction):
         await Get_message(self.bot).listener_on_button_click_anMessage(interaction)
-
-def setup(bot):
-    bot.add_cog(FunSetup(bot))
