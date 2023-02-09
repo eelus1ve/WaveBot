@@ -13,32 +13,30 @@ class SpotifyInfo(commands.Cog):
 
     async def command_spotify_info(self, ctx: commands.Context, member: discord.Member):
         spotifyActivity = next((activity for activity in member.activities if isinstance(activity, discord.Spotify)), None)
-        language = Lang.words(Lang.set_lang(ctx))
         if spotifyActivity is None:
             if not(str(member.status) ==  'offline'):
                 raise commands.BadArgument('no spotify')
-            await ctx.send("{} {}".format(member.mention, language['spotify_status_offline']))
+            await ctx.send("{} {}".format(member.mention, Lang(ctx).language['spotify_status_offline']))
         else:
             embed = discord.Embed(
                 title=f"{member.name}'s Spotify",
-                description="{} [{}](https://open.spotify.com/track/{})".format(language['spotify_listen'], spotifyActivity.title, spotifyActivity.track_id),
+                description="{} [{}](https://open.spotify.com/track/{})".format(Lang(ctx).language['spotify_listen'], spotifyActivity.title, spotifyActivity.track_id),
                 color=Info(ctx).color
             )
             embed.set_thumbnail(url=spotifyActivity.album_cover_url)
-            embed.add_field(name=language['spotify_musician'], value=spotifyActivity.artist)
-            embed.add_field(name=language['spotify_album'], value=spotifyActivity.album)
-            embed.set_footer(text="{} {}".format(language['spotify_time'], spotifyActivity.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%H:%M')))
+            embed.add_field(name=Lang(ctx).language['spotify_musician'], value=spotifyActivity.artist)
+            embed.add_field(name=Lang(ctx).language['spotify_album'], value=spotifyActivity.album)
+            embed.set_footer(text="{} {}".format(Lang(ctx).language['spotify_time'], spotifyActivity.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%H:%M')))
             await ctx.send(embed=embed)
 
 
     
     async def command_spotify(self, ctx, member: discord.Member):
         spotifyActivity = next((activity for activity in member.activities if isinstance(activity, Spotify)), None)
-        language = Lang.words(Lang.set_lang(ctx))
         if spotifyActivity is None:
             if not(str(member.status) ==  'offline'):
                 raise commands.BadArgument('no spotify')
-            await ctx.send("{} {}".format(member.mention, language['spotify_status_offline']))
+            await ctx.send("{} {}".format(member.mention, Lang(ctx).language['spotify_status_offline']))
         else:
             background_img = Image.open('.\\module\\info\\img\\spotify_template1.png')
             albImage = Image.open(requests.get(spotifyActivity.album_cover_url, stream=True).raw).convert('RGBA')

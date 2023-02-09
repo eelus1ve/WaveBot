@@ -274,12 +274,12 @@ async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Opti
 
 
 class Lang():
-    def set_lang(ctx: commands.Context):
-        return bdpy(ctx)['lang']
+    def __init__(self, ctx):
+        self.language = self.lang(ctx)
 
-    def words(language: str):
+    def lang(self, ctx):
         lang_dict = {}
-        with open(f'system\Languages\\{language}.txt', 'r', encoding = 'utf-8') as f:
+        with open('system\\Languages\\{}.txt'.format(bdpy(ctx)['lang']), 'r', encoding = 'utf-8') as f:
             for line in f:
                 if not(line.startswith('//')) and not(line=='\n'):
                     key, *value = line.split()
