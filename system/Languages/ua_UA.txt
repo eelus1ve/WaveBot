@@ -5,16 +5,16 @@
 //coin
 coin_result_1 Орел
 coin_result_2 Решка
-coin_title_1 випав
-coin_title_2 випала
+coin_title_1 Випав
+coin_title_2 Випала
 
 //dice
-dice_title гральна кістка говорить
+dice_title Гральна кістка говорить
 dice_des і
 
 //magicball
-magicball_title куля долі говорить
-magicball_des_1  так!
+magicball_title Куля долі говорить
+magicball_des_1  Так!
 magicball_des_2 Може бути.
 magicball_des_3 Ні!
 
@@ -33,10 +33,10 @@ p2048_des_loose_max Ваше максимальне значення
 
 //botinfo
 botinfo_title Бот
-botinfo_des_1 вас вітає
+botinfo_des_1 Вас вітає
 botinfo_des_2  бот.
 botinfo_ver Версія
-botinfo_dev творці бота
+botinfo_dev Творці бота
 botinfo_beta-testers Бета тестери
 botinfo_footer  розроблений Wave-team
 
@@ -44,30 +44,30 @@ botinfo_footer  розроблений Wave-team
 //...
 
 //spotify
-spotify_status_offline  не в мережі!
+spotify_status_offline  Не в мережі!
 spotify_listen Слухає
-spotify_musician виконавець
+spotify_musician Виконавець
 spotify_album Альбом
-spotify_time  пісня почалася в
+spotify_time  Пісня почалася в
 
 //server_info
 //...
 
 //user
 user_name Ім'я користувача
-user_playing  грає
-user_listening  слухає
+user_playing  Грає
+user_listening  Слухає
 user_status  Статус
 user_status_dnd  Не турбувати
 user_status_offline Не в мережі
-user_status_online  в мережі
-user_status_idle неактивний
+user_status_online  В мережі
+user_status_idle Неактивний
 user_top_role  Топ роль
-user_connected  приєднався
+user_connected  Приєднався
 user_reged  Дата реєстрації
 user_dev Розробник WaveBot
-user_info_about інформація про
+user_info_about Iнформація про
 user_some_info  Основна інформація
 user_xp  XP
 user_lvl  LVL
-user_warns попередження
+user_warns Попередження
