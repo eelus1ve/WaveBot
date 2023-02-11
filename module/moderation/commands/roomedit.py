@@ -1,33 +1,17 @@
-from asyncio import tasks
-from decimal import Inexact
-from re import T
-from turtle import rt
-from unicodedata import category
 import discord
-from operator import index
 from discord.ext import commands
-from discord_components import DiscordComponents, ComponentsBot, Button, Select, Interaction
-from discord_components import SelectOption as Sel
 from discord.utils import get
-from email.errors import InvalidMultipartContentTransferEncodingDefect
 import asyncio
 import json
-from discord_components import ComponentsBot
-import interactions
-from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption, Option
-from youtube_dl import YoutubeDL
-import os
 import discord
-from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption, Interaction
-import interactions
-from interactions import Modal, TextInput
+from discord_components import ComponentsBot, Button, Interaction
 import json
 import asyncio
 from discord.ext import commands
 from BTSET import Moderation, embpy, bdpy, BD
 rtask = None
 class Roomedit(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: ComponentsBot):
         self.bot = bot
 
     async def command_room(self, ctx: commands.Context):

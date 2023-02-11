@@ -4,26 +4,27 @@ from BTSET import Moderation, embpy, bdpy
 from discord.utils import get
 import datetime
 import pytz
+from BTSET import Lang
 
 class Audit(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    async def audit(self, ctx, member, reason, text, num=0):
+    async def audit(self, ctx: commands.Context, member: discord.Member, reason: str, text: str, num: int=0):
         moscow_time = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
         #====================================================================
         #audit
         #====================================================================
         if bdpy(ctx)['idAdminchennel'] in [str(i.id) for i in ctx.guild.channels]:
             emb=discord.Embed(
-                title='Аудит',
-                description=f'Учасник {member.name}#{member.discriminator} был {text}!\nПричина: {reason}',
+                title=Lang(ctx).language['audit_title'],
+                description='{} {}#{} {} {}!\n{} {}'.format(Lang(ctx).language['audit_des_1'], member.name, member.discriminator, Lang(ctx).language['audit_des_2'], text, Lang(ctx).language['audit_des_3'], reason),
                 timestamp=moscow_time,
                 color=Moderation(member).color
             )
             if not(num):
-                emb.set_footer(text=f'Модератор {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
+                emb.set_footer(text='{} {}#{} {} {}'.format(Lang(ctx).language['audit_footer_1'], ctx.author.name, ctx.author.discriminator, Lang(ctx).language['audit_footer_2'], ctx.author.id))
             else:
-                emb.set_footer(text=f'Автомодератор WaveBot')
+                emb.set_footer(text=Lang(ctx).language['audit_footer_wave'])
             await get(ctx.guild.text_channels, id=Moderation(member).idadminchannel).send(embed=emb)
 
         #====================================================================

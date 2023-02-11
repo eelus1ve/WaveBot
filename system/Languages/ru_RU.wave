@@ -81,7 +81,13 @@ user_warns Предупреждения
 /////////////////////////////////////
 
 //audit
-//...
+audit_title Аудит
+audit_des_1 Учасник
+audit_des_2 был
+audit_des_3 Причина:
+audit_footer_1 Модератор
+audit_footer_2 ID:
+audit_footer_wave Автомодератор WaveBot
 
 //btst
 //...
