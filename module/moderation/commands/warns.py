@@ -11,6 +11,10 @@ class Warns(commands.Cog):
         self.bot = bot
 
 
+    async def command_kick(self, ctx: commands.Context, member: discord.Member, reason: str):
+        await member.kick(reason=reason)
+        await Audit(self.bot).audit(ctx, member, reason, text='исключен')
+
     async def command_ban(self, ctx: commands.Context, member: discord.Member, reason: str):
         await member.ban(reason=reason)
         await Audit.audit(self, ctx, member, reason, text='заблокирован')

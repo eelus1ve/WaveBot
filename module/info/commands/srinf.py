@@ -1,20 +1,20 @@
 import discord
 from discord.ext import commands
-from BTSET import Info
+from BTSET import Info, Lang
 from discord_components import ComponentsBot
 class SrInfo(commands.Cog):
     def __init__(self, bot: ComponentsBot):
         self.bot = bot
 
     async def command_server_info(self, ctx: commands.Context):
-        emb = discord.Embed(title=f'Информация о сервере ***{str(ctx.message.guild)}***',
-                            description="Основная информация",
+        emb = discord.Embed(title='{} ***{}***'.format(Lang(ctx).language['server_info_title'], str(ctx.message.guild)),
+                            description=Lang(ctx).language['server_info_des'],
                             color=Info(ctx).color
                             )
         emb.set_thumbnail(url=ctx.author.guild.icon_url) 
-        emb.add_field(name='Количество участников: ', value=ctx.message.guild.member_count)
-        emb.add_field(name='Владелец: ', value=ctx.message.guild.owner)
-        emb.add_field(name='Дата создания: ', value=ctx.message.guild.created_at.strftime("%d.%m.%y"))
+        emb.add_field(name=Lang(ctx).language['server_info_members'], value=ctx.message.guild.member_count)
+        emb.add_field(name=Lang(ctx).language['server_info_own'], value=ctx.message.guild.owner)
+        emb.add_field(name=Lang(ctx).language['server_info_date'], value=ctx.message.guild.created_at.strftime("%d.%m.%y"))
         await ctx.send(embed=emb)
 
     #Доделать. Знаю что доделать делаю делаю и думаю о том что ты пидр ведь мог бы и сам сделать а ты что-то другое делаешь а мне ещё документацию писать я тут сдохну 

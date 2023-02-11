@@ -38,8 +38,7 @@ class ModerationSetup(commands.Cog):
     @commands.command(aliases=['кик', 'Кик', 'КИК'])
     @Rool.role(quest='kick')
     async def kick(self, ctx: commands.Context, member: discord.Member, *, reason):
-        await member.kick(reason=reason)
-        await Audit(self.bot).audit(ctx, member, reason, text='исключен')
+        await Warns(self.bot).command_kick(self, ctx, member, reason)
 
     @commands.command(aliases=['бан', 'Бан', 'БАН'])
     @Rool.role(quest='ban') 
@@ -57,7 +56,7 @@ class ModerationSetup(commands.Cog):
         await Stngs(self.bot).command_set(ctx, arg, clArg, roleClass, emo)
 
     @commands.command()
-    async def server_set(self, ctx):
+    async def server_set(self, ctx: commands.Context):
         await Stngs(self.bot).command_server_set(ctx)
 
     @commands.command()

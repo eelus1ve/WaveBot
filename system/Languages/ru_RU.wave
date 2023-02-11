@@ -51,7 +51,11 @@ spotify_album Альбом
 spotify_time Песня началась в
 
 //server_info
-//...
+server_info_title Информация о сервере
+server_info_des Оснавная информация
+server_info_members Количество участников:
+server_info_own Владелец:
+server_info_date Дата создания:
 
 //user
 user_name Имя пользователя:
@@ -71,3 +75,91 @@ user_some_info Основная информация:
 user_xp XP
 user_lvl LVL
 user_warns Предупреждения
+
+/////////////////////////////////////
+//moderation
+/////////////////////////////////////
+
+//audit
+//...
+
+//btst
+//...
+
+//clear
+clear_er_mess Количество удаленных сообщений не может превышать
+clear_title Успешно
+clear_des_1 Очищено
+clear_des_2 сообщений.
+
+//mbrjn
+//...
+
+//mwarns
+//...
+
+//select
+//...
+
+//roomedit
+roomedit_create_title
+roomedit_create_des_1
+roomedit_create_des_2
+roomedit_create_des_3
+roomedit_create_des_4
+roomedit_create_des_5
+roomedit_create_des_6
+roomedit_create_des_7
+roomedit_create_des_8
+//...
+
+//selfemb
+//...
+
+//settings
+//...
+
+//warns
+//...
+
+//errors
+//...
+
+/////////////////////////////////////
+//rate
+/////////////////////////////////////
+
+//leaders
+//...
+
+//mrate
+//...
+
+//rank
+//...
+
+//score
+//...
+
+/////////////////////////////////////
+//ustility
+/////////////////////////////////////
+
+//avatar
+//...
+
+//rand
+//...
+
+//translit
+//...
+
+//vote
+//...
+
+/////////////////////////////////////
+//voice
+/////////////////////////////////////
+
+//voice
+//...
