@@ -70,7 +70,10 @@ class ModerationSetup(commands.Cog):
         await Roomedit(self.bot).command_room(ctx)
 
     #листенеры в отдельный класс
-
+    @commands.Cog.listener('on_message')
+    async def on_message_mwarns(self, message: discord.Message):
+        await Mwarns(self.bot).listener_on_message_mwarns(message)
+        
     @commands.Cog.listener('on_select_option')
     async def on_select_option_select(self, interaction: Interaction):
         await Select(self.bot).listener_on_select_option_select(interaction)

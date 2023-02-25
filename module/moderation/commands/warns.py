@@ -26,11 +26,12 @@ class Warns(commands.Cog):
 
         data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] += num
 
+        with open(f'{BD}users.json', 'w') as file:
+            json.dump(data, file, indent=4)
+
         if data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] >= Moderation(member).nWarns:
             await self.command_ban(ctx, member, reason='Вы привысили допустимое количество нарушений')
         
-        with open(f'{BD}users.json', 'w') as file:
-            json.dump(data, file, indent=4)
         # Audit(self.bot).warn_audit(ctx, )
 
 

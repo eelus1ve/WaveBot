@@ -31,13 +31,18 @@ class Audit(commands.Cog):
         #rep
         #====================================================================
         if not(num):
-            await embpy(ctx, comp='s', des=f"*{member.mention} был {text}!*", time=10.00)
+            emb=discord.Embed(
+            title=Lang(ctx).language['audit_title_rep'],
+            description="*{} {} {}.*".format(member.mention, Lang(ctx).language['audit_des_rep_s'], text),
+            timestamp=moscow_time,
+            color=Moderation(member).color
+            )
         #====================================================================
         #ls
         #====================================================================
         emb=discord.Embed(
             title=f'{ctx.guild.name}',
-            description=f'Вы были {text}ы!\nПричина: {reason}',
+            description='{} {text}{}\n{} {reason}'.format(Lang(ctx).language['audit_des_ls_1']),
             timestamp=moscow_time,
             color=Moderation(member).color
         )

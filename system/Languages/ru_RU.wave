@@ -1,3 +1,10 @@
+//  // - коментарий
+//  \n - перенос строчки
+//  пустая строчка == коментарий
+//  запись в виде 
+//  //(Имя функции)
+//  (Имя функции)_(раздел функции) без пробелов (все что после 1 пробела == значение ==)
+
 /////////////////////////////////////
 //fun
 /////////////////////////////////////
@@ -41,7 +48,85 @@ botinfo_beta-testers Бета тестеры
 botinfo_footer разработан Wave-team
 
 //help
-//...
+help_help_dict_moderation_title модерация
+help_help_dict_moderation_command_warn warn
+help_help_dict_moderation_command_unwarn unwarn
+help_help_dict_moderation_command_clear_warns clear_warns
+help_help_dict_moderation_command_ban ban
+help_help_dict_moderation_command_clear clear
+help_help_dict_moderation_command_kick kick
+help_help_dict_moderation_command_select select
+help_help_dict_moderation_command_btst btst
+help_help_dict_moderation_command_set set
+help_help_dict_moderation_value_warn Выдать предупреждение
+help_help_dict_moderation_value_unwarn Убрать предупреждение
+help_help_dict_moderation_value_clear_warns Очистка предупреждений
+help_help_dict_moderation_value_ban Забанить пользователя
+help_help_dict_moderation_value_clear Очистка чата
+help_help_dict_moderation_value_kick Кикнуть пользователя
+help_help_dict_moderation_value_select Выдача ролей
+help_help_dict_moderation_value_btst Вызвать меню настройки бота
+help_help_dict_moderation_value_set Настройка бота через чат
+
+help_help_dict_fun_title развлечения
+help_help_dict_fun_command_rand rand
+help_help_dict_fun_command_coin coin
+help_help_dict_fun_command_MagicBall MagicBall
+help_help_dict_fun_command_send_an_message send_an_message
+help_help_dict_fun_command_p2048 p2048
+help_help_dict_fun_command_get_qr get_qr
+help_help_dict_fun_command_dice dice
+help_help_dict_fun_value_rand рандомайзер
+help_help_dict_fun_value_coin Кинуть монетку
+help_help_dict_fun_value_MagicBall Магический шар
+help_help_dict_fun_value_send_an_message Отправить анонимное сообщение пользователю
+help_help_dict_fun_value_p2048 Вызвать игру 2048
+help_help_dict_fun_value_get_qr зашифровать Ваш текст в QR код
+help_help_dict_fun_value_dice Кинуть игральные кости
+
+help_help_dict_info_title информация
+help_help_dict_info_command_info info
+help_help_dict_info_command_help help
+help_help_dict_info_command_user user
+help_help_dict_info_command_spotify_info spotify_info
+help_help_dict_info_command_spotify spotify
+help_help_dict_info_command_server_info server_info
+help_help_dict_info_command_server_info_channel server_info_channel
+help_help_dict_info_value_info Информация о боте
+help_help_dict_info_value_help Информация о командах
+help_help_dict_info_value_user Информация о юзере
+help_help_dict_info_value_spotify_info 
+help_help_dict_info_value_spotify Информация юзера о прослушивании spotify
+help_help_dict_info_value_server_info Информация о сервере
+help_help_dict_info_value_server_info_channel Создать каналы со статистикой сервера
+
+help_help_dict_rate_title рейтинг
+help_help_dict_rate_command_leaders leaders
+help_help_dict_rate_command_rank rank
+help_help_dict_rate_command_score score
+help_help_dict_rate_command_clear_score clear_score
+help_help_dict_rate_value_leaders 
+help_help_dict_rate_value_rank Показать ваш ранк на сервере
+help_help_dict_rate_value_score осмотреть счет учасника
+help_help_dict_rate_value_clear_score
+
+help_help_dict_utility_title утилиты
+help_help_dict_utility_command_tr tr
+help_help_dict_utility_command_avatar avatar
+help_help_dict_utility_command_vote vote
+help_help_dict_utility_value_tr Перевести текст
+help_help_dict_utility_value_avatar Отправить в чат аватар пользователя
+help_help_dict_utility_value_vote Вызвать голосование
+
+help_command_arg_ls_des Использование:
+help_command_arg_rep_title Успешно
+help_command_arg_rep_des_1 Информация о комманде
+help_command_arg_rep_des_2 отправлена вам в личные сообщения!
+
+help_command_ls_title Список доступных команд:
+help_command_rep_title Успешно
+help_command_rep_des Список доступных комманд отправлен вам в личные сообщения!
+
 
 //spotify
 spotify_status_offline не в сети!
@@ -75,6 +160,7 @@ user_some_info Основная информация:
 user_xp XP
 user_lvl LVL
 user_warns Предупреждения
+user_footer ID:
 
 /////////////////////////////////////
 //moderation
@@ -83,11 +169,17 @@ user_warns Предупреждения
 //audit
 audit_title Аудит
 audit_des_1 Учасник
-audit_des_2 был
+audit_des_2 б ыл
 audit_des_3 Причина:
 audit_footer_1 Модератор
 audit_footer_2 ID:
 audit_footer_wave Автомодератор WaveBot
+audit_title_rep_s Успешно
+audit_des_rep был
+audit_des_ls_1 Вы были
+audit_des_ls_2 ы!
+audit_des_ls_3 Причина:
+//...
 
 //btst
 //...
@@ -108,22 +200,125 @@ clear_des_2 сообщений.
 //...
 
 //roomedit
-roomedit_create_title
-roomedit_create_des_1
-roomedit_create_des_2
-roomedit_create_des_3
-roomedit_create_des_4
-roomedit_create_des_5
-roomedit_create_des_6
-roomedit_create_des_7
-roomedit_create_des_8
-//...
+roomedit_create_title Управление приватными комнатами
+roomedit_create_des_1 назначить нового создателя комнаты
+roomedit_create_des_2 ограничить/выдать доступ к комнате
+roomedit_create_des_3 задать новый лимит участников
+roomedit_create_des_4 закрыть/открыть комнату
+roomedit_create_des_5 изменить название комнаты
+roomedit_create_des_6 скрыть/открыть комнату
+roomedit_create_des_7 выгнать участника из комнаты
+roomedit_create_des_8 ограничить/выдать право говорить
+roomedit_edit_title_s Успешно
+roomedit_edit_title_f Ошибка
+roomedit_edit_new_own Укажите нового создателя этого канала @участник
+roomedit_edit_ignore_member_1 Напишите @участник которому хотите ограничить право входить в комнату
+roomedit_edit_ignore_member_2 Участнику
+roomedit_edit_ignore_member_3 был заблокирован доступ к комнате!
+roomedit_edit_ignore_member_4 был разблокирован доступ к комнате!
+roomedit_edit_ignore_member_doesnt_exist_1 Участника
+roomedit_edit_ignore_member_doesnt_exist_2 не существует!
+roomedit_edit_user_lim_1 напишите число участников от 0 до 99
+roomedit_edit_user_lim_2 Количество людей в комнате ограничено на
+roomedit_edit_block_inv_1 Доступ к комнате ограничен!
+roomedit_edit_block_inv_2 Ограничение к комнате снято!
+roomedit_edit_new_name напишите новое название комнаты
+roomedit_edit_block_watch_1 Доступ к просмотру комнаты ограничен!
+roomedit_edit_block_watch_2 Ограничение к просмотру комнаты снято!
+roomedit_edit_kick_1 напишите @участник  которого хотите выгнать
+//roomedit_edit_kick_2
+roomedit_edit_block_voice_1 напишите @участник которому хотите ограничить право говорить
+roomedit_edit_block_voice_2 Пользователь
+roomedit_edit_block_voice_3 уже был замучен на сервере!
+roomedit_edit_error Вы не создатель этой комнаты!
 
 //selfemb
 //...
 
 //settings
-//...
+settings_command_set_role_add_role_error_1 Использование:
+settings_command_set_role_add_role_error_2 (id роли) (название класса)
+settings_command_set_role_add_role_not_ex_1 Класса
+settings_command_set_role_add_role_not_ex_2 не существует!
+settings_command_set_role_remove_role_error_1 Использование:
+settings_command_set_role_remove_role_error_2 (id роли) (название класса)
+settings_command_set_role_remove_role_not_ex_1 Класса
+settings_command_set_role_remove_role_not_ex_2 не существует!
+settings_command_set_role_add_role_1 В класс
+settings_command_set_role_add_role_2 была добавленна роль
+settings_command_set_role_add_role_error_much Вы привысели число ролей в данном классе! (максимально число в классе 25)
+settings_command_set_role_add_role_error_been_1 Роль
+settings_command_set_role_add_role_error_been_2 уже есть в этом классе!
+settings_command_set_role_remove_role_1 Из класса
+settings_command_set_role_remove_role_2 была удалена роль
+settings_command_set_role_remove_role_error_not_ex_1 Роли с id
+settings_command_set_role_remove_role_error_not_ex_2 нету в классе
+
+settings_command_set_class_add_class_error_1 Использование:
+settings_command_set_class_add_class_error_2 (название класса)
+settings_command_set_class_remove_class_error_1 Использование:
+settings_command_set_class_remove_class_error_2 (название класса)
+settings_command_set_class_add_class_not_ex_1 Класс
+settings_command_set_class_add_class_not_ex_2 уже существует
+settings_command_set_class_add_class_1 Класс
+settings_command_set_class_add_class_2 был успешно создан
+settings_command_set_class_remove_class_not_ex_1 Класса
+settings_command_set_class_remove_class_not_ex_2 не существует
+settings_command_set_class_remove_class_1 Класс
+settings_command_set_class_remove_class_2 был успешно удалён
+
+settings_command_set_color_color_not_ex_1 Цвета
+settings_command_set_color_color_not_ex_2 не существует!
+settings_command_set_color_color_error_1 Использование:
+settings_command_set_color_color_error_2 (ваш цвет в hex)
+settings_command_set_color_ercolor_not_ex_1 Цвета
+settings_command_set_color_ercolor_not_ex_2 не существует!
+settings_command_set_color_ercolor_error_1 Использование:
+settings_command_set_color_ercolor_error_2 (ваш цвет в hex)
+settings_command_set_color_color Цвет сообщений бота изменен на
+settings_command_set_color_ercolor Цвет ошибок изменен на
+
+settings_command_set_adminchannel_error_1 Использование:
+settings_command_set_adminchannel_error_2 IDA (id канала для администраторов)
+settings_command_set_adminchannel Канал администратора изменен на
+
+settings_command_set_ncaps_error_1 Использование:
+settings_command_set_ncaps_error_2 ncaps (количество капса до выдачи 1 предупреждения)
+settings_command_set_ncaps Количество капса изменино на
+
+settings_command_set_nwarns_error_1 Использование:
+settings_command_set_nwarns_error_2 nwarns (количество предупреждений до выдачи бана)
+settings_command_set_nwarns Количество варнов изменино на
+
+settings_command_set_prefix_error_1 Для смены префикса напишите
+settings_command_set_prefix_error_2 prefix (ваш_префикс)
+settings_command_set_prefix Ваш префикс изменен на
+
+settings_command_set_selftitle_error_1 Использование:
+settings_command_set_selftitle_error_2 selftitle (Текст)
+settings_command_set_selftitle Текст выбора ролей успешно изменён на
+
+settings_command_set_selfroom_error_1 Использование:
+settings_command_set_selfroom_error_2 selfroom (id канала)
+settings_command_set_selfroom Канал для создания своей комнаты успешно назначен (Id назначеного канала
+
+settings_command_set_badword_add_badword_error_1 Использование:
+settings_command_set_badword_add_badword_error_2 add_badword (слово за использование которого участнику сервера будет выданно предупреждение)
+settings_command_set_badword_add_badword_ex_1 Слово
+settings_command_set_badword_add_badword_ex_2 уже добавлено в список плохих слов
+settings_command_set_badword_add_badword_1 В список badwords добавленно слово
+settings_command_set_badword_add_badword_2 
+
+settings_command_set_badword_remove_badword_error_1 Использование:
+settings_command_set_badword_remove_badword_error_2 remove_badword (слово котороe нужно исключить из списка плохих слов)
+settings_command_set_badword_remove_badword_not_ex_1 Слова
+settings_command_set_badword_remove_badword_not_ex_2 нету в списке плохих слов!
+settings_command_set_badword_remove_badword_1 Слово
+settings_command_set_badword_remove_badword_2 удалено из списка плохих слов
+
+settings_command_set_ignorechannel_add_ignorechannel_error_1
+
+
 
 //warns
 //...

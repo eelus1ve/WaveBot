@@ -26,7 +26,7 @@ class InfoSetup(commands.Cog):
     @commands.command(aliases=['sptf'])
     async def spotify(self, ctx: commands.Context, memberr: Optional[discord.Member]):
         member: discord.Member = memberr or ctx.author
-        await SpotifyInfo(self.bot).command_spotify_info(ctx, member)
+        await SpotifyInfo(self.bot).command_spotify(ctx, member)
     
     @commands.command(aliases =['Инфо', 'инфо', 'ИНФО'])
     async def info(self, ctx: commands.Context):

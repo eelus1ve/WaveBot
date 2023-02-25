@@ -39,7 +39,7 @@ class UserInfo(commands.Cog):
             emb.add_field(name='***{}***'.format(Lang(ctx).language['user_warns']), value=f'{Moderation(member).warns}/{Moderation(member).nWarns}', inline=True)
         
         emb.set_thumbnail(url=member.avatar)
-        emb.set_footer(text=f'ID: {member.id}')
+        emb.set_footer(text='{} {}'.format(Lang(ctx).language['user_footer'], member.id))
         
         await ctx.send(embed=emb)
 

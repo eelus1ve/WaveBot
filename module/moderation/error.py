@@ -91,6 +91,21 @@ class BotError(commands.Cog):
                 color = Moderation(ctx.author).ercolor
             ))
 
+    @ModerationSetup.set.error
+    async def error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(embed=discord.Embed(
+                title='Ошибка',
+                description=error,
+                color=Moderation(ctx.author).ercolor
+            ))
+        elif isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(embed=discord.Embed(
+                title='Ошибка',
+                description=error,
+                color=Moderation(ctx.author).ercolor
+            ))
+
     @InfoSetup.spotify_info.error
     async def error(self, ctx: commands.Context, error):
         if isinstance(error, commands.BadArgument):
@@ -99,6 +114,7 @@ class BotError(commands.Cog):
                 description=f"Пользователь не слушает spotify",
                 color = Moderation(ctx.author).ercolor
             ))
+    
     # @Score_commands.clear_rank.error
     # async def error(self, ctx, error):
     #     with open(f'{BD}users.json', 'r') as file:

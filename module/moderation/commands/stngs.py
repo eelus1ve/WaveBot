@@ -2,7 +2,7 @@ from time import sleep
 import discord
 from discord.ext import commands
 import json
-from BTSET import Moderation, embpy, bdpy, BD
+from BTSET import Moderation, embpy, bdpy, BD, Lang
 import asyncio
 from discord_components import ComponentsBot
 
@@ -17,7 +17,7 @@ class Stngs(commands.Cog):
             color=Moderation(ctx).color
         )
 
-    async def command_set(self, ctx: commands.Context, arg=None, clArg=None, roleClass=None, emo=None):
+    async def command_set(self, ctx: commands.Context, arg: str=None, clArg: str=None, roleClass: str=None, emo=None):
         #сюда if
         with open(f'{BD}users.json', 'r') as file:
             data = json.load(file)
@@ -27,6 +27,10 @@ class Stngs(commands.Cog):
         description1 = 0
         description2 = 0
         title = 0
+        command_name = 'setting'
+
+        
+
 
         #print([SelectOption(label=i, value=i) for i in ctx.author.guild.roles])
         embb = discord.Embed(title=f'Настройка сервера ***{str(ctx.message.guild)}***',      #ПЕРЕДЕЛАТЬ
@@ -52,292 +56,230 @@ class Stngs(commands.Cog):
                            )
         if arg==None:   
             await ctx.send(embed=embb)
-        elif arg == 'add_role':
-            if clArg and roleClass:
-                if roleClass in data[str(ctx.author.guild.id)]['ROLES']:
-                    if len([i for i in data[str(ctx.author.guild.id)]['ROLES'][roleClass][0]]) < 26 and not(clArg in data[str(ctx.author.guild.id)]['ROLES'][roleClass]):
-                        
-                        data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].append(str(clArg))
-                        if emo:
-                            data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].append(str(emo))
-                        else:
-                            data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].append(' ')
-                            description1=f"*В класс {roleClass} была добавленна роль {clArg}*"
-                    elif not(len([i for i in data[str(ctx.author.guild.id)]['ROLES'][roleClass][0]]) < 26):
-                            description2="Вы привысели число ролей в данном классе! (максимально число в классе 25)"
-                    else:
-                            description2=f"Роль {clArg} уже есть в этом классе!"
-                else:
-                        description2=f"*Класса {roleClass} не существует!*"
-            else:   
-                description2=f"*Использование:* {prefix}settings add_role (id роли) (название класса)"
-        elif arg == 'add_class':
-            if clArg:
-                if not(clArg in data[str(ctx.author.guild.id)]['ROLES']):
-                    data[str(ctx.author.guild.id)]['ROLES'].update({clArg: [[],[]]})
-                    description1=f"*Класс {clArg} был успешно создан*"
-                else:
-                    description2=f"*Класс {clArg} уже существует*"
-            else:
-                description2=f"*Использование: {prefix}settings add_class (название класса)*",
-        elif arg == 'remove_role':
-            if clArg and roleClass:
-                if roleClass in data[str(ctx.author.guild.id)]['ROLES']:
-                    if clArg in data[str(ctx.author.guild.id)]['ROLES'][roleClass][0]:
-                        data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].pop(data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].index(str(clArg)))
-                        data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].pop(data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].index(str(clArg)))
-                        description1=f"*Из класса {roleClass} была удалена роль {clArg}*"
-                    else:
-                        description2=f"*Роли с id {clArg} нету в классе {roleClass}!*"
-                else:
-                        description2=f"*Класса {roleClass} не существует!*"
-            else:
-                description2=f"*Использование: {prefix}settings remove_role (id роли) (название класса)*"
 
-        elif arg == 'remove_class':
-            if clArg:
-                if clArg in data[str(ctx.author.guild.id)]['ROLES']:
-                    data[str(ctx.author.guild.id)]['ROLES'].pop(clArg)
-                    description1=f"*Класс {clArg} был успешно удалён*"
+            
+        elif arg == 'add_role' or arg == 'remove_role':
+            if not(clArg and roleClass):
+                raise commands.MissingRequiredArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_role_{arg}_error_1'], Moderation(ctx.author).prefix), command_name, arg, Lang(ctx).language[f'settings_command_set_role_{arg}_error_2'])
+            if not(roleClass in data[str(ctx.author.guild.id)]['ROLES']):
+                raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_role_{arg}_not_ex_1'], roleClass, Lang(ctx).language[f'settings_command_set_role_{arg}_not_ex_2']))
+            description1 = "*{} {} {} {}*".format(Lang(ctx).language[f'settings_command_set_role_{arg}_1'], roleClass, Lang(ctx).language[f'settings_command_set_role_{arg}_2'], clArg)
+            if arg == 'add_role':
+                if len([i for i in data[str(ctx.author.guild.id)]['ROLES'][roleClass][0]]) < 26 and not(clArg in data[str(ctx.author.guild.id)]['ROLES'][roleClass]):
+                    data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].append(str(clArg))
+                    if emo:
+                        data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].append(str(emo))
+                    else:
+                        data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].append(' ')
+                    
+                elif not(len([i for i in data[str(ctx.author.guild.id)]['ROLES'][roleClass][0]]) < 26):
+                    raise commands.BadArgument(Lang(ctx).language[f'settings_command_set_role_{arg}_error_much'])
                 else:
-                    description2=f"*Класса {clArg} не существует*",
+                    raise commands.BadArgument("{} {} {}".format(Lang(ctx).language[f'settings_command_set_role_{arg}_error_been_1'], clArg, Lang(ctx).language[f'settings_command_set_role_{arg}_error_been_2']))
             else:
-                description2=f"*Использование:* {prefix}settings remove_class (название класса)*"
-
-        elif arg == 'color':       
-            if not([i for i in [clArg[ii] for ii in range(len(clArg))] if not(i in ['#', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F'])]):
-                if [clArg[i] for i in range(len(clArg))][0] != '#':
-                    if len(clArg) == 6:
-                        data[str(ctx.author.guild.id)]['COLOR'] ='0x' + str(clArg)
-                        description1=f"*Цвет сообщений бота изменен на {clArg}*"
-                    else:
-                        description2=f"*Использование:* {prefix}settings color (ваш цвет в hex)"
-                elif [clArg[i] for i in range(len(clArg))][0] == '#':
-                    if len(clArg) == 7:
-                        data[str(ctx.author.guild.id)]['COLOR'] ='0x' + str(''.join([clArg[i] for i in range(len(clArg))][1:])) 
-                        description1=f"*Цвет сообщений бота изменен на {clArg}*"
-                    else:
-                        description2=f"*Использование:* {prefix}settings color (ваш цвет в hex)"
-            else:
-                description2=f"*Цвета {clArg} не существует!*"
+                if not(clArg in data[str(ctx.author.guild.id)]['ROLES'][roleClass][0]):
+                    raise commands.BadArgument("*{} {} {} {}!*".format(Lang(ctx).language[f'settings_command_set_role_{arg}_error_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_role_{arg}_error_not_ex_2'], roleClass))
+                data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].pop(data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].index(str(clArg)))
+                data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].pop(data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].index(str(clArg)))
             
 
-        elif arg == 'ercolor':
-                if not([i for i in [clArg[ii] for ii in range(len(clArg))] if not(i in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F'])]):
-                    if [clArg[i] for i in range(len(clArg))][0] != '#':
-                        if len(clArg) == 6:
-                            data[str(ctx.author.guild.id)]['ErCOLOR'] ='0x' + str(clArg) 
-                            description1=f"*Цвет ошибок изменен на {clArg}*"
-                        else:
-                            description2=f"*Использование:* {prefix}settings color (ваш цвет в hex)"
-                    elif [clArg[i] for i in range(len(clArg))][0] == '#':
-                        if len(clArg) == 7:
-                            data[str(ctx.author.guild.id)]['COLOR'] ='0x' + str(''.join([clArg[i] for i in range(len(clArg))][1:]))
-                            description1=f"*Цвет ошибок изменен на {clArg}*"
-                        else:
-                            description2=f"*Использование:* {prefix}settings color (ваш цвет в hex)"
-                else:
-                    description2=f"*Цвета {clArg} не существует!*"
-        
-        elif arg == 'IDA':
-            if clArg:
-                data[str(ctx.author.guild.id)]['idAdminchennel'] = str(clArg)
-                description1=f"*Канал администратора изменен на {clArg}*"
+        elif arg == 'add_class' or arg == 'remove_class':
+            if not(clArg):
+                raise commands.MissingRequiredArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{arg}_error_1'], Moderation(ctx.author).prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_class_{arg}_error_2']))
+            ermes = "*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_class_{arg}_not_ex_2'])
+            if arg == 'add_class': 
+                if clArg in data[str(ctx.author.guild.id)]['ROLES']:
+                    raise commands.BadArgument(ermes)
+                data[str(ctx.author.guild.id)]['ROLES'].update({clArg: [[],[]]})
             else:
-                description2=f"*Использование: {prefix}settings IDA (id канала для администраторов)*"
-        
-        elif arg == 'ncaps':
-            if clArg:
-                data[str(ctx.author.guild.id)]['nCaps'] = str(clArg) 
-                description1=f"*Количество капса изменино на {clArg}*",
-            else:
-                description2=f"*Использование: {prefix}settings ncaps (количество капса до выдачи 1 предупреждения)*"
+                if not(clArg in data[str(ctx.author.guild.id)]['ROLES']):
+                    raise commands.BadArgument(ermes)
+                data[str(ctx.author.guild.id)]['ROLES'].pop(clArg)
+            description1 = "*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{arg}_1'], clArg, Lang(ctx).language[f'settings_command_set_class_{arg}_2'])
 
-        elif arg == 'nwarns':
-            if clArg:
-                data[str(ctx.author.guild.id)]['nWarns'] = str(clArg) 
-                description1=f"*Количество варнов изменино на {clArg}*"
-            else:
-                description2=f"*Использование: {prefix}settings nwarns (количество предупреждений до выдачи бана)*"
-        elif arg == 'add_badword':
-            if clArg:
-                if not(clArg in data[str(ctx.author.guild.id)]['BADWORDS']):
-                    data[str(ctx.author.guild.id)]['BADWORDS'].append(str(clArg))
-                    description1=f"*В список badwords добавленно слово ||{clArg}||*"
-                else:
-                    description2=f"*Слово ||{clArg}|| уже добавлено в список плохих слов*"
-            else:
-                    description2=f"*Использование: {prefix}settings add_badword (слово за использование которого участнику сервера будет выданно предупреждение)*"
-        elif arg == 'remove_badword':
-            if clArg:
-                if clArg in data[str(ctx.author.guild.id)]['BADWORDS']:
-                    data[str(ctx.author.guild.id)]['BADWORDS'].pop(data[str(ctx.author.guild.id)]['BADWORDS'].index(str(clArg)))
-                    description1=f"*Слово ||{clArg}|| в списке плохих слов*"
-                else:
-                    description2=f"*Слово ||{clArg}|| нету в списке плохих слов!*"
-            else:
-                description2=f'*Использование: {prefix}settings remove_badword (слово котороe нужно исключить из списка плохих слов)*'
-        elif arg == 'prefix':
-            if clArg:
-                data[str(ctx.author.guild.id)]['PREFIX'] = str(clArg)
-                description1=f"*Ваш префикс изменен на {clArg}*"
-            else:
-                description2=f"Для смены префикса напишите {prefix}settings prefix ваш_префикс"
 
-        elif arg == 'selfroom':
-            if clArg:
-                data[str(ctx.author.guild.id)]['selfRoom'] = str(clArg)
-                description1=f"*Канал для создания своей комнаты успешно назначен (Id назначеного канала {clArg})*"
+        elif arg == 'color' or arg == 'ercolor':       
+            if [i for i in [clArg[ii] for ii in range(len(clArg))] if not(i in '#0123456789abcdef' or i in '#0123456789abcdef'.upper())]:
+                raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_color_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_color_{arg}_not_ex_2']))
+
+            if [clArg[i] for i in range(len(clArg))][0] == '#':
+                if len(clArg) != 7:
+                    raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_color_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_color_{arg}_not_ex_2']))
+                
+                data[str(ctx.author.guild.id)][arg.upper()] ='0x' + str(''.join([clArg[i] for i in range(len(clArg))][1:])) 
             else:
-                description2=f"*Использование:* {prefix}settings selfroom (id канала)"
+                if len(clArg) != 6:                    
+                    raise commands.BadArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_color_{arg}_error_1'], prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_color_{arg}_error_2']))
+                
+                data[str(ctx.author.guild.id)][arg.upper()] ='0x' + str(clArg)
+            description1="*{} {}*".format(Lang(ctx).language[f'settings_command_set_color_{arg}'], clArg)
         
-        elif arg == 'selftitle':
-            if clArg:
-                data[str(ctx.author.guild.id)]['SelfTitle'] = str(clArg)
-                description1=f"*Текст выбора ролей успешно изменён на {clArg}*",
-            else:
-                description2=f"*Использование:* {prefix}settings selftitle (Текст)",
+        #тут надо будет подправить что бы в тексте не было название arg
+
+        elif arg in ['adminchannel', 'ncaps', 'nwarns', 'prefix', 'selftitle', 'selfroom']:
+            if not(clArg):
+                raise commands.BadArgument("*{} {}{} {}*".format(Lang(ctx).language[f'settings_command_set_{arg}_error_1'], Moderation(ctx.author).prefix, command_name, Lang(ctx).language[f'settings_command_set_{arg}_error_2']))
+            data[str(ctx.author.guild.id)][arg.upper()] = str(clArg)
+            description1="*{} {}*".format(Lang(ctx).language[f'settings_command_set_{arg}'], clArg)
 
         elif arg == 'join_message':
-            if clArg:
-                msg = await ctx.channel.fetch_message(clArg)
-                data[str(ctx.author.guild.id)]['JNMSG'] = str(msg.content)
-                description1=f"*Текст отправляемый пользователю при присоединении успешно изменён на:* \n\
-                {msg.content}"
+            if not(clArg):
+                raise commands.BadArgument(f"*Использование:* {prefix}settings join_message (Id сообщения с текстом)")
+            msg: discord.Message = await ctx.channel.fetch_message(clArg)
+            data[str(ctx.author.guild.id)]['JNMSG'] = str(msg.content)
+            description1=f"*Текст отправляемый пользователю при присоединении успешно изменён на:* \n\
+            {msg.content}"
+
+
+        elif arg in ['add_badword', 'remove_badword']:
+            if not(clArg):
+                raise commands.BadArgument("*{} {}{} {}*".format(Lang(ctx).language[f'settings_command_set_badword_{arg}_error_1'], prefix, command_name, Lang(ctx).language[f'settings_command_set_badword_{arg}_error_2']))
+            if arg == 'add_badword':
+                if clArg in data[str(ctx.author.guild.id)]['BADWORDS']:
+                    raise commands.BadArgument("*{} ||{}|| {}*".format(Lang(ctx).language[f'settings_command_set_badword_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_badword_{arg}_not_ex_2']))
+                data[str(ctx.author.guild.id)]['BADWORDS'].append(str(clArg))
             else:
-                description2=f"*Использование:* {prefix}settings join_message (Id сообщения с текстом)",
+                if not(clArg in data[str(ctx.author.guild.id)]['BADWORDS']):
+                    raise commands.BadArgument("*{} ||{}|| {}*".format(Lang(ctx).language[f'settings_command_set_badword_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_badword_{arg}_not_ex_2']))
+                data[str(ctx.author.guild.id)]['BADWORDS'].pop(data[str(ctx.author.guild.id)]['BADWORDS'].index(str(clArg)))
+            description1=="*{} ||{}|| {}*".format(Lang(ctx).language[f'settings_command_set_badword_{arg}_1'], clArg, Lang(ctx).language[f'settings_command_set_badword_{arg}_2'])
+
+
+
         elif arg == 'add_join_role':
-            if clArg:
-                if not(clArg in data[str(ctx.author.guild.id)]['JoinRoles']):
-                    data[str(ctx.author.guild.id)]['JoinRoles'].append(str(clArg))
-                    rl1 = ctx.guild.get_role(int(clArg))
-                    description1=f"Роль {rl1} успешно добавлена!"
-                else:
-                    description2=f"Роль {rl1} уже была добавлена!"
-            else:
-                description2=f"Использование: {prefix}settings add_join_role (ID роли)"
+            if not(clArg):
+                raise commands.BadArgument(f"Использование: {prefix}settings add_join_role (ID роли)")
+            if clArg in data[str(ctx.author.guild.id)]['JoinRoles']:
+                raise commands.BadArgument(f"Роль {rl1} уже была добавлена!")
+            data[str(ctx.author.guild.id)]['JoinRoles'].append(str(clArg))
+            rl1 = ctx.guild.get_role(int(clArg))
+            description1=f"Роль {rl1} успешно добавлена!"
+
 
         elif arg == 'remove_join_role':
-            if clArg in data[str(ctx.author.guild.id)]['JoinRoles']:
-                data[str(ctx.author.guild.id)]['JoinRoles'].pop(data[str(ctx.author.guild.id)]['JoinRoles'].index(str(clArg)))
-                rl2 = ctx.guild.get_role(int(clArg))
-                description1=f"Роль {rl2} успешно добавлена"
-            else:
-                description2=f"Такого ID не существует!"
+            if not(clArg in data[str(ctx.author.guild.id)]['JoinRoles']):
+                raise commands.BadArgument(f"Такого ID не существует!")
+            data[str(ctx.author.guild.id)]['JoinRoles'].pop(data[str(ctx.author.guild.id)]['JoinRoles'].index(str(clArg)))
+            rl2 = ctx.guild.get_role(int(clArg))
+            description1=f"Роль {rl2} успешно добавлена"
+
+                
         elif arg == 'join_roles':
             embb = discord.Embed(title = f'Успешно',
             description1=f'*Роли:*',
             color = COLOR)
-            n = 0
-            while len(roles) != n:
-                embb.add_field(name = f'{ctx.guild.get_role(int(roles[n]))}', value =f'{roles[n]}', inline=True)
-                n += 1
+            for i in roles:
+                embb.add_field(name = f'{ctx.guild.get_role(int(i))}', value =f'{i}', inline=True)
             await ctx.send(embed = embb)
+
+
         elif arg == 'class':
-            if clArg in data[str(ctx.author.guild.id)]['ROLES']:
-                SelRoles = data[str(ctx.author.guild.id)]['ROLES'][str(clArg)]
-                embb = discord.Embed(title = f'Успешно',
-                    description2=f'*Роли:*',
-                    color = COLOR)
-                n = 0
-                while len(SelRoles) != n:
-                    embb.add_field(name = f'{ctx.guild.get_role(int(SelRoles[n]))}', value =f'{SelRoles[n]}', inline=True)
-                    n += 1
-                await ctx.send(embed = embb)
-            else:
-                description2=f"Класса {clArg} не существует!"
+            if not(clArg in data[str(ctx.author.guild.id)]['ROLES']):
+                raise commands.BadArgument(f"Класса {clArg} не существует!")
+            SelRoles = data[str(ctx.author.guild.id)]['ROLES'][str(clArg)]
+            embb = discord.Embed(title = f'Успешно',
+                description2=f'*Роли:*',
+                color = COLOR)
+            
+            for i in SelRoles:
+                embb.add_field(name = f'{ctx.guild.get_role(int(i))}', value =f'{i}', inline=True)
+            await ctx.send(embed = embb)
+
+
         elif arg == 'classes':
             Classes = data[str(ctx.author.guild.id)]['ROLES']
             description1=f'*Роли:*'
-            n = 0
-            while len(Classes) != n:
-                ClassesRoles = data[str(ctx.author.guild.id)]['ROLES'][str(Classes[n])][0]
-                embb.add_field(name = f'{str(Classes[n])}', value =''.join(ClassesRoles), inline=True)
-                n += 1
+            for i in Classes:
+                ClassesRoles = data[str(ctx.author.guild.id)]['ROLES'][str(i)][0]
+                embb.add_field(name = f'{str(i)}', value =''.join(ClassesRoles), inline=True)
             await ctx.send(embed = embb)
-        elif arg == 'add_IgnoreChannel':
-            if clArg:
-                if not(clArg in data[str(ctx.author.guild.id)]['IgnoreChannels']):
-                    data[str(ctx.author.guild.id)]['IgnoreChannels'].update(clArg)
-                    description1=f"*Канал {clArg} был успешно добавлен в игнорируемые*"
-                else:
-                    description2=f"*Канал {clArg} уже добавлен*"
-            else:
-                description2=f"*Использование: {prefix}settings add_IgnoreChannel (название канала)*"
-        elif arg == 'remove_IgnoreChannel':
-            if clArg:
-                if clArg in data[str(ctx.author.guild.id)]['IgnoreChannels']:
-                    data[str(ctx.author.guild.id)]['IgnoreChannels'].pop(clArg)
-                    description1=f"*Канал {clArg} был успешно удалён*"
-                else:
-                    description2=f"*Канала {clArg} нет в игнорируемых*"
-            else:
-                description2=f"*Использование:* {prefix}settings remove_IgnoreChannel (название класса)*"
+
         elif arg == 'IgnoreChannels':
             IGCH =data[str(ctx.author.guild.id)]['IgnoreChannels']
-
             embb = discord.Embed(title="*Игнориеумые каналы:*",
                 color=COLOR)
-            n = 0
-            while n != len(IGCH):
-                embb.add_field(name=ctx.guild.get_channel(IGCH[n]), value=''.join(IGCH[n]), inline=True)
-                n += 1
+            for i in IGCH:
+                embb.add_field(name=ctx.guild.get_channel(i), value=''.join(i), inline=True)
             await ctx.send(embed=embb)
+
+
+        elif arg in ['add_ignorechannel', 'remove_ignorechannel']:
+            if not(clArg):
+                raise commands.BadArgument(f"*Использование: {prefix}settings add_IgnoreChannel (название канала)*")
+            
+            if clArg in data[str(ctx.author.guild.id)]['IgnoreChannels']:
+                raise commands.BadArgument(f"*Канал {clArg} уже добавлен*")
+            
+            data[str(ctx.author.guild.id)]['IgnoreChannels'].update(clArg)
+            description1=f"*Канал {clArg} был успешно добавлен в игнорируемые*"
+
+
+        elif arg == 'remove_ignorechannel':
+            if not(clArg):
+                raise commands.BadArgument(f"*Использование:* {prefix}settings remove_IgnoreChannel (название класса)*")
+            
+            if not(clArg in data[str(ctx.author.guild.id)]['IgnoreChannels']):
+                raise commands.BadArgument(f"*Канала {clArg} нет в игнорируемых*")
+            
+            data[str(ctx.author.guild.id)]['IgnoreChannels'].pop(clArg)
+            description1=f"*Канал {clArg} был успешно удалён*"
+
+
         elif arg == 'add_IgnoreRole':
-            if clArg:
-                if not(clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']):
-                    data[str(ctx.author.guild.id)]['IgnoreRoles'].update(clArg)
-                    description1=f"*Роль {clArg} была успешно добавлена в игнорируемые*"
-                else:
-                    description2=f"*Роль {clArg} уже добавленf*",
-            else:
-                description2=f"*Использование: {prefix}settings add_IgnoreRole (id роли)*"
+            if not(clArg):
+                raise commands.BadArgument(f"*Использование: {prefix}settings add_IgnoreRole (id роли)*")
+            if clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']:
+                raise commands.BadArgument(f"*Роль {clArg} уже добавленf*")
+            data[str(ctx.author.guild.id)]['IgnoreRoles'].update(clArg)
+            description1=f"*Роль {clArg} была успешно добавлена в игнорируемые*"
+
+
         elif arg == 'remove_IgnoreRole':
-            if clArg:
-                if clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']:
-                    data[str(ctx.author.guild.id)]['IgnoreRoles'].pop(clArg)
-                    description1=f"*Роль {clArg} была успешно удалёна из игнорируемых*"
-                else:
-                    description2=f"*Роли {clArg} нет в игнорируемых*",
-            else:
-                description2=f"*Использование:* {prefix}settings remove_IgnoreRole (id роли)*"
+            if not(clArg):
+                raise commands.BadArgument(f"*Использование:* {prefix}settings remove_IgnoreRole (id роли)*")
+            if not(clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']):
+                raise commands.BadArgument(f"*Роли {clArg} нет в игнорируемых*")
+            data[str(ctx.author.guild.id)]['IgnoreRoles'].pop(clArg)
+            description1=f"*Роль {clArg} была успешно удалёна из игнорируемых*"
+
 
         elif arg == 'IgnoreRoles':
             IGRL =data[str(ctx.author.guild.id)]['IgnoreRoles']
             title="*Игнориеумые роли:*"
-            n = 0
-            while n != len(IGRL):
-                embb.add_field(name=ctx.guild.get_channel(IGRL[n]), value=''.join(IGRL[n]), inline=True)
-                n += 1
+            for i in IGRL:
+                embb.add_field(name=ctx.guild.get_channel(i), value=''.join(i), inline=True)
             await ctx.send(embed=embb)
-        elif arg == 'Modrole':
-            if str(clArg) in [str(i.id) for i in ctx.author.guild.roles]:
-                data[str(ctx.author.guild.id)]['ModRoles'].update({
-                    str(clArg): {
-                        'Kick': 'True', 
-                        'Bans': {'Ban': 'True', 'UnBan': 'True', 'TempBan': 'True'},
-                        'Warns': {
-                            'Warn': 'True',
-                            'TempWarn': 'True',
-                            'UnWarn': 'True',
-                            'ClearWarns': 'Ture'
-                        },
-                        'Settings': 'True',
-                        'Clear': 'True',
-                        'Rate': {
-                            'Score': 'True',
-                            'ClearScore': 'True',
-                            'SetLvl': 'True',
-                            'ClearRank': 'True',
 
-                        },
-                        'Roles': {'TempRole': 'True', 'GiveRole': 'True'}
-                    }
-                })
-                    
-                description1=f'Мод роль {[i for i in ctx.author.guild.roles if str(i.id) == str(clArg)]} добавлена!'
-            else:
-                description2=f'Роли с id {str(clArg)} не существует!'
+
+        elif arg == 'Modrole':
+            if not(str(clArg) in [str(i.id) for i in ctx.author.guild.roles]):
+                raise commands.BadArgument(f'Роли с id {str(clArg)} не существует!')
+            data[str(ctx.author.guild.id)]['ModRoles'].update({
+                str(clArg): {
+                    'Kick': 'True', 
+                    'Bans': {'Ban': 'True', 'UnBan': 'True', 'TempBan': 'True'},
+                    'Warns': {
+                        'Warn': 'True',
+                        'TempWarn': 'True',
+                        'UnWarn': 'True',
+                        'ClearWarns': 'Ture'
+                    },
+                    'Settings': 'True',
+                    'Clear': 'True',
+                    'Rate': {
+                        'Score': 'True',
+                        'ClearScore': 'True',
+                        'SetLvl': 'True',
+                        'ClearRank': 'True',
+
+                    },
+                    'Roles': {'TempRole': 'True', 'GiveRole': 'True'}
+                }
+            })
+                
+            description1=f'Мод роль {[i for i in ctx.author.guild.roles if str(i.id) == str(clArg)]} добавлена!'
+
+
         elif arg == 'set_mods':
             try:
                 if clArg == 'Kick':

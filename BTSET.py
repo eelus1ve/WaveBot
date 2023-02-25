@@ -11,9 +11,9 @@ IGNORE = ['commands']
 IGNORE_SIMV = ['<WaveEmb>']
 DEFGUILD = {
     'check': False,
-    'lang': 'ru_RU',
+    'LANG': 'ru_RU',
     'COLOR': '0x0000FF',
-    'ErCOLOR': '0x8B0000',
+    'ERCOLOR': '0x8B0000',
     'AUDIT': {},
     'AUDIT_CHANNEL': '0',
     'FirstRole': '0',
@@ -21,11 +21,11 @@ DEFGUILD = {
     'ModRoles': {},
     'ROLES': {},
     'actmoduls': '',
-    'nCaps': -1,
-    'nWarns': 10,
-    'idAdminchennel': '0',
+    'NCAPS': -1,
+    'NWARNS': 10,
+    'ADMINCHANNEL': '0',
     'idMainch': '0',
-    'selfRoom': '0',
+    'SELFROOM': '0',
     'BADWORDS': [],
     'LINKS': [],
     'PREFIX': '~',
@@ -43,7 +43,9 @@ DEFGUILD = {
     'USERS': {},
 }
 DBSTR = [i for i in DEFGUILD.keys() if (type(DEFGUILD[i]) in [str, int, bool])]
-
+# with open(f'{BD}users.json', 'r') as file:
+#     d: dict = json.load(file)
+# SERVERS = [i for i in d.keys()]
 
 class Score_presets():
     def __init__(self, member):
@@ -53,34 +55,36 @@ class Score_presets():
         self.lvl = bdpy(member)['USERS'][str(member.id)]['LvL']
         self.idadminchannel = int(bdpy(member)["idAdminchennel"])               #тут для 
         self.color = bdpy(member)['COLOR']          #это надо для разделения цветов
-        self.ercolor = bdpy(ctx=member)['ErCOLOR']
+        self.ercolor = bdpy(ctx=member)['ERCOLOR']
         self.prefix: str = bdpy(member)["PREFIX"]
 
 class Moderation():
     def __init__(self, member):
         self.warns: int = bdpy(member)['USERS'][str(member.id)]['WARNS']
-        self.nWarns: int = bdpy(member)['nWarns']
+        self.NWARNS: int = bdpy(member)['NWARNS']
         self.idadminchannel: str = bdpy(member)["idAdminchennel"]
-        self.nCaps: int = bdpy(member)['nCaps']
+        self.NCAPS: int = bdpy(member)['NCAPS']
         self.color = bdpy(member)['COLOR']
-        self.ercolor = bdpy(member)['ErCOLOR']
+        self.ercolor = bdpy(member)['ERCOLOR']
         self.prefix: str = bdpy(member)["PREFIX"]
+        self.badwords = bdpy(member)['BADWORDS']
+        self.links = bdpy(member)['LINKS']
 
 
 class Fun():
     def __init__(self, ctx):
         self.color = bdpy(ctx)['COLOR']
-        self.ercolor = bdpy(ctx)['ErCOLOR']
+        self.ercolor = bdpy(ctx)['ERCOLOR']
 
 class Info():
     def __init__(self, ctx):
         self.color = bdpy(ctx)['COLOR']
-        self.ercolor = bdpy(ctx)['ErCOLOR']
+        self.ercolor = bdpy(ctx)['ERCOLOR']
 
 class Utility():
     def __init__(self, ctx):
         self.color = bdpy(ctx)['COLOR']
-        self.ercolor = bdpy(ctx)['ErCOLOR']
+        self.ercolor = bdpy(ctx)['ERCOLOR']
 
     
 # class Audit():
@@ -89,7 +93,7 @@ class Utility():
 #     def auditEmb(self, ctx):
 #         emb = discord.Embed(
 #             title='Нарушение снято!',
-#             description=f"*Ранее, у участника было уже {Moderation(ctx).warns - 1} нарушений, после {Moderation(ctx).nWarns} он будет забанен!*",
+#             description=f"*Ранее, у участника было уже {Moderation(ctx).warns - 1} нарушений, после {Moderation(ctx).NWARNS} он будет забанен!*",
 #             timestamp=ctx.message.created_at,
 #             color=self.color
 #         )                                                                                                                   #переписать под unwarn
@@ -101,18 +105,18 @@ class Utility():
 # class DateBaseEditor():
 #     def __init__(self, ctx):
 #         self.color = bdpy(ctx)['COLOR']
-#         self.ercolor = bdpy(ctx)['ErCOLOR']
+#         self.ercolor = bdpy(ctx)['ERCOLOR']
 #         # with open(f'{BD}users.json', 'r') as file:
 #         #     data = json.load(file)
 #         # self.color = int(data[str(ctx.guild.id)]['COLOR'], 16)
-#         # self.ercolor = int(data[str(ctx.guild.id)]['ErCOLOR'], 16)
+#         # self.ercolor = int(data[str(ctx.guild.id)]['ERCOLOR'], 16)
 #         # self.joinroles = data[str(ctx.guild.id)]['JoinRoles']
 #         # self.modroles = data[str(ctx.guild.id)]['ModRoles']
 #         # self.roles = data[str(ctx.guild.id)]['ROLES']
 #         # self.firstrole = data[str(ctx.guild.id)]['FirstRole']
 #         # self.actmoduls = data[str(ctx.guild.id)]['actmoduls']
-#         # self.ncaps = data[str(ctx.guild.id)]['nCaps']
-#         # self.nwarns = data[str(ctx.guild.id)]['nWarns']
+#         # self.ncaps = data[str(ctx.guild.id)]['NCAPS']
+#         # self.nwarns = data[str(ctx.guild.id)]['NWARNS']
 #         # self.idadminchennel =  data[str(ctx.guild.id)]['idAdminchennel']
 #         # self.idmainch = data[str(ctx.guild.id)]['idMainch']
 #         # self.selfroom = data[str(ctx.guild.id)]['selfRoom']
@@ -152,23 +156,23 @@ class Utility():
 
 
 
-def bdpy(ctx):
+def bdpy(ctx: commands.Context):
     with open(f'{BD}users.json', 'r') as file:
         data = json.load(file)
     return {
-        "lang": data[str(ctx.guild.id)]['lang'],
+        "LANG": data[str(ctx.guild.id)]['LANG'],
         "COLOR": int(data[str(ctx.guild.id)]['COLOR'], 16),
-        "ErCOLOR": int(data[str(ctx.guild.id)]['ErCOLOR'], 16),
+        "ERCOLOR": int(data[str(ctx.guild.id)]['ERCOLOR'], 16),
         "JoinRoles": data[str(ctx.guild.id)]['JoinRoles'],
         "ModRoles": data[str(ctx.guild.id)]['ModRoles'],
         "ROLES": data[str(ctx.guild.id)]['ROLES'],
         "FirstRole": data[str(ctx.guild.id)]['FirstRole'],
         "actmoduls": data[str(ctx.guild.id)]['actmoduls'],
-        "nCaps": data[str(ctx.guild.id)]['nCaps'],
-        "nWarns": data[str(ctx.guild.id)]['nWarns'],
-        "idAdminchennel": data[str(ctx.guild.id)]['idAdminchennel'],
+        "NCAPS": data[str(ctx.guild.id)]['NCAPS'],
+        "NWARNS": data[str(ctx.guild.id)]['NWARNS'],
+        "ADMINCHANNEL": data[str(ctx.guild.id)]['ADMINCHANNEL'],
         "idMainch": data[str(ctx.guild.id)]['idMainch'],
-        "selfRoom": data[str(ctx.guild.id)]['selfRoom'],
+        "SELFROOM": data[str(ctx.guild.id)]['SELFROOM'],
         "BADWORDS": data[str(ctx.guild.id)]['BADWORDS'],
         "LINKS": data[str(ctx.guild.id)]['LINKS'],
         "PREFIX": data[str(ctx.guild.id)]['PREFIX'],
@@ -186,7 +190,7 @@ def bdpy(ctx):
     }
     
 class Rool():
-    def __init__(self, ctx):
+    def __init__(self, ctx: commands.Context):
         if bdpy(ctx)['ModRoles'] != {}:
             mods = bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]
             
@@ -202,16 +206,16 @@ class Rool():
             self.ban = mods['Bans']['Ban'] == "True" or ctx.author.guild_permissions.administrator
 
         else:
-            self.clearRank = True if ctx.author.guild_permissions.administrator else False
-            self.score = True if ctx.author.guild_permissions.administrator else False
-            self.setlvl = True if ctx.author.guild_permissions.administrator else False
-            self.clearScore = True if ctx.author.guild_permissions.administrator else False
-            self.warn = True if ctx.author.guild_permissions.administrator else False
-            self.unwarn = True if ctx.author.guild_permissions.administrator else False
-            self.clearWarn = True if ctx.author.guild_permissions.administrator else False
-            self.kick = True if ctx.author.guild_permissions.administrator else False
-            self.clear = True if ctx.author.guild_permissions.administrator else False
-            self.ban = True if ctx.author.guild_permissions.administrator else False
+            self.clearRank = ctx.author.guild_permissions.administrator
+            self.score = ctx.author.guild_permissions.administrator
+            self.setlvl = ctx.author.guild_permissions.administrator
+            self.clearScore = ctx.author.guild_permissions.administrator
+            self.warn = ctx.author.guild_permissions.administrator
+            self.unwarn = ctx.author.guild_permissions.administrator
+            self.clearWarn = ctx.author.guild_permissions.administrator
+            self.kick = ctx.author.guild_permissions.administrator
+            self.clear = ctx.author.guild_permissions.administrator
+            self.ban = ctx.author.guild_permissions.administrator
 
 
     def role(quest: str):
@@ -239,9 +243,7 @@ class Rool():
             raise commands.MissingPermissions(['nomoder'])
         return commands.check(predicate)
 
-
-
-async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Optional[discord.Member] = None):
+async def embpy(ctx: commands.Context, comp: str, des , time: Optional[float] = None, member: Optional[discord.Member] = None):
         if comp == 's':
             emb = discord.Embed(
                 title='Успешно',
@@ -252,7 +254,7 @@ async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Opti
             emb = discord.Embed(
                 title='Ошибка',
                 description=des,
-                color=bdpy(ctx)['ErCOLOR']
+                color=bdpy(ctx)['ERCOLOR']
             )
         elif comp == 'n':
             emb = discord.Embed(
@@ -274,14 +276,14 @@ async def embpy(ctx, comp: str, des , time: Optional[float] = None, member: Opti
 
 
 class Lang():
-    def __init__(self, ctx):
+    def __init__(self, ctx: commands.Context):
         self.language = self.lang(ctx)
 
-    def lang(self, ctx):
+    def lang(self, ctx: commands.Context):
         lang_dict = {}
-        with open('system\\Languages\\{}.wave'.format(bdpy(ctx)['lang']), 'r', encoding = 'utf-8') as f:
+        with open('system\\Languages\\{}.wave'.format(bdpy(ctx)['LANG']), 'r', encoding = 'utf-8') as f:
             for line in f:
                 if not(line.startswith('//')) and not(line=='\n'):
-                    key, *value = line.split()
-                    lang_dict[key] = ' '.join(value)
+                    key, *value = line.split()        
+                    lang_dict[key] = ' '.join([i.replace('\\n', '\n') for i in value])
         return lang_dict

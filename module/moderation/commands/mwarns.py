@@ -3,21 +3,18 @@ import json
 from discord.ext import commands
 from discord.utils import get
 from BTSET import Moderation, bdpy, BD
+from discord_components import ComponentsBot
 
 class Mwarns(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, bot: ComponentsBot):
+        self.bot: ComponentsBot = bot
 
-
-    @commands.Cog.listener('on_message')
-    async def mwarns(self, message):
+    async def listener_on_message_mwarns(self, message: discord.Message):
         try:
             with open(f'{BD}users.json', 'r') as file:
                 data = json.load(file)
-            BADWORDS = bdpy(ctx=message)['BADWORDS']
-            LINKS = bdpy(ctx=message)['LINKS']
             WARN = []
-            WARN.extend(BADWORDS); WARN.extend(LINKS)
+            WARN.extend(Moderation(message.author).badwords); WARN.extend(Moderation(message.author).links)
             if bdpy(ctx=message)['ModRoles'] != {}:
                 Modroot = bdpy(ctx=message)['ModRoles'][[str(i.id) for i in message.author.roles if str(i.id) in bdpy(ctx=message)['ModRoles']][0]]['Warns']['Warn'] == "True" or message.author.guild_permissions.administrator
             else:
