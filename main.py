@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 from BTSET import bdpy, embpy
 from dotenv import load_dotenv, find_dotenv
-from discord_components import ComponentsBot
+
 
 
 load_dotenv(find_dotenv())
@@ -15,17 +15,22 @@ def get_prefix(bot, message):
         prefix = bdpy(ctx=message)['PREFIX']
     except AttributeError:
         prefix = '~'
-    return commands.when_mentioned(bot, msg=message) + list(prefix)
-        
-bot = ComponentsBot(command_prefix = get_prefix, intents=intents)
+    return commands.when_mentioned(bot, message) + list(prefix)
+
+bot = commands.Bot(command_prefix=get_prefix, intents=intents)
 bot.remove_command('help')
 
+@bot.command()
+async def hello(ctx):
+    view = discord.ui.View()
+    view.add_item(item=discord.ui.Button(label="click me"))
+    await ctx.send('1', view=view)
 
 @bot.event
 async def on_ready():
-    bot.load_extension('system.JSONwriter')
-    bot.load_extension('module.loader')
-    bot.load_extension('system.while')
+    await bot.load_extension('module.loader')
+    await bot.load_extension('system.JSONwriter')
+    await bot.load_extension('system.while')
     await bot.change_presence(activity=discord.Game('Portal 2'))
     print(f'{bot.user.name} connected')
 

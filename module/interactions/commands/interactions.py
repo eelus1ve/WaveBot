@@ -5,9 +5,7 @@ from typing import Optional
 from distutils.log import error
 import re
 from discord.utils import get
-import interactions
-from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption
-from BTSET import embint, embpy, bdint, bdpy, BD
+from BTSET import bdpy, BD
 import datetime
 import pytz
 

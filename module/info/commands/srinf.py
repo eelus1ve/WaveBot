@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands
 from BTSET import Info, Lang
-from discord_components import ComponentsBot
 class SrInfo(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def command_server_info(self, ctx: commands.Context):
@@ -35,7 +34,7 @@ class SrInfo(commands.Cog):
 
 
 class SrInfo_listeners(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def listener_srinf_join(self, member: discord.Member):

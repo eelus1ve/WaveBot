@@ -16,26 +16,28 @@ class BotError(commands.Cog):
                 color = Moderation(ctx.author).ercolor
             ))
 
-    @commands.Cog.listener('on_command_error')
-    async def ErFile(self, ctx, error):
-        if isinstance(error, commands.errors.CommandNotFound):
-            print(error)
-            found = re.findall(r'Command \s*"([^\"]*)"', str(error))
-            des = f"*Команды `{''.join(found)}` не существует*"
-        elif isinstance(error, commands.errors.MemberNotFound):
-            found = re.findall(r'Member \s*"([^\"]*)"', str(error))
-            des = f"*Участник `{''.join(found)}` не найден*"
-        elif isinstance(error, commands.MissingPermissions):
-            des = f"*У вас недостаточно прав!*"
-        elif isinstance(error, commands.errors.CommandInvokeError):
-            print(f'1\n{error}')
-        elif isinstance(error, commands.BadArgument):
-            des  = error
-        else:
-            print(error)
-        des = error
-
-        await BotError.embs(self, ctx, des)
+    # @commands.Cog.listener('on_command_error')
+    # async def ErFile(self, ctx, error):
+    #     des = error
+    #     if isinstance(error, commands.errors.CommandNotFound):
+    #         print(error)
+    #         found = re.findall(r'Command \s*"([^\"]*)"', str(error))
+    #         des = f"*Команды `{''.join(found)}` не существует*"
+    #     elif isinstance(error, commands.errors.MemberNotFound):
+    #         found = re.findall(r'Member \s*"([^\"]*)"', str(error))
+    #         des = f"*Участник `{''.join(found)}` не найден*"
+    #     elif isinstance(error, commands.MissingPermissions):
+    #         des = f"*У вас недостаточно прав!*"
+    #     elif isinstance(error, commands.errors.CommandInvokeError):
+    #         print(f'1\n{error}')
+    #     elif isinstance(error, commands.BadArgument):
+    #         des = error
+    #     else:
+    #         print(error)
+    #     des = error
+    #     raise error
+    #
+    #     await BotError.embs(self, ctx, des)
 
     
     @ModerationSetup.clear.error

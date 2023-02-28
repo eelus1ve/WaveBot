@@ -3,11 +3,9 @@ import discord
 from discord.ext import commands
 import json
 from BTSET import Moderation, embpy, bdpy, BD, Lang
-import asyncio
-from discord_components import ComponentsBot
 
 class Stngs(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def command_server_set(self, ctx: commands.Context):

@@ -1,10 +1,9 @@
 import discord
 from discord.ext import commands
 from BTSET import Utility
-from discord_components import ComponentsBot
 
 class Vote(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def command_vote(self, ctx: commands.Context, arg):

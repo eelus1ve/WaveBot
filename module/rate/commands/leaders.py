@@ -1,10 +1,9 @@
 import discord
 from discord.ext import commands
-from discord_components import ComponentsBot
 from BTSET import Score_presets, bdpy
 
 class Leaders(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def command_leaders(self, ctx: commands.Context, range_num: int):

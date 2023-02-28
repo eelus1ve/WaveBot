@@ -1,17 +1,219 @@
 from dataclasses import replace
 import random
 import discord
-from discord_components import ComponentsBot, Button, Select
+from discord.ui import Button
 from discord.ext import commands
 from BTSET import Fun, Lang
 
+def game_over(body):
+    if not [1 for i in body if 0 in i] and [[1 for ii in range(len(i[:3])) if i[ii] == i[ii + 1]] for i in body] == [[], [], [], []] and [[1 for ii in range(len(body[:3])) if body[i][ii] == body[i+1][ii]] for i in range(3)] == [[], [], []]:
+        return 1
+    elif [2048 for i in body if 2048 in i]:
+        return 2
+    else:
+        return 0
+
+def randomaizer(body):
+    number = 2 if int(random.randint(0, 11)) else 4
+    a = []
+
+    for strng in range(len(body)):
+        for indx in range(len(body[strng])):
+            if not body[strng][indx]:
+                a.append(indx + 4*strng)
+
+    rplace = random.choice(a)
+
+    place = rplace-(rplace//4)*4
+    rplace = rplace//4
+
+    body[rplace][place] = number
+
+async def check_1(body, interaction):
+    if game_over(body) == 2:
+        emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title_win'],
+                            description=Lang(ctx=interaction).language['p2048_des_win'],
+                            color=Fun(interaction).color)
+        await interaction.message.edit(embed=emb)
+
+    elif game_over(body):
+        asd = body[0] + body[1] + body[2] + body[3]
+        emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title_loose'],
+                            description='{} {} {}'.format(
+                                Lang(ctx=interaction).language['p2048_des_loose_sum_1'], sum(asd),
+                                Lang(ctx=interaction).language['p2048_des_loose_sum_2'],
+                                Lang(ctx=interaction).language['p2048_des_loose_max'], max(asd)),
+                            color=Fun(interaction).color)
+        await interaction.message.edit(embed=emb)
+
 
 class Game2048(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
-        self.bot: ComponentsBot = bot
+    def __init__(self, bot: commands.Bot):
+        self.bot: commands.Bot = bot
 
     lang_num = [0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
     lang_emo = []
+
+    async def listener_on_button_click_2048_left(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        des = []
+        text = interaction.message.embeds[0].description
+        text = text.replace('\n', '')
+        text = text.split('<')[1:]
+        body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
+
+        for strng in body:
+            for iiii in range(3):
+                for i in range(len(strng)):
+                    if strng[i] and i and not strng[i - 1]:
+                        a = strng[i]
+                        strng[i] = 0
+                        strng[i - 1] = a
+            for i in range(len(strng)):
+                if strng[i] and i and strng[i] == strng[i - 1]:
+                    a = strng[i]
+                    strng[i] = 0
+                    strng[i - 1] = a * 2
+            for i in range(len(strng)):
+                if strng[i] and i and not strng[i - 1]:
+                    a = strng[i]
+                    strng[i] = 0
+                    strng[i - 1] = a
+        randomaizer(body)
+        trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
+
+        for i in trans:
+            des.append(str(''.join(map(str, i)) + str('\n')))
+        emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
+                            description=''.join(des),
+                            color=Fun(interaction).color)
+        await interaction.message.edit(embed=emb)
+        await check_1(body, interaction)
+
+    async def listener_on_button_click_2048_up(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        des = []
+        text = interaction.message.embeds[0].description
+        text = text.replace('\n', '')
+        text = text.split('<')[1:]
+        body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
+
+        for ind in range(4):
+            for iiii in range(3):
+                for strng_number in range(len(body)):
+                    if body[strng_number][ind] and strng_number and not body[strng_number - 1][ind]:
+                        a = body[strng_number][ind]
+                        body[strng_number][ind] = 0
+                        body[strng_number - 1][ind] = a
+            for strng_number in range(len(body)):
+                if body[strng_number][ind] and strng_number and body[strng_number][ind] == \
+                        body[strng_number - 1][ind]:
+                    a = body[strng_number][ind]
+                    body[strng_number][ind] = 0
+                    body[strng_number - 1][ind] = a * 2
+            for strng_number in range(len(body)):
+                if body[strng_number][ind] and strng_number and not body[strng_number - 1][ind]:
+                    a = body[strng_number][ind]
+                    body[strng_number][ind] = 0
+                    body[strng_number - 1][ind] = a
+        randomaizer(body)
+        trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
+        for i in trans:
+            des.append(str(''.join(map(str, i)) + str('\n')))
+        emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
+                            description=''.join(des),
+                            color=Fun(interaction).color)
+        await interaction.message.edit(embed=emb)
+        await check_1(body, interaction)
+
+    async def listener_on_button_click_2048_right(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        des = []
+        text = interaction.message.embeds[0].description
+        text = text.replace('\n', '')
+        text = text.split('<')[1:]
+        body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
+
+        for strng in body:
+            strng.reverse()
+            for _ in range(3):
+                for i in range(len(strng)):
+                    if strng[i] and i and not strng[i - 1]:
+                        a = strng[i]
+                        strng[i] = 0
+                        strng[i - 1] = a
+            for i in range(len(strng)):
+                if strng[i] and i and strng[i] == strng[i - 1]:
+                    a = strng[i]
+                    strng[i] = 0
+                    strng[i - 1] = a * 2
+            for i in range(len(strng)):
+                if strng[i] and i and not strng[i - 1]:
+                    a = strng[i]
+                    strng[i] = 0
+                    strng[i - 1] = a
+            strng.reverse()
+        randomaizer(body)
+        trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
+        for i in trans:
+            des.append(str(''.join(map(str, i)) + str('\n')))
+        emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
+                            description=''.join(des),
+                            color=Fun(interaction).color)
+        await interaction.message.edit(embed=emb)
+        await check_1(body, interaction)
+
+    async def listener_on_button_click_2048_down(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        des = []
+        text = interaction.message.embeds[0].description
+        text = text.replace('\n', '')
+        text = text.split('<')[1:]
+        body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]],
+                [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
+
+        body.reverse()
+        for ind in range(4):
+            for iiii in range(3):
+                for strng_number in range(len(body)):
+                    if body[strng_number][ind] and strng_number and not body[strng_number - 1][ind]:
+                        a = body[strng_number][ind]
+                        body[strng_number][ind] = 0
+                        body[strng_number - 1][ind] = a
+            for strng_number in range(len(body)):
+                if body[strng_number][ind] and strng_number and body[strng_number][ind] == \
+                        body[strng_number - 1][ind]:
+                    a = body[strng_number][ind]
+                    body[strng_number][ind] = 0
+                    body[strng_number - 1][ind] = a * 2
+            for strng_number in range(len(body)):
+                if body[strng_number][ind] and strng_number and not body[strng_number - 1][ind]:
+                    a = body[strng_number][ind]
+                    body[strng_number][ind] = 0
+                    body[strng_number - 1][ind] = a
+        body.reverse()
+        randomaizer(body)
+        trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
+        for i in trans:
+            des.append(str(''.join(map(str, i)) + str('\n')))
+        emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
+                            description=''.join(des),
+                            color=Fun(interaction).color)
+        await interaction.message.edit(embed=emb)
+        await check_1(body, interaction)
+
+
 
     async def command_p2048(self, ctx: commands.Context): 
         stb_gld: discord.Guild = self.bot.get_guild(981511419042361344)
@@ -39,201 +241,23 @@ class Game2048(commands.Cog):
         emb = discord.Embed(title=Lang(ctx).language['p2048_title'],
                             description=''.join(des),
                             color = Fun(ctx).color)
-        await ctx.send(embed=emb,
-            components = [
-                [
-                    Button(emoji = '🔚'),
-                    Button(emoji = '⬆️'),
-                    Button(emoji = '⬇️'),
-                    Button(emoji = '🔜')
-                ]
-            ]
-        )
-    
-
-    async def listener_on_button_click_2048(self, interaction):
-        if str(interaction.component.emoji) == '⬆️' or str(interaction.component.emoji) == '🔜' or str(interaction.component.emoji) == '⬇️' or str(interaction.component.emoji) == '🔚':
-            Lang(ctx=interaction).language = Lang.words(Lang.set_lang(interaction))
-            des=[]
-            if str(interaction.component.emoji) == '🔚':
-                await interaction.edit_origin()
-                text = interaction.message.embeds[0].description
-                text = text.replace('\n', '')
-                text = text.split('<')[1:]
-                body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
-                
-                for strng in body:
-                    for iiii in range(3):
-                        for i in range(len(strng)):
-                            if strng[i] and i and not strng[i - 1]:
-                                a = strng[i]
-                                strng[i] = 0
-                                strng[i - 1] = a
-                    for i in range(len(strng)):
-                        if strng[i] and i and strng[i] == strng[i - 1]:
-                            a = strng[i]
-                            strng[i] = 0
-                            strng[i - 1] = a * 2
-                    for i in range(len(strng)):
-                        if strng[i] and i and not strng[i - 1]:
-                            a = strng[i]
-                            strng[i] = 0
-                            strng[i - 1] = a
-                randomaizer(body)
-                trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
-
-                for i in trans:
-                    des.append(str(''.join(map(str, i)) + str('\n')))
-                emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
-                                    description=''.join(des),
-                                    color = Fun(interaction).color)
-                await interaction.message.edit(embed=emb)
 
 
-            elif str(interaction.component.emoji) == '⬆️':
-                Lang(ctx=interaction).language = Lang.words(Lang.set_lang(interaction))
-                await interaction.edit_origin()
-                text = interaction.message.embeds[0].description
-                text = text.replace('\n', '')
-                text = text.split('<')[1:]
-                body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
+        vw = discord.ui.View(timeout=None)
 
-                for ind in range(4):
-                    for iiii in range(3):
-                        for strng_number in range(len(body)):
-                            if body[strng_number][ind] and strng_number and not body[strng_number - 1][ind]:
-                                a = body[strng_number][ind]
-                                body[strng_number][ind] = 0
-                                body[strng_number - 1][ind] = a
-                    for strng_number in range(len(body)):
-                        if body[strng_number][ind] and strng_number and body[strng_number][ind] == body[strng_number - 1][ind]:
-                            a = body[strng_number][ind]
-                            body[strng_number][ind] = 0
-                            body[strng_number - 1][ind] = a*2
-                    for strng_number in range(len(body)):
-                        if body[strng_number][ind] and strng_number and not body[strng_number - 1][ind]:
-                            a = body[strng_number][ind]
-                            body[strng_number][ind] = 0
-                            body[strng_number - 1][ind] = a
-                randomaizer(body)
-                trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
-                for i in trans:
-                    des.append(str(''.join(map(str, i)) + str('\n')))
-                emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
-                                    description=''.join(des),
-                                    color = Fun(interaction).color)
-                await interaction.message.edit(embed=emb)
+        bt1 = Button(emoji='🔚')
+        bt2= Button(emoji='⬆')
+        bt3 = Button(emoji='⬇')
+        bt4 = Button(emoji='🔜')
+        bt1.callback = Game2048(self.bot).listener_on_button_click_2048_left
+        bt2.callback = Game2048(self.bot).listener_on_button_click_2048_up
+        bt3.callback = Game2048(self.bot).listener_on_button_click_2048_down
+        bt4.callback = Game2048(self.bot).listener_on_button_click_2048_right
 
+        vw.add_item(bt1)
+        vw.add_item(bt2)
+        vw.add_item(bt3)
+        vw.add_item(bt4)
 
-            elif str(interaction.component.emoji) == '🔜':
-                Lang(ctx=interaction).language = Lang.words(Lang.set_lang(interaction))
-                await interaction.edit_origin()
-                text = interaction.message.embeds[0].description
-                text = text.replace('\n', '')
-                text = text.split('<')[1:]
-                body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
+        await ctx.send(embed=emb, view=vw)
 
-                for strng in body:
-                    strng.reverse()
-                    for _ in range(3):
-                        for i in range(len(strng)):
-                            if strng[i] and i and not strng[i - 1]:
-                                a = strng[i]
-                                strng[i] = 0
-                                strng[i-1] = a
-                    for i in range(len(strng)):
-                        if strng[i] and i and strng[i] == strng[i - 1]:
-                            a = strng[i]
-                            strng[i] = 0
-                            strng[i - 1] = a*2
-                    for i in range(len(strng)):
-                        if strng[i] and i and not strng[i - 1]:
-                            a = strng[i]
-                            strng[i] = 0
-                            strng[i-1] = a
-                    strng.reverse()
-                randomaizer(body)
-                trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
-                for i in trans:
-                    des.append(str(''.join(map(str, i)) + str('\n')))
-                emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
-                                    description=''.join(des),
-                                    color = Fun(interaction).color)
-                await interaction.message.edit(embed=emb)
-
-
-            elif str(interaction.component.emoji) == '⬇️':
-                Lang(ctx=interaction).language = Lang.words(Lang.set_lang(interaction))
-                await interaction.edit_origin()
-                text = interaction.message.embeds[0].description
-                text = text.replace('\n', '')
-                text = text.split('<')[1:]
-                body = [[Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[0:4]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[4:8]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[8:12]], [Game2048.lang_num[Game2048.lang_emo.index('<' + i)] for i in text[12:16]]]
-
-                body.reverse()
-                for ind in range(4):
-                    for iiii in range(3):
-                        for strng_number in range(len(body)):
-                            if body[strng_number][ind] and strng_number and not body[strng_number - 1][ind]:
-                                a = body[strng_number][ind]
-                                body[strng_number][ind] = 0
-                                body[strng_number - 1][ind] = a
-                    for strng_number in range(len(body)):
-                        if body[strng_number][ind] and strng_number and body[strng_number][ind] == body[strng_number - 1][ind]:
-                            a = body[strng_number][ind]
-                            body[strng_number][ind] = 0
-                            body[strng_number - 1][ind] = a*2
-                    for strng_number in range(len(body)):
-                        if body[strng_number][ind] and strng_number and not body[strng_number - 1][ind]:
-                            a = body[strng_number][ind]
-                            body[strng_number][ind] = 0
-                            body[strng_number - 1][ind] = a
-                body.reverse()
-                randomaizer(body)
-                trans = [[Game2048.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
-                for i in trans:
-                    des.append(str(''.join(map(str, i)) + str('\n')))
-                emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
-                                    description=''.join(des),
-                                    color = Fun(interaction).color)
-                await interaction.message.edit(embed=emb)
-
-
-            if game_over(body) == 2:
-                emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title_win'],
-                description=Lang(ctx=interaction).language['p2048_des_win'],
-                color = Fun(interaction).color)
-                await interaction.message.edit(embed=emb)
-
-            elif game_over(body):
-                asd = body[0] + body[1] + body[2] + body[3]
-                emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title_loose'],
-                description='{} {} {}'.format(Lang(ctx=interaction).language['p2048_des_loose_sum_1'], sum(asd), Lang(ctx=interaction).language['p2048_des_loose_sum_2'], Lang(ctx=interaction).language['p2048_des_loose_max'], max(asd)),
-                color = Fun(interaction).color)
-                await interaction.message.edit(embed=emb)
-        
-
-def randomaizer(body):
-    number = 2 if int(random.randint(0, 11)) else 4
-    a = []
-
-    for strng in range(len(body)):
-        for indx in range(len(body[strng])):
-            if not body[strng][indx]:
-                a.append(indx + 4*strng)
-
-    rplace = random.choice(a)
-
-    place = rplace-(rplace//4)*4
-    rplace = rplace//4
-
-    body[rplace][place] = number
-
-
-def game_over(body):
-    if not [1 for i in body if 0 in i] and [[1 for ii in range(len(i[:3])) if i[ii] == i[ii + 1]] for i in body] == [[], [], [], []] and [[1 for ii in range(len(body[:3])) if body[i][ii] == body[i+1][ii]] for i in range(3)] == [[], [], []]:
-        return 1
-    elif [2048 for i in body if 2048 in i]:
-        return 2
-    else:
-        return 0

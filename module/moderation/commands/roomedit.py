@@ -4,14 +4,13 @@ from discord.utils import get
 import asyncio
 import json
 import discord
-from discord_components import ComponentsBot, Button, Interaction
 import json
 import asyncio
 from discord.ext import commands
 from BTSET import Moderation, bdpy, BD, Lang
 rtask = None
 class Roomedit(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     
@@ -22,22 +21,22 @@ class Roomedit(commands.Cog):
         emb = discord.Embed(title='***⚙️ {}***'.format(Lang(ctx).language['roomedit_craate_title']),
                             description='👑 - {} \n🗒 - {} \n👥 - {} \n🔒 - {} \n✏️ - {} \n👁‍🗨 - {} \n🚪 - {} \n🎙 - {}'.format(Lang(ctx).language['roomedit_craate_des_1'], Lang(ctx).language['roomedit_craate_des_2'], Lang(ctx).language['roomedit_craate_des_3'], Lang(ctx).language['roomedit_craate_des_4'], Lang(ctx).language['roomedit_craate_des_5'], Lang(ctx).language['roomedit_craate_des_6'], Lang(ctx).language['roomedit_craate_des_7'], Lang(ctx).language['roomedit_craate_des_8']),
                             color = Moderation(ctx.author).color)
-        await ctx.send(embed=emb,
-        components = [
-            [
-                Button(emoji=await stb_gld.fetch_emoji(1020971032309403758)),
-                Button(emoji=await stb_gld.fetch_emoji(1020971040416993280)),
-                Button(emoji=await stb_gld.fetch_emoji(1020971037741043713)),
-                Button(emoji=await stb_gld.fetch_emoji(1020971036252053524))
-            ],
-            [
-                Button(emoji=await stb_gld.fetch_emoji(1020971043856330782)),
-                Button(emoji=await stb_gld.fetch_emoji(1020971035014746162)),
-                Button(emoji=await stb_gld.fetch_emoji(1020971033756450866)),
-                Button(emoji=await stb_gld.fetch_emoji(1020971039141920819))
-            ]
-    ]
-    )
+        await ctx.send(embed=emb)
+    #     components = [
+    #         [
+    #             Button(emoji=await stb_gld.fetch_emoji(1020971032309403758)),
+    #             Button(emoji=await stb_gld.fetch_emoji(1020971040416993280)),
+    #             Button(emoji=await stb_gld.fetch_emoji(1020971037741043713)),
+    #             Button(emoji=await stb_gld.fetch_emoji(1020971036252053524))
+    #         ],
+    #         [
+    #             Button(emoji=await stb_gld.fetch_emoji(1020971043856330782)),
+    #             Button(emoji=await stb_gld.fetch_emoji(1020971035014746162)),
+    #             Button(emoji=await stb_gld.fetch_emoji(1020971033756450866)),
+    #             Button(emoji=await stb_gld.fetch_emoji(1020971039141920819))
+    #         ]
+    # ]
+    # )
     
     
     #тут все идеальнео можно больше не трогать
@@ -84,7 +83,7 @@ class Roomedit(commands.Cog):
         except:
             pass
 
-    async def roomedit_on_button_click(self, interaction: Interaction):                     #эту санину надо переписать!
+    async def roomedit_on_button_click(self, interaction: discord.Interaction):                     #эту санину надо переписать!
         stb_gld: discord.Guild = self.bot.get_guild(981511419042361344)
         if str(interaction.author.id) == bdpy(ctx=interaction)['Selfrooms'][str(interaction.author.voice.channel.id)]:
             with open(f'{BD}users.json', 'r') as file:
@@ -301,7 +300,7 @@ class Roomedit(commands.Cog):
             ))
 
 
-    async def listener_roomedit_start(self, interaction: Interaction):
+    async def listener_roomedit_start(self, interaction: discord.Interaction):
         global rtask
         if rtask:
             rtask.cancel()

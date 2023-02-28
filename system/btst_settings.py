@@ -1,9 +1,7 @@
 import discord
 from discord.ext import commands
-from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption
 from email.errors import InvalidMultipartContentTransferEncodingDefect
 import json
-import discord_components
 from BTSET import BD
 
 

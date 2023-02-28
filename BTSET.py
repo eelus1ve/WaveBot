@@ -53,7 +53,7 @@ class Score_presets():
         self.ignoreroles = bdpy(member)['IgnoreRoles']
         self.score = bdpy(member)['USERS'][str(member.id)]['SCR']
         self.lvl = bdpy(member)['USERS'][str(member.id)]['LvL']
-        self.idadminchannel = int(bdpy(member)["idAdminchennel"])               #тут для 
+        self.idadminchannel = int(bdpy(member)["ADMINCHANNEL"])               #тут для
         self.color = bdpy(member)['COLOR']          #это надо для разделения цветов
         self.ercolor = bdpy(ctx=member)['ERCOLOR']
         self.prefix: str = bdpy(member)["PREFIX"]
@@ -61,8 +61,8 @@ class Score_presets():
 class Moderation():
     def __init__(self, member):
         self.warns: int = bdpy(member)['USERS'][str(member.id)]['WARNS']
-        self.NWARNS: int = bdpy(member)['NWARNS']
-        self.idadminchannel: str = bdpy(member)["idAdminchennel"]
+        self.nWarns: int = bdpy(member)['NWARNS']
+        self.idadminchannel: str = bdpy(member)["ADMINCHANNEL"]
         self.NCAPS: int = bdpy(member)['NCAPS']
         self.color = bdpy(member)['COLOR']
         self.ercolor = bdpy(member)['ERCOLOR']

@@ -3,9 +3,7 @@ import asyncio
 import multiprocessing
 import os
 import subprocess
-import discord_components
 from discord.ext import commands
-from discord_components import ComponentsBot
 import datetime
 from system import JSONwriter
 
@@ -23,13 +21,12 @@ def prnt():
 
 class Wile_on(commands.Cog):
     def __init__(self, bot):
-        self.bot: discord_components.ComponentsBot = bot
+        self.bot: commands.Bot = bot
         JSONwriter.Json_write(self.bot).jsonwrite()  # эту строчку смыть в унитаз
         pr = multiprocessing.Process(target=prnt)
         pr.start()
 
 
-
-
-def setup(bot):
-    bot.add_cog(Wile_on(bot))
+async def setup(bot):
+    await bot.add_cog(Wile_on(bot))
+    pass

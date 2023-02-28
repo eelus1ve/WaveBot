@@ -5,8 +5,6 @@ from typing import Optional
 from distutils.log import error
 import re
 from discord.utils import get
-import interactions
-from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption
 import datetime
 import pytz
 import time

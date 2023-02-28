@@ -4,9 +4,6 @@ from discord.ext import commands
 import asyncio
 from BTSET import ADMINS
 from discord.utils import get
-from discord_components import DiscordComponents, ComponentsBot, Button, Select, SelectOption
-import StringProgressBar
-import discord_components
 import StringProgressBar
 
 
@@ -25,7 +22,7 @@ def counter_procent():
 
 class GlobalVote(commands.Cog):
     def __init__(self, bot):
-        self.bot: discord_components.ComponentsBot = bot
+        self.bot: commands.Bot = bot
 
     @commands.command()
     async def new_info(self, ctx, class_mes='m', *arg):
@@ -86,9 +83,10 @@ class GlobalVote(commands.Cog):
                     embed=discord.Embed(
                         title=f'Голосование',
                         description=''.join([str(StringProgressBar.progressBar.splitBar(100, 1, 25)[0]) + '—' + i + '\n' for i in arg])
-                    ),
-                    components=[[Button(label=f'{i}', style=2) for i in arg[e:e+5]] for e in range(0, len(arg), 5)]
-                )
+                    ),)
+                #
+                #     components=[[Button(label=f'{i}', style=2) for i in arg[e:e+5]] for e in range(0, len(arg), 5)]
+                # )
 
             try:
                 del vt_data['votes']
@@ -106,7 +104,7 @@ class GlobalVote(commands.Cog):
 
 
     @commands.Cog.listener('on_button_click')
-    async def globalvote_on_button_click(self, interaction: discord_components.Interaction):
+    async def globalvote_on_button_click(self, interaction: discord.Interaction):
         with open('glb_vote.json', 'r') as file:
             vt_data = json.load(file)
 

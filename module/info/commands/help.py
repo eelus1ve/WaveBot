@@ -1,9 +1,7 @@
 import discord
-import discord_components
 from discord.ext import commands
-from BTSET import BOTVERSION, bdpy, Lang
-from discord_components import Select, SelectOption, Button
-from discord import InvalidArgument
+from BTSET import BOTVERSION, bdpy
+
 
 class Help(commands.Cog):
 
@@ -40,55 +38,15 @@ class Help(commands.Cog):
         'рейтинг': {
             'leaders': '',
             'rank': 'Показать ваш ранк на сервере',
-            'score': 'осмотреть счет учасника',
+            'add_score': '',
+            'remove_score': '',
             'clear_score': '',
+            'score': 'осмотреть счет учасника',
         },
         'утилиты': {
             'tr': 'Перевести текст',
             'avatar': 'Отправить в чат аватар пользователя',
             'vote': 'Вызвать голосование',
-        },
-    }
-    a = {
-        'help_help_dict_moderation_title': {
-        'help_help_dict_moderation_command_warn': 'help_help_dict_moderation_value_warn',
-        'help_help_dict_moderation_command_unwarn': 'help_help_dict_moderation_value_unwarn',
-        'help_help_dict_moderation_command_clear_warns': 'help_help_dict_moderation_value_clear_warns',
-        'help_help_dict_moderation_command_ban': 'help_help_dict_moderation_value_ban',
-        'help_help_dict_moderation_command_clear': 'help_help_dict_moderation_value_clear',
-        'help_help_dict_moderation_command_kick': 'help_help_dict_moderation_value_kick',
-        'help_help_dict_moderation_command_select': 'help_help_dict_moderation_value_select',
-        'help_help_dict_moderation_command_btst': 'help_help_dict_moderation_value_btst',
-        'help_help_dict_moderation_command_set': 'help_help_dict_moderation_value_set',
-        },
-        'help_help_dict_fun_title': {
-        'help_help_dict_fun_command_rand': 'help_help_dict_fun_value_rand',
-        'help_help_dict_fun_command_coin': 'help_help_dict_fun_value_coin',
-        'help_help_dict_fun_command_MagicBall': 'help_help_dict_fun_value_MagicBall',
-        'help_help_dict_fun_command_send_an_message': 'help_help_dict_fun_value_send_an_message',
-        'help_help_dict_fun_command_p2048': 'help_help_dict_fun_value_p2048',
-        'help_help_dict_fun_command_get_qr': 'help_help_dict_fun_value_get_qr',
-        'help_help_dict_fun_command_dice': 'help_help_dict_fun_value_dice',
-        },
-        'help_help_dict_info_title': {
-        'help_help_dict_info_command_info': 'help_help_dict_info_value_info',
-        'help_help_dict_info_command_help': 'help_help_dict_info_value_help',
-        'help_help_dict_info_command_user': 'help_help_dict_info_value_user',
-        'help_help_dict_info_command_spotify_info': 'help_help_dict_info_value_spotify_info',
-        'help_help_dict_info_command_spotify': 'help_help_dict_info_value_spotify',
-        'help_help_dict_info_command_server_info': 'help_help_dict_info_value_server_info',
-        'help_help_dict_info_command_server_info_channel': 'help_help_dict_info_value_server_info_channel',
-        },
-        'help_help_dict_rate_title': {
-        'help_help_dict_rate_command_leaders': 'help_help_dict_rate_value_leaders',
-        'help_help_dict_rate_command_rank': 'help_help_dict_rate_value_rank',
-        'help_help_dict_rate_command_score': 'help_help_dict_rate_value_score',
-        'help_help_dict_rate_command_clear_score': 'help_help_dict_rate_value_clear_score',
-        },
-        'help_help_dict_utility_title': {
-        'help_help_dict_utility_command_tr': 'help_help_dict_utility_value_tr',
-        'help_help_dict_utility_command_avatar': 'help_help_dict_utility_value_avatar',
-        'help_help_dict_utility_command_vote': 'help_help_dict_utility_value_vote',
         },
     }
 
@@ -119,22 +77,23 @@ class Help(commands.Cog):
             emb.add_field(name='', value='**`модерация`**' + '\n' + f'\n'.join([i for i in self.help_dict if i != 'модерация']))
             emb.add_field(name='', value=f'**`{var[0]}`**' + '\n' + f'\n'.join([i for i in var if i != var[0]]))
             emb.add_field(name='='*len(self.help_dict['модерация']['warn']), value=f"{self.help_dict['модерация']['warn']}", inline=True)
-            await ctx.author.send(embed=emb, components=[[
-                Button(label='←'),
-                Button(label='↑'),
-                Button(label='→'),
-            ], [
-                Button(label='.', disabled=True),
-                Button(label='↓'),
-                Button(label='.', disabled=True),
-            ]])
+            await ctx.author.send(embed=emb)
+            # components=[[
+            #     Button(label='←'),
+            #     Button(label='↑'),
+            #     Button(label='→'),
+            # ], [
+            #     Button(label='.', disabled=True),
+            #     Button(label='↓'),
+            #     Button(label='.', disabled=True),
+            # ]])
             await ctx.send(embed=discord.Embed(
                 title='Успешно',
-                description='Список доступных комманд отправлен вам в личные сообщения!',
+                description=f'Список доступных комманд отправлен вам в личные сообщения!',
                 color=COLOR
             ))
 
-    async def listener_on_button_click_help(self, interaction: discord_components.Interaction):
+    async def listener_on_button_click_help(self, interaction: discord.Interaction):
         COLOR = 0x0000FF
         pref = '~'
 

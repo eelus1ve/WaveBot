@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from typing import Optional
-from discord_components import ComponentsBot, Interaction
 from module.info.commands.user import UserInfo
 from module.info.commands.sptf import SpotifyInfo
 from module.info.commands.botinfo import BotInfo
@@ -10,8 +9,8 @@ from module.info.commands.srinf import SrInfo, SrInfo_listeners
 
 
 class InfoSetup(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
-        self.bot: ComponentsBot = bot
+    def __init__(self, bot: commands.Bot):
+        self.bot: commands.Bot = bot
 
     @commands.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
     async def user(self, ctx: commands.Context, memberr: Optional[discord.Member]):
@@ -55,5 +54,5 @@ class InfoSetup(commands.Cog):
         await SrInfo_listeners(self.bot).listener_srinf_remove(member)
 
     @commands.Cog.listener('on_button_click')
-    async def on_button_click_help(self, interaction: Interaction):
+    async def on_button_click_help(self, interaction: discord.Interaction):
         await Help(self.bot).listener_on_button_click_help(interaction)

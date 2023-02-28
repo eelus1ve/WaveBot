@@ -2,14 +2,13 @@ import discord
 from discord.ext import commands
 from typing import Optional
 from module.rate.commands.score import *
-from discord_components import ComponentsBot
 from module.rate.commands.leaders import Leaders
 from module.rate.commands.rank import Rank
 from module.rate.commands.mrate import Mrate
 
 
 class RateSetup(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command()

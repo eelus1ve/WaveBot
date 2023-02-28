@@ -3,11 +3,10 @@ from discord import Spotify
 from discord.ext import commands
 from BTSET import ADMINS, Moderation, Info, Score_presets, Lang
 import pytz
-from discord_components import ComponentsBot
 
 class UserInfo(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
-        self.bot: ComponentsBot = bot
+    def __init__(self, bot: commands.Bot):
+        self.bot: commands.Bot = bot
 
     async def command_user(self, ctx: commands.Context, member: discord.Member):
         # member = await self.bot.get_user(int(member.id))

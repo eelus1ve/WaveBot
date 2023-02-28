@@ -2,10 +2,9 @@ import discord
 import random
 from discord.ext import commands
 from BTSET import Utility
-from discord_components import ComponentsBot
 
 class Rand(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def command_rand(self, ctx: commands.Context, arg: int, arg2: int):

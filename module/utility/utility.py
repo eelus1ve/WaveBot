@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord_components import ComponentsBot
 from typing import Optional
 from module.utility.commands.vote import Vote
 from module.utility.commands.rand import Rand
@@ -9,7 +8,7 @@ from module.utility.commands.translits import Translits
 
 
 class UtilitySetup(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command()

@@ -1,12 +1,9 @@
-import discord_components
-from discord_components import ComponentsBot
 import discord
 from discord.ext import commands
-from discord_components import Button
 
 class Get_message(commands.Cog):
     def __init__(self, bot):
-        self.bot: ComponentsBot = bot
+        self.bot: commands.Bot = bot
 
     async def command_send_an_message(self, ctx: commands.Context):
         if not ctx.guild:
@@ -35,10 +32,11 @@ class Get_message(commands.Cog):
         ))
 
         adm_chlen = await self.bot.fetch_channel(1023514594414690324)
-        await adm_chlen.send(f'{ms1.author.name}#{ms1.author.discriminator} отправил сообщение для {ms1.content} с содержанием: \n\n{ms2.content}', components=[Button(label='одобрить'), Button(label='послать')])
+        await adm_chlen.send(f'{ms1.author.name}#{ms1.author.discriminator} отправил сообщение для {ms1.content} с содержанием: \n\n{ms2.content}')
+        #components=[Button(label='одобрить'), Button(label='послать')])
 
     @commands.Cog.listener('on_button_click')
-    async def listener_on_button_click_anMessage(self, interaction: discord_components.Interaction):
+    async def listener_on_button_click_anMessage(self, interaction: discord.Interaction):
         if interaction.component.label == 'одобрить':
             await SendMessage(self.bot).send_mess(GetMember(self.bot).get_mem(interaction.message.content.split('\n\n')[0].split()[4]), interaction.message.content.split('\n\n')[1])
             await interaction.message.delete()

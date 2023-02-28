@@ -1,12 +1,9 @@
 import discord #                    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ИНВАЛИДА НАХУЙ УСЫПИТЬ
-import discord_components
 from discord.utils import get
 from email.errors import InvalidMultipartContentTransferEncodingDefect
 import asyncio
 import json
 import StringProgressBar
-import interactions
-from interactions import TextInput, Modal, TextStyleType, SelectMenu, SelectOption, Option
 from youtube_dl import YoutubeDL
 import time
 from discord.ext import commands
@@ -21,7 +18,7 @@ FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconne
 
 class Add_music:
     def __init__(self, bot):
-        self.bot: discord_components.ComponentsBot = bot
+        self.bot: commands.Bot = bot
 
     async def add_msc(self, ctx: commands.Context, inter):
 

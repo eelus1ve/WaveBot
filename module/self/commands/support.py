@@ -1,8 +1,5 @@
 import discord
-import discord_components
 from discord.ext import commands
-from discord_components import DiscordComponents, ComponentsBot, Button, Select
-from discord_components import SelectOption
 import json
 from BTSET import ADMINS
 from module.fun.commands.anMessage import GetMember
@@ -10,7 +7,7 @@ from module.fun.commands.anMessage import GetMember
 
 class Suppot(commands.Cog):
     def __init__(self, bot):
-        self.bot: discord_components.ComponentsBot = bot
+        self.bot: commands.Bot = bot
 
     def support_json_writer(member: discord.Member, reason: str, text: str):
         with open('support.json', 'r') as file:
@@ -23,24 +20,24 @@ class Suppot(commands.Cog):
         with open('support.json', 'w') as file:
             json.dump(sup_data, file, indent=4)
 
-    @commands.command()
-    async def support(self, ctx):
-        if not ctx.guild:
-            await ctx.send(components=[
-                Select(
-                    max_values=1,
-                    min_values=0,
-                    placeholder='Выберете что Вам нужно',
-                    options=[
-                        SelectOption(label='Предложить идею', value='idea'),
-                        SelectOption(label='Вопрос о команде', value='que'),
-                        SelectOption(label='Рассказать про ошибку', value='err'),
-                        SelectOption(label='Сообщение для разработчиков', value='message')
-                    ]
-                )
-            ])
+    # @commands.command()
+    # async def support(self, ctx):
+    #     if not ctx.guild:
+    #         await ctx.send(components=[
+    #             Select(
+    #                 max_values=1,
+    #                 min_values=0,
+    #                 placeholder='Выберете что Вам нужно',
+    #                 options=[
+    #                     SelectOption(label='Предложить идею', value='idea'),
+    #                     SelectOption(label='Вопрос о команде', value='que'),
+    #                     SelectOption(label='Рассказать про ошибку', value='err'),
+    #                     SelectOption(label='Сообщение для разработчиков', value='message')
+    #                 ]
+    #             )
+    #         ])
     @commands.Cog.listener('on_select_option')
-    async def main_support_select(self, interaction: discord_components.Interaction):
+    async def main_support_select(self, interaction: discord.Interaction):
         if interaction.component.placeholder == 'Выберете что Вам нужно':
             try:
                 def check(message: discord.Message):
@@ -90,16 +87,17 @@ class Suppot(commands.Cog):
     
     async def send_to_moder(self, member, type_mes, message):
         adm_chlen = await self.bot.fetch_channel(1023514594414690324)
-        await adm_chlen.send(f'Пользователь {member.name}#{member.discriminator} отправил {type_mes} c содержанием \n\n\n{message}', components=[
-            Button(label='принять(с сообщением)'),
-            Button(label='принять(без сообщения)'),
-            Button(label='отклонить')
-        ])
+        await adm_chlen.send(f'Пользователь {member.name}#{member.discriminator} отправил {type_mes} c содержанием \n\n\n{message}')
+        # components=[
+        #     Button(label='принять(с сообщением)'),
+        #     Button(label='принять(без сообщения)'),
+        #     Button(label='отклонить')
+        # ])
 
 
 class SupportAnswer(commands.Cog):
     def __init__(self, bot):
-        self.bot: discord_components.ComponentsBot = bot
+        self.bot: commands.Bot = bot
 
     async def send_answer(self, member, his_q, ans, ans_mem='WAVE_bot'):
         await member.send(embed=discord.Embed(
@@ -108,7 +106,7 @@ class SupportAnswer(commands.Cog):
         ))
 
     @commands.Cog.listener('on_button_click')
-    async def answer(self, interaction: discord_components.Interaction):
+    async def answer(self, interaction: discord.Interaction):
         if str(interaction.author.id) in ADMINS:
 
             def check(message: discord.Message):

@@ -3,11 +3,10 @@ import json
 from discord.ext import commands
 from discord.utils import get
 from BTSET import Moderation, bdpy, BD
-from discord_components import ComponentsBot
 
 class Mwarns(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
-        self.bot: ComponentsBot = bot
+    def __init__(self, bot: commands.Bot):
+        self.bot: commands.Bot = bot
 
     async def listener_on_message_mwarns(self, message: discord.Message):
         try:

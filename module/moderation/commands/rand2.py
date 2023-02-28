@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord_components import Select, SelectOption, Interaction
 from BTSET import Moderation, bdpy
 
 class Select(commands.Cog):
@@ -29,7 +28,7 @@ class Select(commands.Cog):
                     ]
                 )
 
-    async def listener_on_select_option_select(self, interaction: Interaction):
+    async def listener_on_select_option_select(self, interaction: discord.Interaction):
         try:
             ErCOLOR = bdpy(ctx=interaction)['ErCOLOR']
             roles = bdpy(ctx=interaction)['ROLES']

@@ -5,11 +5,10 @@ from typing import Optional
 from discord import File
 from BTSET import Score_presets, bdpy
 from PIL import Image, ImageFont, ImageDraw
-from discord_components import ComponentsBot
 
 
 class Rank(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def command_rank(self, ctx: commands.Context, member: discord.Member):
@@ -27,7 +26,7 @@ class Rank(commands.Cog):
             percentage = 0
         
         background = Editor(f"module/rate/img/{setcard}")
-        profile = await load_image_async(str(member.avatar_url))
+        profile = await load_image_async(str(member.avatar))
 
         profile = Editor(profile).resize((150, 150)).circle_image()
         

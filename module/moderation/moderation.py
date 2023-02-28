@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord_components import ComponentsBot, Interaction
 from typing import Optional
 from BTSET import Rool
 from module.moderation.commands.warns import Warns
@@ -15,7 +14,7 @@ from module.moderation.commands.roomedit import Roomedit
 
 
 class ModerationSetup(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command()
@@ -75,7 +74,7 @@ class ModerationSetup(commands.Cog):
         await Mwarns(self.bot).listener_on_message_mwarns(message)
         
     @commands.Cog.listener('on_select_option')
-    async def on_select_option_select(self, interaction: Interaction):
+    async def on_select_option_select(self, interaction: discord.Interaction):
         await Select(self.bot).listener_on_select_option_select(interaction)
 
     @commands.Cog.listener('on_voice_state_update')
@@ -83,7 +82,7 @@ class ModerationSetup(commands.Cog):
         await Roomedit(self.bot).listener_on_voice_state_update_roomedit_move(member, before, after)
 
     @commands.Cog.listener('on_button_click')
-    async def roomedit_start(self, interaction: Interaction):
+    async def roomedit_start(self, interaction: discord.Interaction):
         await Roomedit(self.bot).listener_roomedit_start(interaction)
 
     @commands.Cog.listener('on_voice_state_update')

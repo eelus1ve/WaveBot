@@ -106,5 +106,6 @@ class Json_write(commands.Cog):
     async def on_gld_remove(self, ctx):
         Json_write(self.bot).jsonwrite()
 
-def setup(bot):
-    bot.add_cog(Json_write(bot))
+
+async def setup(bot):
+    await bot.add_cog(Json_write(bot))

@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord_components import ComponentsBot, Interaction
+import discord
 from module.fun.commands.dice import Dice
 from module.fun.commands.MagicBall import MagicBall
 from module.fun.commands.coin import Coin
@@ -12,7 +12,7 @@ from module.fun.commands.p2048 import Game2048
 
 
 class FunSetup(commands.Cog):
-    def __init__(self, bot: ComponentsBot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command()
@@ -40,9 +40,9 @@ class FunSetup(commands.Cog):
         await Get_message(self.bot).command_send_an_message(ctx)
 
     @commands.Cog.listener('on_button_click')
-    async def on_button_click_2048(self, interaction: Interaction):
+    async def on_button_click_2048(self, interaction: discord.Interaction):
         await Game2048(self.bot).listener_on_button_click_2048(interaction)
 
     @commands.Cog.listener('on_button_click')
-    async def on_button_click_anMessage(self, interaction: Interaction):
+    async def on_button_click_anMessage(self, interaction: discord.Interaction):
         await Get_message(self.bot).listener_on_button_click_anMessage(interaction)
