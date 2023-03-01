@@ -7,7 +7,7 @@ from module.moderation.commands.clean import Clean
 from module.moderation.commands.audit import Audit
 from module.moderation.commands.stngs import Stngs
 from module.moderation.commands.mwarns import Mwarns
-# from module.moderation.btst
+from module.moderation.commands.btst import *
 # from module.moderation.mbrjn import 
 from module.moderation.commands.rand2 import Select
 from module.moderation.commands.roomedit import Roomedit

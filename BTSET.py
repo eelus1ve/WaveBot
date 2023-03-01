@@ -5,7 +5,10 @@ from typing import Optional
 
 ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
 BOTVERSION = '***ALPHA 1.0***'
-BETATESTERS = ['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176', '406124614729859073', '496021942877552660', '539848793693224970', '544279889470291989', '547077175308713994', '583722104059592757', '666768779174346782', '858638662160613376', '992771455500681307']
+BETATESTERS = ['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176',
+               '406124614729859073', '496021942877552660', '539848793693224970', '544279889470291989',
+               '547077175308713994', '583722104059592757', '666768779174346782', '858638662160613376',
+               '992771455500681307']
 BD = 'system/Database/'
 IGNORE = ['commands']
 IGNORE_SIMV = ['<WaveEmb>']
@@ -43,6 +46,8 @@ DEFGUILD = {
     'USERS': {},
 }
 DBSTR = [i for i in DEFGUILD.keys() if (type(DEFGUILD[i]) in [str, int, bool])]
+
+
 # with open(f'{BD}users.json', 'r') as file:
 #     d: dict = json.load(file)
 # SERVERS = [i for i in d.keys()]
@@ -53,10 +58,11 @@ class Score_presets():
         self.ignoreroles = bdpy(member)['IgnoreRoles']
         self.score = bdpy(member)['USERS'][str(member.id)]['SCR']
         self.lvl = bdpy(member)['USERS'][str(member.id)]['LvL']
-        self.idadminchannel = int(bdpy(member)["ADMINCHANNEL"])               #тут для
-        self.color = bdpy(member)['COLOR']          #это надо для разделения цветов
+        self.idadminchannel = int(bdpy(member)["ADMINCHANNEL"])  # тут для
+        self.color = bdpy(member)['COLOR']  # это надо для разделения цветов
         self.ercolor = bdpy(ctx=member)['ERCOLOR']
         self.prefix: str = bdpy(member)["PREFIX"]
+
 
 class Moderation():
     def __init__(self, member):
@@ -76,17 +82,43 @@ class Fun():
         self.color = bdpy(ctx)['COLOR']
         self.ercolor = bdpy(ctx)['ERCOLOR']
 
+
 class Info():
     def __init__(self, ctx):
         self.color = bdpy(ctx)['COLOR']
         self.ercolor = bdpy(ctx)['ERCOLOR']
+
 
 class Utility():
     def __init__(self, ctx):
         self.color = bdpy(ctx)['COLOR']
         self.ercolor = bdpy(ctx)['ERCOLOR']
 
-    
+
+class InteractionComponents:
+    def __init__(self, interaction: discord.Interaction):
+        inter = None
+        for rw in interaction.message.components:
+            inter = [i for i in rw.children if i.custom_id == interaction.data["custom_id"]] or inter
+        inter = inter[0]
+
+        self.inter_type = interaction.data['component_type']
+
+        if self.inter_type == 2:
+            self.label = inter.label
+            self.emoji = inter.emoji
+
+            self.placeholder = None
+            self.values = None
+
+        if self.inter_type == 3:
+            self.placeholder = inter.placeholder
+            self.values = interaction.data['values']
+
+            self.label = None
+            self.emoji = None
+
+
 # class Audit():
 #     def __init__(self, ctx):
 #         self.color = bdpy(ctx)['COLOR']
@@ -100,7 +132,7 @@ class Utility():
 #         emb.add_field(name='Канал:', value='Не определён', inline=True)
 #         emb.add_field(name='Участник:', value=ctx.mention, inline=True)
 #         emb.set_footer(text=f'Предупреждение снято участником {ctx.author.name}#{ctx.author.discriminator} ID модератора: {ctx.author.id}')
-        # await get(ctx.guild.text_channels, id=Moderation(member).idadminchannel).send(embed=emb)
+# await get(ctx.guild.text_channels, id=Moderation(member).idadminchannel).send(embed=emb)
 
 # class DateBaseEditor():
 #     def __init__(self, ctx):
@@ -136,24 +168,20 @@ class Utility():
 #         # self.users = data[str(ctx.guild.id)]['USERS']
 
 
+# def db_write(db: str, ctx: commands.Context, locate: str, arg):
+#     with open(f'{BD}{db}.json', 'r') as file:
+#         data = json.load(file)
+#     if locate in DBSTR:
+#         data[locate] = arg
+#     else:
+#         pass
+#     with open(f'{BD}{db}.json', 'w') as file:
+#         json.dump(data, file, indent=4)
 
-
-
-    # def db_write(db: str, ctx: commands.Context, locate: str, arg):
-    #     with open(f'{BD}{db}.json', 'r') as file:
-    #         data = json.load(file)
-    #     if locate in DBSTR:
-    #         data[locate] = arg
-    #     else:
-    #         pass
-    #     with open(f'{BD}{db}.json', 'w') as file: 
-    #         json.dump(data, file, indent=4)
-
-    # def db_read(db: str, ctx: commands.Context, locate: str):
-    #     with open(f'{BD}{db}.json', 'r') as file:
-    #         date = json.load(file)
-    #     return date[ctx][locate]
-
+# def db_read(db: str, ctx: commands.Context, locate: str):
+#     with open(f'{BD}{db}.json', 'r') as file:
+#         date = json.load(file)
+#     return date[ctx][locate]
 
 
 def bdpy(ctx: commands.Context):
@@ -188,12 +216,14 @@ def bdpy(ctx: commands.Context):
         "blend": data[str(ctx.guild.id)]['blend'],
         "USERS": data[str(ctx.guild.id)]['USERS']
     }
-    
+
+
 class Rool():
     def __init__(self, ctx: commands.Context):
         if bdpy(ctx)['ModRoles'] != {}:
-            mods = bdpy(ctx)['ModRoles'][str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]
-            
+            mods = bdpy(ctx)['ModRoles'][
+                str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]
+
             self.clearRank = mods['Rate']['CLearRank'] == "True" or ctx.author.guild_permissions.administrator
             self.score = mods['Rate']['Score'] == "True" or ctx.author.guild_permissions.administrator
             self.setlvl = mods['Rate']['SetLvl'] == "True" or ctx.author.guild_permissions.administrator
@@ -217,10 +247,10 @@ class Rool():
             self.clear = ctx.author.guild_permissions.administrator
             self.ban = ctx.author.guild_permissions.administrator
 
-
     def role(quest: str):
         def predicate(ctx: commands.Context):
-            if quest == 'clear' and Rool(ctx).clear and (ctx.channel.id != Moderation(ctx.author).idadminchannel or ctx.author.id == ctx.guild.owner.id):
+            if quest == 'clear' and Rool(ctx).clear and (
+                    ctx.channel.id != Moderation(ctx.author).idadminchannel or ctx.author.id == ctx.guild.owner.id):
                 return True
             elif quest == 'clearRank' and Rool(ctx).clearRank:
                 return True
@@ -241,38 +271,40 @@ class Rool():
             elif quest == 'ban' and Rool(ctx).ban:
                 return True
             raise commands.MissingPermissions(['nomoder'])
+
         return commands.check(predicate)
 
-async def embpy(ctx: commands.Context, comp: str, des , time: Optional[float] = None, member: Optional[discord.Member] = None):
-        if comp == 's':
-            emb = discord.Embed(
-                title='Успешно',
-                description=des,
-                color=bdpy(ctx)['COLOR']
-            )
-        elif comp == 'e':
-            emb = discord.Embed(
-                title='Ошибка',
-                description=des,
-                color=bdpy(ctx)['ERCOLOR']
-            )
-        elif comp == 'n':
-            emb = discord.Embed(
-                title=des,
-                color=bdpy(ctx)['COLOR']
-            )
-        if member:
-            if time:
-                await member.send(embed=emb, delete_after=time)
-                
-            else:
-                await member.send(embed=emb)
-        else:
-            if time:
-                await ctx.send(embed=emb, delete_after=time)
-            else:
-                await ctx.send(embed=emb)
 
+async def embpy(ctx: commands.Context, comp: str, des, time: Optional[float] = None,
+                member: Optional[discord.Member] = None):
+    if comp == 's':
+        emb = discord.Embed(
+            title='Успешно',
+            description=des,
+            color=bdpy(ctx)['COLOR']
+        )
+    elif comp == 'e':
+        emb = discord.Embed(
+            title='Ошибка',
+            description=des,
+            color=bdpy(ctx)['ERCOLOR']
+        )
+    elif comp == 'n':
+        emb = discord.Embed(
+            title=des,
+            color=bdpy(ctx)['COLOR']
+        )
+    if member:
+        if time:
+            await member.send(embed=emb, delete_after=time)
+
+        else:
+            await member.send(embed=emb)
+    else:
+        if time:
+            await ctx.send(embed=emb, delete_after=time)
+        else:
+            await ctx.send(embed=emb)
 
 
 class Lang():
@@ -281,9 +313,9 @@ class Lang():
 
     def lang(self, ctx: commands.Context):
         lang_dict = {}
-        with open('system\\Languages\\{}.wave'.format(bdpy(ctx)['LANG']), 'r', encoding = 'utf-8') as f:
+        with open('system\\Languages\\{}.wave'.format(bdpy(ctx)['LANG']), 'r', encoding='utf-8') as f:
             for line in f:
-                if not(line.startswith('//')) and not(line=='\n'):
-                    key, *value = line.split()        
+                if not (line.startswith('//')) and not (line == '\n'):
+                    key, *value = line.split()
                     lang_dict[key] = ' '.join([i.replace('\\n', '\n') for i in value])
         return lang_dict

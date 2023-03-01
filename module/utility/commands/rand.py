@@ -17,5 +17,5 @@ class Rand(commands.Cog):
         await ctx.send(embed=discord.Embed(
                     title="Ваше рандомное число: ",
                     description=des,
-                    color = Utility(ctx).ercolor,
+                    color = Utility(ctx).color,
                 ))
