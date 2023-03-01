@@ -39,9 +39,9 @@ class FunSetup(commands.Cog):
     async def send_an_message(self, ctx: commands.Context):
         await Get_message(self.bot).command_send_an_message(ctx)
 
-    @commands.Cog.listener('on_button_click')
+    @commands.Cog.listener('on_interaction')
     async def on_button_click_2048(self, interaction: discord.Interaction):
-        await Game2048(self.bot).listener_on_button_click_2048(interaction)
+        await Game2048(self.bot).listener_on_button_2048(interaction)
 
     @commands.Cog.listener('on_button_click')
     async def on_button_click_anMessage(self, interaction: discord.Interaction):

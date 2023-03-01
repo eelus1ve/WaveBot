@@ -213,6 +213,13 @@ class Game2048(commands.Cog):
         await interaction.message.edit(embed=emb)
         await check_1(body, interaction)
 
+    async def listener_on_button_2048(self, interaction: discord.Interaction):
+        inter_children = interaction.message.components[0].children
+        inter_id = interaction.data['custom_id']
+        if inter_children[1] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
+        if inter_children[0] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
+        if inter_children[2] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
+        if inter_children[3] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
 
 
     async def command_p2048(self, ctx: commands.Context): 
@@ -242,17 +249,12 @@ class Game2048(commands.Cog):
                             description=''.join(des),
                             color = Fun(ctx).color)
 
-
         vw = discord.ui.View(timeout=None)
 
         bt1 = Button(emoji='🔚')
         bt2= Button(emoji='⬆')
         bt3 = Button(emoji='⬇')
         bt4 = Button(emoji='🔜')
-        bt1.callback = Game2048(self.bot).listener_on_button_click_2048_left
-        bt2.callback = Game2048(self.bot).listener_on_button_click_2048_up
-        bt3.callback = Game2048(self.bot).listener_on_button_click_2048_down
-        bt4.callback = Game2048(self.bot).listener_on_button_click_2048_right
 
         vw.add_item(bt1)
         vw.add_item(bt2)

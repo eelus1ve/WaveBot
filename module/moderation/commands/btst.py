@@ -36,7 +36,7 @@ async def setup(bot: commands.Bot):
 
     @bot.listen('on_interaction')
     async def settings(interaction: discord.Interaction):
-        if InteractionComponents(interaction).inter_type == 2 and InteractionComponents(interaction).label == 'OK':
+        if InteractionComponents(interaction).label == 'OK':
             old_emb = interaction.message.embeds[0]
             arg = old_emb.fields[0].name
 
