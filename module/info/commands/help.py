@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
-from BTSET import BOTVERSION, bdpy
-
+from discord.ui import Button, Select, View
+from BTSET import BOTVERSION, bdpy, Lang, InteractionComponents
+from discord import InvalidArgument
 
 class Help(commands.Cog):
 
@@ -53,7 +54,7 @@ class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def command_help(self, ctx, arg=None):
+    async def command_help(self, ctx: commands.Context, arg=None):
         COLOR = bdpy(ctx)['COLOR']
         pref = bdpy(ctx)['PREFIX']
         if arg:
@@ -77,16 +78,16 @@ class Help(commands.Cog):
             emb.add_field(name='', value='**`модерация`**' + '\n' + f'\n'.join([i for i in self.help_dict if i != 'модерация']))
             emb.add_field(name='', value=f'**`{var[0]}`**' + '\n' + f'\n'.join([i for i in var if i != var[0]]))
             emb.add_field(name='='*len(self.help_dict['модерация']['warn']), value=f"{self.help_dict['модерация']['warn']}", inline=True)
-            await ctx.author.send(embed=emb)
-            # components=[[
-            #     Button(label='←'),
-            #     Button(label='↑'),
-            #     Button(label='→'),
-            # ], [
-            #     Button(label='.', disabled=True),
-            #     Button(label='↓'),
-            #     Button(label='.', disabled=True),
-            # ]])
+
+            vw = View(timeout=None)
+            vw.add_item(Button(label='←'))
+            vw.add_item(Button(label='↑'))
+            vw.add_item(Button(label='→'))
+            vw.add_item(Button(label='.', disabled=True, row=1))
+            vw.add_item(Button(label='↓', row=1))
+            vw.add_item(Button(label='.', disabled=True, row=1))
+
+            await ctx.author.send(embed=emb, view=vw)
             await ctx.send(embed=discord.Embed(
                 title='Успешно',
                 description=f'Список доступных комманд отправлен вам в личные сообщения!',
@@ -97,7 +98,7 @@ class Help(commands.Cog):
         COLOR = 0x0000FF
         pref = '~'
 
-        if interaction.component.label == '→':
+        if InteractionComponents(interaction).label == '→':
             old_field0_value = interaction.message.embeds[0].fields[0].value
             old_field1_value = interaction.message.embeds[0].fields[1].value.split()
 
@@ -126,9 +127,9 @@ class Help(commands.Cog):
             emb.add_field(name='='*len(self.help_dict[first_key][des_name]), value=f'{self.help_dict[first_key][des_name]}', inline=True)
 
             await interaction.message.edit(embed=emb)
-            await interaction.edit_origin()
+            await interaction.response.defer()
 
-        if interaction.component.label == '←':
+        if InteractionComponents(interaction).label == '←':
             old_field0_value = interaction.message.embeds[0].fields[0].value
             old_field1_value = interaction.message.embeds[0].fields[1].value.split()
 
@@ -154,9 +155,9 @@ class Help(commands.Cog):
                           value=f'{self.help_dict[first_key][des_name]}', inline=True)
 
             await interaction.message.edit(embed=emb)
-            await interaction.edit_origin()
+            await interaction.response.defer()
         
-        if interaction.component.label == '↑':
+        if InteractionComponents(interaction).label == '↑':
             old_field0_value = interaction.message.embeds[0].fields[0].value.split()
 
             for i in range(len(old_field0_value)):
@@ -178,9 +179,9 @@ class Help(commands.Cog):
             emb.add_field(name='='*len(self.help_dict[first_key][var[0]]), value=f'{self.help_dict[first_key][var[0]]}', inline=True)
 
             await interaction.message.edit(embed=emb)
-            await interaction.edit_origin()
+            await interaction.response.defer()
             
-        if interaction.component.label == '↓':
+        if InteractionComponents(interaction).label == '↓':
             old_field0_value = interaction.message.embeds[0].fields[0].value.split()
 
             for i in range(len(old_field0_value)):
@@ -207,4 +208,4 @@ class Help(commands.Cog):
                           value=f'{self.help_dict[first_key][var[0]]}', inline=True)
 
             await interaction.message.edit(embed=emb)
-            await interaction.edit_origin()
+            await interaction.response.defer()

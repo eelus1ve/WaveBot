@@ -1,8 +1,11 @@
 import discord
 from discord.ext import commands
-from BTSET import Moderation, bdpy
+from BTSET import Moderation, bdpy, InteractionComponents
+from discord.ui import Button, Select, View
+from email.errors import InvalidMultipartContentTransferEncodingDefect
 
-class Select(commands.Cog):
+
+class SelectRole(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -14,48 +17,44 @@ class Select(commands.Cog):
             pass
 
         elif arg in [k for k in roles.keys()]:
-                await ctx.send(embed=discord.Embed(
-                    title=selftitle,
-                    color=Moderation(ctx.author).color
-                ),
-                    components=[
-                        Select(                                             
-                            placeholder=arg,
-                            max_values=len(roles[arg][0]),
-                            min_values=0,
-                            options=[SelectOption(label=ctx.guild.get_role(int(i)).name, value=i) for i in roles[arg][0]]
-                        )
-                    ]
-                )
+            sel = Select(
+                placeholder=arg,
+                max_values=len(roles[arg][0]),
+                min_values=0,
+            )
+            [sel.add_option(label=ctx.guild.get_role(int(i)).name, value=i, emoji=ctx.guild.get_role(int(i)).icon) for i in roles[arg][0]]
+            vw = View(timeout=None)
+            vw.add_item(sel)
+            await ctx.send(embed=discord.Embed(
+                title=selftitle,
+                color=Moderation(ctx.author).color
+            ),
+                view=vw
+            )
 
     async def listener_on_select_option_select(self, interaction: discord.Interaction):
         try:
-            ErCOLOR = bdpy(ctx=interaction)['ErCOLOR']
+            ErCOLOR = bdpy(ctx=interaction)['ERCOLOR']
             roles = bdpy(ctx=interaction)['ROLES']
-            if interaction.component.placeholder in [k for k in roles.keys()]:
-                a = interaction.author
+            if InteractionComponents(interaction).placeholder in [k for k in roles.keys()]:
+                a = interaction.user
                 try:
-                    await interaction.send(embed=discord.Embed(
+                    await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description=f"Роли выбраны!",
-                        color=Moderation(interaction.author).color
-                    ))
+                        color=Moderation(interaction.user).color
+                    ), ephemeral=True)
                     
                 except IndexError:
-                    await interaction.send(embed=discord.Embed(
+                    await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description="*Роли успешно сняты!*",
-                        color=Moderation(interaction.author).color
-                    ))
+                        color=Moderation(interaction.user).color
+                    ), ephemeral=True)
 
                 try:
-                    await a.remove_roles(*[interaction.guild.get_role(int(ii)) for ii in roles[str(interaction.component.placeholder)][0] if not(ii in interaction.values)])
-                except:
-                    pass
-                    
-                try:
-                    
-                    await a.add_roles(*[interaction.guild.get_role(int(i)) for i in interaction.values])
+                    await a.remove_roles(*[interaction.guild.get_role(int(ii)) for ii in roles[str(InteractionComponents(interaction).placeholder)][0] if not(ii in InteractionComponents(interaction).values)])
+                    await a.add_roles(*[interaction.guild.get_role(int(i)) for i in InteractionComponents(interaction).values])
                 except:
                     pass
         except:

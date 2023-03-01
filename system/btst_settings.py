@@ -286,7 +286,7 @@ class SetForBTST():
                     data[str(self.interaction.guild.id)]['BADWORDS'].index(ms.content))
                 json.dump(data, file, indent=4)
         else:
-            await self.interaction.send('слова нет')
+            await self.interaction.response.send_message('слова нет')
         await ms.delete()
 
     async def selfrooms(self):
@@ -427,7 +427,7 @@ class SetForBTST():
             json.dump(vt_data, file, indent=4)
 
 
-class SecSetForBTST():
+class SecSetForBTST:
     def __init__(self, bot, interaction, old_emb):
         self.bot = bot
         self.interaction: discord.Interaction = interaction
@@ -464,25 +464,22 @@ class SecSetForBTST():
             name=f'Укажите роли которые вы хотите добавить в класс {InteractionComponents(self.interaction).values[0]}',
             value=f'страница 1 из {len(self.serverRoles)}')
         sel = Select(
-            placeholder=f'Укажите роли которые вы хотите добавить в класс *{InteractionComponents(self.interaction).values[0]}',
+            placeholder=f'{InteractionComponents(self.interaction).values[0]}',
             max_values=len(self.serverRoles[0]),
             min_values=0,
-            )
+        )
         [sel.add_option(label=i.name, value=i.id) for i in self.serverRoles[0]]
         vw = DefaultButtonsForBTST.but()
         vw.add_item(sel)
         await self.interaction.message.edit(embed=emb, view=vw)
 
     async def role_choice(self):
+        print(InteractionComponents(self.interaction))
         self.data[str(self.interaction.guild.id)]['ROLES'][
-            InteractionComponents(self.interaction).placeholder.split('*')[1]][
-            0] = InteractionComponents(self.interaction).values
+            InteractionComponents(self.interaction).placeholder][0] = InteractionComponents(self.interaction).values
         self.data[str(self.interaction.guild.id)]['ROLES'][
-            InteractionComponents(self.interaction).placeholder.split('*')[1]][1] = [0 for
-                                                                                     i in
-                                                                                     InteractionComponents(
-                                                                                         self.interaction).values]
-        await self.interaction.send(embed=discord.Embed(
+            InteractionComponents(self.interaction).placeholder][1] = [0 for _ in InteractionComponents(self.interaction).values]
+        await self.interaction.response.send_message(embed=discord.Embed(
             title=f'Роли выбранны',
             color=self.COLOR
         ))
@@ -496,7 +493,7 @@ class SecSetForBTST():
         data[str(self.interaction.guild.id)]['ADMINCHANNEL'] = InteractionComponents(self.interaction).values[0]
         with open(f'{BD}users.json', 'w') as file:
             json.dump(data, file, indent=4)
-        await self.interaction.send(embed=discord.Embed(
+        await self.interaction.response.send_message(embed=discord.Embed(
             title="Успешно",
             description=f"*Канал администратора изменен на {InteractionComponents(self.interaction).values[0]}*",
         ))
@@ -505,12 +502,12 @@ class SecSetForBTST():
         with open(f'{BD}users.json', 'r') as file:
             data = json.load(file)
         data[str(self.interaction.guild.id)]['JoinRoles'] = InteractionComponents(self.interaction).values
-        await self.interaction.send('роли выбранны')
+        await self.interaction.response.send_message('роли выбранны')
         with open(f'{BD}users.json', 'w') as file:
             json.dump(data, file, indent=4)
 
 
-class ScrollSet():
+class ScrollSet:
     def __init__(self, bot, interaction, old_emb):
         self.bot = bot
         self.interaction: discord.Interaction = interaction
@@ -550,26 +547,18 @@ class ScrollSet():
             emb.add_field(name=self.interaction.message.embeds[0].fields[0].name,
                           value=f'страница {int(self.interaction.message.embeds[0].fields[0].value.split()[1]) + 1 if int(self.interaction.message.embeds[0].fields[0].value.split()[1]) < len(self.serverRoles) else self.interaction.message.embeds[0].fields[0].value.split()[1]} из {str(len(self.serverRoles))}')
 
-            await self.interaction.message.edit(embed=emb)
-            # components=[
-            #     Select(
-            #         placeholder=self.interaction.message.embeds[0].fields[0].name,
-            #         max_values=len(self.serverRoles[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]),
-            #         min_values=0,
-            #         options=[SelectOption(label=i.name, value=i.id) for i in
-            #                  self.serverRoles[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]]
-            #     ),
-            #     [
-            #         Button(label='модерация'),
-            #         Button(label='настройка бота'),
-            #         Button(label='настройка рейтинга')
-            #     ],
-            #     [
-            #         Button(label='<---'),
-            #         Button(label='OK'),
-            #         Button(label='--->')
-            #     ]
-            # ])
+            vw = DefaultButtonsForBTST.but()
+            sel = Select(
+                placeholder=self.interaction.message.components[2].children[0].placeholder,
+                max_values=len(self.serverRoles[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]),
+                min_values=0,
+            )
+            [sel.add_option(label=i.name, value=i.id) for i in
+             self.serverRoles[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]]
+
+            vw.add_item(sel)
+
+            await self.interaction.message.edit(embed=emb, view=vw)
 
         elif self.interaction.message.embeds[0].fields[0].name \
                 .startswith('выберете канал который хотите сделать каналом администратора') \
@@ -587,7 +576,8 @@ class ScrollSet():
             sel = Select(
                 placeholder='выберете канал который хотите сделать каналом администратора'
             )
-            [sel.add_option(label=i.name, value=i.id) for i in self.chlens[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]]
+            [sel.add_option(label=i.name, value=i.id) for i in
+             self.chlens[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]]
             vw.add_item(sel)
 
             await self.interaction.message.edit(embed=emb, view=vw)
@@ -606,30 +596,21 @@ class ScrollSet():
             emb.add_field(name=self.interaction.message.embeds[0].fields[0].name,
                           value=f'страница {int(self.interaction.message.embeds[0].fields[0].value.split()[1]) - 1} из {str(len(self.serverRoles))}')
 
-            await self.interaction.message.edit(embed=emb)
-            # components=[
-            #     Select(
-            #         placeholder=self.interaction.message.embeds[0].fields[0].name,
-            #         max_values=len(self.serverRoles[int(
-            #             self.interaction.message.embeds[0].fields[0].value.split()[
-            #                 1])-2]),
-            #         min_values=0,
-            #         options=[SelectOption(label=i.name, value=i.id) for i in
-            #                  self.serverRoles[int(
-            #                      self.interaction.message.embeds[0].fields[
-            #                          0].value.split()[1])-2]]
-            #     ),
-            #     [
-            #         Button(label='модерация'),
-            #         Button(label='настройка бота'),
-            #         Button(label='настройка рейтинга')
-            #     ],
-            #     [
-            #         Button(label='<---'),
-            #         Button(label='OK'),
-            #         Button(label='--->')
-            #     ]
-            # ])
+            vw = DefaultButtonsForBTST.but()
+            sel = Select(
+                placeholder=self.interaction.message.components[2].children[0].placeholder,
+                max_values=len(self.serverRoles[int(
+                    self.interaction.message.embeds[0].fields[0].value.split()[
+                        1]) - 2]),
+                min_values=0,
+            )
+            [sel.add_option(label=i.name, value=i.id) for i in
+             self.serverRoles[int(
+                 self.interaction.message.embeds[0].fields[
+                     0].value.split()[1]) - 2]]
+            vw.add_item(sel)
+
+            await self.interaction.message.edit(embed=emb, view=vw)
 
         elif self.interaction.message.embeds[0].fields[0].name \
                 .startswith('выберете канал который хотите сделать каналом администратора') \
@@ -657,7 +638,7 @@ class ScrollSet():
             await self.interaction.response.defer()
 
 
-class SettingsPanel():
+class SettingsPanel:
     def __init__(self, bot, interaction):
         self.bot = bot
         self.interaction: discord.Interaction = interaction
@@ -706,7 +687,7 @@ class SettingsPanel():
         vw.add_item(DefaultButtonsForBTST.sel())
 
         if f:
-            await self.interaction.send(embed=emb, view=vw)
+            await self.interaction.response.send_message(embed=emb, view=vw)
         else:
             await self.interaction.message.edit(embed=emb, view=vw)
 

@@ -53,6 +53,6 @@ class InfoSetup(commands.Cog):
     async def srinf_remove(self, member: discord.Member):
         await SrInfo_listeners(self.bot).listener_srinf_remove(member)
 
-    @commands.Cog.listener('on_button_click')
+    @commands.Cog.listener('on_interaction')
     async def on_button_click_help(self, interaction: discord.Interaction):
         await Help(self.bot).listener_on_button_click_help(interaction)

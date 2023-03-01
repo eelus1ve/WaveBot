@@ -9,7 +9,7 @@ from module.moderation.commands.stngs import Stngs
 from module.moderation.commands.mwarns import Mwarns
 from module.moderation.commands.btst import *
 # from module.moderation.mbrjn import 
-from module.moderation.commands.rand2 import Select
+from module.moderation.commands.rand2 import SelectRole
 from module.moderation.commands.roomedit import Roomedit
 
 
@@ -61,7 +61,7 @@ class ModerationSetup(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def select(self, ctx: commands.Context, arg=None):
-        await Select(self.bot).command_select(ctx, arg)
+        await SelectRole(self.bot).command_select(ctx, arg)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -73,9 +73,9 @@ class ModerationSetup(commands.Cog):
     async def on_message_mwarns(self, message: discord.Message):
         await Mwarns(self.bot).listener_on_message_mwarns(message)
         
-    @commands.Cog.listener('on_select_option')
+    @commands.Cog.listener('on_interaction')
     async def on_select_option_select(self, interaction: discord.Interaction):
-        await Select(self.bot).listener_on_select_option_select(interaction)
+        await SelectRole(self.bot).listener_on_select_option_select(interaction)
 
     @commands.Cog.listener('on_voice_state_update')
     async def on_voice_state_update_roomedit_move(self, member: discord.Member, before, after):

@@ -137,7 +137,8 @@ async def setup(bot: commands.Bot):
                 await sec_set.rolecass_choice()
                 await interaction.response.defer()
 
-            elif inter.placeholder.startswith('Укажите роли которые вы хотите добавить в класс'):
+            elif old_emb.fields[0].name.startswith('Укажите роли которые вы хотите добавить в класс'):
+                print(0)
                 await sec_set.role_choice()
                 await set_pan.btst_set_def()
 
@@ -154,29 +155,32 @@ async def setup(bot: commands.Bot):
             pass
 
     @bot.listen('on_interaction')
-    async def preference_options(interaction):
-        if InteractionComponents(interaction).inter_type == 3:
-            old_emb = interaction.message.embeds[0]
-            arg = old_emb.fields[0].name
+    async def preference_options(interaction: discord.Interaction):
+        try:
+            if InteractionComponents(interaction).inter_type == 3:
+                old_emb = interaction.message.embeds[0]
+                arg = old_emb.fields[0].name
 
-            set_btst = SetForBTST(bot, interaction, old_emb, arg)
-            set_pan = SettingsPanel(bot, interaction)
+                set_btst = SetForBTST(bot, interaction, old_emb, arg)
+                set_pan = SettingsPanel(bot, interaction)
 
-            if InteractionComponents(interaction).values[0] == 'канал администратора':
-                await set_btst.admin_clen()
-                await set_pan.btst_set_def()
+                if InteractionComponents(interaction).values[0] == 'канал администратора':
+                    await set_btst.admin_clen()
+                    await set_pan.btst_set_def()
 
-            elif InteractionComponents(interaction).values[0] == 'настроить цвет':
-                await set_btst.color_choice()
-                await set_pan.btst_set_def()
+                elif InteractionComponents(interaction).values[0] == 'настроить цвет':
+                    await set_btst.color_choice()
+                    await set_pan.btst_set_def()
 
-            elif InteractionComponents(interaction).values[0] == 'префикс':
-                await set_btst.prefix()
-                await set_pan.btst_set_def()
+                elif InteractionComponents(interaction).values[0] == 'префикс':
+                    await set_btst.prefix()
+                    await set_pan.btst_set_def()
+        except IndexError:
+            pass
 
     @bot.listen('on_interaction')
-    async def scroll_set(interaction):
-        if InteractionComponents(interaction).inter_type == 2:
+    async def scroll_set(interaction: discord.Interaction):
+        if InteractionComponents(interaction).inter_type == 2 and interaction.guild:
             try:
                 old_emb = interaction.message.embeds[0]
 

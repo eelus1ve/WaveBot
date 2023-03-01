@@ -214,12 +214,15 @@ class Game2048(commands.Cog):
         await check_1(body, interaction)
 
     async def listener_on_button_2048(self, interaction: discord.Interaction):
-        inter_children = interaction.message.components[0].children
-        inter_id = interaction.data['custom_id']
-        if inter_children[1] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
-        if inter_children[0] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
-        if inter_children[2] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
-        if inter_children[3] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
+        try:
+            inter_children = interaction.message.components[0].children
+            inter_id = interaction.data['custom_id']
+            if inter_children[1] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
+            if inter_children[0] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
+            if inter_children[2] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
+            if inter_children[3] == inter_id: await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
+        except IndexError:
+            pass
 
 
     async def command_p2048(self, ctx: commands.Context): 
