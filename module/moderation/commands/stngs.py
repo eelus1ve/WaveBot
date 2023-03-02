@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import json
 from BTSET import Moderation, embpy, bdpy, BD, Lang
+import asyncio
 
 class Stngs(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -144,9 +145,9 @@ class Stngs(commands.Cog):
 
 
 
-        elif arg == 'add_join_role':
+        elif arg in ['add_join_role', 'remove_join_role']:
             if not(clArg):
-                raise commands.BadArgument(f"Использование: {prefix}settings add_join_role (ID роли)")
+                raise commands.BadArgument("{} {}{} {}".format(Lang(ctx).language[f'settings_command_set_join_roles_{arg}_eroor_1'], prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_join_roles_{arg}_eroor_2']))
             if clArg in data[str(ctx.author.guild.id)]['JoinRoles']:
                 raise commands.BadArgument(f"Роль {rl1} уже была добавлена!")
             data[str(ctx.author.guild.id)]['JoinRoles'].append(str(clArg))
@@ -158,8 +159,7 @@ class Stngs(commands.Cog):
             if not(clArg in data[str(ctx.author.guild.id)]['JoinRoles']):
                 raise commands.BadArgument(f"Такого ID не существует!")
             data[str(ctx.author.guild.id)]['JoinRoles'].pop(data[str(ctx.author.guild.id)]['JoinRoles'].index(str(clArg)))
-            rl2 = ctx.guild.get_role(int(clArg))
-            description1=f"Роль {rl2} успешно добавлена"
+            rl1 = ctx.guild.get_role(int(clArg))
 
                 
         elif arg == 'join_roles':
@@ -223,23 +223,19 @@ class Stngs(commands.Cog):
             description1=f"*Канал {clArg} был успешно удалён*"
 
 
-        elif arg == 'add_IgnoreRole':
+        elif arg in ['add_IgnoreRole', 'remove_IgnoreRole']:
             if not(clArg):
-                raise commands.BadArgument(f"*Использование: {prefix}settings add_IgnoreRole (id роли)*")
-            if clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']:
-                raise commands.BadArgument(f"*Роль {clArg} уже добавленf*")
-            data[str(ctx.author.guild.id)]['IgnoreRoles'].update(clArg)
-            description1=f"*Роль {clArg} была успешно добавлена в игнорируемые*"
-
-
-        elif arg == 'remove_IgnoreRole':
-            if not(clArg):
-                raise commands.BadArgument(f"*Использование:* {prefix}settings remove_IgnoreRole (id роли)*")
-            if not(clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']):
-                raise commands.BadArgument(f"*Роли {clArg} нет в игнорируемых*")
-            data[str(ctx.author.guild.id)]['IgnoreRoles'].pop(clArg)
-            description1=f"*Роль {clArg} была успешно удалёна из игнорируемых*"
-
+                raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_1'], prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_2']))
+            description1="*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_2']) 
+            if arg == 'add_IgnoreRole':
+                if clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']:
+                    raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_ex_2']) )
+                data[str(ctx.author.guild.id)]['IgnoreRoles'].update(clArg)
+            else:
+                if not(clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']):
+                    raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_not_ex_2']) )
+                data[str(ctx.author.guild.id)]['IgnoreRoles'].pop(clArg)
+            
 
         elif arg == 'IgnoreRoles':
             IGRL =data[str(ctx.author.guild.id)]['IgnoreRoles']
