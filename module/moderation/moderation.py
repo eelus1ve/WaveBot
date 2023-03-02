@@ -66,7 +66,7 @@ class ModerationSetup(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def room(self, ctx: commands.Context):
-        await Roomedit(self.bot).command_room(ctx)
+        await Roomedit(self.bot).command_room(ctx)# это временная функция нужно будет потом удалить сейчас не работает
 
     #листенеры в отдельный класс
     @commands.Cog.listener('on_message')
@@ -81,7 +81,7 @@ class ModerationSetup(commands.Cog):
     async def on_voice_state_update_roomedit_move(self, member: discord.Member, before, after):
         await Roomedit(self.bot).listener_on_voice_state_update_roomedit_move(member, before, after)
 
-    @commands.Cog.listener('on_button_click')
+    @commands.Cog.listener('on_interaction')
     async def roomedit_start(self, interaction: discord.Interaction):
         await Roomedit(self.bot).listener_roomedit_start(interaction)
 

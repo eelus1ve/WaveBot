@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from email.errors import InvalidMultipartContentTransferEncodingDefect
 import json
-from BTSET import BD, InteractionComponents
+from BTSET import BD, InteractionComponents, bdpy
 from discord.ui import Select, RoleSelect, UserSelect, ChannelSelect, Button, View
 
 preference_set_for_best = ['канал администратора', 'настроить цвет', 'префикс']
@@ -11,18 +11,19 @@ preference_set_for_best = ['канал администратора', 'наст�
 class DefaultButtonsForBTST:
     def but():  # здесь нет ошибки
         vw = View(timeout=None)
-        vw.add_item(Button(label='модерация'))
-        vw.add_item(Button(label='настройка бота'))
-        vw.add_item(Button(label='настройка рейтинга'))
-        vw.add_item(Button(label='<---', row=1))
-        vw.add_item(Button(label='OK', row=1))
-        vw.add_item(Button(label='--->', row=1))
+        vw.add_item(Button(label='модерация', row=1))
+        vw.add_item(Button(label='настройка бота', row=1))
+        vw.add_item(Button(label='настройка рейтинга', row=1))
+        vw.add_item(Button(label='<---', row=2))
+        vw.add_item(Button(label='OK', row=2))
+        vw.add_item(Button(label='--->', row=2))
         return vw
 
     def sel():  # здесь нет ошибки
         seL = Select(
             placeholder='рекомендуем настроить',
-            max_values=1
+            max_values=1,
+            row=0
         )
         [seL.add_option(label=i, value=i) for i in preference_set_for_best]
         return seL
@@ -293,14 +294,14 @@ class SetForBTST():
         ctx = [i for i in self.bot.guilds if i.id == self.interaction.guild_id][0]
         chlen_krokodila = [i for i in ctx.text_channels if i.id == self.interaction.channel_id][0]
 
-        if self.data[str(ctx.id)]['selfRoom'] != '0':
+        if bdpy(self.interaction)['SELFROOM'] != '0':
             for category in ctx.categories:
                 [await chnl.delete() for chnl in category.channels if
-                 str(category.id) == self.data[str(ctx.id)]['selfRoom']["ct"]]
+                 str(category.id) == self.data[str(ctx.id)]['SELFROOM']["ct"]]
             [await i.delete() for i in ctx.categories if
-             str(i.id) == self.data[str(ctx.id)]['selfRoom']["ct"] or str(i.id) == self.data[str(ctx.id)]['selfRoom'][
+             str(i.id) == self.data[str(ctx.id)]['SELFROOM']["ct"] or str(i.id) == self.data[str(ctx.id)]['SELFROOM'][
                  "ctp"]]
-            self.data[str(ctx.id)]['selfRoom'] = '0'
+            self.data[str(ctx.id)]['SELFROOM'] = '0'
             await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
                                                            description='Канал для создания комнат удалён',
                                                            color=self.COLOR))
@@ -310,7 +311,7 @@ class SetForBTST():
             vcch = await ctx.create_voice_channel(name=f'Создать комнату', category=ct)
             chn = await ctx.create_text_channel(name=f'Настройка комнаты', category=ct)
             ctp = await ctx.create_category(name='Свои румы', position=2)
-            stb_gld: discord.Guild = self.bot.get_guild(id=981511419042361344)
+            stb_gld: discord.Guild = self.bot.get_guild(981511419042361344)
             emb = discord.Embed(title='***⚙️ Управление приватными комнатами***',
                                 description=f'<:corona1:1020971032309403758> - назначить нового создателя комнаты \n\
                         <:notebook1:1020971040416993280> - ограничить/выдать доступ к комнате \n\
@@ -321,23 +322,19 @@ class SetForBTST():
                         <:door1:1020971033756450866> - выгнать участника из комнаты \n\
                         <:microphone1:1020971039141920819> - ограничить/выдать право говорить',
                                 color=self.COLOR)
-            await chn.send(embed=emb,
-                           components=[
-                               [
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971032309403758)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971040416993280)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971037741043713)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971036252053524))
-                               ],
-                               [
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971043856330782)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971035014746162)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971033756450866)),
-                                   Button(emoji=await stb_gld.fetch_emoji(1020971039141920819))
-                               ]
-                           ]
-                           )
-            self.data[str(ctx.id)]['selfRoom'] = {"ct": str(ct.id), "ctp": str(ctp.id), "vc": str(vcch.id),
+            vw = View(timeout=None)
+            vw.add_item(Button(emoji=await stb_gld.fetch_emoji(1020971032309403758)))
+            vw.add_item(Button(emoji=await stb_gld.fetch_emoji(1020971040416993280)))
+            vw.add_item(Button(emoji=await stb_gld.fetch_emoji(1020971037741043713)))
+            vw.add_item(Button(emoji=await stb_gld.fetch_emoji(1020971036252053524)))
+
+            vw.add_item(Button(emoji=await stb_gld.fetch_emoji(1020971043856330782), row=1))
+            vw.add_item(Button(emoji=await stb_gld.fetch_emoji(1020971035014746162), row=1))
+            vw.add_item(Button(emoji=await stb_gld.fetch_emoji(1020971033756450866), row=1))
+            vw.add_item(Button(emoji=await stb_gld.fetch_emoji(1020971039141920819), row=1))
+
+            await chn.send(embed=emb, view=vw)
+            self.data[str(ctx.id)]['SELFROOM'] = {"ct": str(ct.id), "ctp": str(ctp.id), "vc": str(vcch.id),
                                                   "tc": str(chn.id)}
             await chlen_krokodila.send(embed=discord.Embed(title='***Успешно***',
                                                            description='Канал для создания комнат создан',
@@ -687,7 +684,10 @@ class SettingsPanel:
         vw.add_item(DefaultButtonsForBTST.sel())
 
         if f:
-            await self.interaction.response.send_message(embed=emb, view=vw)
+            if type(self.interaction) == commands.Context:
+                await self.interaction.send(embed=emb, view=vw)
+            else:
+                await self.interaction.response.send_message(embed=emb, view=vw)
         else:
             await self.interaction.message.edit(embed=emb, view=vw)
 

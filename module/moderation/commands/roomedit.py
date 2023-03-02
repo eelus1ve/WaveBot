@@ -20,7 +20,7 @@ class Roomedit(commands.Cog):
         stb_gld: discord.Guild = self.bot.get_guild(981511419042361344)
         emb = discord.Embed(title='***⚙️ {}***'.format(Lang(ctx).language['roomedit_craate_title']),
                             description='👑 - {} \n🗒 - {} \n👥 - {} \n🔒 - {} \n✏️ - {} \n👁‍🗨 - {} \n🚪 - {} \n🎙 - {}'.format(Lang(ctx).language['roomedit_craate_des_1'], Lang(ctx).language['roomedit_craate_des_2'], Lang(ctx).language['roomedit_craate_des_3'], Lang(ctx).language['roomedit_craate_des_4'], Lang(ctx).language['roomedit_craate_des_5'], Lang(ctx).language['roomedit_craate_des_6'], Lang(ctx).language['roomedit_craate_des_7'], Lang(ctx).language['roomedit_craate_des_8']),
-                            color = Moderation(ctx.author).color)
+                            color=Moderation(ctx.author).color)
         await ctx.send(embed=emb)
     #     components = [
     #         [
