@@ -132,7 +132,7 @@ class Stngs(commands.Cog):
 
         elif arg in ['add_badword', 'remove_badword']:
             if not(clArg):
-                raise commands.BadArgument("*{} {}{} {}*".format(Lang(ctx).language[f'settings_command_set_badword_{arg}_error_1'], prefix, command_name, Lang(ctx).language[f'settings_command_set_badword_{arg}_error_2']))
+                raise commands.BadArgument(f"*{Lang(ctx).language[f'settings_command_set_badword_{arg}_error_1']} {prefix}{command_name} {arg} {Lang(ctx).language[f'settings_command_set_badword_{arg}_error_2']}*")
             if arg == 'add_badword':
                 if clArg in data[str(ctx.author.guild.id)]['BADWORDS']:
                     raise commands.BadArgument("*{} ||{}|| {}*".format(Lang(ctx).language[f'settings_command_set_badword_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_badword_{arg}_not_ex_2']))
@@ -147,10 +147,10 @@ class Stngs(commands.Cog):
 
         elif arg in ['add_join_role', 'remove_join_role']:
             if not(clArg):
-                raise commands.BadArgument("{} {}{} {}".format(Lang(ctx).language[f'settings_command_set_join_roles_{arg}_eroor_1'], prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_join_roles_{arg}_eroor_2']))
+                raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_join_roles_{arg}_eroor_1']} {prefix}{command_name} {arg} {Lang(ctx).language[f'settings_command_set_join_roles_{arg}_eroor_2']}")
             if arg == 'add_join_role':
                 if clArg in data[str(ctx.author.guild.id)]['JoinRoles']:
-                    raise commands.BadArgument(f"Роль {rl1} уже была добавлена!")
+                    raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_join_roles_{arg}_ex_1']} {rl1} {Lang(ctx).language[f'settings_command_set_join_roles_{arg}_ex_2']}")
                 data[str(ctx.author.guild.id)]['JoinRoles'].append(str(clArg))
                 rl1 = ctx.guild.get_role(int(clArg))
             else:
@@ -224,7 +224,6 @@ class Stngs(commands.Cog):
         elif arg in ['add_IgnoreRole', 'remove_IgnoreRole']:
             if not(clArg):
                 raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_1'], prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_2']))
-            description1="*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_2']) 
             if arg == 'add_IgnoreRole':
                 if clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']:
                     raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_ex_2']) )
@@ -233,7 +232,7 @@ class Stngs(commands.Cog):
                 if not(clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']):
                     raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_not_ex_2']) )
                 data[str(ctx.author.guild.id)]['IgnoreRoles'].pop(clArg)
-            
+            description1="*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_2']) 
 
         elif arg == 'IgnoreRoles':
             IGRL =data[str(ctx.author.guild.id)]['IgnoreRoles']
