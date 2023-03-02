@@ -376,10 +376,10 @@ settings_command_set_ignorerole_remove_IgnoreRole_not_ex_2 нет в игнор�
 /////////////////////////////////////
 
 //avatar
-//...
+avatar_title Аватар
 
 //rand
-//...
+rand_title Ваше рандомное число:
 
 //translit
 //...
