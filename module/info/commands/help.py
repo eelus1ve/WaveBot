@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord.ui import Button, Select, View
 from BTSET import BOTVERSION, bdpy, Lang, InteractionComponents
-from discord import InvalidArgument
 
 class Help(commands.Cog):
 

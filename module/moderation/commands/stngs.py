@@ -148,19 +148,17 @@ class Stngs(commands.Cog):
         elif arg in ['add_join_role', 'remove_join_role']:
             if not(clArg):
                 raise commands.BadArgument("{} {}{} {}".format(Lang(ctx).language[f'settings_command_set_join_roles_{arg}_eroor_1'], prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_join_roles_{arg}_eroor_2']))
-            if clArg in data[str(ctx.author.guild.id)]['JoinRoles']:
-                raise commands.BadArgument(f"Роль {rl1} уже была добавлена!")
-            data[str(ctx.author.guild.id)]['JoinRoles'].append(str(clArg))
-            rl1 = ctx.guild.get_role(int(clArg))
+            if arg == 'add_join_role':
+                if clArg in data[str(ctx.author.guild.id)]['JoinRoles']:
+                    raise commands.BadArgument(f"Роль {rl1} уже была добавлена!")
+                data[str(ctx.author.guild.id)]['JoinRoles'].append(str(clArg))
+                rl1 = ctx.guild.get_role(int(clArg))
+            else:
+                if not(clArg in data[str(ctx.author.guild.id)]['JoinRoles']):
+                    raise commands.BadArgument(f"Такого ID не существует!")
+                data[str(ctx.author.guild.id)]['JoinRoles'].pop(data[str(ctx.author.guild.id)]['JoinRoles'].index(str(clArg)))
+                rl1 = ctx.guild.get_role(int(clArg))
             description1=f"Роль {rl1} успешно добавлена!"
-
-
-        elif arg == 'remove_join_role':
-            if not(clArg in data[str(ctx.author.guild.id)]['JoinRoles']):
-                raise commands.BadArgument(f"Такого ID не существует!")
-            data[str(ctx.author.guild.id)]['JoinRoles'].pop(data[str(ctx.author.guild.id)]['JoinRoles'].index(str(clArg)))
-            rl1 = ctx.guild.get_role(int(clArg))
-
                 
         elif arg == 'join_roles':
             embb = discord.Embed(title = f'Успешно',
