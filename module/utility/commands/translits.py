@@ -1,12 +1,14 @@
 import discord
 from discord.ext import commands
-from BTSET import Utility
+from system.Bot import WaveBot
 
 lst = [' ', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']','a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/']
 lst1 = [' ', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.',]
+
+
 class Translits(commands.Cog):
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
+    def __init__(self, bot):
+        self.bot: WaveBot = bot
 
     async def command_tr(self, ctx: commands.Context, arg):
         if arg:
@@ -17,5 +19,5 @@ class Translits(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="Перевод: ",
                 description=''.join([lst1[lst.index(i)] for i in bf]),
-                color = Utility(ctx).color
+                color=self.bot.db_get_utilitycolor(ctx)
             ))

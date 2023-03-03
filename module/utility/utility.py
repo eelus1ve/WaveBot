@@ -5,10 +5,11 @@ from module.utility.commands.vote import Vote
 from module.utility.commands.rand import Rand
 from module.utility.commands.avatar import Avatar
 from module.utility.commands.translits import Translits
+from system.Bot import WaveBot
 
 
 class UtilitySetup(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: WaveBot):
         self.bot = bot
 
     @commands.command()
@@ -19,7 +20,7 @@ class UtilitySetup(commands.Cog):
     async def tr(self, ctx: commands.Context, *arg):
         await Translits(self.bot).command_tr(ctx, arg)
 
-    @commands.command(aliases = ['ранд', 'РАНД', 'Ранд'])
+    @commands.command(aliases=['ранд', 'РАНД', 'Ранд'])
     async def rand(self, ctx: commands.Context, arg: int = None, arg2: int = None):
         await Rand(self.bot).command_rand(ctx, arg, arg2)
 
