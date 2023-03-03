@@ -1,17 +1,19 @@
 import random
 import discord
 from discord.ext import commands
-from BTSET import Fun, Lang
+from BTSET import Lang
+from system.Bot import WaveBot
+
 
 class Dice(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: WaveBot):
         self.bot = bot
         
     async def command_dice(self, ctx: commands.Context):
         msg = await ctx.send(embed=discord.Embed(
                 title=Lang(ctx).language['dice_title'],
                 description='{} {} {}'.format(random.randint(1, 6), Lang(ctx).language['dice_des'], random.randint(1, 6)),
-                color = Fun(ctx).color
+                color=self.bot.db_get_funcolor(ctx)
             )
         )
         for _ in range(5):
@@ -19,6 +21,6 @@ class Dice(commands.Cog):
                 embed=discord.Embed(
                     title=Lang(ctx).language['dice_title'],
                     description='{} {} {}'.format(random.randint(1, 6), Lang(ctx).language['dice_des'], random.randint(1, 6)),
-                    color=Fun(ctx).color
+                    color=self.bot.db_get_funcolor(ctx)
                 )
             )

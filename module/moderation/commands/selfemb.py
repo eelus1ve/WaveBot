@@ -4,10 +4,11 @@ from discord.ext import commands
 import json
 import datetime
 import pytz
+from system.Bot import WaveBot
 
 class Selfemb(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: WaveBot = bot
     
     @commands.command()
     async def create_emb(self, ctx: commands.Context):

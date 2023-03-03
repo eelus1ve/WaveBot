@@ -5,6 +5,7 @@ import json
 from BTSET import BD, InteractionComponents
 from system.btst_settings import SetForBTST, SecSetForBTST, ScrollSet, SettingsPanel, DefaultButtonsForBTST
 from discord.ui import Select
+from system.Bot import WaveBot
 
 
 async def setup(bot: commands.Bot):

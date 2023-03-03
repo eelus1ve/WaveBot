@@ -5,6 +5,7 @@ from typing import Optional
 from discord import File
 from BTSET import Score_presets, bdpy
 from PIL import Image, ImageFont, ImageDraw
+from system.Bot import WaveBot
 
 
 class Rank(commands.Cog):

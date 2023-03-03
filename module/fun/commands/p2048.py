@@ -3,7 +3,9 @@ import random
 import discord
 from discord.ui import Button
 from discord.ext import commands
-from BTSET import Fun, Lang
+from BTSET import Lang
+from system.Bot import WaveBot
+
 
 def game_over(body):
     if not [1 for i in body if 0 in i] and [[1 for ii in range(len(i[:3])) if i[ii] == i[ii + 1]] for i in body] == [[], [], [], []] and [[1 for ii in range(len(body[:3])) if body[i][ii] == body[i+1][ii]] for i in range(3)] == [[], [], []]:
@@ -12,6 +14,7 @@ def game_over(body):
         return 2
     else:
         return 0
+
 
 def randomaizer(body):
     number = 2 if int(random.randint(0, 11)) else 4
@@ -29,11 +32,12 @@ def randomaizer(body):
 
     body[rplace][place] = number
 
-async def check_1(body, interaction):
+
+async def check_1(body, interaction, bot):
     if game_over(body) == 2:
         emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title_win'],
                             description=Lang(ctx=interaction).language['p2048_des_win'],
-                            color=Fun(interaction).color)
+                            color=bot.db_get_funcolor(interaction))
         await interaction.message.edit(embed=emb)
 
     elif game_over(body):
@@ -43,13 +47,13 @@ async def check_1(body, interaction):
                                 Lang(ctx=interaction).language['p2048_des_loose_sum_1'], sum(asd),
                                 Lang(ctx=interaction).language['p2048_des_loose_sum_2'],
                                 Lang(ctx=interaction).language['p2048_des_loose_max'], max(asd)),
-                            color=Fun(interaction).color)
+                            color=bot.db_get_funcolor(interaction))
         await interaction.message.edit(embed=emb)
 
 
 class Game2048(commands.Cog):
-    def __init__(self, bot: commands.Bot):
-        self.bot: commands.Bot = bot
+    def __init__(self, bot: WaveBot):
+        self.bot: WaveBot = bot
 
     lang_num = [0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
     lang_emo = []
@@ -89,9 +93,9 @@ class Game2048(commands.Cog):
             des.append(str(''.join(map(str, i)) + str('\n')))
         emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
                             description=''.join(des),
-                            color=Fun(interaction).color)
+                            color=self.bot.db_get_funcolor(interaction))
         await interaction.message.edit(embed=emb)
-        await check_1(body, interaction)
+        await check_1(body, interaction, self.bot)
 
     async def listener_on_button_click_2048_up(self, interaction: discord.Interaction):
         await interaction.response.defer()
@@ -128,9 +132,9 @@ class Game2048(commands.Cog):
             des.append(str(''.join(map(str, i)) + str('\n')))
         emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
                             description=''.join(des),
-                            color=Fun(interaction).color)
+                            color=self.bot.db_get_funcolor(interaction))
         await interaction.message.edit(embed=emb)
-        await check_1(body, interaction)
+        await check_1(body, interaction, self.bot)
 
     async def listener_on_button_click_2048_right(self, interaction: discord.Interaction):
         await interaction.response.defer()
@@ -168,9 +172,9 @@ class Game2048(commands.Cog):
             des.append(str(''.join(map(str, i)) + str('\n')))
         emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
                             description=''.join(des),
-                            color=Fun(interaction).color)
+                            color=self.bot.db_get_funcolor(interaction))
         await interaction.message.edit(embed=emb)
-        await check_1(body, interaction)
+        await check_1(body, interaction, self.bot)
 
     async def listener_on_button_click_2048_down(self, interaction: discord.Interaction):
         await interaction.response.defer()
@@ -209,9 +213,9 @@ class Game2048(commands.Cog):
             des.append(str(''.join(map(str, i)) + str('\n')))
         emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
                             description=''.join(des),
-                            color=Fun(interaction).color)
+                            color=self.bot.db_get_funcolor(interaction))
         await interaction.message.edit(embed=emb)
-        await check_1(body, interaction)
+        await check_1(body, interaction, self.bot)
 
     async def listener_on_button_2048(self, interaction: discord.Interaction):
         try:
@@ -250,7 +254,7 @@ class Game2048(commands.Cog):
             des.append(str(''.join(map(str, i)) + str('\n')))
         emb = discord.Embed(title=Lang(ctx).language['p2048_title'],
                             description=''.join(des),
-                            color = Fun(ctx).color)
+                            color=self.bot.db_get_funcolor(ctx))
 
         vw = discord.ui.View(timeout=None)
 

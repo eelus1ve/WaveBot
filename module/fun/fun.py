@@ -8,11 +8,12 @@ from module.fun.commands.anMessage import Get_message
 from module.fun.commands.p2048 import Game2048
 # from module.fun.mafia import
 # from module.fun.xo import
+from system.Bot import WaveBot
 
 
 
 class FunSetup(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: WaveBot):
         self.bot = bot
 
     @commands.command()

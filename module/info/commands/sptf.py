@@ -5,23 +5,25 @@ import pytz
 import requests
 import dateutil.parser
 from PIL import Image, ImageFont, ImageDraw
-from BTSET import Info, Lang
+from BTSET import Lang
+from system.Bot import WaveBot
+
 
 class SpotifyInfo(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: WaveBot = bot
 
     async def command_spotify_info(self, ctx: commands.Context, member: discord.Member):
         spotifyActivity = next((activity for activity in member.activities if isinstance(activity, discord.Spotify)), None)
         if spotifyActivity is None:
-            if not(str(member.status) ==  'offline'):
+            if not(str(member.status) == 'offline'):
                 raise commands.BadArgument('no spotify')
             await ctx.send("{} {}".format(member.mention, Lang(ctx).language['spotify_status_offline']))
         else:
             embed = discord.Embed(
                 title=f"{member.name}'s Spotify",
                 description="{} [{}](https://open.spotify.com/track/{})".format(Lang(ctx).language['spotify_listen'], spotifyActivity.title, spotifyActivity.track_id),
-                color=Info(ctx).color
+                color=self.bot.db_get_infocolor(ctx)
             )
             embed.set_thumbnail(url=spotifyActivity.album_cover_url)
             embed.add_field(name=Lang(ctx).language['spotify_musician'], value=spotifyActivity.artist)
@@ -29,8 +31,6 @@ class SpotifyInfo(commands.Cog):
             embed.set_footer(text="{} {}".format(Lang(ctx).language['spotify_time'], spotifyActivity.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Europe/Moscow')).strftime('%H:%M')))
             await ctx.send(embed=embed)
 
-
-    
     async def command_spotify(self, ctx, member: discord.Member):
         spotifyActivity = next((activity for activity in member.activities if isinstance(activity, Spotify)), None)
         if spotifyActivity is None:
@@ -41,7 +41,7 @@ class SpotifyInfo(commands.Cog):
             background_img = Image.open('.\\module\\info\\img\\spotify_template1.png')
             albImage = Image.open(requests.get(spotifyActivity.album_cover_url, stream=True).raw).convert('RGBA')
             clr = 'white'
-            albColor = albImage.getpixel((70, 80))#((250, 100))
+            albColor = albImage.getpixel((70, 80)) # ((250, 100))
 
             titleFont = ImageFont.truetype('system/Fonts/allFonts.otf', 16)
             artistFont = ImageFont.truetype('system/Fonts/allFonts.otf', 14)

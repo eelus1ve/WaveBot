@@ -1,17 +1,18 @@
 import discord
 from discord.ext import commands
-from BTSET import Moderation, bdpy, InteractionComponents
+from BTSET import InteractionComponents
 from discord.ui import Button, Select, View
 from email.errors import InvalidMultipartContentTransferEncodingDefect
+from system.Bot import WaveBot
 
 
 class SelectRole(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: WaveBot = bot
 
     async def command_select(self, ctx: commands.Context, arg=None):
-        roles = bdpy(ctx)['ROLES']
-        selftitle = bdpy(ctx)['SelfTitle']
+        roles = self.bot.db_get_roles(ctx)
+        selftitle = self.bot.db_get_selftitle(ctx)
 
         if arg == None: #сам сюда что-то делай (мне лень)
             pass
@@ -27,29 +28,28 @@ class SelectRole(commands.Cog):
             vw.add_item(sel)
             await ctx.send(embed=discord.Embed(
                 title=selftitle,
-                color=Moderation(ctx.author).color
+                color=self.bot.db_get_modercolor(ctx)
             ),
                 view=vw
             )
 
     async def listener_on_select_option_select(self, interaction: discord.Interaction):
         try:
-            ErCOLOR = bdpy(ctx=interaction)['ERCOLOR']
-            roles = bdpy(ctx=interaction)['ROLES']
+            roles = self.bot.db_get_roles(interaction)
             if InteractionComponents(interaction).placeholder in [k for k in roles.keys()]:
                 a = interaction.user
                 try:
                     await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description=f"Роли выбраны!",
-                        color=Moderation(interaction.user).color
+                        color=self.bot.db_get_modercolor(interaction)
                     ), ephemeral=True)
                     
                 except IndexError:
                     await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description="*Роли успешно сняты!*",
-                        color=Moderation(interaction.user).color
+                        color=self.bot.db_get_modercolor(interaction)
                     ), ephemeral=True)
 
                 try:

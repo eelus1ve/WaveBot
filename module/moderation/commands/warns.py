@@ -2,14 +2,14 @@ import discord
 import json
 from discord.ext import commands
 from discord.utils import get
-from BTSET import Moderation, embpy, bdpy, BD
+from BTSET import embpy, BD
 from module.moderation.commands.audit import Audit
-n = {}
+from system.Bot import WaveBot
+
 
 class Warns(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
-
+        self.bot: WaveBot = bot
 
     async def command_kick(self, ctx: commands.Context, member: discord.Member, reason: str):
         await member.kick(reason=reason)
@@ -18,7 +18,6 @@ class Warns(commands.Cog):
     async def command_ban(self, ctx: commands.Context, member: discord.Member, reason: str):
         await member.ban(reason=reason)
         await Audit.audit(self, ctx, member, reason, text='заблокирован')
-
 
     async def command_warn(self, ctx: commands.Context, member: discord.Member, num: int):
         with open(f'{BD}users.json', 'r') as file:
@@ -29,11 +28,10 @@ class Warns(commands.Cog):
         with open(f'{BD}users.json', 'w') as file:
             json.dump(data, file, indent=4)
 
-        if data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] >= Moderation(member).nWarns:
+        if data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] >= self.bot.db_get_nwarns(ctx):
             await self.command_ban(ctx, member, reason='Вы привысили допустимое количество нарушений')
         
         # Audit(self.bot).warn_audit(ctx, )
-
 
     async def commands_clearWarns(self, ctx: commands.Context, member):
         with open(f'{BD}users.json', 'r') as file:

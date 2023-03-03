@@ -2,6 +2,8 @@ import json
 from BTSET import Score_presets, bdpy, BD, IGNORE_SIMV
 from discord.ext import commands
 import discord
+from system.Bot import WaveBot
+
 
 class Mrate(commands.Cog):
     def __init__(self, bot):

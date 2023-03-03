@@ -1,15 +1,17 @@
 import discord
-from BTSET import BOTVERSION, ADMINS, BETATESTERS, Info, Lang
+from BTSET import BOTVERSION, ADMINS, BETATESTERS, Lang
 from discord.ext import commands
- 
+from system.Bot import WaveBot
+
+
 class BotInfo(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: WaveBot = bot
 
     async def command_info(self, ctx: commands.Context): #и кста я сегодня пиццу ел!!! #молодец что пиццу ел а теперь мафию пиши
         emb = discord.Embed(title = '{} {}'.format(self.bot.user.name, Lang(ctx).language['botinfo_title']),
         description='{} {} {}'.format(Lang(ctx).language['botinfo_des_1'], self.bot.user.name, Lang(ctx).language['botinfo_des_2']), #Степа пиши свою хуйню сам
-        color = Info(ctx).color)
+        color=self.bot.db_get_infocolor(ctx))
         # emb.set_thumbnail(url=self.bot.user.avatar_url)   
         emb.set_thumbnail(url=self.bot.user.display_avatar)
         emb.add_field(name=Lang(ctx).language['botinfo_ver'], value=str(BOTVERSION))

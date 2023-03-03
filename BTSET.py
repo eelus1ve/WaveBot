@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import json
-from typing import Optional
+from typing import Optional, Union
 
 ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
 BOTVERSION = '***ALPHA 1.0***'
@@ -16,7 +16,17 @@ DEFGUILD = {
     'check': False,
     'LANG': 'ru_RU',
     'COLOR': '0x0000FF',
+    'FUNCOLOR': '0x0000FF',
+    'INFOCOLOR': '0x0000FF',
+    'MODERATIONCOLOR': '0x0000FF',
+    'RATECOLOR': '0x0000FF',
+    'UTILITYCOLOR': '0x0000FF',
     'ERCOLOR': '0x8B0000',
+    'FUNERCOLOR': '0x8B0000',
+    'INFOERCOLOR': '0x8B0000',
+    'MODERATIONERCOLOR': '0x8B0000',
+    'RATEERCOLOR': '0x8B0000',
+    'UTILITYERCOLOR': '0x8B0000',
     'AUDIT': {},
     'AUDIT_CHANNEL': '0',
     'FirstRole': '0',
@@ -308,7 +318,7 @@ async def embpy(ctx: commands.Context, comp: str, des, time: Optional[float] = N
 
 
 class Lang():
-    def __init__(self, ctx: commands.Context):
+    def __init__(self, ctx: Union[commands.Context, discord.Interaction]):
         self.language = self.lang(ctx)
 
     def lang(self, ctx: commands.Context):

@@ -3,10 +3,12 @@ from discord.ext import commands
 from discord.utils import get
 from BTSET import Moderation, bdpy
 from system.JSONwriter import Json_write
+from system.Bot import WaveBot
+
 
 class BotJoin(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: WaveBot = bot
     
     # @commands.Cog.listener('on_guild_join')
     # async def new_guild(self, ctx):

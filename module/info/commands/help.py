@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ui import Button, Select, View
 from BTSET import BOTVERSION, bdpy, Lang, InteractionComponents
+from system.Bot import WaveBot
 
 class Help(commands.Cog):
 
@@ -51,11 +52,11 @@ class Help(commands.Cog):
     }
 
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: WaveBot = bot
 
     async def command_help(self, ctx: commands.Context, arg=None):
-        COLOR = bdpy(ctx)['COLOR']
-        pref = bdpy(ctx)['PREFIX']
+        COLOR = self.bot.db_get_infocolor(ctx)
+        pref = self.bot.db_get_infocolor(ctx)
         if arg:
             await ctx.author.send(embed=discord.Embed(
                 title=f'***{arg}***',
@@ -72,8 +73,8 @@ class Help(commands.Cog):
         else:
             var = list(self.help_dict[list(self.help_dict.keys())[0]].keys())
             emb = discord.Embed(title='*Список доступных команд:*',
-                description = '',
-                color=COLOR)
+                                description='',
+                                color=COLOR)
             emb.add_field(name='', value='**`модерация`**' + '\n' + f'\n'.join([i for i in self.help_dict if i != 'модерация']))
             emb.add_field(name='', value=f'**`{var[0]}`**' + '\n' + f'\n'.join([i for i in var if i != var[0]]))
             emb.add_field(name='='*len(self.help_dict['модерация']['warn']), value=f"{self.help_dict['модерация']['warn']}", inline=True)

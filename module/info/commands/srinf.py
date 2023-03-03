@@ -1,16 +1,19 @@
 import discord
 from discord.ext import commands
-from BTSET import Info, Lang
+from BTSET import Lang
+from system.Bot import WaveBot
+
+
 class SrInfo(commands.Cog):
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
+    def __init__(self, bot: WaveBot):
+        self.bot: WaveBot = bot
 
     async def command_server_info(self, ctx: commands.Context):
         emb = discord.Embed(title='{} ***{}***'.format(Lang(ctx).language['server_info_title'], str(ctx.message.guild)),
                             description=Lang(ctx).language['server_info_des'],
-                            color=Info(ctx).color
+                            color=self.bot.db_get_infocolor(ctx)
                             )
-        emb.set_thumbnail(url=ctx.author.guild.icon_url) 
+        emb.set_thumbnail(url=ctx.author.guild.icon)
         emb.add_field(name=Lang(ctx).language['server_info_members'], value=ctx.message.guild.member_count)
         emb.add_field(name=Lang(ctx).language['server_info_own'], value=ctx.message.guild.owner)
         emb.add_field(name=Lang(ctx).language['server_info_date'], value=ctx.message.guild.created_at.strftime("%d.%m.%y"))

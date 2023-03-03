@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 from BTSET import Score_presets, bdpy
+from system.Bot import WaveBot
+
 
 class Leaders(commands.Cog):
     def __init__(self, bot: commands.Bot):

@@ -2,18 +2,19 @@ from time import sleep
 import discord
 from discord.ext import commands
 import json
-from BTSET import Moderation, embpy, bdpy, BD, Lang
+from BTSET import embpy, bdpy, BD, Lang
 import asyncio
+from system.Bot import WaveBot
 
 class Stngs(commands.Cog):
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
+    def __init__(self, bot):
+        self.bot: WaveBot = bot
 
     async def command_server_set(self, ctx: commands.Context):
         emb = discord.Embed(
             title='',
             description='',
-            color=Moderation(ctx).color
+            color=self.bot.db_get_modercolor(ctx)
         )
 
     async def command_set(self, ctx: commands.Context, arg: str=None, clArg: str=None, roleClass: str=None, emo=None):
@@ -28,7 +29,7 @@ class Stngs(commands.Cog):
         title = 0
         command_name = 'setting'
 
-        
+
 
 
         #print([SelectOption(label=i, value=i) for i in ctx.author.guild.roles])
@@ -53,13 +54,13 @@ class Stngs(commands.Cog):
                                 join_roles: Список всех ролей в автовыдаче",
 
                            )
-        if arg==None:   
+        if arg==None:
             await ctx.send(embed=embb)
 
-            
+
         elif arg == 'add_role' or arg == 'remove_role':
             if not(clArg and roleClass):
-                raise commands.MissingRequiredArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_role_{arg}_error_1'], Moderation(ctx.author).prefix), command_name, arg, Lang(ctx).language[f'settings_command_set_role_{arg}_error_2'])
+                raise commands.MissingRequiredArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_role_{arg}_error_1'], self.bot.db_get_prefix(ctx)), command_name, arg, Lang(ctx).language[f'settings_command_set_role_{arg}_error_2'])
             if not(roleClass in data[str(ctx.author.guild.id)]['ROLES']):
                 raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_role_{arg}_not_ex_1'], roleClass, Lang(ctx).language[f'settings_command_set_role_{arg}_not_ex_2']))
             description1 = "*{} {} {} {}*".format(Lang(ctx).language[f'settings_command_set_role_{arg}_1'], roleClass, Lang(ctx).language[f'settings_command_set_role_{arg}_2'], clArg)
@@ -70,7 +71,7 @@ class Stngs(commands.Cog):
                         data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].append(str(emo))
                     else:
                         data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].append(' ')
-                    
+
                 elif not(len([i for i in data[str(ctx.author.guild.id)]['ROLES'][roleClass][0]]) < 26):
                     raise commands.BadArgument(Lang(ctx).language[f'settings_command_set_role_{arg}_error_much'])
                 else:
@@ -80,13 +81,13 @@ class Stngs(commands.Cog):
                     raise commands.BadArgument("*{} {} {} {}!*".format(Lang(ctx).language[f'settings_command_set_role_{arg}_error_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_role_{arg}_error_not_ex_2'], roleClass))
                 data[str(ctx.author.guild.id)]['ROLES'][roleClass][1].pop(data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].index(str(clArg)))
                 data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].pop(data[str(ctx.author.guild.id)]['ROLES'][roleClass][0].index(str(clArg)))
-            
+
 
         elif arg == 'add_class' or arg == 'remove_class':
             if not(clArg):
-                raise commands.MissingRequiredArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{arg}_error_1'], Moderation(ctx.author).prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_class_{arg}_error_2']))
+                raise commands.MissingRequiredArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{arg}_error_1'], self.bot.db_get_prefix(ctx), command_name, arg, Lang(ctx).language[f'settings_command_set_class_{arg}_error_2']))
             ermes = "*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_class_{arg}_not_ex_2'])
-            if arg == 'add_class': 
+            if arg == 'add_class':
                 if clArg in data[str(ctx.author.guild.id)]['ROLES']:
                     raise commands.BadArgument(ermes)
                 data[str(ctx.author.guild.id)]['ROLES'].update({clArg: [[],[]]})
@@ -97,27 +98,27 @@ class Stngs(commands.Cog):
             description1 = "*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{arg}_1'], clArg, Lang(ctx).language[f'settings_command_set_class_{arg}_2'])
 
 
-        elif arg == 'color' or arg == 'ercolor':       
+        elif arg == 'color' or arg == 'ercolor':
             if [i for i in [clArg[ii] for ii in range(len(clArg))] if not(i in '#0123456789abcdef' or i in '#0123456789abcdef'.upper())]:
                 raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_color_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_color_{arg}_not_ex_2']))
 
             if [clArg[i] for i in range(len(clArg))][0] == '#':
                 if len(clArg) != 7:
                     raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_color_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_color_{arg}_not_ex_2']))
-                
-                data[str(ctx.author.guild.id)][arg.upper()] ='0x' + str(''.join([clArg[i] for i in range(len(clArg))][1:])) 
+
+                data[str(ctx.author.guild.id)][arg.upper()] ='0x' + str(''.join([clArg[i] for i in range(len(clArg))][1:]))
             else:
-                if len(clArg) != 6:                    
+                if len(clArg) != 6:
                     raise commands.BadArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_color_{arg}_error_1'], prefix, command_name, arg, Lang(ctx).language[f'settings_command_set_color_{arg}_error_2']))
-                
+
                 data[str(ctx.author.guild.id)][arg.upper()] ='0x' + str(clArg)
             description1="*{} {}*".format(Lang(ctx).language[f'settings_command_set_color_{arg}'], clArg)
-        
+
         #тут надо будет подправить что бы в тексте не было название arg
 
         elif arg in ['adminchannel', 'ncaps', 'nwarns', 'prefix', 'selftitle', 'selfroom']:
             if not(clArg):
-                raise commands.BadArgument("*{} {}{} {}*".format(Lang(ctx).language[f'settings_command_set_{arg}_error_1'], Moderation(ctx.author).prefix, command_name, Lang(ctx).language[f'settings_command_set_{arg}_error_2']))
+                raise commands.BadArgument("*{} {}{} {}*".format(Lang(ctx).language[f'settings_command_set_{arg}_error_1'], self.bot.db_get_prefix(ctx), command_name, Lang(ctx).language[f'settings_command_set_{arg}_error_2']))
             data[str(ctx.author.guild.id)][arg.upper()] = str(clArg)
             description1="*{} {}*".format(Lang(ctx).language[f'settings_command_set_{arg}'], clArg)
 
@@ -159,14 +160,14 @@ class Stngs(commands.Cog):
                 data[str(ctx.author.guild.id)]['JoinRoles'].pop(data[str(ctx.author.guild.id)]['JoinRoles'].index(str(clArg)))
                 rl1 = ctx.guild.get_role(int(clArg))
             description1=f"Роль {rl1} успешно добавлена!"
-                
+
         elif arg == 'join_roles':
             embb = discord.Embed(title = f'Успешно',
             description1=f'*Роли:*',
             color = COLOR)
             for i in roles:
                 embb.add_field(name = f'{ctx.guild.get_role(int(i))}', value =f'{i}', inline=True)
-            await ctx.send(embed = embb)
+            await ctx.send(embed=embb)
 
 
         elif arg == 'class':
@@ -176,7 +177,7 @@ class Stngs(commands.Cog):
             embb = discord.Embed(title = f'Успешно',
                 description2=f'*Роли:*',
                 color = COLOR)
-            
+
             for i in SelRoles:
                 embb.add_field(name = f'{ctx.guild.get_role(int(i))}', value =f'{i}', inline=True)
             await ctx.send(embed = embb)
@@ -202,10 +203,10 @@ class Stngs(commands.Cog):
         elif arg in ['add_ignorechannel', 'remove_ignorechannel']:
             if not(clArg):
                 raise commands.BadArgument(f"*Использование: {prefix}settings add_IgnoreChannel (название канала)*")
-            
+
             if clArg in data[str(ctx.author.guild.id)]['IgnoreChannels']:
                 raise commands.BadArgument(f"*Канал {clArg} уже добавлен*")
-            
+
             data[str(ctx.author.guild.id)]['IgnoreChannels'].update(clArg)
             description1=f"*Канал {clArg} был успешно добавлен в игнорируемые*"
 
@@ -213,10 +214,10 @@ class Stngs(commands.Cog):
         elif arg == 'remove_ignorechannel':
             if not(clArg):
                 raise commands.BadArgument(f"*Использование:* {prefix}settings remove_IgnoreChannel (название класса)*")
-            
+
             if not(clArg in data[str(ctx.author.guild.id)]['IgnoreChannels']):
                 raise commands.BadArgument(f"*Канала {clArg} нет в игнорируемых*")
-            
+
             data[str(ctx.author.guild.id)]['IgnoreChannels'].pop(clArg)
             description1=f"*Канал {clArg} был успешно удалён*"
 
@@ -232,7 +233,7 @@ class Stngs(commands.Cog):
                 if not(clArg in data[str(ctx.author.guild.id)]['IgnoreRoles']):
                     raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_not_ex_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_not_ex_2']) )
                 data[str(ctx.author.guild.id)]['IgnoreRoles'].pop(clArg)
-            description1="*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_2']) 
+            description1="*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_1'], clArg, Lang(ctx).language[f'settings_command_set_ignorerole_{arg}_2'])
 
         elif arg == 'IgnoreRoles':
             IGRL =data[str(ctx.author.guild.id)]['IgnoreRoles']
@@ -247,7 +248,7 @@ class Stngs(commands.Cog):
                 raise commands.BadArgument(f'Роли с id {str(clArg)} не существует!')
             data[str(ctx.author.guild.id)]['ModRoles'].update({
                 str(clArg): {
-                    'Kick': 'True', 
+                    'Kick': 'True',
                     'Bans': {'Ban': 'True', 'UnBan': 'True', 'TempBan': 'True'},
                     'Warns': {
                         'Warn': 'True',
@@ -267,7 +268,7 @@ class Stngs(commands.Cog):
                     'Roles': {'TempRole': 'True', 'GiveRole': 'True'}
                 }
             })
-                
+
             description1=f'Мод роль {[i for i in ctx.author.guild.roles if str(i.id) == str(clArg)]} добавлена!'
 
 
@@ -291,7 +292,7 @@ class Stngs(commands.Cog):
                             await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
-                            
+
                             data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Bans']['Ban'] = 'False'
                             await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
@@ -369,7 +370,7 @@ class Stngs(commands.Cog):
                             await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
-                            data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Settings'] = 'False' 
+                            data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Settings'] = 'False'
                             await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     else:
                         await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
@@ -431,7 +432,7 @@ class Stngs(commands.Cog):
                 elif clArg == 'Temprole':
                     if str(roleClass) == 'True':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
-                            data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Roles']['TempRole'] = 'True' 
+                            data[str(ctx.author.guild.id)]['ModRoles'][str(emo)]['Roles']['TempRole'] = 'True'
                             await embpy(ctx, comp='s', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
                     elif str(roleClass) == 'False':
                         if str(emo) in [k for k in  data[str(ctx.author.guild.id)]['ModRoles'].keys()]:
@@ -452,7 +453,7 @@ class Stngs(commands.Cog):
                         await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
             except:
                 await embpy(ctx, comp='e', des=f'')                                                       #НАПИСАТЬ ХОТЬ ЧТО ТО
-                
+
 
         else:
             embb = discord.Embed(title=f'Ошибка',
@@ -475,7 +476,7 @@ class Stngs(commands.Cog):
                                 remove_join_role (id роли): Убрать роль из автовыдачи \n\
                                 join_roles: Список всех ролей в автовыдаче",
                             )
-            
+
         with open(f'{BD}users.json', 'w') as file:
             json.dump(data, file, indent=4)
         if description1:
