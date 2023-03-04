@@ -62,7 +62,8 @@ DBSTR = [i for i in DEFGUILD.keys() if (type(DEFGUILD[i]) in [str, int, bool])]
 #     d: dict = json.load(file)
 # SERVERS = [i for i in d.keys()]
 
-class Score_presets():
+
+class Score_presets:
     def __init__(self, member):
         self.ignorechannels = bdpy(member)['IgnoreChannels']
         self.ignoreroles = bdpy(member)['IgnoreRoles']
@@ -74,7 +75,7 @@ class Score_presets():
         self.prefix: str = bdpy(member)["PREFIX"]
 
 
-class Moderation():
+class Moderation:
     def __init__(self, member):
         self.warns: int = bdpy(member)['USERS'][str(member.id)]['WARNS']
         self.nWarns: int = bdpy(member)['NWARNS']
@@ -87,19 +88,19 @@ class Moderation():
         self.links = bdpy(member)['LINKS']
 
 
-class Fun():
+class Fun:
     def __init__(self, ctx):
         self.color = bdpy(ctx)['COLOR']
         self.ercolor = bdpy(ctx)['ERCOLOR']
 
 
-class Info():
+class Info:
     def __init__(self, ctx):
         self.color = bdpy(ctx)['COLOR']
         self.ercolor = bdpy(ctx)['ERCOLOR']
 
 
-class Utility():
+class Utility:
     def __init__(self, ctx):
         self.color = bdpy(ctx)['COLOR']
         self.ercolor = bdpy(ctx)['ERCOLOR']
