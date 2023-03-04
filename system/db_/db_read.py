@@ -164,7 +164,7 @@ class DataBaseRead(Color, UserData, Rate, Roles, Moderation):
         return data[str(ctx.guild.id)]['actmoduls']
 
     @db_read
-    def db_get_selfroom(self, ctx: Union[commands.Context, discord.Interaction], data=None):
+    def db_get_selfroom(self, ctx: Union[commands.Context, discord.Interaction], data=None) -> dict:
         return data[str(ctx.guild.id)]['SELFROOM']
 
     @db_read
@@ -180,10 +180,13 @@ class DataBaseRead(Color, UserData, Rate, Roles, Moderation):
         return data[str(ctx.guild.id)]['SelfTitle']
 
     @db_read
-    def db_get_selfrooms(self, ctx: Union[commands.Context, discord.Interaction], data=None):
+    def db_get_selfrooms(self, ctx: Union[commands.Context, discord.Interaction], data=None) -> dict:
         return data[str(ctx.guild.id)]['Selfrooms']
 
     @db_read
-    def db_get_mafrooms(self, ctx: Union[commands.Context, discord.Interaction], data=None):
+    def db_get_mafrooms(self, ctx: Union[commands.Context, discord.Interaction], data=None) -> dict:
         return data[str(ctx.guild.id)]['Mafrooms']
 
+    @db_read
+    def db_get_check(self, ctx: Union[commands.Context, discord.Interaction], data=None) -> bool:
+        return data[str(ctx.guild.id)]['check']

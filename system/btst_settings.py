@@ -37,7 +37,7 @@ class CheckMesBTST:
         return self.interaction.user == mes.author and self.interaction.channel == mes.channel
 
 
-class SetForBTST():
+class SetForBTST:
     def __init__(self, bot, interaction, old_emb, arg):
         self.bot = bot
         self.interaction: discord.Interaction = interaction
