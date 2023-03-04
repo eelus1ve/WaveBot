@@ -41,6 +41,7 @@ async def on_ready():
 @bot.command()
 async def a(ctx: commands.Context):
     await embpy(ctx, comp='s', des=f'Степа все плохо')
+    bot.db_wrt_utilitycolor(ctx, '0x8B0000')
 
 
 def main():
