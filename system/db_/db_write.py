@@ -24,6 +24,7 @@ class Color:
 
     @db_write
     def db_wrt_utilityercolor(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['UTILITYERCOLOR'] = wt_data
         return data
 
     @db_write
