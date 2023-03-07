@@ -2,15 +2,15 @@ import discord
 from discord.ext import commands
 from typing import Optional
 from BTSET import Rool
-from module.moderation.commands.warns import Warns
-from module.moderation.commands.clean import Clean
-from module.moderation.commands.audit import Audit
-from module.moderation.commands.stngs import Stngs
-from module.moderation.commands.mwarns import Mwarns
-from module.moderation.commands.btst import *
-# from module.moderation.mbrjn import 
-from module.moderation.commands.rand2 import SelectRole
-from module.moderation.commands.roomedit import Roomedit
+from commands.warns import Warns
+from commands.clean import Clean
+from commands.audit import Audit
+from commands.stngs import Stngs
+from commands.mwarns import Mwarns
+from commands.btst import *
+# fron.mbrjn import
+from commands.rand2 import SelectRole
+from commands.roomedit import Roomedit
 
 
 class ModerationSetup(commands.Cog):

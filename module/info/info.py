@@ -1,11 +1,11 @@
 import discord
 from discord.ext import commands
 from typing import Optional
-from module.info.commands.user import UserInfo
-from module.info.commands.sptf import SpotifyInfo
-from module.info.commands.botinfo import BotInfo
-from module.info.commands.help import Help
-from module.info.commands.srinf import SrInfo, SrInfo_listeners
+from commands.user import UserInfo
+from commands.sptf import SpotifyInfo
+from commands.botinfo import BotInfo
+from commands.help import Help
+from commands.srinf import SrInfo, SrInfo_listeners
 
 
 class InfoSetup(commands.Cog):

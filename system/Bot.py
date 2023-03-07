@@ -27,5 +27,3 @@ class WaveBot(commands.Bot, DataBaseWrite, DataBaseRead):
             tree_cls=tree_cls,
             **options
         )
-
-

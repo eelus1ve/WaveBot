@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 from module.fun.fun import FunSetup
 from module.info.info import InfoSetup
@@ -8,9 +7,10 @@ from module.utility.utility import UtilitySetup
 from module.moderation.error import BotError
 # from module.self.commands.support import SupportAnswer
 # from module.self.commands.support import Suppot
+from system.Bot import WaveBot
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: WaveBot):
     await bot.add_cog(FunSetup(bot))
     await bot.add_cog(InfoSetup(bot))
     await bot.add_cog(ModerationSetup(bot))

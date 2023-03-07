@@ -1,15 +1,14 @@
 from discord.ext import commands
 import discord
-from module.fun.commands.dice import Dice
-from module.fun.commands.MagicBall import MagicBall
-from module.fun.commands.coin import Coin
-from module.fun.commands.QRcode import CreateQR
-from module.fun.commands.anMessage import Get_message
-from module.fun.commands.p2048 import Game2048
+from commands.dice import Dice
+from commands.MagicBall import MagicBall
+from commands.coin import Coin
+from commands.QRcode import CreateQR
+from commands.anMessage import Get_message
+from commands.p2048 import Game2048
 # from module.fun.mafia import
 # from module.fun.xo import
 from system.Bot import WaveBot
-
 
 
 class FunSetup(commands.Cog):

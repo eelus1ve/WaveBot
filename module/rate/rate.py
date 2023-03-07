@@ -1,10 +1,10 @@
 import discord
 from discord.ext import commands
 from typing import Optional
-from module.rate.commands.score import *
-from module.rate.commands.leaders import Leaders
-from module.rate.commands.rank import Rank
-from module.rate.commands.mrate import Mrate
+from commands.score import *
+from commands.leaders import Leaders
+from commands.rank import Rank
+from commands.mrate import Mrate
 
 
 class RateSetup(commands.Cog):
