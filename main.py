@@ -7,7 +7,7 @@ from system.Bot import WaveBot
 
 load_dotenv(find_dotenv())
 
-intents=discord.Intents.all()
+intents = discord.Intents.all()
 
 
 def get_prefix(bot, message):
@@ -22,18 +22,8 @@ bot = WaveBot(command_prefix=get_prefix, intents=intents)
 bot.remove_command('help')
 
 
-@bot.command()
-async def hello(ctx):
-    view = discord.ui.View()
-    view.add_item(item=discord.ui.Button(label="click me"))
-    await ctx.send('1', view=view)
-
-
 @bot.event
 async def on_ready():
-    await bot.load_extension('module.loader')
-    await bot.load_extension('system.JSONwriter')
-    await bot.load_extension('system.while')
     await bot.change_presence(activity=discord.Game('Portal 2'))
     print(f'{bot.user.name} connected')
 

@@ -18,5 +18,8 @@ async def setup(bot: commands.Bot):
     await bot.add_cog(UtilitySetup(bot))
     await bot.add_cog(BotError(bot))
     await bot.load_extension('module.moderation.commands.btst')
+    await bot.load_extension('module.loader')
+    await bot.load_extension('system.JSONwriter')
+    await bot.load_extension('system.while')
     # await bot.add_cog(SupportAnswer(bot))
     # await bot.add_cog(Suppot(bot))

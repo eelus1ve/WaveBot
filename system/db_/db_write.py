@@ -78,5 +78,151 @@ class Color:
         return data
 
 
-class DataBaseWrite(Color):
-    pass
+class UserData:
+    @db_write
+    def db_wtr_user_caps(self, member: discord.Member, wt_data, data=None):
+        data[str(member.guild.id)]['USERS'][str(member.id)]['CAPS'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_user_scr(self, member: discord.Member, wt_data, data=None):
+        data[str(member.guild.id)]['USERS'][str(member.id)]['SCR'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_user_lvl(self, member: discord.Member, wt_data, data=None):
+        data[str(member.guild.id)]['USERS'][str(member.id)]['LvL'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_user_time(self, member: discord.Member, wt_data, data=None):
+        data[str(member.guild.id)]['USERS'][str(member.id)]['TIME'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_user_warns(self, member: discord.Member, wt_data, data=None):
+        data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] = wt_data
+        return data
+
+
+class Roles:
+    @db_write
+    def db_wtr_joinroles(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['JoinRoles'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_modroles(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['ModRoles'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_roles(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['ROLES'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_firstrole(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['FirstRole'] = wt_data
+        return data
+
+
+class Moderation:
+    @db_write
+    def db_wtr_ncaps(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['NCAPS'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_nwarns(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['NWARNS'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_adminchannel(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['ADMINCHANNEL'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_idmainch(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['idMainch'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_badwords(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['BADWORDS'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_links(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['LINKS'] = wt_data
+        return data
+
+
+class Rate:
+    @db_write
+    def db_wtr_ignorechannels(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['IgnoreChannels'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_ignoreroles(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['IgnoreRoles'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_card(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['card'] = wt_data
+        return data
+
+    @db_write
+    def db_wtr_blend(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['blend'] = wt_data
+        return data
+
+
+class DataBaseWrite(Color, Moderation, Rate, Roles, UserData):
+    @db_write
+    def db_get_lang(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['LANG'] = wt_data
+        return data
+
+    @db_write
+    def db_get_actmoduls(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['actmoduls'] = wt_data
+        return data
+
+    @db_write
+    def db_get_selfroom(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['SELFROOM'] = wt_data
+        return data
+
+    @db_write
+    def db_get_prefix(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['PREFIX'] = wt_data
+        return data
+
+    @db_write
+    def db_get_jnmsg(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['JNMSG'] = wt_data
+        return data
+
+    @db_write
+    def db_get_selftitle(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['SelfTitle'] = wt_data
+        return data
+
+    @db_write
+    def db_get_selfrooms(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['Selfrooms'] = wt_data
+        return data
+
+    @db_write
+    def db_get_mafrooms(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['Mafrooms'] = wt_data
+        return data
+
+    @db_write
+    def db_get_check(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+        data[str(ctx.guild.id)]['check'] = wt_data
+        return data
