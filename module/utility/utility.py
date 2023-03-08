@@ -1,10 +1,10 @@
 import discord
 from discord.ext import commands
 from typing import Optional
-from commands.vote import Vote
-from commands.rand import Rand
-from commands.avatar import Avatar
-from commands.translits import Translits
+from module.utility.commands.vote import Vote
+from module.utility.commands.rand import Rand
+from module.utility.commands.avatar import Avatar
+from module.utility.commands.translits import Translits
 from system.Bot import WaveBot
 
 

@@ -25,6 +25,9 @@ bot.remove_command('help')
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game('Portal 2'))
+    await bot.load_extension('system.JSONwriter')
+    await bot.load_extension('system.while')
+    await bot.load_extension('module.loader')
     print(f'{bot.user.name} connected')
 
 
