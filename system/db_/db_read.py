@@ -86,8 +86,8 @@ class UserData:
         return data[str(ctx.guild.id)]['USERS']
 
     @db_read
-    def db_get_user_warns(self, member: discord.Member, data=None) -> int:
-        return data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS']
+    def db_get_user_warns(self, ctx: discord.Member, data=None) -> int:
+        return data[str(ctx.guild.id)]['USERS'][str(ctx.id)]['WARNS']
 
 
 class Roles:

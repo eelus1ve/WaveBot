@@ -37,7 +37,7 @@ class UserInfo(commands.Cog):
             emb.add_field(name='***{}***'.format(Lang(ctx).language['user_xp']), value=Score_presets(member).score, inline=True)
             emb.add_field(name='***{}***'.format(Lang(ctx).language['user_lvl']), value=Score_presets(member).lvl, inline=True) #добавить if
         if self.bot.db_get_user_warns:
-            emb.add_field(name='***{}***'.format(Lang(ctx).language['user_warns']), value=f'{self.bot.db_get_user_warns(member)}/{self.bot.db_get_nwarns}', inline=True)
+            emb.add_field(name='***{}***'.format(Lang(ctx).language['user_warns']), value=f'{self.bot.db_get_user_warns(ctx=member)}/{self.bot.db_get_nwarns(ctx=member)}', inline=True)
         
         emb.set_thumbnail(url=member.avatar)
         emb.set_footer(text='{} {}'.format(Lang(ctx).language['user_footer'], member.id))

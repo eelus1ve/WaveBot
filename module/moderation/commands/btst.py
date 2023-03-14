@@ -8,7 +8,7 @@ from discord.ui import Select
 from system.Bot import WaveBot
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: WaveBot):
     preference_set_for_best = ['канал администратора', 'настроить цвет', 'префикс']
 
     @bot.command()
