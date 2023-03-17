@@ -2,6 +2,8 @@ import json
 from discord.ext import commands
 import os
 from BTSET import BD, DEFGUILD
+
+
 class Json_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -88,8 +90,6 @@ class Json_write(commands.Cog):
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(dat, file, indent=4)
 
-
-
     @commands.Cog.listener('on_member_join')
     async def n_mr_join(self, ctx):
         Json_write(self.bot).jsonwrite()
@@ -105,7 +105,3 @@ class Json_write(commands.Cog):
     @commands.Cog.listener('on_guild_remove')
     async def on_gld_remove(self, ctx):
         Json_write(self.bot).jsonwrite()
-
-
-async def setup(bot):
-    await bot.add_cog(Json_write(bot))
