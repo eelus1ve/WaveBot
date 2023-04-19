@@ -10,7 +10,8 @@ class Game2048Support:
     def __init__(self, bot: WaveBot):
         self.bot: WaveBot = bot
 
-    def game_over(self, body):
+    @staticmethod
+    def game_over(body):
         if not [1 for i in body if 0 in i] and [[1 for ii in range(len(i[:3])) if i[ii] == i[ii + 1]] for i in body] == [[], [], [], []] and [[1 for ii in range(len(body[:3])) if body[i][ii] == body[i+1][ii]] for i in range(3)] == [[], [], []]:
             return 1
         elif [2048 for i in body if 2048 in i]:
@@ -18,7 +19,8 @@ class Game2048Support:
         else:
             return 0
 
-    def randomaizer(self, body):
+    @staticmethod
+    def randomaizer(body):
         number = 2 if int(random.randint(0, 11)) else 4
         a = []
 
@@ -60,7 +62,8 @@ class Game2048Support:
                 [Game2048.lang_num[Game2048(self.bot).lang_emo.index('<' + i)] for i in text[8:12]],
                 [Game2048.lang_num[Game2048(self.bot).lang_emo.index('<' + i)] for i in text[12:16]]]
 
-    def vertical_play(self, body: list) -> list:
+    @staticmethod
+    def vertical_play(body: list) -> list:
         for ind in range(4):
             for iiii in range(3):
                 for strng_number in range(len(body)):
@@ -82,7 +85,8 @@ class Game2048Support:
 
         return body
 
-    def horizontal_play(self, body: list, is_up: bool = False) -> list:
+    @staticmethod
+    def horizontal_play(body: list, is_up: bool = False) -> list:
         for strng in body:
             if is_up:
                 strng.reverse()
@@ -117,6 +121,7 @@ class Game2048Support:
         emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
                             description=''.join(des),
                             color=bot.db_get_funcolor(interaction))
+        emb.set_footer(text=f'{interaction.user.name}#{interaction.user.discriminator}', icon_url=interaction.user.display_icon)
         await interaction.message.edit(embed=emb)
         await Game2048Support(self.bot).check_1(body, interaction, bot)
 
@@ -183,24 +188,28 @@ class Game2048(commands.Cog):
 
     async def listener_on_button_2048(self, interaction: discord.Interaction):
         try:
-            await interaction.response.defer()
+            assert f'{interaction.user.name}#{interaction.user.discriminator}' == interaction.message.embeds[0].footer.text
 
             inter_children = interaction.message.components[0].children
             inter_id = interaction.data['custom_id']
 
             if inter_children[0].custom_id == inter_id:
+                await interaction.response.defer()
                 await Game2048(self.bot).listener_on_button_click_2048_left(interaction)
 
             if inter_children[1].custom_id == inter_id:
+                await interaction.response.defer()
                 await Game2048(self.bot).listener_on_button_click_2048_up(interaction)
 
             if inter_children[2].custom_id == inter_id:
+                await interaction.response.defer()
                 await Game2048(self.bot).listener_on_button_click_2048_down(interaction)
 
             if inter_children[3].custom_id == inter_id:
+                await interaction.response.defer()
                 await Game2048(self.bot).listener_on_button_click_2048_right(interaction)
-        except IndexError:
-            print(125)
+        except:
+            pass
 
     async def command_p2048(self, ctx: commands.Context): 
 
@@ -214,6 +223,7 @@ class Game2048(commands.Cog):
         emb = discord.Embed(title=Lang(ctx).language['p2048_title'],
                             description=''.join(des),
                             color=self.bot.db_get_funcolor(ctx))
+        emb.set_footer(text=f'{ctx.author.name}#{ctx.author.discriminator}', icon_url=ctx.author.display_icon)
 
         vw = discord.ui.View(timeout=None)
 
@@ -228,4 +238,3 @@ class Game2048(commands.Cog):
         vw.add_item(bt4)
 
         await ctx.send(embed=emb, view=vw)
-
