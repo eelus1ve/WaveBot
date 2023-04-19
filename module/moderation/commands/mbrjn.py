@@ -24,7 +24,7 @@ class BotJoin(commands.Cog):
     #     emb.add_footer(text='')
     #     emb.
     #     await member.send(embed=emb, components=[
-    #                     Select(                                             
+    #                     Select(
     #                         placeholder=arg,
     #                         max_values=len(roles[arg][0]),
     #                         min_values=0,
@@ -32,11 +32,11 @@ class BotJoin(commands.Cog):
     #                     )
     #                 ]
     #             )
-    
-    
-    
-    
-    
+
+
+
+
+
     
     
     
@@ -68,5 +68,3 @@ class BotJoin(commands.Cog):
     #                     color=Moderation(member=mbr).color
     #                 ))
 
-def setup(bot):
-    bot.add_cog(BotJoin(bot))
