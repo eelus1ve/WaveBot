@@ -8,24 +8,72 @@ from discord.utils import get
 import datetime
 import pytz
 import time
-from BTSET import Score_presets, Rool, embpy, bdpy, BD
+from BTSET import Score_presets, Rool, embpy, bdpy, BD, Lang
 
 memberInfo = {}
 beforeTime = {}
 
 
+def scoreError(argumens):
+    def wrapper(arg):
+        if not arg:
+            raise commands.BadArgument()
+        argg = arg.replace('+', '')
+        if not argg:
+            raise commands.BadArgument()
+        if int(argg) > 10000:
+            raise commands.BadArgument()
+        argumens(argg)
+    return wrapper
+
+# else:
+#         await ctx.send(embed=discord.Embed(
+#             title='Ошибка',
+#             description=f'Максимально количество выданого опыта не может привешать 10000!',
+#             color=self.ercolor
+#         ))
+
+
+
+@scoreError
+async def asd(argg, mrr):
+        dermo = int(Score_presets(member=mrr).score) + int(argg)
+        Lvl1 = Score_presets(member=mrr).lvl-1
+        xp = (400+100*(Lvl1-1))/2*Lvl1 + dermo
+        d = (3**2+4*2*xp/100)**0.5
+        if (-3-d)/2 > (-3+d)/2:
+            level = (-3-d)/2
+        else:
+            level = (-3+d)/2
+        xpp = xp - (400+100*(int(level-1)))/2*int(level)
+        data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xpp)
+        data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(level+1)
+        #====================================================================
+        #audit
+        #====================================================================
+        emb=discord.Embed(
+            title='Добавление очков опыта',
+            description=f"Учаснику {mrr.mention} было добавлено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}!",
+            timestamp=moscow_time,
+            color=Score_presets(ctx).color
+        )
+        emb.set_footer(text=f'Модератор выдавший очки опыта участнику {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
+        await get(ctx.guild.text_channels, id=int(Score_presets(member=mrr).idadminchannel)).send(embed=emb)
+        #====================================================================
+        #rep
+        #====================================================================
+        await ctx.send(embed=discord.Embed(
+            title='Успешно',
+            description=f"{mrr.name} получил {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}!",
+            color=Score_presets(ctx).color
+        ))
+    
+
+
+
 class Score_commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        
-    def mes(argg):
-        if int(str(argg)[-1]) == 1:
-            reason = f'{argg} очко опыта'
-        elif int(str(argg)[-1]) > 1 and int(str(argg)[-1]) < 5:
-            reason = f'{argg} очка опыта'
-        if int(str(argg)[-1]) == 0  or int(str(argg)[-1]) > 4:
-            reason = f'{argg} очков опыта'
-        return reason
 
     #ПЕРЕПИСАТЬ ПОЛНОСТЬЮ!!!!!!!!!!!!!!!!!!!!!!!!
     async def command_score(self, ctx: commands.Context, mrr: discord.Member, arg: Optional[str]):
@@ -43,45 +91,7 @@ class Score_commands(commands.Cog):
                     ))
             elif Rool(ctx).score:
                 if arg.startswith('+'): #1 лвл не такой как все 0-199 200-299 разряд x2 на 1 лвл
-                    argg = arg.replace('+', '')
-                    if int(argg) < 10001 and arg != None:
-                        
-                        dermo = int(Score_presets(member=mrr).score) + int(argg)
-                        Lvl1 = Score_presets(member=mrr).lvl-1
-                        xp = (400+100*(Lvl1-1))/2*Lvl1 + dermo
-                        d = (3**2+4*2*xp/100)**0.5
-                        if (-3-d)/2 > (-3+d)/2:
-                            level = (-3-d)/2
-                        else:
-                            level = (-3+d)/2
-                        xpp = xp - (400+100*(int(level-1)))/2*int(level)
-                        data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xpp)
-                        data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(level+1)
-                        #====================================================================
-                        #audit
-                        #====================================================================
-                        emb=discord.Embed(
-                            title='Добавление очков опыта',
-                            description=f'Учаснику {mrr.mention} было добавлено {Score_commands.mes(argg)}!',
-                            timestamp=moscow_time,
-                            color=Score_presets(ctx).color
-                        )
-                        emb.set_footer(text=f'Модератор выдавший очки опыта участнику {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
-                        await get(ctx.guild.text_channels, id=int(Score_presets(member=mrr).idadminchannel)).send(embed=emb)
-                        #====================================================================
-                        #rep
-                        #====================================================================
-                        await ctx.send(embed=discord.Embed(
-                            title='Успешно',
-                            description=f'{mrr.name} получил {Score_commands.mes(argg)}!',
-                            color=Score_presets(ctx).color
-                        ))
-                    else:
-                        await ctx.send(embed=discord.Embed(
-                            title='Ошибка',
-                            description=f'Максимально количество выданого опыта не может привешать 10000!',
-                            color=self.ercolor
-                        ))
+                    
 
                 elif arg.startswith('-'):
                     argg = arg.replace('-', '')
@@ -103,7 +113,7 @@ class Score_commands(commands.Cog):
                             #====================================================================
                             emb=discord.Embed(
                                 title='Уадение очков опыта',
-                                description=f'Учаснику {mrr.mention} было удалено {Score_commands.mes(argg)}',
+                                description=f"Учаснику {mrr.mention} было удалено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}",
                                 timestamp=moscow_time,
                                 color=Score_presets(ctx).color
                             )
@@ -114,7 +124,7 @@ class Score_commands(commands.Cog):
                             #====================================================================
                             await ctx.send(embed=discord.Embed(
                                     title='Успешно',
-                                    description=f'{mrr.name} потерял {Score_commands.mes(argg)}',
+                                    description=f"{mrr.name} потерял {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}",
                                     color=Score_presets(ctx).color
                             ))
                             #====================================================================
@@ -130,7 +140,7 @@ class Score_commands(commands.Cog):
                             #====================================================================
                             emb=discord.Embed(
                                 title='Уадение очков опыта',
-                                description=f'Учаснику {mrr.mention} было удалено {Score_commands.mes(argg)}',
+                                description=f"Учаснику {mrr.mention} было удалено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}",
                                 timestamp=moscow_time,
                                 color=Score_presets(ctx).color
                             )
@@ -141,7 +151,7 @@ class Score_commands(commands.Cog):
                             #====================================================================
                             await ctx.send(embed=discord.Embed(
                                     title='Успешно',
-                                    description=f'{mrr.name} потерял {Score_commands.mes(argg)}!',
+                                    description=f"{mrr.name} потерял {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}!",
                                     color=Score_presets(ctx).color
                             ))
                             #====================================================================
@@ -167,7 +177,7 @@ class Score_commands(commands.Cog):
                     #====================================================================
                     emb=discord.Embed(
                         title='Установление очков опыта',
-                        description=f'Учаснику {mrr.mention} было установлено {Score_commands.mes(argg)}',
+                        description=f"Учаснику {mrr.mention} было установлено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}",
                         timestamp=moscow_time,
                         color=Score_presets(ctx).color
                     )
@@ -178,7 +188,7 @@ class Score_commands(commands.Cog):
                     #====================================================================
                     await ctx.send(embed=discord.Embed(
                         title='Успешно',
-                        description=f'Участнику {mrr.name} было установлено {Score_commands.mes(argg)}!',
+                        description=f"Участнику {mrr.name} было установлено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}!",
                         color=Score_presets(ctx).color
                     ))
                     #====================================================================

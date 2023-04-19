@@ -18,8 +18,7 @@ async def setup(bot: WaveBot):
     @bot.listen('on_interaction')
     async def tabs_choice(interaction: discord.Interaction):
         inter = InteractionComponents(interaction)
-        if inter.label in ['модерация', 'настройка бота', 'настройка рейтинга', '--->', '<---']:
-            await interaction.response.defer()
+        if inter.label in ['модерация', 'настройка бота', 'настройка рейтинга', '--->', '<---']: await interaction.response.defer()
         if inter.label in ['модерация', 'настройка бота', 'настройка рейтинга']:
             await SettingsPanel(bot, interaction).tabs_choice()
 

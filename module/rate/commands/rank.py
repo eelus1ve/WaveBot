@@ -3,7 +3,7 @@ from discord.ext import commands
 from easy_pil import Editor, load_image_async, Font
 from typing import Optional
 from discord import File
-from BTSET import Score_presets, bdpy
+from BTSET import Score_presets, bdpy, Lang
 from PIL import Image, ImageFont, ImageDraw
 from system.Bot import WaveBot
 
@@ -55,8 +55,8 @@ class Rank(commands.Cog):
         background.rectangle((200, 100), width=350, height=2, fill=barColor)
         background.text(
             (200, 130),
-            f"Level : {lvl}   "
-            + f" XP : {xp} / {(lvl+1) * 100}",
+            f"{Lang(ctx).language['rank_command_rank_level']} : {lvl}   "
+            + f" {Lang(ctx).language['rank_command_rank_xp']} : {xp} / {(lvl+1) * 100}",
             font=FONT_small,
             color=textColor,
         )
