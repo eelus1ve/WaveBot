@@ -184,46 +184,46 @@ class Rate:
 
 class DataBaseWrite(Color, Moderation, Rate, Roles, UserData):
     @db_write
-    def db_get_lang(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_lang(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['LANG'] = wt_data
         return data
 
     @db_write
-    def db_get_actmoduls(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_actmoduls(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['actmoduls'] = wt_data
         return data
 
     @db_write
-    def db_get_selfroom(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_selfroom(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['SELFROOM'] = wt_data
         return data
 
     @db_write
-    def db_get_prefix(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_prefix(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['PREFIX'] = wt_data
         return data
 
     @db_write
-    def db_get_jnmsg(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_jnmsg(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['JNMSG'] = wt_data
         return data
 
     @db_write
-    def db_get_selftitle(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_selftitle(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['SelfTitle'] = wt_data
         return data
 
     @db_write
-    def db_get_selfrooms(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_selfrooms(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['Selfrooms'] = wt_data
         return data
 
     @db_write
-    def db_get_mafrooms(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_mafrooms(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['Mafrooms'] = wt_data
         return data
 
     @db_write
-    def db_get_check(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
+    def db_wrt_check(self, ctx: Union[commands.Context, discord.Interaction], wt_data, data=None):
         data[str(ctx.guild.id)]['check'] = wt_data
         return data
