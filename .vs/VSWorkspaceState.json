@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\module",
+    "\\module\\info",
+    "\\module\\info\\commands",
+    "\\module\\rate",
+    "\\module\\rate\\commands",
+    "\\module\\self",
+    "\\module\\self\\commands",
+    "\\module\\utility",
+    "\\module\\utility\\commands"
   ],
-  "SelectedNode": "\\C:\\Users\\Admin\\Source\\Repos\\WaveBot",
+  "SelectedNode": "\\main.py",
   "PreviewInSolutionExplorer": false
 }
