@@ -63,7 +63,9 @@ class Game2048Support:
                 [Game2048.lang_num[Game2048(self.bot).lang_emo.index('<' + i)] for i in text[12:16]]]
 
     @staticmethod
-    def vertical_play(body: list) -> list:
+    def vertical_play(body: list, is_up: bool) -> list:
+        if is_up:
+            body.reverse()
         for ind in range(4):
             for iiii in range(3):
                 for strng_number in range(len(body)):
@@ -82,6 +84,8 @@ class Game2048Support:
                     a = body[strng_number][ind]
                     body[strng_number][ind] = 0
                     body[strng_number - 1][ind] = a
+        if is_up:
+            body.reverse()
 
         return body
 
@@ -157,7 +161,7 @@ class Game2048(commands.Cog):
     async def listener_on_button_click_2048_up(self, interaction: discord.Interaction):
         body = Game2048Support(self.bot).get_body(interaction)
 
-        Game2048Support(self.bot).vertical_play(body)
+        Game2048Support(self.bot).vertical_play(body, False)
 
         await Game2048Support(self.bot).after_play(interaction, body, self.bot)
 
@@ -169,22 +173,11 @@ class Game2048(commands.Cog):
         await Game2048Support(self.bot).after_play(interaction, body, self.bot)
 
     async def listener_on_button_click_2048_down(self, interaction: discord.Interaction):
-        des = []
         body = Game2048Support(self.bot).get_body(interaction)
 
-        body.reverse()
-        Game2048Support(self.bot).vertical_play(body)
+        Game2048Support(self.bot).vertical_play(body, True)
 
-        body.reverse()
-        Game2048Support(self.bot).randomaizer(body)
-        trans = [[self.lang_emo[Game2048.lang_num.index(ii)] for ii in i] for i in body]
-        for i in trans:
-            des.append(str(''.join(map(str, i)) + str('\n')))
-        emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
-                            description=''.join(des),
-                            color=self.bot.db_get_funcolor(interaction))
-        await interaction.message.edit(embed=emb)
-        await Game2048Support(self.bot).check_1(body, interaction, self.bot)
+        await Game2048Support(self.bot).after_play(interaction, body, self.bot)
 
     async def listener_on_button_2048(self, interaction: discord.Interaction):
         try:
