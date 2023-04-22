@@ -169,7 +169,7 @@ user_footer ID:
 //audit
 audit_title Аудит
 audit_des_1 Учасник
-audit_des_2 б ыл
+audit_des_2 был
 audit_des_3 Причина:
 audit_footer_1 Модератор
 audit_footer_2 ID:
@@ -266,6 +266,12 @@ settings_command_set_class_remove_class_not_ex_1 Класса
 settings_command_set_class_remove_class_not_ex_2 не существует
 settings_command_set_class_remove_class_1 Класс
 settings_command_set_class_remove_class_2 был успешно удалён
+settings_command_set_class_class_error_1 Использование:
+settings_command_set_class_class_error_2 
+settings_command_set_class_class_not_ex_1 Класса
+settings_command_set_class_class_not_ex_2 не существует!
+settings_command_set_class_class Роли:
+settings_command_set_class_classes Роли:
 
 settings_command_set_color_color_not_ex_1 Цвета
 settings_command_set_color_color_not_ex_2 не существует!
@@ -277,6 +283,61 @@ settings_command_set_color_ercolor_error_1 Использование:
 settings_command_set_color_ercolor_error_2 (ваш цвет в hex)
 settings_command_set_color_color Цвет сообщений бота изменен на
 settings_command_set_color_ercolor Цвет ошибок изменен на
+settings_command_set_color_funcolor_not_ex_1 Цвета
+settings_command_set_color_funcolor_not_ex_2 не существует!
+settings_command_set_color_funcolor_error_1 Использование:
+settings_command_set_color_funcolor_error_2 (ваш цвет в hex)
+settings_command_set_color_funercolor_not_ex_1 Цвета
+settings_command_set_color_funercolor_not_ex_2 не существует!
+settings_command_set_color_funercolor_error_1 Использование:
+settings_command_set_color_funercolor_error_2 (ваш цвет в hex)
+settings_command_set_color_funcolor Цвет сообщений бота изменен на
+settings_command_set_color_funercolor Цвет ошибок изменен на
+settings_command_set_color_infocolor_not_ex_1 Цвета
+settings_command_set_color_infocolor_not_ex_2 не существует!
+settings_command_set_color_infocolor_error_1 Использование:
+settings_command_set_color_infocolor_error_2 (ваш цвет в hex)
+settings_command_set_color_infoercolor_not_ex_1 Цвета
+settings_command_set_color_infoercolor_not_ex_2 не существует!
+settings_command_set_color_infoercolor_error_1 Использование:
+settings_command_set_color_infoercolor_error_2 (ваш цвет в hex)
+settings_command_set_color_infocolor Цвет сообщений бота изменен на
+settings_command_set_color_infoercolor Цвет ошибок изменен на
+settings_command_set_color_moderationcolor_not_ex_1 Цвета
+settings_command_set_color_moderationcolor_not_ex_2 не существует!
+settings_command_set_color_moderationcolor_error_1 Использование:
+settings_command_set_color_moderationcolor_error_2 (ваш цвет в hex)
+settings_command_set_color_moderationercolor_not_ex_1 Цвета
+settings_command_set_color_moderationercolor_not_ex_2 не существует!
+settings_command_set_color_moderationercolor_error_1 Использование:
+settings_command_set_color_moderationercolor_error_2 (ваш цвет в hex)
+settings_command_set_color_moderationcolor Цвет сообщений бота изменен на
+settings_command_set_color_moderationercolor Цвет ошибок изменен на
+settings_command_set_color_ratecolor_not_ex_1 Цвета
+settings_command_set_color_ratecolor_not_ex_2 не существует!
+settings_command_set_color_ratecolor_error_1 Использование:
+settings_command_set_color_ratecolor_error_2 (ваш цвет в hex)
+settings_command_set_color_rateercolor_not_ex_1 Цвета
+settings_command_set_color_rateercolor_not_ex_2 не существует!
+settings_command_set_color_rateercolor_error_1 Использование:
+settings_command_set_color_rateercolor_error_2 (ваш цвет в hex)
+settings_command_set_color_ratecolor Цвет сообщений бота изменен на
+settings_command_set_color_rateercolor Цвет ошибок изменен на
+settings_command_set_color_utilitycolor_not_ex_1 Цвета
+settings_command_set_color_utilitycolor_not_ex_2 не существует!
+settings_command_set_color_utilitycolor_error_1 Использование:
+settings_command_set_color_utilitycolor_error_2 (ваш цвет в hex)
+settings_command_set_color_utilityercolor_not_ex_1 Цвета
+settings_command_set_color_utilityercolor_not_ex_2 не существует!
+settings_command_set_color_utilityercolor_error_1 Использование:
+settings_command_set_color_utilityercolor_error_2 (ваш цвет в hex)
+settings_command_set_color_utilitycolor Цвет сообщений бота изменен на
+settings_command_set_color_utilityercolor Цвет ошибок изменен на
+
+settings_command_set_join_message_error_1 Использование:
+settings_command_set_join_message_error_2 (Id сообщения с текстом)
+settings_command_set_join_message Текст отправляемый пользователю при присоединении успешно изменён на:
+
 
 settings_command_set_adminchannel_error_1 Использование:
 settings_command_set_adminchannel_error_2 IDA (id канала для администраторов)
@@ -308,7 +369,6 @@ settings_command_set_badword_add_badword_ex_1 Слово
 settings_command_set_badword_add_badword_ex_2 уже добавлено в список плохих слов
 settings_command_set_badword_add_badword_1 В список badwords добавленно слово
 settings_command_set_badword_add_badword_2 
-
 settings_command_set_badword_remove_badword_error_1 Использование:
 settings_command_set_badword_remove_badword_error_2 (слово котороe нужно исключить из списка плохих слов)
 settings_command_set_badword_remove_badword_not_ex_1 Слова
@@ -322,9 +382,6 @@ settings_command_set_join_roles_add_join_role_ex_1 Роль
 settings_command_set_join_roles_add_join_role_ex_2 уже была добавлена! 
 settings_command_set_join_roles_add_join_role_1 Роль
 settings_command_set_join_roles_add_join_role_2 успешно добавлена! 
-
-
-
 settings_command_set_join_roles_remove_join_role_eroor_1 Использование:
 settings_command_set_join_roles_remove_join_role_eroor_2 (ID роли) 
 settings_command_set_join_roles_remove_join_role_not_ex_1 Такого ID не существует!
@@ -332,8 +389,19 @@ settings_command_set_join_roles_remove_join_role_not_ex_2
 settings_command_set_join_roles_remove_join_role_1 Роль
 settings_command_set_join_roles_remove_join_role_2 успешно удалена 
 
-
-settings_command_set_ignorechannel_add_ignorechannel_error_1
+settings_command_set_ignorechannel_add_ignorechannel_error_1 Использование:
+settings_command_set_ignorechannel_add_ignorechannel_error_2 (название канала)
+settings_command_set_ignorechannel_add_ignorechannel_ex_1 Канал 
+settings_command_set_ignorechannel_add_ignorechannel_ex_2 уже добавлен
+settings_command_set_ignorechannel_add_ignorechannel_1 Канал 
+settings_command_set_ignorechannel_add_ignorechannel_2 был успешно добавлен в игнорируемые
+settings_command_set_ignorechannel_remove_ignorechannel_error_1 Использование
+settings_command_set_ignorechannel_remove_ignorechannel_error_2 (название класса)
+settings_command_set_ignorechannel_remove_ignorechannel_not_ex_1 Канала
+settings_command_set_ignorechannel_remove_ignorechannel_not_ex_2 нет в игнорируемых
+settings_command_set_ignorechannel_remove_ignorechannel_1 Канал 
+settings_command_set_ignorechannel_remove_ignorechannel_2 был успешно удалён
+settings_command_set_ignorechannel_ignorechannels Игнорируемые каналы
 
 settings_command_set_ignorerole_add_IgnoreRole_error_1 Использование:
 settings_command_set_ignorerole_add_IgnoreRole_error_2 (id роли)
@@ -341,16 +409,28 @@ settings_command_set_ignorerole_add_IgnoreRole_ex_1 Роль
 settings_command_set_ignorerole_add_IgnoreRole_ex_2 уже добавлена
 settings_command_set_ignorerole_add_IgnoreRole_1 Роль 
 settings_command_set_ignorerole_add_IgnoreRole_2 была успешно добавлена в игнорируемые
-
 settings_command_set_ignorerole_remove_IgnoreRole_error_1 Использование:
 settings_command_set_ignorerole_remove_IgnoreRole_error_2 (id роли)
 settings_command_set_ignorerole_remove_IgnoreRole_1 Роль
 settings_command_set_ignorerole_remove_IgnoreRole_2 была успешно удалена из игнорируемых
 settings_command_set_ignorerole_remove_IgnoreRole_not_ex_1 Роли
 settings_command_set_ignorerole_remove_IgnoreRole_not_ex_2 нет в игнорируемых 
+settings_command_set_ignoreRole_IgnoreRoles Игнориеумые роли:
+
+settings_command_set_modrole_modrole_error_1 Роли с id
+settings_command_set_modrole_modrole_error_2 не существует!
+settings_command_set_modrole_modrole_1 Мод роль
+settings_command_set_modrole_modrole_2  добавлена!
+settings_command_set_modrole_set_mods_error_1 Роли с id
+settings_command_set_modrole_set_mods_error_2 не существует!
+settings_command_set_modrole_set_mods_not_ex_1
+settings_command_set_modrole_set_mods_not_ex_2
+settings_command_set_modrole_set_mods
 
 //warns
-//...
+warns_command_kick_text исключен
+warns_command_ban_text заблокирован
+warns_command_warn_reason Вы привысили допустимое количество нарушений
 
 //errors
 //...
@@ -360,16 +440,29 @@ settings_command_set_ignorerole_remove_IgnoreRole_not_ex_2 нет в игнор�
 /////////////////////////////////////
 
 //leaders
-//...
+leaders_command_leaders_title Таблица лидиров
 
 //mrate
-//...
+mrate_command_my_message_text получил новый уровень
 
 //rank
-//...
+rank_command_rank_level Level
+rank_command_rank_xp XP
 
 //score
-//...
+score_mes_reason_0 очков опыта
+score_mes_reason_1 очко опыта
+score_mes_reason_2 очка опыта
+score_mes_reason_3 очка опыта
+score_mes_reason_4 очка опыта
+score_mes_reason_5 очков опыта
+score_mes_reason_6 очков опыта
+score_mes_reason_7 очков опыта
+score_mes_reason_8 очков опыта
+score_mes_reason_9 очков опыта
+
+
+
 
 /////////////////////////////////////
 //ustility

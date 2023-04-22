@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from BTSET import Score_presets, bdpy
+from BTSET import Score_presets, bdpy, Lang
 from system.Bot import WaveBot
 
 
@@ -27,7 +27,7 @@ class Leaders(commands.Cog):
             member = ctx.guild.get_member(int(iii[i]))
             Elist.append(f'{i+1}. {member.name}: LVL: {lvl}, XP {xp}')
         emb = discord.Embed(
-            title='Таблица лидиров',
+            title=Lang(ctx).language['leaders_command_leaders_title'],
             description='\n '.join(Elist),
             color = Score_presets(ctx.author).color
         )

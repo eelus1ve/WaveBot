@@ -1,5 +1,5 @@
 import json
-from BTSET import Score_presets, bdpy, BD, IGNORE_SIMV
+from BTSET import Score_presets, bdpy, BD, IGNORE_SIMV, Lang
 from discord.ext import commands
 import discord
 from system.Bot import WaveBot
@@ -37,7 +37,7 @@ class Mrate(commands.Cog):
                 increased_xp = xp+15
                 new_level = int(increased_xp/100)
                 if new_level > lvl:
-                    await message.channel.send(f"{message.author.mention} получил новый уровень {new_level}!")
+                    await message.channel.send(f"{message.author.mention} {Lang(message).language['mrate_command_my_message_text']} {new_level}!")
                 
                     data[str(message.guild.id)]['USERS'][str(message.author.id)]['SCR']=0 #написать формулу + переменая
                     data[str(message.guild.id)]['USERS'][str(message.author.id)]['LvL']=new_level

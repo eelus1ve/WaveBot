@@ -2,18 +2,24 @@ import discord
 from discord.ext import commands
 from BTSET import Moderation, bdpy
 import re
-from module.moderation.moderation import ModerationSetup
+from module.fun.fun import FunSetup
 from module.info.info import InfoSetup
+from module.moderation.moderation import ModerationSetup
+# from module.rate.rate import RateSetup
+from module.utility.utility import UtilitySetup
+from module.self.commands.support import SupportAnswer
+from module.self.commands.support import Suppot
+from system.Bot import WaveBot
 
 class BotError(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: WaveBot):
         self.bot = bot
 
     async def embs(self, ctx, des):
         await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description=des,
-                color = Moderation(ctx.author).ercolor
+                color = self.bot.db_get_moderercolor(ctx)
             ))
 
     # @commands.Cog.listener('on_command_error')
@@ -46,7 +52,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*clear (количество до 1000 за 1 раз)*",
-                color=Moderation(ctx.author).ercolor
+                color=self.bot.db_get_moderercolor(ctx)
             ))
 
     @ModerationSetup.ban.error
@@ -55,7 +61,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*ban (@Участник)*",
-                color = Moderation(ctx.author).ercolor
+                color = self.bot.db_get_moderercolor(ctx)
             ))
     @ModerationSetup.kick.error
     async def error(self, ctx, error):
@@ -63,7 +69,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*kick (@Участник)*",
-                color = Moderation(ctx.author).ercolor
+                color = self.bot.db_get_moderercolor(ctx)
             ))
     @ModerationSetup.warn.error
     async def error(self, ctx: commands.Context, error):
@@ -72,7 +78,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование: {pref}warn (@Участник) (Причина)",
-                color = Moderation(ctx.author).ercolor
+                color = self.bot.db_get_moderercolor(ctx)
             ))
     @ModerationSetup.unwarn.error
     async def error(self, ctx: commands.Context, error):
@@ -81,7 +87,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование: {pref}unwarn (@Участник)",
-                color = Moderation(ctx.author).ercolor
+                color = self.bot.db_get_moderercolor(ctx)
             ))
     @ModerationSetup.clear_warns.error
     async def error(self, ctx: commands.Context, error):
@@ -90,7 +96,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"Использование: {pref}clear_warns (@Участник)",
-                color = Moderation(ctx.author).ercolor
+                color = self.bot.db_get_moderercolor(ctx)
             ))
 
     @ModerationSetup.set.error
@@ -99,22 +105,24 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=error,
-                color=Moderation(ctx.author).ercolor
+                color=self.bot.db_get_moderercolor(ctx)
             ))
         elif isinstance(error, commands.MissingRequiredArgument):
+            print(3)
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=error,
-                color=Moderation(ctx.author).ercolor
+                color=self.bot.db_get_moderercolor(ctx)
             ))
 
     @InfoSetup.spotify_info.error
+    @InfoSetup.spotify.error
     async def error(self, ctx: commands.Context, error):
         if isinstance(error, commands.BadArgument):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"Пользователь не слушает spotify",
-                color = Moderation(ctx.author).ercolor
+                color = self.bot.db_get_moderercolor(ctx)
             ))
     
     # @Score_commands.clear_rank.error

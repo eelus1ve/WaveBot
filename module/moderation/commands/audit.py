@@ -45,7 +45,7 @@ class Audit(commands.Cog):
         #====================================================================
         emb=discord.Embed(
             title=f'{ctx.guild.name}',
-            description='{} {text}{}\n{} {reason}'.format(Lang(ctx).language['audit_des_ls_1']),
+            description=f"{Lang(ctx).language['audit_des_ls_1']} {text}{Lang(ctx).language['audit_des_ls_2']}\n{Lang(ctx).language['audit_des_ls_3']} {reason}",
             timestamp=moscow_time,
             color=self.bot.db_get_modercolor(ctx)
         )
@@ -157,3 +157,56 @@ class Audit(commands.Cog):
         # emb.add_field(name='Текущее кол-во нарушений', value=f'{Moderation(member).warns}/{Moderation(member).nWarns}', inline=True)
         # emb.set_footer(text=f'Нарушения сняты участником{ctx.author.name}#{ctx.author.discriminator} ID модератора: {ctx.author.id}')
         # await member.send(embed=emb)
+
+
+
+
+        async def mwarns_audit(self, message: discord.Message, data):
+            if self.bot.db_get_adminchannel(message) in [str(i.id) for i in message.guild.channels]:
+                emb = discord.Embed(
+                    title='Нарушение',
+                    description=f"*Ранее, у нарушителя было уже {self.bot.db_get_user_warns(message.author) - 1} нарушений, после {self.bot.db_get_nwarns(message)} он будет забанен!*",
+                    timestamp=message.created_at,
+                    color=self.bot.db_get_modercolor(message)
+                )
+                emb.add_field(name='Сообщение нарушителя:', value=message.content, inline=False)
+                emb.add_field(name='Канал:', value=message.channel.mention, inline=True)
+                emb.add_field(name='Нарушитель:', value=message.author.mention, inline=True)
+                emb.add_field(name='Тип нарушения:', value='Ругательства/ссылки', inline=True)
+                emb.set_footer(text=f'Предупреждение выдано автомодератором WaveBot')
+                await get(message.guild.text_channels, id=self.bot.db_get_adminchannel(message)).send(embed=emb)
+
+
+            #====================================================================
+            #ls
+            #====================================================================
+            emb = discord.Embed(
+                title='Нарушение',
+                description=f'Вам выдали предупреждение на сервере {message.guild.name}\nСообщение с нарушением: {message.content}',
+                timestamp=message.created_at,
+                color=self.bot.db_get_modercolor(message)
+            )
+            emb.add_field(name='Канал', value=message.channel.mention, inline=True)
+            emb.add_field(name='Тип нарушения:', value=f'Ругательства/ссылки', inline=True)
+            emb.add_field(name='Кол-во нарушений', value=f'{self.bot.db_get_user_warns(message.author)}/{self.bot.db_get_nwarns(message)}', inline=True)
+            emb.set_footer(text=f'Предупреждение выдано автомодератором WaveBot')
+            
+            await message.author.send(embed=emb)
+        #================================================================================================================================================================================
+
+
+            #====================================================================
+            #ban
+            #====================================================================
+            if data[str(message.guild.id)]['USERS'][str(message.author.id)]['WARNS'] >= self.bot.db_get_nwarns(message):
+                ReasoN = 'Вы привысили допустимое количество нарушений'
+                emb = discord.Embed(
+                title=f'Вас забанили на сервере {message.guild.name}',
+                description=f'{ReasoN}',
+                timestamp=message.created_at,
+                color=self.bot.db_get_modercolor(message)
+                )
+                await message.author.send(embed=emb)
+                await message.author.ban(reason=ReasoN)
+            #========================================================================================
+

@@ -2,8 +2,8 @@ import discord
 from discord.ext import commands
 import json
 from typing import Optional, Union
-
-ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
+# '840307986228707368'
+ADMINS = ['466609421863354388', '758734389072625685']
 BOTVERSION = '***ALPHA 1.0***'
 BETATESTERS = ['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176',
                '406124614729859073', '496021942877552660', '539848793693224970', '544279889470291989',
@@ -56,6 +56,24 @@ DEFGUILD = {
 }
 DBSTR = [i for i in DEFGUILD.keys() if (type(DEFGUILD[i]) in [str, int, bool])]
 
+DEFMODROLE = {
+    "kick": True, 
+    "ban": True, 
+    "unban": True, 
+    "tempban": True,
+    "warn": True,
+    "tempwarn": True,
+    "unwarn": True,
+    "clearwarns": True,
+    "settings": True,
+    "clear": True,
+    "score": True,
+    "clearscore": True,
+    "setlvl": True,
+    "clearrank": True,
+    "temprole": True, 
+    "giverole": True
+}
 
 # with open(f'{BD}users.json', 'r') as file:
 #     d: dict = json.load(file)
