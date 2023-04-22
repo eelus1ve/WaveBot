@@ -183,6 +183,7 @@ async def setup(bot: WaveBot):
     async def scroll_set(interaction: discord.Interaction):
         if InteractionComponents(interaction).inter_type == 2 and interaction.guild:
             try:
+                print(4564)
                 old_emb = interaction.message.embeds[0]
 
                 scr_set = ScrollSet(bot, interaction, old_emb)
