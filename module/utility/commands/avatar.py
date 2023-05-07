@@ -11,5 +11,5 @@ class Avatar(commands.Cog):
     async def command_avatar(self, ctx: commands.Context, member: discord.Member):
         emb = discord.Embed(title=f"{Lang(ctx).language['avatar_title']} {member.name}",
                             color=self.bot.db_get_utilitycolor(ctx))
-        emb.set_image(url=member.avatar_url)
+        emb.set_image(url=member.avatar)
         await ctx.send(embed=emb)

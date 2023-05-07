@@ -4,6 +4,7 @@ from email.errors import InvalidMultipartContentTransferEncodingDefect
 import json
 from BTSET import BD, InteractionComponents, bdpy
 from discord.ui import Select, RoleSelect, UserSelect, ChannelSelect, Button, View
+from system.Bot import WaveBot
 
 preference_set_for_best = ['канал администратора', 'настроить цвет', 'префикс']
 
@@ -426,7 +427,7 @@ class SetForBTST:
 
 class SecSetForBTST:
     def __init__(self, bot, interaction, old_emb):
-        self.bot = bot
+        self.bot: WaveBot = bot
         self.interaction: discord.Interaction = interaction
         self.old_emb = old_emb
         self.check = CheckMesBTST(interaction)
@@ -471,18 +472,15 @@ class SecSetForBTST:
         await self.interaction.message.edit(embed=emb, view=vw)
 
     async def role_choice(self):
-        print(InteractionComponents(self.interaction))
         self.data[str(self.interaction.guild.id)]['ROLES'][
             InteractionComponents(self.interaction).placeholder][0] = InteractionComponents(self.interaction).values
         self.data[str(self.interaction.guild.id)]['ROLES'][
             InteractionComponents(self.interaction).placeholder][1] = [0 for _ in InteractionComponents(self.interaction).values]
-        await self.interaction.response.send_message(embed=discord.Embed(
-            title=f'Роли выбранны',
-            color=self.COLOR
-        ))
 
         with open(f'{BD}users.json', 'w') as file:
             json.dump(self.data, file, indent=4)
+
+        await SettingsPanel(self.bot, self.interaction).btst_set_def()
 
     async def admin_clen(self):
         with open(f'{BD}users.json', 'r') as file:
@@ -546,7 +544,7 @@ class ScrollSet:
 
             vw = DefaultButtonsForBTST.but()
             sel = Select(
-                placeholder=self.interaction.message.components[2].children[0].placeholder,
+                placeholder=self.interaction.message.components[0].children[0].placeholder,
                 max_values=len(self.serverRoles[int(self.interaction.message.embeds[0].fields[0].value.split()[1])]),
                 min_values=0,
             )
@@ -595,7 +593,7 @@ class ScrollSet:
 
             vw = DefaultButtonsForBTST.but()
             sel = Select(
-                placeholder=self.interaction.message.components[2].children[0].placeholder,
+                placeholder=self.interaction.message.components[0].children[0].placeholder,
                 max_values=len(self.serverRoles[int(
                     self.interaction.message.embeds[0].fields[0].value.split()[
                         1]) - 2]),
