@@ -27,6 +27,7 @@ DEFGUILD = {
     'MODERATIONERCOLOR': '0x8B0000',
     'RATEERCOLOR': '0x8B0000',
     'UTILITYERCOLOR': '0x8B0000',
+    ''
     'AUDIT': {},
     'AUDIT_CHANNEL': '0',
     'JoinRoles': [],
