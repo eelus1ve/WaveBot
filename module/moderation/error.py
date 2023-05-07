@@ -15,35 +15,29 @@ class BotError(commands.Cog):
     def __init__(self, bot: WaveBot):
         self.bot = bot
 
-    async def embs(self, ctx, des):
+    @commands.Cog.listener('on_command_error')
+    async def error(self, ctx, error):
+        print(1)
+        des = error
+        if isinstance(error, commands.errors.CommandNotFound):
+            found = re.findall(r'Command \s*"([^\"]*)"', str(error))
+            des = f"*Команды `{''.join(found)}` не существует*"
+        elif isinstance(error, commands.errors.MemberNotFound):
+            found = re.findall(r'Member \s*"([^\"]*)"', str(error))
+            des = f"*Участник `{''.join(found)}` не найден*"
+        elif isinstance(error, commands.MissingPermissions):
+            des = f"*У вас недостаточно прав!*"
+        elif isinstance(error, commands.errors.CommandInvokeError):
+            print(f'1\n{error}')
+        elif isinstance(error, commands.BadArgument):
+            des = error
+        else:
+            print(error)
         await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description=des,
                 color = self.bot.db_get_moderercolor(ctx)
             ))
-
-    # @commands.Cog.listener('on_command_error')
-    # async def ErFile(self, ctx, error):
-    #     des = error
-    #     if isinstance(error, commands.errors.CommandNotFound):
-    #         print(error)
-    #         found = re.findall(r'Command \s*"([^\"]*)"', str(error))
-    #         des = f"*Команды `{''.join(found)}` не существует*"
-    #     elif isinstance(error, commands.errors.MemberNotFound):
-    #         found = re.findall(r'Member \s*"([^\"]*)"', str(error))
-    #         des = f"*Участник `{''.join(found)}` не найден*"
-    #     elif isinstance(error, commands.MissingPermissions):
-    #         des = f"*У вас недостаточно прав!*"
-    #     elif isinstance(error, commands.errors.CommandInvokeError):
-    #         print(f'1\n{error}')
-    #     elif isinstance(error, commands.BadArgument):
-    #         des = error
-    #     else:
-    #         print(error)
-    #     des = error
-    #     raise error
-    #
-    #     await BotError.embs(self, ctx, des)
 
     
     @ModerationSetup.clear.error

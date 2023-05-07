@@ -19,6 +19,7 @@ def scoreError(argumens):
         if not arg:
             raise commands.BadArgument()
         argg = arg.replace('+', '')
+        argg = arg.replace('-', '')
         if not argg:
             raise commands.BadArgument()
         if int(argg) > 10000:
@@ -91,7 +92,7 @@ class Score_commands(commands.Cog):
                     ))
             elif Rool(ctx).score:
                 if arg.startswith('+'): #1 лвл не такой как все 0-199 200-299 разряд x2 на 1 лвл
-                    
+                    pass
 
                 elif arg.startswith('-'):
                     argg = arg.replace('-', '')

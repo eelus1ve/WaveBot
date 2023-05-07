@@ -12,6 +12,13 @@ class InfoSetup(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot = bot
 
+        
+    #Удалить до релиза
+    @commands.command()
+    async def new_betatesters(self, ctx: commands.Context):
+        await BotInfo(self.bot).command_new_betatesters(ctx)
+    #Удалить до релиза
+
     @commands.command(aliases=['юзер', 'Юзер', 'ЮЗЕР'])
     async def user(self, ctx: commands.Context, memberr: Optional[discord.Member]):
         member: discord.Member = memberr or ctx.author

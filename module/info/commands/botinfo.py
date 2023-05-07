@@ -4,6 +4,11 @@ from discord.ext import commands
 from system.Bot import WaveBot
 
 
+import json
+from BTSET import BD
+
+
+
 class BotInfo(commands.Cog):
     def __init__(self, bot):
         self.bot: WaveBot = bot
@@ -21,3 +26,12 @@ class BotInfo(commands.Cog):
         emb.set_footer(text=Lang(ctx).language['botinfo_footer'], icon_url = self.bot.user.display_avatar)
         #добавить информацию про бетотестреов и остальных юзеров бота до релиза + инфу про ботф (можно позаимствовать из dox файла или презентации)
         await ctx.send(embed = emb)
+    
+
+    #удалить эту часть кода перед релизом
+    
+    async def command_new_betatesters(self, ctx: commands.Context):
+        with open(f'{BD}users.json', 'r') as file:
+            data = json.load(file)
+        print([i for i in data["981257625696075896"]["USERS"].keys()])
+ 

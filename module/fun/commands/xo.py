@@ -4,7 +4,6 @@ from discord.ext import commands
 from typing import Optional
 
 from setuptools import Command
-from BTSET import BotSetup
 
 lang_num = [0, 1, 2]
 lang_emo = []
@@ -156,26 +155,26 @@ def autoplay(body):
 #====================================================================
 
 
-if input() == '0':
-    print(body[6:9], body[3:6], body[0:3], sep='\n')
-    while 1:
-        play(1)
-        print(body[6:9], body[3:6], body[0:3], sep='\n')
+# if input() == '0':
+#     print(body[6:9], body[3:6], body[0:3], sep='\n')
+#     while 1:
+#         play(1)
+#         print(body[6:9], body[3:6], body[0:3], sep='\n')
 
-        play(2)
-        print(body[6:9], body[3:6], body[0:3], sep='\n')
-else:
-    print(body[6:9], body[3:6], body[0:3], sep='\n')
-    play(1)
+#         play(2)
+#         print(body[6:9], body[3:6], body[0:3], sep='\n')
+# else:
+#     print(body[6:9], body[3:6], body[0:3], sep='\n')
+#     play(1)
 
-    autoplay_start()
-    print(body[6:9], body[3:6], body[0:3], sep='\n')
+#     autoplay_start()
+#     print(body[6:9], body[3:6], body[0:3], sep='\n')
 
-    while 1:
-        play(1)
+#     while 1:
+#         play(1)
 
-        autoplay()
-        print(body[6:9], body[3:6], body[0:3], sep='\n')
+#         autoplay()
+#         print(body[6:9], body[3:6], body[0:3], sep='\n')
 
 
 
@@ -189,4 +188,4 @@ async def xo(self, ctx: commands.Context, user: Optional[discord.Member]):
     body = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     if user in ctx.guild.members:
-    
+        pass
