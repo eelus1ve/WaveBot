@@ -1,7 +1,8 @@
 import json
 from discord.ext import commands
 import os
-from BTSET import BD, DEFGUILD
+from BTSET import BD, DEFGUILD, DEFGUILDSQL, DEFUSERSQL
+import sqlite3
 class Json_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -88,22 +89,95 @@ class Json_write(commands.Cog):
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(dat, file, indent=4)
 
+    def createsqltabel(self):
+        if not os.path.exists(f'{BD}WaveDateBase.db'):
+            # Создание соединения с базой данных
+            conn = sqlite3.connect(f'{BD}WaveDateBase.db')
+            # Создание таблицы "Товар"
+            conn.execute('''CREATE TABLE IF NOT EXISTS servers
+                        (ID INTAGER,
+                        CHEK TEXT(25),
+                        LANG TEXT(25),
+                        COLOR TEXT(25),
+                        FUNCOLOR TEXT(25),
+                        INFOCOLOR TEXT(25),
+                        MODERATIONCOLOR TEXT(25),
+                        RATECOLOR TEXT(25),
+                        UTILITYCOLOR TEXT(25),
+                        ERCOLOR TEXT(25),
+                        FUNERCOLOR TEXT(25),
+                        INFOERCOLOR TEXT(25),
+                        MODERATIONERCOLOR TEXT(25),
+                        RATEERCOLOR TEXT(25),
+                        UTILITYERCOLOR TEXT(25),
+                        AUDIT TEXT(25),
+                        AUDITCHANNEL TEXT(25),
+                        JOINROLES TEXT(25),
+                        MODROLES TEXT(25),
+                        ROLES TEXT(25),
+                        ACTMODULES TEXT(25),
+                        NCAPS INTAGER,
+                        NWARNS INTAGER,
+                        ADMINCHANNEL INTAGER,
+                        IDMAINCH INTAGER,
+                        SELFROOM TEXT(25),
+                        BADWORDS TEXT(25),
+                        LINKS TEXT(25),
+                        PREFIX TEXT(25),
+                        JNMSG TEXT(25),
+                        SELFTITLE TEXT(25),
+                        SELFROOMS TEXT(25),
+                        MAFROOMS TEXT(25),
+                        IGNORECHANNELS TEXT(25),
+                        IGNOREROLES TEXT(25),
+                        CARD TEXT(25),
+                        TEXTCOLOR TEXT(25),
+                        BARCOLOR TEXT(25),
+                        BLEND INTAGER,
+                        FIRSTROLE TEXT(25)
+                        )''')
+            # Создание таблицы "Категория"
+            for guild in self.bot.guilds:
+                conn.execute(f'''CREATE TABLE IF NOT EXISTS server{guild.id}
+                            (ID TEXT(25),
+                            WARNS INTEGER,
+                            CAPS INTEGER,
+                            SCR INTEGER,
+                            LVL INTEGER,
+                            TIME INTEGER
+                            )''')
+            # conn.close()
 
+            for guild in self.bot.guilds:
+                conn = sqlite3.connect(f'{BD}WaveDateBase.db')
+                # данные для добавления
+                serversaset = tuple(str(guild.id) if i == "id" else i for i in DEFGUILDSQL.values())
+                conn.execute("INSERT INTO servers ("+", ".join([i for i in DEFGUILDSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFGUILDSQL.keys()])+")", serversaset)
+                conn.commit()
+                # conn.close()
+
+                conn = sqlite3.connect(f'{BD}WaveDateBase.db')
+                for member in guild.members:
+                    useraset = tuple(str(member.id) if i == "id" else i for i in DEFUSERSQL.values())
+                    conn.execute(f"INSERT INTO server{guild.id} ("+", ".join([i for i in DEFUSERSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFUSERSQL.keys()])+")", useraset)
+                    conn.commit()
+            conn.close
 
     @commands.Cog.listener('on_member_join')
-    async def n_mr_join(self, ctx):
+    async def n_mr_join(self, ctx: commands.Context):
         Json_write(self.bot).jsonwrite()
 
     @commands.Cog.listener('on_member_remove')
-    async def on_meove(self, ctx):
+    async def on_meove(self, ctx: commands.Context):
         Json_write(self.bot).jsonwrite()
 
     @commands.Cog.listener('on_guild_join')
-    async def on_gld_jn(self, ctx):
+    async def on_gld_jn(self, ctx: commands.Context):
+        print(ctx.guild.id)
         Json_write(self.bot).jsonwrite()
 
     @commands.Cog.listener('on_guild_remove')
-    async def on_gld_remove(self, ctx):
+    async def on_gld_remove(self, ctx: commands.Context):
         Json_write(self.bot).jsonwrite()
 
 

@@ -5,14 +5,70 @@ from typing import Optional, Union
 # '840307986228707368'
 ADMINS = ['466609421863354388', '758734389072625685']
 BOTVERSION = '***ALPHA 1.0***'
-BETATESTERS = []#['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176',
+BETATESTERS = '222'#['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176',
 #                '406124614729859073', '496021942877552660', '539848793693224970', '544279889470291989',
 #                '547077175308713994', '583722104059592757', '666768779174346782', '858638662160613376',
 #                '992771455500681307']
 BD = 'system/Database/'
 IGNORE = ['commands']
 IGNORE_SIMV = ['<WaveEmb>']
+DEFGUILDSQL = {
+    'ID': "id",
+    'CHEK': 'False',
+    'LANG': 'ru_RU',
+    'COLOR': '0x0000FF',
+    'FUNCOLOR': '0x0000FF',
+    'INFOCOLOR': '0x0000FF',
+    'MODERATIONCOLOR': '0x0000FF',
+    'RATECOLOR': '0x0000FF',
+    'UTILITYCOLOR': '0x0000FF',
+    'ERCOLOR': '0x8B0000',
+    'FUNERCOLOR': '0x8B0000',
+    'INFOERCOLOR': '0x8B0000',
+    'MODERATIONERCOLOR': '0x8B0000',
+    'RATEERCOLOR': '0x8B0000',
+    'UTILITYERCOLOR': '0x8B0000',
+    'AUDIT': '111',
+    'AUDITCHANNEL': '0',
+    'JOINROLES': '222',
+    'MODROLES': '111',
+    'ROLES': '111',
+    'ACTMODULES': '-1',
+    'NCAPS': 1,
+    'NWARNS': 10,
+    'ADMINCHANNEL': '0',
+    'IDMAINCH': '0',
+    'SELFROOM': '111',
+    'BADWORDS': '222',
+    'LINKS': '222',
+    'PREFIX': '~',
+    'JNMSG': '-1',
+    'SELFTITLE': '*Выберите ваши роли:* ',
+    'SELFROOMS': '111',
+    'MAFROOMS': '111',
+    'IGNORECHANNELS': '211',
+    'IGNOREROLES': '211',
+    'CARD': 'wave.png',
+    'TEXTCOLOR': '#d0ed2b',
+    'BARCOLOR': '#ec5252',
+    'BLEND': 1,
+    'FIRSTROLE': '-1'
+}
+
+DEFUSERSQL = {
+    'ID': 'id',
+    'WARNS': 0,
+    'CAPS': 0,
+    "SCR": 0,
+    'LVL': 1,
+    "TIME": 0
+}
+
+
+
+
 DEFGUILD = {
+    '': "id",
     'check': False,
     'LANG': 'ru_RU',
     'COLOR': '0x0000FF',
@@ -27,7 +83,6 @@ DEFGUILD = {
     'MODERATIONERCOLOR': '0x8B0000',
     'RATEERCOLOR': '0x8B0000',
     'UTILITYERCOLOR': '0x8B0000',
-    ''
     'AUDIT': {},
     'AUDIT_CHANNEL': '0',
     'JoinRoles': [],
@@ -55,6 +110,7 @@ DEFGUILD = {
     'FirstRole': '',
     'USERS': {},
 }
+
 DBSTR = [i for i in DEFGUILD.keys() if (type(DEFGUILD[i]) in [str, int, bool])]
 
 DEFMODROLE = {
@@ -249,7 +305,7 @@ def bdpy(ctx: commands.Context):
 
 class Rool():
     def __init__(self, ctx: commands.Context):
-        if bdpy(ctx)['ModRoles'] != {}:
+        if bdpy(ctx)['ModRoles'] != '111':
             mods = bdpy(ctx)['ModRoles'][
                 str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]
 
