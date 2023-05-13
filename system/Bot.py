@@ -7,9 +7,10 @@ from discord import app_commands
 from discord.ext.commands.help import HelpCommand
 from .db_.db_read import DataBaseRead
 from .db_.db_write import DataBaseWrite
+from .db_.sqledit import SQLeditor
 
 
-class WaveBot(commands.Bot, DataBaseWrite, DataBaseRead):
+class WaveBot(commands.Bot, DataBaseWrite, DataBaseRead, SQLeditor):
     def __init__(
             self,
             command_prefix,
