@@ -17,10 +17,10 @@ class Joiner(commands.Cog):
         Json_write(self.bot).jsonwrite()
 
     @commands.Cog.listener('on_guild_join')
-    async def on_gld_jn(self, guild):
+    async def on_gld_jn(self, guild: discord.Guild):
         SQL_write(self.bot).newguildsql(guild)
         Json_write(self.bot).jsonwrite()
 
     @commands.Cog.listener('on_guild_remove')
-    async def on_gld_remove(self, guild):
+    async def on_gld_remove(self, guild: discord.Guild):
         Json_write(self.bot).jsonwrite()
