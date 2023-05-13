@@ -12,12 +12,12 @@ from system.Bot import WaveBot
 
 async def setup(bot: WaveBot):
     await bot.add_cog(Joiner(bot))
-    await bot.add_cog(FunSetup(bot))
-    await bot.add_cog(InfoSetup(bot))
     await bot.add_cog(ModerationSetup(bot))
-    # await bot.add_cog(RateSetup(bot))
-    await bot.add_cog(UtilitySetup(bot))
     await bot.load_extension('module.moderation.commands.btst')
+    await bot.add_cog(InfoSetup(bot))
+    # await bot.add_cog(RateSetup(bot))
+    await bot.add_cog(FunSetup(bot))
+    await bot.add_cog(UtilitySetup(bot))
     await bot.add_cog(SupportAnswer(bot))
     await bot.add_cog(Suppot(bot))
     await bot.add_cog(BotError(bot))
