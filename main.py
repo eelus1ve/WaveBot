@@ -4,7 +4,7 @@ from discord.ext import commands
 from BTSET import bdpy, embpy
 from dotenv import load_dotenv, find_dotenv
 from system.Bot import WaveBot
-from system.JSONwriter import Json_write
+from system.JSONwriter import SQL_write
 
 load_dotenv(find_dotenv())
 
@@ -29,7 +29,7 @@ async def on_ready():
     await bot.load_extension('system.JSONwriter')
     await bot.load_extension('system.while')
     await bot.load_extension('module.loader')
-    Json_write(bot).createsqltabel()
+    SQL_write(bot).createsqltabel()
     print(f'{bot.user.name} connected')
 
 

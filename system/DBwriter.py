@@ -3,6 +3,7 @@ from discord.ext import commands
 import os
 from BTSET import BD, DEFGUILD, DEFGUILDSQL, DEFUSERSQL
 import sqlite3
+import discord
 class Json_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -89,11 +90,46 @@ class Json_write(commands.Cog):
                 with open(f'{BD}users.json', 'w') as file:
                     json.dump(dat, file, indent=4)
 
+
+class SQL_write(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    def newguildsql(guild):
+        conn = sqlite3.connect(f'{BD}WaveDateBase.db')
+        cur = conn.cursor()
+        cur.execute(f"SELECT 1 FROM servers WHERE ID == {guild.id}")
+        data = cur.fetchall()
+        if not(data):
+            conn.execute(f'''CREATE TABLE IF NOT EXISTS server{guild.id}
+                        (ID TEXT(25),
+                        WARNS INTEGER,
+                        CAPS INTEGER,
+                        SCR INTEGER,
+                        LVL INTEGER,
+                        TIME INTEGER
+                        )''')
+            
+            serversaset = tuple(str(guild.id) if i == "id" else i for i in DEFGUILDSQL.values())
+            conn.execute("INSERT INTO servers ("+", ".join([i for i in DEFGUILDSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFGUILDSQL.keys()])+")", serversaset)
+            conn.commit()
+        
+        for member in guild.members:
+            cur = conn.cursor()
+            cur.execute(f"SELECT 1 FROM server{guild.id} WHERE ID == {member.id}")
+            data = cur.fetchall()
+            if not(data):
+                useraset = tuple(str(member.id) if i == "id" else i for i in DEFUSERSQL.values())
+                conn.execute(f"INSERT INTO server{guild.id} ("+", ".join([i for i in DEFUSERSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFUSERSQL.keys()])+")", useraset)
+                conn.commit()
+                conn.close
+
+
     def createsqltabel(self):
         if not os.path.exists(f'{BD}WaveDateBase.db'):
-            # Создание соединения с базой данных
+
             conn = sqlite3.connect(f'{BD}WaveDateBase.db')
-            # Создание таблицы "Товар"
+
             conn.execute('''CREATE TABLE IF NOT EXISTS servers
                         (ID INTAGER,
                         CHEK TEXT(25),
@@ -136,50 +172,18 @@ class Json_write(commands.Cog):
                         BLEND INTAGER,
                         FIRSTROLE TEXT(25)
                         )''')
-            # Создание таблицы "Категория"
-            for guild in self.bot.guilds:
-                conn.execute(f'''CREATE TABLE IF NOT EXISTS server{guild.id}
-                            (ID TEXT(25),
-                            WARNS INTEGER,
-                            CAPS INTEGER,
-                            SCR INTEGER,
-                            LVL INTEGER,
-                            TIME INTEGER
-                            )''')
-            # conn.close()
-
-            for guild in self.bot.guilds:
-                conn = sqlite3.connect(f'{BD}WaveDateBase.db')
-                # данные для добавления
-                serversaset = tuple(str(guild.id) if i == "id" else i for i in DEFGUILDSQL.values())
-                conn.execute("INSERT INTO servers ("+", ".join([i for i in DEFGUILDSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFGUILDSQL.keys()])+")", serversaset)
-                conn.commit()
-                # conn.close()
-
-                conn = sqlite3.connect(f'{BD}WaveDateBase.db')
-                for member in guild.members:
-                    useraset = tuple(str(member.id) if i == "id" else i for i in DEFUSERSQL.values())
-                    conn.execute(f"INSERT INTO server{guild.id} ("+", ".join([i for i in DEFUSERSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFUSERSQL.keys()])+")", useraset)
-                    conn.commit()
             conn.close
 
-    @commands.Cog.listener('on_member_join')
-    async def n_mr_join(self, ctx: commands.Context):
-        Json_write(self.bot).jsonwrite()
-
-    @commands.Cog.listener('on_member_remove')
-    async def on_meove(self, ctx: commands.Context):
-        Json_write(self.bot).jsonwrite()
-
-    @commands.Cog.listener('on_guild_join')
-    async def on_gld_jn(self, ctx: commands.Context):
-        print(ctx.guild.id)
-        Json_write(self.bot).jsonwrite()
-
-    @commands.Cog.listener('on_guild_remove')
-    async def on_gld_remove(self, ctx: commands.Context):
-        Json_write(self.bot).jsonwrite()
+            for guild in self.bot.guilds:
+                SQL_write.newguildsql(guild)
 
 
-async def setup(bot):
-    await bot.add_cog(Json_write(bot))
+    def newmembersql(member: discord.Member):
+        conn = sqlite3.connect(f'{BD}WaveDateBase.db')
+        cur = conn.cursor()
+        cur.execute(f"SELECT 1 FROM server{member.guild.id} WHERE ID == {member.id}")
+        data = cur.fetchall()
+        if not(data):
+            useraset = tuple(str(member.id) if i == "id" else i for i in DEFUSERSQL.values())
+            conn.execute(f"INSERT INTO server{member.guild.id} ("+", ".join([i for i in DEFUSERSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFUSERSQL.keys()])+")", useraset)
+            conn.commit()

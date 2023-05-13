@@ -5,7 +5,7 @@ import os
 import subprocess
 from discord.ext import commands
 import datetime
-from system import JSONwriter
+from system import DBwriter
 
 def res_copy():
     if not int(datetime.datetime.now().time().hour) and int(datetime.datetime.now().minute) <= 1:
@@ -22,7 +22,7 @@ def prnt():
 class Wile_on(commands.Cog):
     def __init__(self, bot):
         self.bot: commands.Bot = bot
-        JSONwriter.Json_write(self.bot).jsonwrite()  # эту строчку смыть в унитаз
+        DBwriter.Json_write(self.bot).jsonwrite()  # эту строчку смыть в унитаз
         pr = multiprocessing.Process(target=prnt)
         pr.start()
 

@@ -5,11 +5,13 @@ from module.moderation.moderation import ModerationSetup
 from module.utility.utility import UtilitySetup
 from module.self.commands.support import SupportAnswer
 from module.self.commands.support import Suppot
+from module.moderation.joiner import Joiner
 from module.moderation.error import BotError
 from system.Bot import WaveBot
 
 
 async def setup(bot: WaveBot):
+    await bot.add_cog(Joiner(bot))
     await bot.add_cog(FunSetup(bot))
     await bot.add_cog(InfoSetup(bot))
     await bot.add_cog(ModerationSetup(bot))
