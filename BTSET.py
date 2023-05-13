@@ -34,7 +34,7 @@ DEFGUILDSQL = {
     'MODROLES': '111',
     'ROLES': '111',
     'ACTMODULES': '-1',
-    'NCAPS': 1,
+    'NCAPS': -1,
     'NWARNS': 10,
     'ADMINCHANNEL': '0',
     'IDMAINCH': '0',
