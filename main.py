@@ -4,7 +4,7 @@ from discord.ext import commands
 from BTSET import bdpy, embpy
 from dotenv import load_dotenv, find_dotenv
 from system.Bot import WaveBot
-from system.JSONwriter import SQL_write
+from system.DBwriter import SQL_write
 
 load_dotenv(find_dotenv())
 
