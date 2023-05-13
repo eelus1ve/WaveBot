@@ -95,7 +95,7 @@ class SQL_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def newguildsql(guild):
+    def newguildsql(self, guild):
         conn = sqlite3.connect(f'{BD}WaveDateBase.db')
         cur = conn.cursor()
         cur.execute(f"SELECT 1 FROM servers WHERE ID == {guild.id}")
@@ -175,13 +175,13 @@ class SQL_write(commands.Cog):
             conn.close
 
             for guild in self.bot.guilds:
-                SQL_write.newguildsql(guild)
+                SQL_write(self.bot).newguildsql(guild)
 
 
-    def newmembersql(member: discord.Member):
+    def newmembersql(self, member: discord.Member):
         conn = sqlite3.connect(f'{BD}WaveDateBase.db')
         cur = conn.cursor()
-        cur.execute(f"SELECT 1 FROM server{member.guild.id} WHERE ID == {member.id}")
+        cur.execute(f"SELECT ID FROM server{member.guild.id} WHERE ID == {member.id}")
         data = cur.fetchall()
         if not(data):
             useraset = tuple(str(member.id) if i == "id" else i for i in DEFUSERSQL.values())
