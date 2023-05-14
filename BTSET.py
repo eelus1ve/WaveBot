@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 from typing import Optional, Union
-from system.Bot import WaveBot
+# from system.db_.sqledit import SQLeditor
 ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
 BOTVERSION = '***ALPHA 1.0***'
 BETATESTERS = ['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176',
@@ -331,9 +331,12 @@ class Rool():
             self.clear = ctx.author.guild_permissions.administrator
             self.ban = ctx.author.guild_permissions.administrator
 
+
+# SQLeditor.read_sql(db="servers", guild=str(ctx.guild.id), key="ADMINCHANNEL")
+
     def role(quest: str):
         def predicate(ctx: commands.Context):
-            if quest == 'clear' and Rool(ctx).clear and (ctx.channel.id != WaveBot.read_sql(db="servers", guild=str(ctx.guild.id), key="ADMINCHANNEL") or ctx.author.id == ctx.guild.owner.id):
+            if quest == 'clear' and Rool(ctx).clear and (ctx.channel.id != bdpy(ctx)["idadminchannel"] or ctx.author.id == ctx.guild.owner.id):
                 return True
             elif quest == 'clearRank' and Rool(ctx).clearRank:
                 return True

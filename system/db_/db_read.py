@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
 from typing import *
-import json
-from BTSET import BD
 from .wrappers import db_read
 
 

@@ -30,7 +30,8 @@ async def on_ready():
     await bot.load_extension('system.while')
     SQL_write(bot).createsqltabel()
     print(f'{bot.user.name} connected')
-
+    for guild in bot.guilds:
+        print(guild, guild.preferred_locale)
 
 @bot.command()
 async def a(ctx: commands.Context):

@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
 from typing import *
-import json
-from BTSET import BD
 from discord import app_commands
 from discord.ext.commands.help import HelpCommand
 from .db_.db_read import DataBaseRead
