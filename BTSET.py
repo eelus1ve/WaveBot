@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 from typing import Optional, Union
-
+from system.Bot import WaveBot
 ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
 BOTVERSION = '***ALPHA 1.0***'
 BETATESTERS = ['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176',
@@ -319,7 +319,6 @@ class Rool():
             self.kick = mods['Kick'] == "True" or ctx.author.guild_permissions.administrator
             self.clear = mods['Clear'] == "True" or ctx.author.guild_permissions.administrator
             self.ban = mods['Bans']['Ban'] == "True" or ctx.author.guild_permissions.administrator
-
         else:
             self.clearRank = ctx.author.guild_permissions.administrator
             self.score = ctx.author.guild_permissions.administrator
@@ -334,16 +333,13 @@ class Rool():
 
     def role(quest: str):
         def predicate(ctx: commands.Context):
-            if quest == 'clear' and Rool(ctx).clear and (
-                    ctx.channel.id != Moderation(ctx.author).idadminchannel or ctx.author.id == ctx.guild.owner.id):
+            if quest == 'clear' and Rool(ctx).clear and (ctx.channel.id != WaveBot.read_sql(db="servers", guild=str(ctx.guild.id), key="ADMINCHANNEL") or ctx.author.id == ctx.guild.owner.id):
                 return True
             elif quest == 'clearRank' and Rool(ctx).clearRank:
                 return True
             elif quest == 'score' and Rool(ctx).score:
                 return True
             elif quest == 'setlvl' and Rool(ctx).setlvl:
-                return True
-            elif quest == 'clearScore' and Rool(ctx).clearScore:
                 return True
             elif quest == 'warn' and Rool(ctx).warn:
                 return True

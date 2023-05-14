@@ -9,23 +9,11 @@ import datetime
 import pytz
 import time
 from BTSET import Score_presets, Rool, embpy, bdpy, BD, Lang
+from system.Bot import WaveBot
 
 memberInfo = {}
 beforeTime = {}
 
-
-def scoreError(argumens):
-    def wrapper(arg):
-        if not arg:
-            raise commands.BadArgument()
-        argg = arg.replace('+', '')
-        argg = arg.replace('-', '')
-        if not argg:
-            raise commands.BadArgument()
-        if int(argg) > 10000:
-            raise commands.BadArgument()
-        argumens(argg)
-    return wrapper
 
 # else:
 #         await ctx.send(embed=discord.Embed(
@@ -34,224 +22,72 @@ def scoreError(argumens):
 #             color=self.ercolor
 #         ))
 
+class Score_audit(commands.Cog):
+    def __init__(self, bot: WaveBot):
+        self.bot = bot
 
-
-@scoreError
-async def asd(argg, mrr):
-        dermo = int(Score_presets(member=mrr).score) + int(argg)
-        Lvl1 = Score_presets(member=mrr).lvl-1
-        xp = (400+100*(Lvl1-1))/2*Lvl1 + dermo
-        d = (3**2+4*2*xp/100)**0.5
-        if (-3-d)/2 > (-3+d)/2:
-            level = (-3-d)/2
-        else:
-            level = (-3+d)/2
-        xpp = xp - (400+100*(int(level-1)))/2*int(level)
-        data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xpp)
-        data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(level+1)
+    async def audit1(self, ctx, arg, mr):
         #====================================================================
         #audit
         #====================================================================
         emb=discord.Embed(
-            title='Добавление очков опыта',
-            description=f"Учаснику {mrr.mention} было добавлено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}!",
-            timestamp=moscow_time,
+            title=Lang(ctx).language[f'score_audit_{arg}_title'],
+            description=f"{Lang(ctx).language[f'score_audit_{arg}_des_1']} {mr.mention} {Lang(ctx).language[f'score_audit_{arg}_des_2']} {arg} {Lang(ctx).language[f'score_mes_reason_{str(arg)[-1]}']}!",
+            timestamp=datetime.datetime.now(pytz.timezone('Europe/Moscow')).strftime('%d:%H:%M'),
             color=Score_presets(ctx).color
         )
-        emb.set_footer(text=f'Модератор выдавший очки опыта участнику {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
-        await get(ctx.guild.text_channels, id=int(Score_presets(member=mrr).idadminchannel)).send(embed=emb)
+        emb.set_footer(text=f"{Lang(ctx).language[f'score_audit_{arg}_footer_1']} {ctx.author.name}#{ctx.author.discriminator} {Lang(ctx).language[f'score_audit_{arg}_footer_2']} {ctx.author.id}")
+        await get(ctx.guild.text_channels, id=int(Score_presets(member=mr).idadminchannel)).send(embed=emb)
         #====================================================================
         #rep
         #====================================================================
         await ctx.send(embed=discord.Embed(
-            title='Успешно',
-            description=f"{mrr.name} получил {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}!",
+            title=Lang(ctx).language[f'score_rep_{arg}_title'],
+            description=f"{Lang(ctx).language[f'score_rep_{arg}_des_1']} {mr.name} {Lang(ctx).language[f'score_rep_{arg}_des_2']} {arg} {Lang(ctx).language[f'score_mes_reason_{str(arg)[-1]}']}!",
             color=Score_presets(ctx).color
         ))
-    
-
-
 
 class Score_commands(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: WaveBot):
         self.bot = bot
 
-    #ПЕРЕПИСАТЬ ПОЛНОСТЬЮ!!!!!!!!!!!!!!!!!!!!!!!!
-    async def command_score(self, ctx: commands.Context, mrr: discord.Member, arg: Optional[str]):
-        try:
-            with open(f'{BD}users.json', 'r') as file:
-                    data = json.load(file)
-            moscow_time = datetime.datetime.now(pytz.timezone('Europe/Moscow')).strftime('%d:%H:%M') 
-            pref =  bdpy(ctx)['PREFIX']
-
-            if not(arg):
-                    await ctx.send(embed=discord.Embed(
-                        title=f'Количество очков {mrr.name}',
-                        description=f'{Score_presets(member=mrr).score}',
-                        color=Score_presets(ctx).color
-                    ))
-            elif Rool(ctx).score:
-                if arg.startswith('+'): #1 лвл не такой как все 0-199 200-299 разряд x2 на 1 лвл
-                    pass
-
-                elif arg.startswith('-'):
-                    argg = arg.replace('-', '')
-                    if int(argg) < 10001 and arg != None:
-                        dermo = int(Score_presets(member=mrr).score) - int(argg)
-                        Lvl1 = Score_presets(member=mrr).lvl-1
-                        xp = (400+100*(Lvl1-1))/2*Lvl1 + dermo
-                        d = (3**2+4*2*xp/100)**0.5
-                        if (-3-d)/2 > (-3+d)/2:
-                            level = (-3-d)/2
-                        else:
-                            level = (-3+d)/2
-                        xpp = xp - (400+100*(int(level-1)))/2*int(level)
-                        if str(level).startswith('-') or str(xpp).startswith('-'):
-                            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = 0
-                            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = 1
-                            #====================================================================
-                            #audit
-                            #====================================================================
-                            emb=discord.Embed(
-                                title='Уадение очков опыта',
-                                description=f"Учаснику {mrr.mention} было удалено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}",
-                                timestamp=moscow_time,
-                                color=Score_presets(ctx).color
-                            )
-                            emb.set_footer(text=f'Модератор удаливший очки опыта участнику {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
-                            await get(ctx.guild.text_channels, id=int(Score_presets(member=mrr).idadminchannel)).send(embed=emb)
-                            #====================================================================
-                            #rep
-                            #====================================================================
-                            await ctx.send(embed=discord.Embed(
-                                    title='Успешно',
-                                    description=f"{mrr.name} потерял {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}",
-                                    color=Score_presets(ctx).color
-                            ))
-                            #====================================================================
-                            #ls
-                            #====================================================================
-                        else:
-                            
-                            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xpp)
-                            data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(level+1)
-                                
-                            #====================================================================
-                            #audit
-                            #====================================================================
-                            emb=discord.Embed(
-                                title='Уадение очков опыта',
-                                description=f"Учаснику {mrr.mention} было удалено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}",
-                                timestamp=moscow_time,
-                                color=Score_presets(ctx).color
-                            )
-                            emb.set_footer(text=f'Модератор удаливший очки опыта участнику {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
-                            await get(ctx.guild.text_channels, id=int(Score_presets(member=mrr).idadminchannel)).send(embed=emb)
-                            #====================================================================
-                            #rep
-                            #====================================================================
-                            await ctx.send(embed=discord.Embed(
-                                    title='Успешно',
-                                    description=f"{mrr.name} потерял {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}!",
-                                    color=Score_presets(ctx).color
-                            ))
-                            #====================================================================
-                            #ls
-                            #====================================================================
-                    else:
-                        await ctx.send(embed=discord.Embed(
-                            title='Ошибка',
-                            description=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)',
-                            color=self.ercolor
-                        ))
-
-                elif not(arg.startswith('-') or arg.startswith('+')):
-                    a = int(arg) + 0
-                    newLvl = ((Score_presets(member=mrr).lvl*100)+arg)//100
-                    xp = ((Score_presets(member=mrr).lvl*100)+arg) - newLvl*100
-                    
-                    data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['SCR'] = int(xp)
-                    data[str(mrr.guild.id)]['USERS'][str(mrr.id)]['LvL'] = int(newLvl)
-                        
-                    #====================================================================
-                    #audit
-                    #====================================================================
-                    emb=discord.Embed(
-                        title='Установление очков опыта',
-                        description=f"Учаснику {mrr.mention} было установлено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}",
-                        timestamp=moscow_time,
-                        color=Score_presets(ctx).color
-                    )
-                    emb.set_footer(text=f'Модератор исключивший участника {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')
-                    await get(ctx.guild.text_channels, id=int(Score_presets(member=mrr).idadminchannel)).send(embed=emb)
-                    #====================================================================
-                    #rep
-                    #====================================================================
-                    await ctx.send(embed=discord.Embed(
-                        title='Успешно',
-                        description=f"Участнику {mrr.name} было установлено {argg} {Lang(ctx).language[f'score_mes_reason_{str(argg)[-1]}']}!",
-                        color=Score_presets(ctx).color
-                    ))
-                    #====================================================================
-                    #ls
-                    #====================================================================
-
-                else:
-                    await embpy(ctx, comp='e', des=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)', time=10.00)
-                        
-                with open(f'{BD}users.json', 'w') as file:
-                    json.dump(data, file, indent=4)
+    @Rool.role(quest='score')
+    def edit_xp(self, ctx: commands.Context, arg: str):
+        if not(arg[1:]):
+            raise commands.BadArgument(f'Использование: {self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX")}remove_score (@Учасник) +/-(кол-во опыта)')
+        if arg.startswith('+'):
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value=self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP")+int(arg[1:]))
+        elif arg.startswith('-'):
+            xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP")-int(arg[1:])
+            if xp >= 0:
+                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value=xp)
             else:
-                await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
-        except:
-            await embpy(ctx, comp='e', des=f'Использование: {pref}remove_score (@Учасник) +/-(кол-во опыта)', time=10.00)
-                
-    async def command_clear_score(self, ctx: commands.Context, member: discord.Member):
-        if Rool(ctx).setlvl:
-            with open(f'{BD}users.json', 'r') as file:
-                data = json.load(file)
-            
-            data[str(member.guild.id)]['USERS'][str(member.id)]['SCR'] = int(0)
-            await embpy(ctx, comp='s', des=f'{member.name} потерял все очки!', time=10.00)
-            with open(f'{BD}users.json', 'w') as file:
-                json.dump(data, file, indent=4)
+                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value=0)
         else:
-            await embpy(ctx, comp='e', des=f'У вас недостаточно прав!', time=10.00)
-
-    async def command_set_lvl(self, ctx: commands.Context, member: discord.Member, arg = None):
-            with open(f'{BD}users.json', 'r') as file:
-                data = json.load(file)
-            if not(int(arg)<0):
-                data[str(member.guild.id)]['USERS'][str(member.id)]['LvL'] = int(arg)
-                await ctx.send(embed=discord.Embed(
-                    title=f'Успешно',
-                    description=f'Участнику {member.name} был выдан {arg} уровень!',
-                    color=Score_presets(ctx).color
-                ))
-            else:
-                await ctx.send(embed=discord.Embed(
-                    title=f'Ошибка',
-                    description='Нельзя поставить лвл меньше или равный 0 ',
-                    color=self.ercolor
-                ))
-            with open(f'{BD}users.json', 'w') as file:
-                json.dump(data, file, indent=4)
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value=int(arg[1:]))
 
 
-    async def command_clear_rank(self, ctx: commands.Context, member: discord.Member):
-            with open(f'{BD}users.json', 'r') as file:
-                data = json.load(file)
-            
-            data[str(member.guild.id)]['USERS'][str(member.id)]['LvL'] = 1
-            data[str(member.guild.id)]['USERS'][str(member.id)]['SCR'] = 0
+    async def command_score(self, ctx: commands.Context, mr: discord.Member, arg: Optional[str]):
+        if arg:
+            Score_commands(self.bot).edit_xp(ctx, arg)
+            Score_audit(self.bot).audit1(ctx, arg[0], mr)
+        else:
             await ctx.send(embed=discord.Embed(
-                title=f'Успешно',
-                description=f'Участник {member.name} отчистил свой ранк!',
+                title=f"{Lang(ctx).language[f'score_info']} {mr.name}",
+                description=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="XP"),
                 color=Score_presets(ctx).color
             ))
-            with open(f'{BD}users.json', 'w') as file:
-                json.dump(data, file, indent=4)
 
+    async def command_set_lvl(self, ctx: commands.Context, member: discord.Member, arg = None):
+        if not(int(arg)<=0):
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value = int(arg))    #СЮДА ФОРМУЛУ
+            await ctx.send(embed=discord.Embed(
+                title=f'Успешно',
+                description=f'Участнику {member.name} был выдан {arg} уровень!',
+                color=Score_presets(ctx).color
+            ))
+        else:
+            description='Нельзя поставить лвл меньше или равный 0 '
 
     # @clear_rank.error
     # async def error(self, ctx, error):

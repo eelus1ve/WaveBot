@@ -102,11 +102,10 @@ class SQL_write(commands.Cog):
         data = cur.fetchall()
         if not(data):
             conn.execute(f'''CREATE TABLE IF NOT EXISTS server{guild.id}
-                        (ID TEXT(25),
+                        (ID TEXT(20),
                         WARNS INTEGER,
                         CAPS INTEGER,
-                        SCR INTEGER,
-                        LVL INTEGER,
+                        XP INTEGER,
                         TIME INTEGER
                         )''')
             

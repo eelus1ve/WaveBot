@@ -17,19 +17,9 @@ class RateSetup(commands.Cog):
         await Score_commands(self.bot).command_score(ctx, member, arg)
     
     @commands.command()
-    async def clear_score(self, ctx: commands.Context, memberr: Optional[discord.Member]):
-        member: discord.Member = memberr or ctx.author
-        await Score_commands(self.bot).command_clear_score(ctx, member)
-
-    @commands.command()
     async def set_lvl(self, ctx: commands.Context, memberr: Optional[discord.Member], arg = None):
         member: discord.Member = memberr or ctx.author
         await Score_commands(self.bot).command_set_lvl(ctx, member, arg)
-
-    @commands.command()
-    async def clear_rank(self, ctx: commands.Context, memberr: Optional[discord.Member]):
-        member: discord.Member = memberr or ctx.author
-        await Score_commands(self.bot).command_clear_rank(ctx, member)
 
     @commands.command()
     async def voice_time(self, ctx: commands.Context, memberr: Optional[discord.Member]):

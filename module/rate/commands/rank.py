@@ -13,8 +13,8 @@ class Rank(commands.Cog):
         self.bot = bot
 
     async def command_rank(self, ctx: commands.Context, member: discord.Member):
-        xp = Score_presets(ctx.author).score
-        lvl = Score_presets(ctx.author).lvl
+        xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP")
+        lvl = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP") #формула
         nlx = (lvl+1) * 100
         setcard = bdpy(ctx)['card']
         textColor = bdpy(ctx)['text_color']

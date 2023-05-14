@@ -24,7 +24,8 @@ class SQLeditor():
         sqlite_connection = sqlite3.connect(f'{BD}WaveDateBase.db')
         cursor = sqlite_connection.cursor()
         if type(value) == str:
-            cursor.execute(f"UPDATE {db} SET {key} ="+value+f"WHERE ID = {guild}")
+            print(value)
+            cursor.execute(f"UPDATE {db} SET {key} ="+value+f" WHERE ID = {guild}")
         elif type(value) == list:
             cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = ?", (", ".join(value), guild))
         elif type(value) == dict:
