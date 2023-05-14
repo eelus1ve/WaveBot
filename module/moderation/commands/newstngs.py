@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
-import json
-from BTSET import BD, Lang, DEFGUILD, DEFMODROLE
-import asyncio
+from BTSET import Lang, DEFMODROLE
 from system.Bot import WaveBot
 
 #все работает но в место даты надо подставить функцию из db_write
@@ -15,7 +13,7 @@ class NewStngs(commands.Cog):
     def add_rem_role(self, ctx: commands.Context, functionName: str, roleId: str, roleClass: str, aset: str):
         
         if not(roleId and roleClass):
-            raise commands.MissingRequiredArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_role_{functionName}_error_1'], self.bot.db_get_prefix(ctx)), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_role_{functionName}_error_2'])
+            raise commands.MissingRequiredArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_role_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX")), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_role_{functionName}_error_2'])
         if not(roleClass in self.bot.read_sql(db="servers", guild=str(ctx.author.id), key='ROLES')):
             raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_role_{functionName}_not_ex_1'], roleClass, Lang(ctx).language[f'settings_command_set_role_{functionName}_not_ex_2']))
         if functionName == 'add_role':
@@ -41,7 +39,7 @@ class NewStngs(commands.Cog):
     def add_rem_class(self, ctx: commands.Context, functionName: str, className: str):
         
         if not(className):
-            raise commands.MissingRequiredArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{functionName}_error_1'], self.bot.db_get_prefix(ctx), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_class_{functionName}_error_2']))
+            raise commands.MissingRequiredArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_class_{functionName}_error_2']))
         ermes = "*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{functionName}_not_ex_1'], className, Lang(ctx).language[f'settings_command_set_class_{functionName}_not_ex_2'])
         if functionName == 'add_class':
             if className in self.bot.read_sql(db="servers", guild=str(ctx.author.id), key='ROLES'):
@@ -66,20 +64,20 @@ class NewStngs(commands.Cog):
             self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value ='0x' + color[1:])
         else:
             if len(color) != 6:
-                raise commands.BadArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_color_{functionName}_error_1'], WaveBot.db_get_prefix(ctx), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_color_{functionName}_error_2']))
+                raise commands.BadArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_color_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_color_{functionName}_error_2']))
 
             self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value ='0x' + color)
         return "*{} {}*".format(Lang(ctx).language[f'settings_command_set_color_{functionName}'], color)
     
     def text_set(self, ctx: commands.Context, functionName: str, ans: str):
         if not(ans):
-            raise commands.BadArgument("*{} {}{} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}_error_1'], self.bot.db_get_prefix(ctx), NewStngs.command_name, Lang(ctx).language[f'settings_command_set_{functionName}_error_2']))
+            raise commands.BadArgument("*{} {}{} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, Lang(ctx).language[f'settings_command_set_{functionName}_error_2']))
         self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value = ans)
         return "*{} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}'], ans)
     
     def add_rem_badword(self, ctx: commands.Context, functionName: str, word: str):
         if not(word):
-            raise commands.BadArgument(f"*{Lang(ctx).language[f'settings_command_set_badword_{ functionName}_error_1']} {WaveBot.db_get_prefix(ctx)}{NewStngs.command_name} { functionName} {Lang(ctx).language[f'settings_command_set_badword_{ functionName}_error_2']}*")
+            raise commands.BadArgument(f"*{Lang(ctx).language[f'settings_command_set_badword_{ functionName}_error_1']} {self.bot.read_sql(db='servers', guild=str(ctx.guild.id), key='PREFIX')}{NewStngs.command_name} { functionName} {Lang(ctx).language[f'settings_command_set_badword_{ functionName}_error_2']}*")
         if  functionName == 'add_badword':
             if word in self.bot.read_sql(db="servers", guild=str(ctx.author.id), key='BADWORDS'):
                 raise commands.BadArgument("*{} ||{}|| {}*".format(Lang(ctx).language[f'settings_command_set_badword_{ functionName}_not_ex_1'], word, Lang(ctx).language[f'settings_command_set_badword_{ functionName}_not_ex_2']))
@@ -93,7 +91,7 @@ class NewStngs(commands.Cog):
     def add_rem_join_role(self, ctx: commands.Context, functionName: str, roleId: str):
         
         if not(roleId):
-            raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_join_roles_{functionName}_eroor_1']} {WaveBot.db_get_prefix(ctx)}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_join_roles_{functionName}_eroor_2']}")
+            raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_join_roles_{functionName}_eroor_1']} {self.bot.read_sql(db='servers', guild=str(ctx.guild.id), key='PREFIX')}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_join_roles_{functionName}_eroor_2']}")
         if functionName == 'add_join_role':
             if roleId in self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="JOINROLES"):
                 raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_join_roles_{functionName}_ex_1']} {rl1} {Lang(ctx).language[f'settings_command_set_join_roles_{functionName}_ex_2']}")
@@ -110,7 +108,7 @@ class NewStngs(commands.Cog):
     def add_rem_ignorechannel(self, ctx: commands.Context, functionName: str, channelId: str):
         
         if not(channelId):
-            raise commands.BadArgument(f"*{Lang(ctx).language[f'settings_command_set_ignorechannel_{functionName}_error_1']} {WaveBot.db_get_prefix(ctx)}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_ignorechannel_{functionName}_error_2']}*")
+            raise commands.BadArgument(f"*{Lang(ctx).language[f'settings_command_set_ignorechannel_{functionName}_error_1']} {self.bot.read_sql(db='servers', guild=str(ctx.guild.id), key='PREFIX')}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_ignorechannel_{functionName}_error_2']}*")
         if functionName == 'add_ignorechannel':
             if channelId in self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="IGNORECHANNELS"):
                 raise commands.BadArgument(f"*{Lang(ctx).language[f'settings_command_set_ignorechannel_{functionName}_ex_1']} {channelId} {Lang(ctx).language[f'settings_command_set_ignorechannel_{functionName}_ex_2']}*")
@@ -125,7 +123,7 @@ class NewStngs(commands.Cog):
     def add_rem_ignoreRole(self, ctx: commands.Context, functionName: str, roleId: str):
         
         if not(roleId):
-            raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{functionName}_1'], WaveBot.db_get_prefix(ctx), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_ignorerole_{functionName}_2']))
+            raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{functionName}_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_ignorerole_{functionName}_2']))
         if functionName == 'add_IgnoreRole':
             if roleId in self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="IGNOREROLES"):
                 raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_ignorerole_{functionName}_ex_1'], roleId, Lang(ctx).language[f'settings_command_set_ignorerole_{functionName}_ex_2']) )
@@ -162,7 +160,7 @@ class NewStngs(commands.Cog):
     async def set_join_message(self, ctx: commands.Context, functionName: str, messageId: str):
         
         if not(messageId):
-            raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_{functionName}_error_1']} {WaveBot.db_get_prefix(ctx)}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_{functionName}_error_2']}")
+            raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_{functionName}_error_1']} {self.bot.read_sql(db='servers', guild=str(ctx.guild.id), key='PREFIX')}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_{functionName}_error_2']}")
         msg: discord.Message = await ctx.channel.fetch_message(messageId)
         self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value = str(msg.content))
         
@@ -195,7 +193,7 @@ class NewStngsviewer(commands.Cog):
     def view_class(self, ctx: commands.Context, functionName: str, className: str):
         
         if not(className):
-            raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_class_{functionName}_error_1']} {WaveBot.db_get_prefix(ctx)}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_class_{functionName}_error_2']}")
+            raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_class_{functionName}_error_1']} {self.bot.read_sql(db='servers', guild=str(ctx.guild.id), key='PREFIX')}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_class_{functionName}_error_2']}")
         if not(className in self.bot.read_sql(db="servers", guild=str(ctx.author.id), key='ROLES')):
             raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_class_{functionName}_not_ex_1']} {className} {Lang(ctx).language[f'settings_command_set_class_{functionName}_not_ex_2']}")
         emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_class_{functionName}'], color="")
