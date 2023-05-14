@@ -13,5 +13,5 @@ class Coin(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title=Lang(ctx).language[f'coin_title_{result}'],
             description=Lang(ctx).language[f'coin_result_{result}'],
-            color=self.bot.db_get_funcolor(ctx)
+            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="FUNCOLOR")
         ))

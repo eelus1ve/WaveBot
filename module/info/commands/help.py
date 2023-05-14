@@ -55,8 +55,8 @@ class Help(commands.Cog):
         self.bot: WaveBot = bot
 
     async def command_help(self, ctx: commands.Context, arg=None):
-        COLOR = self.bot.db_get_infocolor(ctx)
-        pref = self.bot.db_get_infocolor(ctx)
+        COLOR = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
+        pref = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX")
         if arg:
             await ctx.author.send(embed=discord.Embed(
                 title=f'***{arg}***',
@@ -95,8 +95,7 @@ class Help(commands.Cog):
             ))
 
     async def listener_on_button_click_help(self, interaction: discord.Interaction):
-        COLOR = 0x0000FF
-        pref = '~'
+        COLOR = self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="INFOCOLOR")
 
         if InteractionComponents(interaction).label == '→':
             old_field0_value = interaction.message.embeds[0].fields[0].value

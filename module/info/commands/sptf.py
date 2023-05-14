@@ -23,7 +23,7 @@ class SpotifyInfo(commands.Cog):
             embed = discord.Embed(
                 title=f"{member.name}'s Spotify",
                 description="{} [{}](https://open.spotify.com/track/{})".format(Lang(ctx).language['spotify_listen'], spotifyActivity.title, spotifyActivity.track_id),
-                color=self.bot.db_get_infocolor(ctx)
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
             )
             embed.set_thumbnail(url=spotifyActivity.album_cover_url)
             embed.add_field(name=Lang(ctx).language['spotify_musician'], value=spotifyActivity.artist)

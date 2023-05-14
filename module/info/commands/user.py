@@ -28,7 +28,7 @@ class UserInfo(commands.Cog):
         if str(member.id) in ADMINS: lstdisc.append(f"***{Lang(ctx).language['user_dev']}*** \n")
         emb = discord.Embed(title=f"{Lang(ctx).language['user_info_about']} ***{member.name}***",
                             description=f"***{Lang(ctx).language['user_some_info']}***\n" + "".join(lstdisc),
-                            color=self.bot.db_get_infocolor(ctx)
+                            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
         )
         if Score_presets(member).score or Score_presets(member).lvl:
             emb.add_field(name=f"***{Lang(ctx).language['user_xp']}***", value=Score_presets(member).score, inline=True)

@@ -11,7 +11,7 @@ class SrInfo(commands.Cog):
     async def command_server_info(self, ctx: commands.Context):
         emb = discord.Embed(title='{} ***{}***'.format(Lang(ctx).language['server_info_title'], str(ctx.message.guild)),
                             description=Lang(ctx).language['server_info_des'],
-                            color=self.bot.db_get_infocolor(ctx)
+                            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
                             )
         emb.set_thumbnail(url=ctx.author.guild.icon)
         emb.add_field(name=Lang(ctx).language['server_info_members'], value=ctx.message.guild.member_count)

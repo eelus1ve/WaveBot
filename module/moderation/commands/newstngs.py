@@ -59,8 +59,6 @@ class NewStngs(commands.Cog):
         return "*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_class_{functionName}_1'], className, Lang(ctx).language[f'settings_command_set_class_{functionName}_2'])
 
     def set_color(self, ctx: commands.Context, functionName: str, color: str):
-        with open(f'{BD}users.json', 'r') as file:
-            data = json.load(file)
         if not(color):
             raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_color_{functionName}_not_ex_1'], color, Lang(ctx).language[f'settings_command_set_color_{functionName}_not_ex_2']))
         if [i for i in [color[ii] for ii in range(len(color))] if not(i in '#0123456789abcdef' or i in '#0123456789abcdef'.upper())]:
@@ -69,14 +67,12 @@ class NewStngs(commands.Cog):
             if len(color) != 7:
                 raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_color_{functionName}_not_ex_1'], color, Lang(ctx).language[f'settings_command_set_color_{functionName}_not_ex_2']))
 
-            data[str(ctx.author.guild.id)][functionName.upper()] ='0x' + str(''.join([color[i] for i in range(len(color))][1:]))
+            self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value ='0x' + str(color[1:]))
         else:
             if len(color) != 6:
                 raise commands.BadArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_color_{functionName}_error_1'], WaveBot.db_get_prefix(ctx), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_color_{functionName}_error_2']))
 
-            data[str(ctx.author.guild.id)][functionName.upper()] ='0x' + str(color)
-        with open(f'{BD}users.json', 'w') as file:
-            json.dump(data, file, indent=4)
+            self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value ='0x' + str(color))
         return "*{} {}*".format(Lang(ctx).language[f'settings_command_set_color_{functionName}'], color)
     
     def text_set(self, ctx: commands.Context, functionName: str, ans: str):
