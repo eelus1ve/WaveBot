@@ -29,6 +29,6 @@ class Leaders(commands.Cog):
         emb = discord.Embed(
             title=Lang(ctx).language['leaders_command_leaders_title'],
             description='\n '.join(Elist),
-            color = Score_presets(ctx.author).color
+            color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
         )
         await ctx.send(embed = emb)

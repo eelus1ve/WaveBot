@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 from BTSET import Moderation, bdpy
-from system.JSONwriter import Json_write
 from system.Bot import WaveBot
 
 

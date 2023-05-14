@@ -36,7 +36,7 @@ class BotError(commands.Cog):
         await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description=des,
-                color = self.bot.db_get_moderercolor(ctx)
+                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
 
     
@@ -46,7 +46,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*clear (количество до 1000 за 1 раз)*",
-                color=self.bot.db_get_moderercolor(ctx)
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
 
     @ModerationSetup.ban.error
@@ -55,7 +55,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*ban (@Участник)*",
-                color = self.bot.db_get_moderercolor(ctx)
+                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
     @ModerationSetup.kick.error
     async def error(self, ctx, error):
@@ -63,7 +63,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*kick (@Участник)*",
-                color = self.bot.db_get_moderercolor(ctx)
+                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
     @ModerationSetup.warn.error
     async def error(self, ctx: commands.Context, error):
@@ -72,7 +72,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование: {pref}warn (@Участник) (Причина)",
-                color = self.bot.db_get_moderercolor(ctx)
+                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
     @ModerationSetup.unwarn.error
     async def error(self, ctx: commands.Context, error):
@@ -81,7 +81,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование: {pref}unwarn (@Участник)",
-                color = self.bot.db_get_moderercolor(ctx)
+                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
     @ModerationSetup.clear_warns.error
     async def error(self, ctx: commands.Context, error):
@@ -90,7 +90,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"Использование: {pref}clear_warns (@Участник)",
-                color = self.bot.db_get_moderercolor(ctx)
+                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
 
     @ModerationSetup.set.error
@@ -99,14 +99,14 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=error,
-                color=self.bot.db_get_moderercolor(ctx)
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
         elif isinstance(error, commands.MissingRequiredArgument):
             print(3)
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=error,
-                color=self.bot.db_get_moderercolor(ctx)
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
 
     @InfoSetup.spotify_info.error
@@ -116,7 +116,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"Пользователь не слушает spotify",
-                color = self.bot.db_get_moderercolor(ctx)
+                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ))
     
     # @Score_commands.clear_rank.error

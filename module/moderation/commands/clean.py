@@ -16,5 +16,5 @@ class Clean(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title=Lang(ctx).language['clear_title'],
             description="{} {} {}".format(Lang(ctx).language['clear_des_1'], amount, Lang(ctx).language['clear_des_2']),
-            color=self.bot.db_get_modercolor(ctx)
+            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
         ))

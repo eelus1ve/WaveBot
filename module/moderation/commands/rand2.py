@@ -11,8 +11,8 @@ class SelectRole(commands.Cog):
         self.bot: WaveBot = bot
 
     async def command_select(self, ctx: commands.Context, arg=None):
-        roles = self.bot.db_get_roles(ctx)
-        selftitle = self.bot.db_get_selftitle(ctx)
+        roles = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="ROLES")
+        selftitle = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="SELFTITLE")
 
         if arg == None: #сам сюда что-то делай (мне лень)
             pass
@@ -28,7 +28,7 @@ class SelectRole(commands.Cog):
             vw.add_item(sel)
             await ctx.send(embed=discord.Embed(
                 title=selftitle,
-                color=self.bot.db_get_modercolor(ctx)
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
             ),
                 view=vw
             )
@@ -42,14 +42,14 @@ class SelectRole(commands.Cog):
                     await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description=f"Роли выбраны!",
-                        color=self.bot.db_get_modercolor(interaction)
+                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONERCOLOR")
                     ), ephemeral=True)
                     
                 except IndexError:
                     await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description="*Роли успешно сняты!*",
-                        color=self.bot.db_get_modercolor(interaction)
+                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONERCOLOR")
                     ), ephemeral=True)
 
                 try:
