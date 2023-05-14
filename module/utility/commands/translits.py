@@ -19,5 +19,5 @@ class Translits(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="Перевод: ",
                 description=''.join([lst1[lst.index(i)] for i in bf]),
-                color=self.bot.db_get_utilitycolor(ctx)
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="UTILITYCOLOR")
             ))

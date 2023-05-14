@@ -154,7 +154,7 @@ class SQL_write(commands.Cog):
                         ACTMODULES TEXT(25),
                         NCAPS INTAGER,
                         NWARNS INTAGER,
-                        ADMINCHANNEL INTAGER,
+                        ADMINCHANNEL TEXT(25),
                         IDMAINCH INTAGER,
                         SELFROOM TEXT(25),
                         BADWORDS TEXT(25),

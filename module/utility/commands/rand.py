@@ -19,5 +19,5 @@ class Rand(commands.Cog):
         await ctx.send(embed=discord.Embed(
                     title=Lang(ctx).language['rand_title'],
                     description=des,
-                    color=self.bot.db_get_utilitycolor(ctx)
+                    color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="UTILITYCOLOR")
                 ))

@@ -28,26 +28,26 @@ DEFGUILDSQL = {
     'MODERATIONERCOLOR': '0x8B0000',
     'RATEERCOLOR': '0x8B0000',
     'UTILITYERCOLOR': '0x8B0000',
-    'AUDIT': '111',
+    'AUDIT': '{}',
     'AUDITCHANNEL': '0',
-    'JOINROLES': '222',
-    'MODROLES': '111',
-    'ROLES': '111',
+    'JOINROLES': '[]',
+    'MODROLES': '{}',
+    'ROLES': '{}',
     'ACTMODULES': '-1',
     'NCAPS': -1,
     'NWARNS': 10,
     'ADMINCHANNEL': '0',
     'IDMAINCH': '0',
-    'SELFROOM': '111',
-    'BADWORDS': '222',
-    'LINKS': '222',
+    'SELFROOM': '{}',
+    'BADWORDS': '[]',
+    'LINKS': '[]',
     'PREFIX': '~',
     'JNMSG': '-1',
     'SELFTITLE': '*Выберите ваши роли:* ',
-    'SELFROOMS': '111',
-    'MAFROOMS': '111',
-    'IGNORECHANNELS': '211',
-    'IGNOREROLES': '211',
+    'SELFROOMS': '{}',
+    'MAFROOMS': '{}',
+    'IGNORECHANNELS': '[[], []]',
+    'IGNOREROLES': '[[], []]',
     'CARD': 'wave.png',
     'TEXTCOLOR': '#d0ed2b',
     'BARCOLOR': '#ec5252',
@@ -305,7 +305,7 @@ def bdpy(ctx: commands.Context):
 
 class Rool():
     def __init__(self, ctx: commands.Context):
-        if bdpy(ctx)['ModRoles'] != '111':
+        if bdpy(ctx)['ModRoles'] != '{}':
             mods = bdpy(ctx)['ModRoles'][
                 str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]
 

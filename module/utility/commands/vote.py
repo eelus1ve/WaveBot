@@ -17,7 +17,7 @@ class Vote(commands.Cog):
         for i in arg:
             title.append('\n' + str(em[e]) + ' ' + str(i))
             e += 1
-        ms = await ctx.send(embed=discord.Embed(title=title.pop(0), description=''.join(title), color=self.bot.db_get_utilitycolor(ctx)))
+        ms = await ctx.send(embed=discord.Embed(title=title.pop(0), description=''.join(title), color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="UTILITYCOLOR")))
         
         for i in range(len(title)):
             await ms.add_reaction(em[i])
