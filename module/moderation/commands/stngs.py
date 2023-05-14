@@ -20,14 +20,12 @@ class Stngs(commands.Cog):
     async def command_set(self, ctx: commands.Context, arg: str=None, clArg: str=None, roleClass: str=None, emo=None):
 
         #сюда if
-        
+        arg = arg.lower()
         # roles = self.bot.db_get_joinroles(ctx)
         COLOR = self.bot.db_get_modercolor(ctx)
-        prefix = self.bot.db_get_prefix(ctx)
         description1 = 0
         description2 = 0
         title = 0
-        command_name = 'settings'
 
         some_des = "***Параметры:*** \n\
                                 add_class (название класса): Добавить класс с ролей\n\
