@@ -2,7 +2,9 @@ import discord
 from discord.ext import commands
 import json
 from typing import Optional, Union
-# from system.db_.sqledit import SQLeditor
+import sqlite3
+import os
+
 ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
 BOTVERSION = '***ALPHA 1.0***'
 BETATESTERS = ['224930494314315776', '281070552465145857', '347027993530728448', '352413086096818176',
@@ -15,7 +17,7 @@ IGNORE_SIMV = ['<WaveEmb>']
 DEFGUILDSQL = {
     'ID': "id",
     'CHEK': 'False',
-    'LANG': 'ru_RU',
+    'LANG': 'languane',
     'COLOR': '0x0000FF',
     'FUNCOLOR': '0x0000FF',
     'INFOCOLOR': '0x0000FF',
@@ -59,8 +61,7 @@ DEFUSERSQL = {
     'ID': 'id',
     'WARNS': 0,
     'CAPS': 0,
-    "SCR": 0,
-    'LVL': 1,
+    "XP": 0,
     "TIME": 0
 }
 
@@ -390,14 +391,17 @@ async def embpy(ctx: commands.Context, comp: str, des, time: Optional[float] = N
         else:
             await ctx.send(embed=emb)
 
-
 class Lang():
     def __init__(self, ctx: Union[commands.Context, discord.Interaction]):
         self.language = self.lang(ctx)
 
     def lang(self, ctx: commands.Context):
+        sql = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT LANG from servers WHERE ID == {ctx.guild.id}""").fetchone()[0]
         lang_dict = {}
-        with open('system\\Languages\\{}.wave'.format(bdpy(ctx)['LANG']), 'r', encoding='utf-8') as f:
+        part = 'system\\Languages\\ru.wave'     #потом заменить на en-US
+        if os.path.exists('system\\Languages\\{}.wave'.format(str(ctx.guild.preferred_locale) if not sql else sql)):
+            part = 'system\\Languages\\{}.wave'.format(str(ctx.guild.preferred_locale) if not sql else sql)
+        with open(f'{part}', 'r', encoding='utf-8') as f:
             for line in f:
                 if not (line.startswith('//')) and not (line == '\n'):
                     key, *value = line.split()

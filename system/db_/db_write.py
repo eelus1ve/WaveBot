@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
 from typing import *
-import json
-from BTSET import BD
 from system.db_.wrappers import db_write
 
 

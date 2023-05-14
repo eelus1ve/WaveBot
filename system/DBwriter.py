@@ -109,7 +109,7 @@ class SQL_write(commands.Cog):
                         TIME INTEGER
                         )''')
             
-            serversaset = tuple(str(guild.id) if i == "id" else i for i in DEFGUILDSQL.values())
+            serversaset = tuple(str(guild.id) if i == "id" else None if i == "languane" else i for i in DEFGUILDSQL.values())
             conn.execute("INSERT INTO servers ("+", ".join([i for i in DEFGUILDSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFGUILDSQL.keys()])+")", serversaset)
             conn.commit()
         
