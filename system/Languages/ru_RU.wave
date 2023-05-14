@@ -450,6 +450,44 @@ rank_command_rank_level Level
 rank_command_rank_xp XP
 
 //score
+score_audit_+_title Добавление очков опыта
+score_audit_+_des_1 Учаснику
+score_audit_+_des_2 было добавлено
+score_audit_+_footer_1 Модератор выдавший очки опыта участнику
+score_audit_+_footer_2 ID:
+
+score_audit_-_title Уадение очков опыта
+score_audit_-_des_1 Учаснику
+score_audit_-_des_2 было удалено
+score_audit_-_footer_1 Модератор удаливший очки опыта участнику
+score_audit_-_footer_2 ID:
+
+score_audit__title Установление очков опыта
+score_audit__des_1 Учаснику
+score_audit__des_2 было установлено
+score_audit__footer_1 Модератор исключивший участника
+score_audit__footer_2 ID:
+
+
+
+score_rep_+_title Успешно
+score_rep_+_des_1 Учасник
+score_rep_+_des_2 получил
+
+score_rep_-_title Успешно
+score_rep_-_des_1 Учасник
+score_rep_-_des_2 потерял
+
+score_rep__title Успешно
+score_rep__des_1 Учаснику
+score_rep__des_2 было установлено
+
+
+
+score_info Количество очков
+
+
+
 score_mes_reason_0 очков опыта
 score_mes_reason_1 очко опыта
 score_mes_reason_2 очка опыта
