@@ -145,6 +145,7 @@ class SQL_write(commands.Cog):
                         MODERATIONERCOLOR TEXT(25),
                         RATEERCOLOR TEXT(25),
                         UTILITYERCOLOR TEXT(25),
+                        SRINFROOMS TEXT(25),
                         AUDIT TEXT(25),
                         AUDITCHANNEL TEXT(25),
                         JOINROLES TEXT(25),

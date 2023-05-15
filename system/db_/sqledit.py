@@ -13,7 +13,7 @@ class SQLeditor():
         cursor.close()
         if "COLOR" in key and key != "TEXTCOLOR" and key != "BARCOLOR":
             return int(records, 16)
-        if key in "JOINROLE, BADWORDS, LINKS, IGNORECHANNELS, IGNOREROLES":
+        if key in "JOINROLE, BADWORDS, LINKS, IGNORECHANNELS, IGNOREROLES, SRINFROOMS":
             return records.split(", ")
         if key in "AUDIT, MODROLES, ROLES, SELFROOM, SELFROOMS, MAFROOMS":
             return json.loads(records)

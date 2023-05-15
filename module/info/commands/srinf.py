@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from BTSET import Lang
 from system.Bot import WaveBot
+from discord.utils import get
 
 
 class SrInfo(commands.Cog):
@@ -24,17 +25,19 @@ class SrInfo(commands.Cog):
         if arg == 'on':
             if not('📊Info📊' in [i.name for i in ctx.guild.categories]):
                 ct = await ctx.guild.create_category(name='📊Info📊', position=0)
-                await ctx.guild.create_voice_channel(name=f'👥Members: {len(ctx.guild.members)}👥', category=ct)
-                await ctx.guild.create_voice_channel(name=f'🤖Bots: {len([i for i in ctx.guild.members if i.bot])}🤖', category=ct)
-                await ctx.guild.create_voice_channel(name=f'👤Humans: {len(ctx.guild.members) - len([i for i in ctx.guild.members if i.bot])}👤', category=ct)
+                first_channel = await ctx.guild.create_voice_channel(name=f'👥Members: {len(ctx.guild.members)}👥', category=ct)
+                second_channel = await ctx.guild.create_voice_channel(name=f'🤖Bots: {len([i for i in ctx.guild.members if i.bot])}🤖', category=ct)
+                third_channel = await ctx.guild.create_voice_channel(name=f'👤Humans: {len(ctx.guild.members) - len([i for i in ctx.guild.members if i.bot])}👤', category=ct)
                 pr = discord.PermissionOverwrite()
                 pr.connect = False
                 [await chlen.set_permissions(target=ctx.guild.roles[0], overwrite=pr) for chlen in ct.channels]
+                self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key="SRINFROOMS", value=[str(ct.id), str(first_channel.id), str(second_channel.id), str(third_channel.id)])
         else:
-            if '📊Info📊' in [i.name for i in ctx.guild.categories]:
-                [await i.delete() for i in [ii.channels for ii in ctx.guild.categories if ii.name == '📊Info📊'][0]]
-                [await ii.delete() for ii in ctx.guild.categories if ii.name == '📊Info📊']
-
+            if self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="SRINFROOMS"):
+                print(self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="SRINFROOMS"))
+                print([await get(ctx.guild.voice_channels, id=int(i)) for i in self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="SRINFROOMS")])
+                [await ii.delete() for ii in [await get(ctx.guild.text_channels, id=int(i)) for i in self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="SRINFROOMS")]]
+                self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key="SRINFROOMS", value=None)
 
 class SrInfo_listeners(commands.Cog):
     def __init__(self, bot: commands.Bot):
