@@ -9,17 +9,29 @@ from system.Bot import WaveBot
 
 
 class Rank(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: WaveBot):
         self.bot = bot
 
+    def levelFunction(x):
+        d = (3**2+4*2*x/100)**0.5
+        if (-3-d)/2 > (-3+d)/2:
+            level = (-3-d)/2
+        else:
+            level = (-3+d)/2
+        return level + 1
+
+    def xpFunction(x):
+        xp: float = 50*(x**2+x-2)
+        return round(xp, 2)
+
     async def command_rank(self, ctx: commands.Context, member: discord.Member):
-        xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP")
-        lvl = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP") #формула
+        lvl = int(Rank.levelFunction(self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP")))
+        xp = int(self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP")- Rank.xpFunction(lvl))
         nlx = (lvl+1) * 100
-        setcard = bdpy(ctx)['card']
-        textColor = bdpy(ctx)['text_color']
-        barColor = bdpy(ctx)['bar_color']
-        blend = bdpy(ctx)['blend']
+        setcard = self.bot.read_sql(db=f"servers", guild=str(ctx.guild.id), key="CARD")
+        textColor = self.bot.read_sql(db=f"servers", guild=str(ctx.guild.id), key="TEXTCOLOR")
+        barColor = self.bot.read_sql(db=f"servers", guild=str(ctx.guild.id), key="BARCOLOR")
+        blend = self.bot.read_sql(db=f"servers", guild=str(ctx.guild.id), key="BLEND")
 
         percentage = int(((xp * 100)/ nlx))
 

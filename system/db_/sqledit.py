@@ -11,7 +11,7 @@ class SQLeditor():
         cursor.execute(f"""SELECT {key} from {db} WHERE ID == {guild}""")
         records: Union[str, int] = cursor.fetchone()[0]
         cursor.close()
-        if "COLOR" in key:
+        if "COLOR" in key and key != "TEXTCOLOR" and key != "BARCOLOR":
             return int(records, 16)
         if key in "JOINROLE, BADWORDS, LINKS, IGNORECHANNELS, IGNOREROLES":
             return records.split(", ")

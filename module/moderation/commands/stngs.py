@@ -63,7 +63,7 @@ class Stngs(commands.Cog):
         elif arg in [i.lower() for i in DEFGUILD.keys() if "COLOR" in i]:
             description1 = NewStngs(self.bot).set_color(ctx, arg, clArg)
 
-        elif arg in ['adminchannel', 'ncaps', 'nwarns', 'prefix', 'selftitle', 'selfroom']:
+        elif arg in ['adminchannel', 'ncaps', 'nwarns', 'prefix', 'selftitle', 'selfroom', "lang"]:
             description1 = NewStngs(self.bot).text_set(ctx, arg, clArg)
 
         elif arg in ['add_badword', 'remove_badword']:

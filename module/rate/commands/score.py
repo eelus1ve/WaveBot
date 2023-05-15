@@ -1,5 +1,4 @@
 import discord
-import json
 from discord.ext import commands
 from typing import Optional
 from distutils.log import error
@@ -26,25 +25,27 @@ class Score_audit(commands.Cog):
     def __init__(self, bot: WaveBot):
         self.bot = bot
 
-    async def audit1(self, ctx, arg, mr):
+    async def audit1(self, ctx: commands.Context, arg, mr):
         #====================================================================
         #audit
         #====================================================================
-        emb=discord.Embed(
-            title=Lang(ctx).language[f'score_audit_{arg}_title'],
-            description=f"{Lang(ctx).language[f'score_audit_{arg}_des_1']} {mr.mention} {Lang(ctx).language[f'score_audit_{arg}_des_2']} {arg} {Lang(ctx).language[f'score_mes_reason_{str(arg)[-1]}']}!",
-            timestamp=datetime.datetime.now(pytz.timezone('Europe/Moscow')).strftime('%d:%H:%M'),
-            color=Score_presets(ctx).color
-        )
-        emb.set_footer(text=f"{Lang(ctx).language[f'score_audit_{arg}_footer_1']} {ctx.author.name}#{ctx.author.discriminator} {Lang(ctx).language[f'score_audit_{arg}_footer_2']} {ctx.author.id}")
-        await get(ctx.guild.text_channels, id=int(Score_presets(member=mr).idadminchannel)).send(embed=emb)
+        if self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="ADMINCHANNEL"):
+            msc_time = datetime.datetime.now(pytz.timezone('Europe/Moscow')).strftime('%H:%M')
+            emb=discord.Embed(
+                title=Lang(ctx).language[f'score_audit_{arg[0]}_title'],
+                description=f"{Lang(ctx).language[f'score_audit_{arg[0]}_des_1']} {mr.mention} {Lang(ctx).language[f'score_audit_{arg[0]}_des_2']} {arg} {Lang(ctx).language[f'score_mes_reason_{arg[-1]}']}!",
+                # timestamp=msc_time,
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
+            )
+            emb.set_footer(text=f"{Lang(ctx).language[f'score_audit_{arg[0]}_footer_1']} {ctx.author.name}#{ctx.author.discriminator} {Lang(ctx).language[f'score_audit_{arg[0]}_footer_2']} {ctx.author.id}")
+            await get(ctx.guild.text_channels, id=int(self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="ADMINCHANNEL"))).send(embed=emb)
         #====================================================================
         #rep
         #====================================================================
         await ctx.send(embed=discord.Embed(
-            title=Lang(ctx).language[f'score_rep_{arg}_title'],
-            description=f"{Lang(ctx).language[f'score_rep_{arg}_des_1']} {mr.name} {Lang(ctx).language[f'score_rep_{arg}_des_2']} {arg} {Lang(ctx).language[f'score_mes_reason_{str(arg)[-1]}']}!",
-            color=Score_presets(ctx).color
+            title=Lang(ctx).language[f'score_rep_{arg[0]}_title'],
+            description=f"{Lang(ctx).language[f'score_rep_{arg[0]}_des_1']} {mr.name} {Lang(ctx).language[f'score_rep_{arg[0]}_des_2']} {arg} {Lang(ctx).language[f'score_mes_reason_{arg[-1]}']}!",
+            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
         ))
 
 class Score_commands(commands.Cog):
@@ -52,42 +53,42 @@ class Score_commands(commands.Cog):
         self.bot = bot
 
     @Rool.role(quest='score')
-    def edit_xp(self, ctx: commands.Context, arg: str):
+    def edit_xp(self, ctx: commands.Context, arg: str, member: discord.Member):
         if not(arg[1:]):
-            raise commands.BadArgument(f'Использование: {self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX")}remove_score (@Учасник) +/-(кол-во опыта)')
+            raise commands.BadArgument(f'Использование: {self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX")}score (@Учасник) +/-(кол-во опыта)')
         if arg.startswith('+'):
-            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value=self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP")+int(arg[1:]))
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value=self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP")+int(arg[1:]))
         elif arg.startswith('-'):
-            xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP")-int(arg[1:])
+            xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP")-int(arg[1:])
             if xp >= 0:
-                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value=xp)
+                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value=xp)
             else:
-                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value=0)
+                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value=0)
         else:
-            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value=int(arg[1:]))
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value=int(arg[1:]))
 
 
     async def command_score(self, ctx: commands.Context, mr: discord.Member, arg: Optional[str]):
         if arg:
-            Score_commands(self.bot).edit_xp(ctx, arg)
-            Score_audit(self.bot).audit1(ctx, arg[0], mr)
+            Score_commands(self.bot).edit_xp(ctx, arg, mr)
+            await Score_audit(self.bot).audit1(ctx, arg, mr)
         else:
             await ctx.send(embed=discord.Embed(
                 title=f"{Lang(ctx).language[f'score_info']} {mr.name}",
                 description=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="XP"),
-                color=Score_presets(ctx).color
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
             ))
 
     async def command_set_lvl(self, ctx: commands.Context, member: discord.Member, arg = None):
         if not(int(arg)<=0):
-            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="XP", value = int(arg))    #СЮДА ФОРМУЛУ
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value = int(arg))    #СЮДА ФОРМУЛУ
             await ctx.send(embed=discord.Embed(
-                title=f'Успешно',
-                description=f'Участнику {member.name} был выдан {arg} уровень!',
-                color=Score_presets(ctx).color
+                title=Lang(ctx).language[f'command_set_lvl_title'],
+                description=f"{Lang(ctx).language[f'command_set_lvl_des_1']} {member.name} {Lang(ctx).language[f'command_set_lvl_des_2']} {arg} {Lang(ctx).language[f'command_set_lvl_des_3']}",
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
             ))
         else:
-            description='Нельзя поставить лвл меньше или равный 0 '
+            raise commands.BadArgument(Lang(ctx).language[f'command_set_lvl_er'])
 
     # @clear_rank.error
     # async def error(self, ctx, error):
@@ -102,7 +103,7 @@ class Score_commands(commands.Cog):
     #             await ctx.send(embed=discord.Embed(
     #                 title=f'Успешно',
     #                 description=f'Все участники этого сервера потерял свой ранк!',
-    #                 color=Score_presets(ctx).color
+    #                 color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
     #             ))
     #             with open(f'{BD}users.json', 'w') as file:
     #                 json.dump(data, file, indent=4)
@@ -122,24 +123,20 @@ class Score_commands(commands.Cog):
         emb = discord.Embed(
             title=f'Voice {member.name}',
             description=f'{int(hours)}:{int(mins)}:{sec}',
-            color=Score_presets(ctx).color
+            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
         )
         await ctx.send(embed=emb)
 
 
 class Score_listener(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: WaveBot):
         self.bot = bot
 
-    def mbtime(member):
-        with open(f'{BD}users.json', 'r') as file:
-            data = json.load(file)
+    def mbtime(self, member: discord.Member):
         endTime = time.time()
         sec = endTime - beforeTime[member.id]
         sec = round(sec, 2)
-        data[str(member.guild.id)]['USERS'][str(member.id)]['TIME'] += sec
-        with open(f'{BD}users.json', 'w') as file:
-            json.dump(data, file, indent=4)
+        self.bot.write_sql(db=f"server{member.guild.id}", guild=str(member.id), key="TIME", value=self.bot.read_sql(db=f"server{member.guild.id}", guild=str(member.id), key="TIME") + sec)
 
 
     async def listener_score_on_voice_state_update(self, member: discord.Member, before, after):
@@ -156,3 +153,4 @@ class Score_listener(commands.Cog):
                 beforeTime.update({member.id: startTime})
         except Exception as ex:
             print(f'error eblan:\n{ex}')
+
