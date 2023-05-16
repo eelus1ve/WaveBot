@@ -4,6 +4,50 @@ from discord.ext import commands
 from discord.utils import get
 from BTSET import BD
 from system.Bot import WaveBot
+from BTSET import Lang
+
+
+class Mwarns_audit(commands.Cog):
+    def __init__(self, bot):
+        self.bot: WaveBot = bot
+
+    async def audit1(self, message: discord.Message):
+        #====================================================================
+        #audit
+        #====================================================================
+        if self.bot.read_sql(db="servers", guild=str(message.guild.id), key="ADMINCHANNEL"):
+            emb = discord.Embed(
+                title=Lang(message).language['mwarns_audit1_title'],
+                description=f"*{Lang(message).language['mwarns_audit1_des_1']} {self.bot.db_get_user_warns(message.author) - 1} {Lang(message).language['mwarns_audit1_des_2']} {self.bot.db_get_nwarns(message)} {Lang(message).language['mwarns_audit1_des_3']}*",
+                timestamp=message.created_at,
+                color=self.bot.db_get_modercolor(message)
+            )
+            emb.add_field(name=Lang(message).language['mwarns_audit1_field_1'], value=message.content, inline=False)
+            emb.add_field(name=Lang(message).language['mwarns_audit1_field_2'], value=message.channel.mention, inline=True)
+            emb.add_field(name=Lang(message).language['mwarns_audit1_field_3'], value=message.author.mention, inline=True)
+            emb.add_field(name=Lang(message).language['mwarns_audit1_field_4_name'], value=Lang(message).language['mwarns_audit1_field_4_value'], inline=True)
+            emb.set_footer(text=Lang(message).language['mwarns_audit1_footer'])
+            await get(message.guild.text_channels, id=int(self.bot.db_get_adminchannel(message))).send(embed=emb)
+
+        #====================================================================
+        #ls
+        #====================================================================
+        emb = discord.Embed(
+            title='Нарушение',
+            description=f'Вам выдали предупреждение на сервере {message.guild.name}\nСообщение с нарушением: {message.content}',
+            timestamp=message.created_at,
+            color=self.bot.db_get_modercolor(message)
+        )
+        emb.add_field(name='Канал', value=message.channel.mention, inline=True)
+        emb.add_field(name='Тип нарушения:', value=f'Ругательства/ссылки', inline=True)
+        emb.add_field(name='Кол-во нарушений', value=f'{self.bot.db_get_user_warns(message.author)}/{self.bot.db_get_nwarns(message)}', inline=True)
+        emb.set_footer(text=f'Предупреждение выдано автомодератором WaveBot')
+        
+        await message.author.send(embed=emb)
+    #================================================================================================================================================================================
+
+
+
 
 
 class Mwarns(commands.Cog):
@@ -29,42 +73,6 @@ class Mwarns(commands.Cog):
                             await message.delete()
                         else:
                             data[str(message.guild.id)]["USERS"][str(message.author.id)]["WARNS"] +=1
-
-
-                            #====================================================================
-                            #audit
-                            #====================================================================
-                            if self.bot.db_get_adminchannel(message) in [str(i.id) for i in message.guild.channels]:
-                                emb = discord.Embed(
-                                    title='Нарушение',
-                                    description=f"*Ранее, у нарушителя было уже {self.bot.db_get_user_warns(message.author) - 1} нарушений, после {self.bot.db_get_nwarns(message)} он будет забанен!*",
-                                    timestamp=message.created_at,
-                                    color=self.bot.db_get_modercolor(message)
-                                )
-                                emb.add_field(name='Сообщение нарушителя:', value=message.content, inline=False)
-                                emb.add_field(name='Канал:', value=message.channel.mention, inline=True)
-                                emb.add_field(name='Нарушитель:', value=message.author.mention, inline=True)
-                                emb.add_field(name='Тип нарушения:', value='Ругательства/ссылки', inline=True)
-                                emb.set_footer(text=f'Предупреждение выдано автомодератором WaveBot')
-                                await get(message.guild.text_channels, id=int(self.bot.db_get_adminchannel(message))).send(embed=emb)
-
-                            #====================================================================
-                            #ls
-                            #====================================================================
-                            emb = discord.Embed(
-                                title='Нарушение',
-                                description=f'Вам выдали предупреждение на сервере {message.guild.name}\nСообщение с нарушением: {message.content}',
-                                timestamp=message.created_at,
-                                color=self.bot.db_get_modercolor(message)
-                            )
-                            emb.add_field(name='Канал', value=message.channel.mention, inline=True)
-                            emb.add_field(name='Тип нарушения:', value=f'Ругательства/ссылки', inline=True)
-                            emb.add_field(name='Кол-во нарушений', value=f'{self.bot.db_get_user_warns(message.author)}/{self.bot.db_get_nwarns(message)}', inline=True)
-                            emb.set_footer(text=f'Предупреждение выдано автомодератором WaveBot')
-                            
-                            await message.author.send(embed=emb)
-                        #================================================================================================================================================================================
-
 
                             #====================================================================
                             #ban

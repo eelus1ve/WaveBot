@@ -38,7 +38,7 @@ class Score_audit(commands.Cog):
                 color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
             )
             emb.set_footer(text=f"{Lang(ctx).language[f'score_audit_{arg[0]}_footer_1']} {ctx.author.name}#{ctx.author.discriminator} {Lang(ctx).language[f'score_audit_{arg[0]}_footer_2']} {ctx.author.id}")
-            await get(ctx.guild.text_channels, id=int(self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="ADMINCHANNEL"))).send(embed=emb)
+            await get(ctx.guild.text_channels, id=int(self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="ADMINCHANguild=str(member)NEL"))).send(embed=emb)
         #====================================================================
         #rep
         #====================================================================
@@ -57,15 +57,15 @@ class Score_commands(commands.Cog):
         if not(arg[1:]):
             raise commands.BadArgument(f'Использование: {self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX")}score (@Учасник) +/-(кол-во опыта)')
         if arg.startswith('+'):
-            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value=self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP")+int(arg[1:]))
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP", value=self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP")+int(arg[1:]))
         elif arg.startswith('-'):
-            xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP")-int(arg[1:])
+            xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP")-int(arg[1:])
             if xp >= 0:
-                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value=xp)
+                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP", value=xp)
             else:
-                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value=0)
+                self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP", value=0)
         else:
-            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value=int(arg[1:]))
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP", value=int(arg[1:]))
 
 
     async def command_score(self, ctx: commands.Context, mr: discord.Member, arg: Optional[str]):
@@ -81,7 +81,7 @@ class Score_commands(commands.Cog):
 
     async def command_set_lvl(self, ctx: commands.Context, member: discord.Member, arg = None):
         if not(int(arg)<=0):
-            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member), key="XP", value = int(arg))    #СЮДА ФОРМУЛУ
+            self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(member.id), key="XP", value = int(arg))    #СЮДА ФОРМУЛУ
             await ctx.send(embed=discord.Embed(
                 title=Lang(ctx).language[f'command_set_lvl_title'],
                 description=f"{Lang(ctx).language[f'command_set_lvl_des_1']} {member.name} {Lang(ctx).language[f'command_set_lvl_des_2']} {arg} {Lang(ctx).language[f'command_set_lvl_des_3']}",

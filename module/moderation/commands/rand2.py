@@ -28,7 +28,7 @@ class SelectRole(commands.Cog):
             vw.add_item(sel)
             await ctx.send(embed=discord.Embed(
                 title=selftitle,
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONCOLOR")
             ),
                 view=vw
             )
@@ -42,14 +42,14 @@ class SelectRole(commands.Cog):
                     await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description=f"Роли выбраны!",
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONERCOLOR")
+                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
                     ), ephemeral=True)
                     
                 except IndexError:
                     await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description="*Роли успешно сняты!*",
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONERCOLOR")
+                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
                     ), ephemeral=True)
 
                 try:

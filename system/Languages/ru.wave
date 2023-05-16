@@ -142,6 +142,18 @@ server_info_members Количество участников:
 server_info_own Владелец:
 server_info_date Дата создания:
 
+server_info_channel_ct_name 📊Info📊
+server_info_channel_members_1 👥Members:
+server_info_channel_members_2 👥
+server_info_channel_bots_1 🤖Bots:
+server_info_channel_bots_2 🤖
+server_info_channel_humans_1 👤Humans:
+server_info_channel_humans_2 👤
+server_info_channel_er Использование:
+
+
+
+
 //user
 user_name Имя пользователя:
 user_playing Играет:
@@ -194,7 +206,18 @@ clear_des_2 сообщений.
 //...
 
 //mwarns
-//...
+mwarns_audit1_title Нарушение
+mwarns_audit1_des_1 Ранее, у нарушителя было уже
+mwarns_audit1_des_2 нарушений, после
+mwarns_audit1_des_3 он будет забанен!
+mwarns_audit1_field_1 Сообщение нарушителя:
+mwarns_audit1_field_2 Канал:
+mwarns_audit1_field_3 Нарушитель:
+mwarns_audit1_field_4_name Тип нарушения:
+mwarns_audit1_field_4_value Ругательства/ссылки
+mwarns_audit1_footer Предупреждение выдано автомодератором WaveBot
+
+
 
 //select
 //...

@@ -3,7 +3,7 @@ import json
 from discord.ext import commands
 from discord.utils import get
 from BTSET import embpy, BD, Lang
-from module.moderation.commands.audit import Audit
+from module.moderation.audit import Audit
 from system.Bot import WaveBot
 
 
@@ -20,22 +20,13 @@ class Warns(commands.Cog):
         await Audit.audit(self, ctx, member, reason, text=Lang(ctx).language['warns_command_ban_text'])
 
     async def command_warn(self, ctx: commands.Context, member: discord.Member, num: int):
-        with open(f'{BD}users.json', 'r') as file:
-            data = json.load(file)
+        warns = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="WARNS")
+        self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="WARNS", value= warns + num)
 
-        data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] += num
-
-        with open(f'{BD}users.json', 'w') as file:
-            json.dump(data, file, indent=4)
-
-        if data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] >= self.bot.db_get_nwarns(ctx):
+        if warns+num >= self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="NWARNS"):
             await self.command_ban(ctx, member, reason=Lang(ctx).language['warns_command_warn_reason'])
         
         # Audit(self.bot).warn_audit(ctx, )
 
     async def commands_clearWarns(self, ctx: commands.Context, member):
-        with open(f'{BD}users.json', 'r') as file:
-            data = json.load(file)
-        data[str(member.guild.id)]['USERS'][str(member.id)]['WARNS'] = 0
-        with open(f'{BD}users.json', 'w') as file:
-            json.dump(data, file, indent=4)
+        self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="WARNS", value= 0)
