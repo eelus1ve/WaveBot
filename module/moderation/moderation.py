@@ -4,7 +4,7 @@ from typing import Optional
 from BTSET import Rool
 from module.moderation.commands.warns import Warns
 from module.moderation.commands.clean import Clean
-from module.moderation.commands.audit import Audit
+from module.moderation.audit import Audit
 from module.moderation.commands.stngs import Stngs
 from module.moderation.commands.mwarns import Mwarns
 from module.moderation.commands.btst import *

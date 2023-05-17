@@ -159,7 +159,7 @@ class SQL_write(commands.Cog):
                         SELFROOM TEXT(25),
                         BADWORDS TEXT(25),
                         LINKS TEXT(25),
-                        PREFIX TEXT(25),
+                        PREFIX TEXT(1),
                         JNMSG TEXT(25),
                         SELFTITLE TEXT(25),
                         SELFROOMS TEXT(25),
@@ -173,9 +173,13 @@ class SQL_write(commands.Cog):
                         FIRSTROLE TEXT(25)
                         )''')
             conn.close
-
+            guildsCount = len(self.bot.guilds)
+            x = 0.00
             for guild in self.bot.guilds:
+                print(f"datebase creating({x})...")
+                x += round(100/guildsCount, 2)
                 SQL_write(self.bot).newguildsql(guild)
+            print(f"datebase creating(100)")
 
 
     def newmembersql(self, member: discord.Member):

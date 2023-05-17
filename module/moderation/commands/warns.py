@@ -21,7 +21,9 @@ class Warns(commands.Cog):
 
     async def command_warn(self, ctx: commands.Context, member: discord.Member, num: int):
         warns = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="WARNS")
+        print(warns)
         self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="WARNS", value= warns + num)
+        print(warns)
 
         if warns+num >= self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="NWARNS"):
             await self.command_ban(ctx, member, reason=Lang(ctx).language['warns_command_warn_reason'])

@@ -32,9 +32,9 @@ DEFGUILDSQL = {
     'UTILITYERCOLOR': '0x8B0000',
     'SRINFROOMS': None,
     'AUDIT': '{}',
-    'AUDITCHANNEL': None,
+    'AUDITCHANNEL': '{}',
     'JOINROLES': '[]',
-    'MODROLES': '{}',
+    'MODROLES': None,
     'ROLES': '{}',
     'ACTMODULES': '-1',
     'NCAPS': -1,
@@ -307,9 +307,9 @@ def bdpy(ctx: commands.Context):
 
 class Rool():
     def __init__(self, ctx: commands.Context):
-        if bdpy(ctx)['ModRoles'] != '{}':
-            mods = bdpy(ctx)['ModRoles'][
-                str([str(i.id) for i in ctx.author.roles if str(i.id) in bdpy(ctx)['ModRoles']][0])]
+        sql = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT MODROLES from servers WHERE ID == {ctx.guild.id}""").fetchone()[0]
+        if sql != {}:
+            mods = sql[str([str(i.id) for i in ctx.author.roles if str(i.id) in sql][0])]
 
             self.clearRank = mods['Rate']['CLearRank'] == "True" or ctx.author.guild_permissions.administrator
             self.score = mods['Rate']['Score'] == "True" or ctx.author.guild_permissions.administrator
@@ -338,7 +338,8 @@ class Rool():
 
     def role(quest: str):
         def predicate(ctx: commands.Context):
-            if quest == 'clear' and Rool(ctx).clear and (ctx.channel.id != bdpy(ctx)["idadminchannel"] or ctx.author.id == ctx.guild.owner.id):
+            chn = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT AUDITCHANNEL from servers WHERE ID == {ctx.guild.id}""").fetchone()[0]
+            if quest == 'clear' and Rool(ctx).clear and (str(ctx.channel.id) != str(chn) or ctx.author.id == ctx.guild.owner.id):
                 return True
             elif quest == 'clearRank' and Rool(ctx).clearRank:
                 return True
