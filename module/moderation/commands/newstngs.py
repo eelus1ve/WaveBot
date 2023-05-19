@@ -71,9 +71,9 @@ class NewStngs(commands.Cog):
     
     def text_set(self, ctx: commands.Context, functionName: str, ans: str):
         if not(ans):
-            raise commands.BadArgument("*{} {}{} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, Lang(ctx).language[f'settings_command_set_{functionName}_error_2']))
+            raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_{functionName}_error_2']))
         if functionName == "prefix" and len(ans) != 1:
-            raise commands.BadArgument()
+            raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_{functionName}_error_2']))
         self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value = ans)
         return "*{} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}'], ans)
     

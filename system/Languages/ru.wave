@@ -363,28 +363,32 @@ settings_command_set_join_message Текст отправляемый польз
 
 
 settings_command_set_adminchannel_error_1 Использование:
-settings_command_set_adminchannel_error_2 IDA (id канала для администраторов)
+settings_command_set_adminchannel_error_2 (id канала для администраторов)
 settings_command_set_adminchannel Канал администратора изменен на
 
 settings_command_set_ncaps_error_1 Использование:
-settings_command_set_ncaps_error_2 ncaps (количество капса до выдачи 1 предупреждения)
+settings_command_set_ncaps_error_2 (количество капса до выдачи 1 предупреждения)
 settings_command_set_ncaps Количество капса изменино на
 
 settings_command_set_nwarns_error_1 Использование:
-settings_command_set_nwarns_error_2 nwarns (количество предупреждений до выдачи бана)
+settings_command_set_nwarns_error_2 (количество предупреждений до выдачи бана)
 settings_command_set_nwarns Количество варнов изменино на
 
 settings_command_set_prefix_error_1 Для смены префикса напишите
-settings_command_set_prefix_error_2 prefix (ваш_префикс)
+settings_command_set_prefix_error_2 (префик [1 знак])
 settings_command_set_prefix Ваш префикс изменен на
 
 settings_command_set_selftitle_error_1 Использование:
-settings_command_set_selftitle_error_2 selftitle (Текст)
+settings_command_set_selftitle_error_2 (Текст)
 settings_command_set_selftitle Текст выбора ролей успешно изменён на
 
 settings_command_set_selfroom_error_1 Использование:
-settings_command_set_selfroom_error_2 selfroom (id канала)
-settings_command_set_selfroom Канал для создания своей комнаты успешно назначен (Id назначеного канала
+settings_command_set_selfroom_error_2 (id канала)
+settings_command_set_selfroom Канал для создания своей комнаты успешно назначен (Id назначеного канала)
+
+settings_command_set_selfroom_error_1 Использование:
+settings_command_set_selfroom_error_2 (язык)
+settings_command_set_selfroom Ваш язык изменен на
 
 settings_command_set_badword_add_badword_error_1 Использование:
 settings_command_set_badword_add_badword_error_2 (слово за использование которого участнику сервера будет выданно предупреждение)
