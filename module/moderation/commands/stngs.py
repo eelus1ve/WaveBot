@@ -20,7 +20,7 @@ class Stngs(commands.Cog):
     async def command_set(self, ctx: commands.Context, arg: str=None, clArg: str=None, roleClass: str=None, emo=None):
 
         #сюда if
-        arg = arg.lower()
+        
         # roles = self.bot.db_get_joinroles(ctx)
         COLOR = self.bot.db_get_modercolor(ctx)
         description1 = 0
@@ -53,7 +53,7 @@ class Stngs(commands.Cog):
             await ctx.send(embb = discord.Embed(title=f'Настройка сервера ***{str(ctx.message.guild)}***',      #ПЕРЕДЕЛАТЬ
                 description=some_des,
                 color=COLOR))
-            
+        arg = arg.lower()
         if arg == 'add_role' or arg == 'remove_role':
             description1 = NewStngs(self.bot).add_rem_role(ctx, arg, clArg, roleClass, emo)
 

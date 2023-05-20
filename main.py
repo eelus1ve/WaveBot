@@ -1,7 +1,7 @@
 import os
 import discord
 from discord.ext import commands
-from BTSET import embpy
+from BTSET import embpy, Lang
 from dotenv import load_dotenv, find_dotenv
 from system.Bot import WaveBot
 from system.DBwriter import SQL_write
@@ -16,7 +16,8 @@ def get_prefix(bot: WaveBot, message: discord.Message):
         prefix = bot.read_sql("servers", guild=str(message.guild.id), key="PREFIX")
     except AttributeError:
         bot.write_sql(db=f"server{message.guild.id}", guild=str(message.author.id), key="PREFIX", value="~")
-        raise commands.BadArgument() #сюда текст
+        prefix = bot.read_sql("servers", guild=str(message.guild.id), key="PREFIX")
+        raise commands.BadArgument(Lang(message).language['get_prefix_error']) #сюда текст
     return commands.when_mentioned(bot, message) + list(prefix)
 
 

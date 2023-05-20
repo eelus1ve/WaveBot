@@ -130,7 +130,7 @@ class SQL_write(commands.Cog):
             conn = sqlite3.connect(f'{BD}WaveDateBase.db')
 
             conn.execute('''CREATE TABLE IF NOT EXISTS servers
-                        (ID INTAGER,
+                        (ID TEXT(20),
                         CHEK TEXT(25),
                         LANG TEXT(25),
                         COLOR TEXT(25),
