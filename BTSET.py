@@ -134,23 +134,6 @@ DEFMODROLE = {
     "giverole": True
 }
 
-# with open(f'{BD}users.json', 'r') as file:
-#     d: dict = json.load(file)
-# SERVERS = [i for i in d.keys()]
-
-
-class Score_presets:
-    def __init__(self, member):
-        self.ignorechannels = bdpy(member)['IgnoreChannels']
-        self.ignoreroles = bdpy(member)['IgnoreRoles']
-        self.score = bdpy(member)['USERS'][str(member.id)]['SCR']
-        self.lvl = bdpy(member)['USERS'][str(member.id)]['LvL']
-        self.idadminchannel = int(bdpy(member)["ADMINCHANNEL"])  # тут для
-        self.color = bdpy(member)['COLOR']  # это надо для разделения цветов
-        self.ercolor = bdpy(ctx=member)['ERCOLOR']
-        self.prefix: str = bdpy(member)["PREFIX"]
-
-
 class Moderation:
     def __init__(self, member):
         self.warns: int = bdpy(member)['USERS'][str(member.id)]['WARNS']
@@ -162,24 +145,6 @@ class Moderation:
         self.prefix: str = bdpy(member)["PREFIX"]
         self.badwords = bdpy(member)['BADWORDS']
         self.links = bdpy(member)['LINKS']
-
-
-class Fun:
-    def __init__(self, ctx):
-        self.color = bdpy(ctx)['COLOR']
-        self.ercolor = bdpy(ctx)['ERCOLOR']
-
-
-class Info:
-    def __init__(self, ctx):
-        self.color = bdpy(ctx)['COLOR']
-        self.ercolor = bdpy(ctx)['ERCOLOR']
-
-
-class Utility:
-    def __init__(self, ctx):
-        self.color = bdpy(ctx)['COLOR']
-        self.ercolor = bdpy(ctx)['ERCOLOR']
 
 
 class InteractionComponents:
@@ -204,72 +169,6 @@ class InteractionComponents:
 
             self.label = None
             self.emoji = None
-
-
-# class Audit():
-#     def __init__(self, ctx):
-#         self.color = bdpy(ctx)['COLOR']
-#     def auditEmb(self, ctx):
-#         emb = discord.Embed(
-#             title='Нарушение снято!',
-#             description=f"*Ранее, у участника было уже {Moderation(ctx).warns - 1} нарушений, после {Moderation(ctx).NWARNS} он будет забанен!*",
-#             timestamp=ctx.message.created_at,
-#             color=self.color
-#         )                                                                                                                   #переписать под unwarn
-#         emb.add_field(name='Канал:', value='Не определён', inline=True)
-#         emb.add_field(name='Участник:', value=ctx.mention, inline=True)
-#         emb.set_footer(text=f'Предупреждение снято участником {ctx.author.name}#{ctx.author.discriminator} ID модератора: {ctx.author.id}')
-# await get(ctx.guild.text_channels, id=Moderation(member).idadminchannel).send(embed=emb)
-
-# class DateBaseEditor():
-#     def __init__(self, ctx):
-#         self.color = bdpy(ctx)['COLOR']
-#         self.ercolor = bdpy(ctx)['ERCOLOR']
-#         # with open(f'{BD}users.json', 'r') as file:
-#         #     data = json.load(file)
-#         # self.color = int(data[str(ctx.guild.id)]['COLOR'], 16)
-#         # self.ercolor = int(data[str(ctx.guild.id)]['ERCOLOR'], 16)
-#         # self.joinroles = data[str(ctx.guild.id)]['JoinRoles']
-#         # self.modroles = data[str(ctx.guild.id)]['ModRoles']
-#         # self.roles = data[str(ctx.guild.id)]['ROLES']
-#         # self.firstrole = data[str(ctx.guild.id)]['FirstRole']
-#         # self.actmoduls = data[str(ctx.guild.id)]['actmoduls']
-#         # self.ncaps = data[str(ctx.guild.id)]['NCAPS']
-#         # self.nwarns = data[str(ctx.guild.id)]['NWARNS']
-#         # self.idadminchennel =  data[str(ctx.guild.id)]['idAdminchennel']
-#         # self.idmainch = data[str(ctx.guild.id)]['idMainch']
-#         # self.selfroom = data[str(ctx.guild.id)]['selfRoom']
-#         # self.badwords = data[str(ctx.guild.id)]['BADWORDS']
-#         # self.links = data[str(ctx.guild.id)]['LINKS']
-#         # self.prefix = data[str(ctx.guild.id)]['PREFIX']
-#         # self.jnmsg = data[str(ctx.guild.id)]['JNMSG']
-#         # self.selftitle = data[str(ctx.guild.id)]['SelfTitle']
-#         # self.selfrooms = data[str(ctx.guild.id)]['Selfrooms']
-#         # self.mafrooms =  data[str(ctx.guild.id)]['Mafrooms']
-#         # self.ignorechannels = data[str(ctx.guild.id)]['IgnoreChannels']
-#         # self.ignoreroles = data[str(ctx.guild.id)]['IgnoreRoles']
-#         # self.card =  data[str(ctx.guild.id)]['card']
-#         # self.text_color = data[str(ctx.guild.id)]['text_color']
-#         # self.bar_color = data[str(ctx.guild.id)]['bar_color']
-#         # self.blend = data[str(ctx.guild.id)]['blend']
-#         # self.users = data[str(ctx.guild.id)]['USERS']
-
-
-# def db_write(db: str, ctx: commands.Context, locate: str, arg):
-#     with open(f'{BD}{db}.json', 'r') as file:
-#         data = json.load(file)
-#     if locate in DBSTR:
-#         data[locate] = arg
-#     else:
-#         pass
-#     with open(f'{BD}{db}.json', 'w') as file:
-#         json.dump(data, file, indent=4)
-
-# def db_read(db: str, ctx: commands.Context, locate: str):
-#     with open(f'{BD}{db}.json', 'r') as file:
-#         date = json.load(file)
-#     return date[ctx][locate]
-
 
 def bdpy(ctx: commands.Context):
     with open(f'{BD}users.json', 'r') as file:

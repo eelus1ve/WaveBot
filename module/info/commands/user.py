@@ -1,12 +1,13 @@
 import discord
 from discord import Spotify
 from discord.ext import commands
-from BTSET import ADMINS, Score_presets, Lang
+from BTSET import ADMINS, Lang
 import pytz
 from system.Bot import WaveBot
+from module.rate.commands.rank import Rank
 
 class UserInfo(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: WaveBot):
         self.bot: WaveBot = bot
 
     async def command_user(self, ctx: commands.Context, member: discord.Member):
@@ -30,9 +31,12 @@ class UserInfo(commands.Cog):
                             description=f"***{Lang(ctx).language['user_some_info']}***\n" + "".join(lstdisc),
                             color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
         )
-        if Score_presets(member).score or Score_presets(member).lvl:
-            emb.add_field(name=f"***{Lang(ctx).language['user_xp']}***", value=Score_presets(member).score, inline=True)
-            emb.add_field(name=f"***{Lang(ctx).language['user_lvl']}***", value=Score_presets(member).lvl, inline=True) #добавить if
+        
+        if self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="XP"):
+            lvl = Rank.levelFunction(self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="XP"))
+            xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="XP") - int(Rank.xpFunction(lvl))
+            emb.add_field(name=f"***{Lang(ctx).language['user_xp']}***", value=xp, inline=True)
+            emb.add_field(name=f"***{Lang(ctx).language['user_lvl']}***", value=lvl, inline=True) #добавить if
         if self.bot.db_get_user_warns:
             emb.add_field(name=f"***{Lang(ctx).language['user_warns']}***", value=f'{self.bot.db_get_user_warns(ctx=member)}/{self.bot.db_get_nwarns(ctx=member)}', inline=True)
         
