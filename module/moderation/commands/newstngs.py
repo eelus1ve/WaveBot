@@ -61,12 +61,12 @@ class NewStngs(commands.Cog):
             if len(color) != 7:
                 raise commands.BadArgument("*{} {} {}*".format(Lang(ctx).language[f'settings_command_set_color_{functionName}_not_ex_1'], color, Lang(ctx).language[f'settings_command_set_color_{functionName}_not_ex_2']))
 
-            self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value =f'"0x{color[1:]}"')
+            self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value =f"0x{color[1:]}")
         else:
             if len(color) != 6:
                 raise commands.BadArgument("*{}* {}{} {} {}".format(Lang(ctx).language[f'settings_command_set_color_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_color_{functionName}_error_2']))
 
-            self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value =f'"0x{color}"')
+            self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value =f"0x{color}")
         return "*{} {}*".format(Lang(ctx).language[f'settings_command_set_color_{functionName}'], color)
     
     def text_set(self, ctx: commands.Context, functionName: str, ans: str):
@@ -74,7 +74,7 @@ class NewStngs(commands.Cog):
             raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_{functionName}_error_2']))
         if functionName == "prefix" and len(ans) != 1:
             raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_{functionName}_error_2']))
-        self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value = ans)
+        self.bot.write_sql(db="servers", guild=str(ctx.guild.id), key=functionName.upper(), value = str(ans))
         return "*{} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}'], ans)
     
     def add_rem_badword(self, ctx: commands.Context, functionName: str, word: str):

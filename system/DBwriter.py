@@ -159,7 +159,7 @@ class SQL_write(commands.Cog):
                         SELFROOM TEXT(25),
                         BADWORDS TEXT(25),
                         LINKS TEXT(25),
-                        PREFIX TEXT(1),
+                        PREFIX TEXT(25),
                         JNMSG TEXT(25),
                         SELFTITLE TEXT(25),
                         SELFROOMS TEXT(25),

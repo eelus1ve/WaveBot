@@ -27,6 +27,7 @@ class SQLeditor():
         cursor = sqlite_connection.cursor()
         if type(value) == str:
             print(value)
+            value = f'"{value}"'
             cursor.execute(f"UPDATE {db} SET {key} ="+value+f" WHERE ID = {guild}")
         elif type(value) == list:
             cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = ?", (", ".join(value), guild))

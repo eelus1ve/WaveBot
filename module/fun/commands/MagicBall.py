@@ -14,5 +14,5 @@ class MagicBall(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title=Lang(ctx).language['magicball_title'],
             description=Lang(ctx).language[f'magicball_des_{randball}'],
-            color=self.bot.db_get_funcolor(ctx)
+            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="FUNCOLOR")
         ))
