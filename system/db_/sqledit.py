@@ -29,9 +29,9 @@ class SQLeditor():
             value = f'"{value}"'
             cursor.execute(f"UPDATE {db} SET {key} ="+value+f" WHERE ID = {guild}")
         elif type(value) == list:
-            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = {guild}", (", ".join(value)))
+            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = ?", (", ".join(value), str(guild)))
         elif type(value) == dict:
-            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = {guild}", (json.dumps(value)))
+            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = ?", (json.dumps(value), str(guild)))
         else:
             cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = {guild}", (value))
         sqlite_connection.commit()

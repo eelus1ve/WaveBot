@@ -131,7 +131,7 @@ class SQL_write(commands.Cog):
 
             conn.execute('''CREATE TABLE IF NOT EXISTS servers
                         (ID TEXT(20),
-                        CHEK TEXT(25),
+                        CHEK BOOLEAN,
                         LANG TEXT(25),
                         COLOR TEXT(25),
                         FUNCOLOR TEXT(25),
