@@ -1,13 +1,11 @@
 import discord
 from discord.ext import commands
 from typing import Optional
-from distutils.log import error
-import re
 from discord.utils import get
 import datetime
 import pytz
 import time
-from BTSET import Score_presets, Rool, embpy, bdpy, BD, Lang
+from BTSET import Rool, Lang
 from system.Bot import WaveBot
 
 memberInfo = {}
@@ -115,7 +113,7 @@ class Score_commands(commands.Cog):
     #             ))
 
     async def command_voice_time(self, ctx: commands.Context, member: discord.Member):
-        sec = bdpy(ctx)['USERS'][str(member.id)]['TIME']
+        sec = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=ctx.author.id, key="TIME")
         mins = sec // 60
         sec = sec % 60
         hours = mins // 60

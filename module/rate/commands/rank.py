@@ -1,10 +1,9 @@
 import discord
 from discord.ext import commands
-from easy_pil import Editor, load_image_async, Font
-from typing import Optional
+from easy_pil import Editor, load_image_async
 from discord import File
-from BTSET import Score_presets, bdpy, Lang
-from PIL import Image, ImageFont, ImageDraw
+from BTSET import Lang
+from PIL import ImageFont
 from system.Bot import WaveBot
 
 

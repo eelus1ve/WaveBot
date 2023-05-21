@@ -1,24 +1,13 @@
 import discord
 from discord.ext import commands
-from BTSET import Score_presets, bdpy, Lang, BD
+from BTSET import Lang, BD
 from system.Bot import WaveBot
+from module.rate.commands.rank import Rank
 import sqlite3
 
 class Leaders(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: WaveBot):
         self.bot = bot
-
-    def levelFunction(x):
-        d = (3**2+4*2*x/100)**0.5
-        if (-3-d)/2 > (-3+d)/2:
-            level = (-3-d)/2
-        else:
-            level = (-3+d)/2
-        return int(level + 1)
-
-    def xpFunction(x):
-        xp: float = 50*(x**2+x-2)
-        return int(round(xp, 2))
 
     async def command_leaders(self, ctx: commands.Context, range_num: int):
         members = []
@@ -29,9 +18,9 @@ class Leaders(commands.Cog):
         records = list(reversed(sorted(records)))
         members.append(f"ㅤ`{Lang(ctx).language['leaders_command_leaders_list_2']}` {Lang(ctx).language['leaders_command_leaders_list_3']} {Lang(ctx).language['leaders_command_leaders_list_4']}")
         for i in range(range_num):
-            lvl = Leaders.levelFunction(int(records[i][0]))
-            xp = int(records[i][0])-Leaders.xpFunction(lvl)
-            members.append(f"{i+1}. `{ctx.guild.get_member(int(records[i][1]))}` {Lang(ctx).language['leaders_command_leaders_list_lvl']} {lvl} {Lang(ctx).language['leaders_command_leaders_list_xp']} {xp}/{Leaders.xpFunction(lvl)}")
+            lvl = Rank.levelFunction(int(records[i][0]))
+            xp = int(records[i][0])-int(Leaders.xpFunction(lvl))
+            members.append(f"{i+1}. `{ctx.guild.get_member(int(records[i][1]))}` {Lang(ctx).language['leaders_command_leaders_list_lvl']} {lvl} {Lang(ctx).language['leaders_command_leaders_list_xp']} {xp}/{Rank.xpFunction(lvl)}")
         emb = discord.Embed(
             title=Lang(ctx).language['leaders_command_leaders_title'],
             description='\n '.join(members),
