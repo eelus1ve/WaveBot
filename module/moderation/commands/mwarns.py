@@ -27,7 +27,7 @@ class Mwarns_audit(commands.Cog):
             emb.add_field(name=Lang(message).language['mwarns_audit1_field_3'], value=message.author.mention, inline=True)
             emb.add_field(name=Lang(message).language['mwarns_audit1_field_4_name'], value=Lang(message).language['mwarns_audit1_field_4_value'], inline=True)
             emb.set_footer(text=Lang(message).language['mwarns_audit1_footer'])
-            await get(message.guild.text_channels, id=int(self.bot.db_get_adminchannel(message))).send(embed=emb)
+            await get(message.guild.text_channels, id=int(self.bot.read_sql(db="servers", guild=str(message.guild.id), key="ADMINCHANNEL"))).send(embed=emb)
 
         #====================================================================
         #ls
@@ -66,10 +66,10 @@ class Mwarns(commands.Cog):
                     Modroot = self.bot.db_get_modroles(message)[[str(i.id) for i in message.author.roles if str(i.id) in self.bot.db_get_modroles(message)][0]]['Warns']['Warn'] == "True" or message.author.guild_permissions.administrator
                 else:
                     Modroot = message.author.guild_permissions.administrator
-                for i in range(0, len(WARN)):
+                for i in WARN:
                     #badwords + links==============================================================
-                    if WARN[i] in message.content.lower():
-                        if str(message.content) == f'~set add_badword {WARN[i]}' and Modroot:
+                    if i in message.content.lower():
+                        if str(message.content) == f'~set add_badword {i}' and Modroot:
                             await message.delete()
                         else:
                             data[str(message.guild.id)]["USERS"][str(message.author.id)]["WARNS"] +=1

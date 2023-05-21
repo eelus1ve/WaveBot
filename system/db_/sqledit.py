@@ -26,14 +26,13 @@ class SQLeditor():
         sqlite_connection = sqlite3.connect(f'{BD}WaveDateBase.db')
         cursor = sqlite_connection.cursor()
         if type(value) == str:
-            print(value)
             value = f'"{value}"'
             cursor.execute(f"UPDATE {db} SET {key} ="+value+f" WHERE ID = {guild}")
         elif type(value) == list:
-            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = ?", (", ".join(value), guild))
+            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = {guild}", (", ".join(value)))
         elif type(value) == dict:
-            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = ?", (json.dumps(value), guild))
+            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = {guild}", (json.dumps(value)))
         else:
-            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = ?", (value, guild))
+            cursor.execute(f"UPDATE {db} SET {key} = ? WHERE ID = {guild}", (value))
         sqlite_connection.commit()
         cursor.close()
