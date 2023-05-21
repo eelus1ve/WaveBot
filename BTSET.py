@@ -66,9 +66,6 @@ DEFUSERSQL = {
     "TIME": 0
 }
 
-
-
-
 DEFGUILD = {
     '': "id",
     'check': False,
