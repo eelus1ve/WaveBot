@@ -6,6 +6,13 @@ import json
 class SQLeditor():
 
     def read_sql(self, db: str, guild: str, key: str):
+        """
+        db = "servers"       || f"server{ctx.guild.id}"
+        
+        guild = ctx.guild.id || ctx.author.id
+        
+        key = "KEY"
+        """
         sqlite_connection = sqlite3.connect(f'{BD}WaveDateBase.db')
         cursor = sqlite_connection.cursor()
         cursor.execute(f"""SELECT {key} from {db} WHERE ID == {guild}""")
@@ -23,6 +30,15 @@ class SQLeditor():
 
 
     def write_sql(self, db: str, guild: str, key: str, value: Union[str, int]):
+        """
+        db = "servers"       || f"server{ctx.guild.id}"
+        
+        guild = ctx.guild.id || ctx.author.id
+        
+        key = "KEY"
+
+        value = your_value
+        """
         sqlite_connection = sqlite3.connect(f'{BD}WaveDateBase.db')
         cursor = sqlite_connection.cursor()
         if type(value) == str:

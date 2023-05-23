@@ -50,8 +50,42 @@ class Mwarns_audit(commands.Cog):
 
 
 
+
+
+
+
+class NewMwarns(commands.Cog):
+    def __init__(self, bot: WaveBot):
+        self.bot: WaveBot = bot
+
+
+    def first(self, message: discord.Message, warn):
+        """
+        message = message.content.lower()
+        
+        warn = [BADWORDS, maybe LINKS]
+
+        
+
+        """
+        for i in warn:
+            if i in message:
+                if " " in message:
+                    for i in list(str(message.content.lower()).split(" ")):
+                        break
+                    break
+                else:
+                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARN", value=self.bot.read_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARN")+1)
+                    break
+
+
+
+
+
+
+
 class Mwarns(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: WaveBot):
         self.bot: WaveBot = bot
 
     async def listener_on_message_mwarns(self, message: discord.Message):
