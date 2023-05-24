@@ -61,25 +61,23 @@ class NewMwarns(commands.Cog):
 
     def first(self, message: discord.Message, warn):
         """
-        message = message.content.lower()
-        
+
         warn = [BADWORDS, maybe LINKS]
-
-        
-
         """
+        ctx = message
+        message = message.content.lower()
         for i in warn:
-            warn = self.bot.read_sql(db=f"server{message.author.id}", guild=)
             if i in message:
+                warn = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=ctx.author.id, key="WARNS")
                 if " " in message:
                     for ii in list(str(message.content.lower()).split(" ")):
                         if i == ii:
-                            self.bot.write_sql
-                        break
+                            self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARN", value=warn+1)
+                            return warn+1
                     break
                 else:
-                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARN", value=self.bot.read_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARN")+1)
-                    break
+                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARN", value=warn+1)
+                    return warn+1
 
 
 

@@ -9,9 +9,9 @@ class SQLeditor():
         """
         Method parameters
         -----------------------------------------------
-        db = "servers"       || f"server{ctx.guild.id}"
+        db = "servers"       | f"server{ctx.guild.id}"
         
-        guild = ctx.guild.id || ctx.author.id
+        guild = ctx.guild.id | ctx.author.id
         
         key = "KEY"
         """
@@ -35,9 +35,9 @@ class SQLeditor():
         """
         Method parameters
         -----------------------------------------------
-        db = "servers"       || f"server{ctx.guild.id}"
+        db = "servers"       | f"server{ctx.guild.id}"
 
-        guild = ctx.guild.id || ctx.author.id
+        guild = ctx.guild.id | ctx.author.id
         
         key = "KEY"
         
