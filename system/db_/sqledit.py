@@ -5,7 +5,7 @@ import json
 
 class SQLeditor():
 
-    def read_sql(self, db: str, guild: str, key: str) -> any:
+    def read_sql(self, db: str, guild: Union[str, int], key: str) -> any:
         """
         Method parameters
         -----------------------------------------------
@@ -31,7 +31,7 @@ class SQLeditor():
         return records
 
 
-    def write_sql(self, db: str, guild: str, key: str, value: Union[str, int]) -> None:
+    def write_sql(self, db: str, guild: Union[str, int], key: str, value: Union[str, int]) -> None:
         """
         Method parameters
         -----------------------------------------------
