@@ -31,14 +31,15 @@ class UserInfo(commands.Cog):
                             description=f"***{Lang(ctx).language['user_some_info']}***\n" + "".join(lstdisc),
                             color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
         )
-        
-        if self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="XP"):
-            lvl = Rank.levelFunction(self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="XP"))
-            xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="XP") - int(Rank.xpFunction(lvl))
+        xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="XP")
+        warns = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="WARNS")
+        if xp:
+            lvl = Rank.levelFunction(xp)
+            xp = xp - int(Rank.xpFunction(lvl)) if xp - int(Rank.xpFunction(lvl)) >= 0 else 0
             emb.add_field(name=f"***{Lang(ctx).language['user_xp']}***", value=xp, inline=True)
-            emb.add_field(name=f"***{Lang(ctx).language['user_lvl']}***", value=lvl, inline=True) #добавить if
-        if self.bot.db_get_user_warns:
-            emb.add_field(name=f"***{Lang(ctx).language['user_warns']}***", value=f'{self.bot.db_get_user_warns(ctx=member)}/{self.bot.db_get_nwarns(ctx=member)}', inline=True)
+            emb.add_field(name=f"***{Lang(ctx).language['user_lvl']}***", value=lvl, inline=True)
+        if warns:
+            emb.add_field(name=f"***{Lang(ctx).language['user_warns']}***", value=f'{warns}/{self.bot.read_sql(db=f"servers", guild=ctx.guild.id, key="NWARNS")}', inline=True)
         
         emb.set_thumbnail(url=member.avatar)
         emb.set_footer(text=f"{Lang(ctx).language['user_footer']} {member.id}")

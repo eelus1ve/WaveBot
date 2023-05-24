@@ -20,7 +20,6 @@ class SrInfo(commands.Cog):
         emb.add_field(name=Lang(ctx).language['server_info_date'], value=ctx.message.guild.created_at.strftime("%d.%m.%y"))
         await ctx.send(embed=emb)
 
-    #Доделать. Знаю что доделать делаю делаю и думаю о том что ты пидр ведь мог бы и сам сделать а ты что-то другое делаешь а мне ещё документацию писать я тут сдохну 
     async def command_server_info_channel(self, ctx: commands.Context, arg: str):
         command_name = "server_info_channel"
 
