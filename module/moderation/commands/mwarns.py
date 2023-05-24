@@ -69,9 +69,12 @@ class NewMwarns(commands.Cog):
 
         """
         for i in warn:
+            warn = self.bot.read_sql(db=f"server{message.author.id}", guild=)
             if i in message:
                 if " " in message:
-                    for i in list(str(message.content.lower()).split(" ")):
+                    for ii in list(str(message.content.lower()).split(" ")):
+                        if i == ii:
+                            self.bot.write_sql
                         break
                     break
                 else:
