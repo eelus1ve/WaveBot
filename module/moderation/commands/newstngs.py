@@ -70,6 +70,9 @@ class NewStngs(commands.Cog):
         return "*{} {}*".format(Lang(ctx).language[f'settings_command_set_color_{functionName}'], color)
     
     def text_set(self, ctx: commands.Context, functionName: str, ans: str):
+        """
+        functionName in ['adminchannel', 'ncaps', 'nwarns', 'prefix', 'selftitle', 'selfroom', "lang"]
+        """
         if not(ans):
             raise commands.BadArgument("*{} {}{} {} {}*".format(Lang(ctx).language[f'settings_command_set_{functionName}_error_1'], self.bot.read_sql(db="servers", guild=ctx.guild.id, key="PREFIX"), NewStngs.command_name, functionName, Lang(ctx).language[f'settings_command_set_{functionName}_error_2']))
         if functionName == "prefix" and len(ans) != 1:

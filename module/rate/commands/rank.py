@@ -12,6 +12,11 @@ class Rank(commands.Cog):
         self.bot = bot
 
     def levelFunction(x):
+        """
+        x == xp
+
+        return lvl
+        """
         d = (3**2+4*2*x/100)**0.5
         if (-3-d)/2 > (-3+d)/2:
             level = (-3-d)/2
@@ -20,7 +25,12 @@ class Rank(commands.Cog):
         return level + 1
 
     def xpFunction(x):
-        xp: float = 50*(x**2+x-2)
+        """
+        x == lvl
+
+        return xp: float 2
+        """
+        xp = 50*(x**2+x-2)
         return round(xp, 2)
 
     async def command_rank(self, ctx: commands.Context, member: discord.Member):

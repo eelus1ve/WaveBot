@@ -5,8 +5,10 @@ import json
 
 class SQLeditor():
 
-    def read_sql(self, db: str, guild: str, key: str):
+    def read_sql(self, db: str, guild: str, key: str) -> any:
         """
+        Method parameters
+        -----------------------------------------------
         db = "servers"       || f"server{ctx.guild.id}"
         
         guild = ctx.guild.id || ctx.author.id
@@ -29,14 +31,16 @@ class SQLeditor():
         return records
 
 
-    def write_sql(self, db: str, guild: str, key: str, value: Union[str, int]):
+    def write_sql(self, db: str, guild: str, key: str, value: Union[str, int]) -> None:
         """
+        Method parameters
+        -----------------------------------------------
         db = "servers"       || f"server{ctx.guild.id}"
-        
+
         guild = ctx.guild.id || ctx.author.id
         
         key = "KEY"
-
+        
         value = your_value
         """
         sqlite_connection = sqlite3.connect(f'{BD}WaveDateBase.db')
