@@ -59,28 +59,39 @@ class NewMwarns(commands.Cog):
         self.bot: WaveBot = bot
 
 
-    def first(self, message: discord.Message, warn):
+    def first(self, message: discord.Message, badlist):
         """
 
-        warn = [BADWORDS, maybe LINKS]
+        badlist = [BADWORDS, maybe LINKS]
         """
-        ctx = message
-        message = message.content.lower()
-        for i in warn:
-            if i in message:
-                warn = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=ctx.author.id, key="WARNS")
-                if " " in message:
-                    for ii in list(str(message.content.lower()).split(" ")):
-                        if i == ii:
-                            self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARN", value=warn+1)
-                            return warn+1
-                    break
-                else:
-                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARN", value=warn+1)
+        for i in badlist:
+            warn = self.bot.read_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS")
+            messagelist = list(str(message.content.lower()).split(" "))
+            if "**" in i:
+                leni = len(i)
+                if "**" == i[:-(leni-2)] and "**" == i[leni-2] and i in message.content.lower():
+                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
                     return warn+1
-
-
-
+                if "**" == i[:-(leni-2)] and True in [i[2:] == ii[len(ii)-leni:] in ii for ii in messagelist]:
+                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
+                    return warn+1
+                if "**" == i[leni-2] and True in [i[2:] == ii[:-(len(ii)-leni)] in ii for ii in messagelist]:
+                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
+                    return warn+1
+                
+            if " " in message.content.lower() and not("**" in i):
+                for ii in messagelist:
+                    if i == ii:
+                        self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
+                        return warn+1
+                if "*" in i:
+                    if "*" == i[0] and True in [i[1:] == ii[1:] for ii in messagelist]:
+                        self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
+                        return warn+1
+                    if "*" == i[-1] and True in [i[:-1] == ii[:-1] for ii in messagelist]:
+                        self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
+                        return warn+1
+        return 0
 
 
 
