@@ -14,15 +14,16 @@ class Audit(commands.Cog):
 
     async def audit(self, ctx: commands.Context, member: discord.Member, reason: str, text: str, num: int = 0):
         moscow_time = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
+        COLOR = self.bot.read_sql(db="servers", guild=ctx.guild.id, key="MODERATIONCOLOR")
         #====================================================================
         #audit
         #====================================================================
-        if self.bot.db_get_adminchannel(ctx) in [str(i.id) for i in ctx.guild.channels]:
+        if self.bot.read_sql(db="servers", guild=ctx.guild.id, key="ADMINCHANNEL") in [str(i.id) for i in ctx.guild.channels]:
             emb=discord.Embed(
                 title=Lang(ctx).language['audit_title'],
                 description='{} {}#{} {} {}!\n{} {}'.format(Lang(ctx).language['audit_des_1'], member.name, member.discriminator, Lang(ctx).language['audit_des_2'], text, Lang(ctx).language['audit_des_3'], reason),
                 timestamp=moscow_time,
-                color=self.bot.db_get_modercolor(ctx)
+                color=COLOR
             )
             if not(num):
                 emb.set_footer(text='{} {}#{} {} {}'.format(Lang(ctx).language['audit_footer_1'], ctx.author.name, ctx.author.discriminator, Lang(ctx).language['audit_footer_2'], ctx.author.id))
@@ -38,7 +39,7 @@ class Audit(commands.Cog):
             title=Lang(ctx).language['audit_title_rep'],
             description="*{} {} {}.*".format(member.mention, Lang(ctx).language['audit_des_rep_s'], text),
             timestamp=moscow_time,
-            color=self.bot.db_get_modercolor(ctx)
+            color=COLOR
             )
         #====================================================================
         #ls
@@ -47,7 +48,7 @@ class Audit(commands.Cog):
             title=f'{ctx.guild.name}',
             description=f"{Lang(ctx).language['audit_des_ls_1']} {text}{Lang(ctx).language['audit_des_ls_2']}\n{Lang(ctx).language['audit_des_ls_3']} {reason}",
             timestamp=moscow_time,
-            color=self.bot.db_get_modercolor(ctx)
+            color=COLOR
         )
         if not(num):
             emb.set_footer(text=f'Модератор {ctx.author.name}#{ctx.author.discriminator} ID: {ctx.author.id}')

@@ -18,18 +18,18 @@ DEFGUILDSQL = {
     'ID': "id",
     'CHEK': False,
     'LANG': None,
-    'COLOR': '0x0000FF',
-    'FUNCOLOR': '0x0000FF',
-    'INFOCOLOR': '0x0000FF',
-    'MODERATIONCOLOR': '0x0000FF',
-    'RATECOLOR': '0x0000FF',
-    'UTILITYCOLOR': '0x0000FF',
-    'ERCOLOR': '0x8B0000',
-    'FUNERCOLOR': '0x8B0000',
-    'INFOERCOLOR': '0x8B0000',
-    'MODERATIONERCOLOR': '0x8B0000',
-    'RATEERCOLOR': '0x8B0000',
-    'UTILITYERCOLOR': '0x8B0000',
+    'COLOR': 0x0000FF,
+    'FUNCOLOR': 0x0000FF,
+    'INFOCOLOR': 0x0000FF,
+    'MODERATIONCOLOR': 0x0000FF,
+    'RATECOLOR': 0x0000FF,
+    'UTILITYCOLOR': 0x0000FF,
+    'ERCOLOR': 0x8B0000,
+    'FUNERCOLOR': 0x8B0000,
+    'INFOERCOLOR': 0x8B0000,
+    'MODERATIONERCOLOR': 0x8B0000,
+    'RATEERCOLOR': 0x8B0000,
+    'UTILITYERCOLOR': 0x8B0000,
     'SRINFROOMS': None,
     'AUDIT': None,
     'AUDITCHANNEL': None,
@@ -294,7 +294,7 @@ class Lang():
         self.language = self.lang(ctx)
 
     def lang(self, ctx: commands.Context):
-        sql = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT LANG from servers WHERE ID == {ctx.guild.id}""").fetchone()[0]
+        sql = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT VALUE from lang WHERE ID == {ctx.guild.id}""").fetchone()[0]
         lang_dict = {}
         part = 'system\\Languages\\ru.wave'     #потом заменить на en-US
         if os.path.exists('system\\Languages\\{}.wave'.format(str(ctx.guild.preferred_locale) if not sql else sql)):

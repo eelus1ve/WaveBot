@@ -95,99 +95,181 @@ class SQL_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def newguildsql(self, guild):
-        conn = sqlite3.connect(f'{BD}WaveDateBase.db')
-        cur = conn.cursor()
-        cur.execute(f"SELECT 1 FROM servers WHERE ID == {guild.id}")
-        data = cur.fetchall()
-        if not(data):
-            conn.execute(f'''CREATE TABLE IF NOT EXISTS server{guild.id}
-                        (ID TEXT(20),
-                        WARNS INTEGER,
-                        CAPS INTEGER,
-                        XP INTEGER,
-                        TIME INTEGER
-                        )''')
-            
-            serversaset = tuple(str(guild.id) if i == "id" else i for i in DEFGUILDSQL.values())
-            conn.execute("INSERT INTO servers ("+", ".join([i for i in DEFGUILDSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFGUILDSQL.keys()])+")", serversaset)
-            conn.commit()
-        
-        for member in guild.members:
-            cur = conn.cursor()
-            cur.execute(f"SELECT 1 FROM server{guild.id} WHERE ID == {member.id}")
-            data = cur.fetchall()
-            if not(data):
-                useraset = tuple(str(member.id) if i == "id" else i for i in DEFUSERSQL.values())
-                conn.execute(f"INSERT INTO server{guild.id} ("+", ".join([i for i in DEFUSERSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFUSERSQL.keys()])+")", useraset)
-                conn.commit()
-                conn.close
-
-
-    def createsqltabel(self):
+    def write_db(self):
         if not os.path.exists(f'{BD}WaveDateBase.db'):
 
             conn = sqlite3.connect(f'{BD}WaveDateBase.db')
 
-            conn.execute('''CREATE TABLE IF NOT EXISTS servers
-                        (ID TEXT(20),
-                        CHEK BOOLEAN,
-                        LANG TEXT(5),
-                        COLOR TEXT(8),
-                        FUNCOLOR TEXT(8),
-                        INFOCOLOR TEXT(8),
-                        MODERATIONCOLOR TEXT(8),
-                        RATECOLOR TEXT(8),
-                        UTILITYCOLOR TEXT(8),
-                        ERCOLOR TEXT(8),
-                        FUNERCOLOR TEXT(8),
-                        INFOERCOLOR TEXT(8),
-                        MODERATIONERCOLOR TEXT(8),
-                        RATEERCOLOR TEXT(8),
-                        UTILITYERCOLOR TEXT(8),
-                        SRINFROOMS TEXT(80),
-                        AUDIT TEXT(25),
-                        AUDITCHANNEL TEXT(20),
-                        JOINROLES TEXT(25),
-                        MODROLES TEXT(25),
-                        ROLES TEXT(25),
-                        ACTMODULES TEXT(25),
-                        NCAPS INTAGER,
-                        NWARNS INTAGER,
-                        ADMINCHANNEL INTEGER,
-                        IDMAINCH INTAGER,
-                        SELFROOM TEXT(25),
-                        BADWORDS TEXT(25),
-                        LINKS TEXT(25),
-                        PREFIX TEXT(1),
-                        JNMSG TEXT(25),
-                        SELFTITLE TEXT(25),
-                        SELFROOMS TEXT(25),
-                        MAFROOMS TEXT(25),
-                        IGNORECHANNELS TEXT(25),
-                        IGNOREROLES TEXT(25),
-                        CARD TEXT(25),
-                        TEXTCOLOR TEXT(7),
-                        BARCOLOR TEXT(7),
-                        BLEND INTAGER,
-                        FIRSTROLE TEXT(25)
-                        )''')
+            conn.execute('''CREATE TABLE IF NOT EXISTS cheak(
+            SERVER_ID INTEGER,
+            VALUE BOOLEAN
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS lang(
+            SERVER_ID INTEGER,
+            VALUE TEXT(5)
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS colors(
+            SERVER_ID INTEGER,
+            COLOR INTEGER,
+            FUNCOLOR INTEGER,
+            INFOCOLOR INTEGER,
+            MODERATIONCOLOR INTEGER,
+            RATECOLOR INTEGER,
+            UTILITYCOLOR INTEGER,
+            ERCOLOR INTEGER,
+            ERFUNCOLOR INTEGER,
+            ERINFOCOLOR INTEGER,
+            ERMODERATIONCOLOR INTEGER,
+            ERRATECOLOR INTEGER,
+            ERUTILITYCOLOR INTEGER
+            )''')
+            
+            conn.execute('''CREATE TABLE IF NOT EXISTS audit(
+            SERVER_ID INTEGER,
+            CHANNEL INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS joinroles(
+            SERVER_ID INTEGER,
+            VALUE INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS modroles(
+            SERVER_ID INTEGER,
+            KICK BOOLEAN,
+            BAN BOOLEAN,
+            UNBAN BOOLEAN,
+            TEMPBAN BOOLEAN,
+            WARN BOOLEAN,
+            TEMPWARN BOOLEAN,
+            UNWARN BOOLEAN,
+            CLEARWARNS BOOLEAN,
+            SETTINGS BOOLEAN,
+            CLEAR BOOLEAN,
+            SCORE BOOLEAN,
+            CLEARSCORE BOOLEAN,
+            SETLVL BOOLEAN,
+            CLEARRANK BOOLEAN,
+            TEMPROLE BOOLEAN,
+            GIVEROLE BOOLEAN
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS roles(
+            SERVER_ID INTEGER,
+            CLASS TEXT(20),
+            ROLE_ID INTEGER,
+            EMO TEXT(20)
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS moderation(
+            SERVER_ID INTEGER,
+            NCAPS INTEGER,
+            NWARNS INTEGER,
+            ADMINCHANNEL INTEGER,
+            MAINCHANNEL INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS badwords(
+            SERVER_ID INTEGER,
+            VALUE INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS links(
+            SERVER_ID INTEGER,
+            VALUE INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS prefix(
+            SERVER_ID INTEGER,
+            VALUE TEXT(1)
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS joinmess(
+            SERVER_ID INTEGER,
+            LS TEXT(1000),
+            SERVER TEXT(1000)
+            )''')
+            
+            conn.execute('''CREATE TABLE IF NOT EXISTS create_selfroom(
+            SERVER_ID INTEGER,
+            CT INTEGER,
+            VOICE_CH INTEGER,
+            TEXT_CH INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS selfrooms(
+            SERVER_ID INTEGER,
+            VOICE_CH INTEGER,
+            OWNER INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS moderation_ignore_ch(
+            SERVER_ID INTEGER,
+            VALUE INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS moderation_ignore_role(
+            SERVER_ID INTEGER,
+            VALUE INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS rate_ignore_ch(
+            SERVER_ID INTEGER,
+            VALUE INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS rate_ignore_role(
+            SERVER_ID INTEGER,
+            VALUE INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS rate(
+            SERVER_ID INTEGER,
+            CARD TEXT(10),
+            TEXT_COLOR TEXT(7),
+            BAR_COLOR TEXT(7),
+            BLEND INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS firstrole(
+            SERVER_ID INTEGER,
+            VALUE INTEGER
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS users(
+            SERVER_ID INTEGER,
+            USER_ID INTEGER,
+            WARNS INTEGER,
+            CAPS INTEGER,
+            XP INTEGER,
+            TIME INTEGER
+            )''')
+            conn.commit()
             conn.close
-            guildsCount = len(self.bot.guilds)
-            x = 0.00
             for guild in self.bot.guilds:
-                print(f"datebase creating({x})...")
-                x += round(100/guildsCount, 2)
                 SQL_write(self.bot).newguildsql(guild)
-            print(f"datebase creating(100)")
 
-
+    def newguildsql(self, guild: discord.Guild):
+        conn = sqlite3.connect(f'{BD}WaveDateBase.db')
+        cur = conn.cursor()  
+        if not cur.execute(f"SELECT 1 FROM cheak WHERE SERVER_ID == {guild.id}").fetchall():
+            conn.execute('''INSERT INTO cheak (SERVER_ID, VALUE) VALUES (?, ?)''', (guild.id, False))
+            conn.execute('''INSERT INTO lang (SERVER_ID, VALUE) VALUES (?, ?)''', (guild.id, None))
+            conn.execute('''INSERT INTO prefix (SERVER_ID, VALUE) VALUES (?, ?)''', (guild.id, "~"))
+            conn.execute('''INSERT INTO rate (SERVER_ID, CARD, TEXT_COLOR, BAR_COLOR, BLEND) VALUES (?, ?, ?, ?, ?)''', (guild.id, "wave.png", "#d0ed2b", "#ec5252", 1))
+            conn.execute("INSERT INTO colors (SERVER_ID, COLOR, FUNCOLOR, INFOCOLOR, MODERATIONCOLOR, RATECOLOR, UTILITYCOLOR, ERCOLOR, ERFUNCOLOR, ERINFOCOLOR, ERMODERATIONCOLOR, ERRATECOLOR, ERUTILITYCOLOR) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", (guild.id, 0x0000FF, 0x0000FF, 0x0000FF, 0x0000FF, 0x0000FF, 0x0000FF, 0x8B0000, 0x8B0000, 0x8B0000, 0x8B0000, 0x8B0000, 0x8B0000))
+            conn.commit()
+            conn.close()
+            for member in guild.members:
+                SQL_write(self.bot).newmembersql(member)
+            
+                
     def newmembersql(self, member: discord.Member):
         conn = sqlite3.connect(f'{BD}WaveDateBase.db')
         cur = conn.cursor()
-        cur.execute(f"SELECT ID FROM server{member.guild.id} WHERE ID == {member.id}")
-        data = cur.fetchall()
-        if not(data):
-            useraset = tuple(str(member.id) if i == "id" else i for i in DEFUSERSQL.values())
-            conn.execute(f"INSERT INTO server{member.guild.id} ("+", ".join([i for i in DEFUSERSQL.keys()]) + ") VALUES ("+", ".join(["?" for i in DEFUSERSQL.keys()])+")", useraset)
-            conn.commit()
+        if not cur.execute(f"SELECT 1 FROM users WHERE USER_ID == {member.id}").fetchall():
+            conn.execute('''INSERT INTO users (SERVER_ID, USER_ID, WARNS, CAPS, XP, TIME) VALUES (?, ?, ?, ?, ?, ?)''', (member.guild.id, member.id, 0, 0, 0, 0))
+        conn.commit()
+        conn.close()

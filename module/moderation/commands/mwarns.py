@@ -12,6 +12,7 @@ class Mwarns_audit(commands.Cog):
         self.bot: WaveBot = bot
 
     async def audit1(self, message: discord.Message):
+        COLOR = self.bot.read_sql(db="servers", guild=message.guild.id, key="MODERATIONCOLOR")
         #====================================================================
         #audit
         #====================================================================
@@ -20,7 +21,7 @@ class Mwarns_audit(commands.Cog):
                 title=Lang(message).language['mwarns_audit1_title'],
                 description=f"*{Lang(message).language['mwarns_audit1_des_1']} {self.bot.db_get_user_warns(message.author) - 1} {Lang(message).language['mwarns_audit1_des_2']} {self.bot.db_get_nwarns(message)} {Lang(message).language['mwarns_audit1_des_3']}*",
                 timestamp=message.created_at,
-                color=self.bot.db_get_modercolor(message)
+                color=COLOR
             )
             emb.add_field(name=Lang(message).language['mwarns_audit1_field_1'], value=message.content, inline=False)
             emb.add_field(name=Lang(message).language['mwarns_audit1_field_2'], value=message.channel.mention, inline=True)
@@ -36,7 +37,7 @@ class Mwarns_audit(commands.Cog):
             title='Нарушение',
             description=f'Вам выдали предупреждение на сервере {message.guild.name}\nСообщение с нарушением: {message.content}',
             timestamp=message.created_at,
-            color=self.bot.db_get_modercolor(message)
+            color=COLOR
         )
         emb.add_field(name='Канал', value=message.channel.mention, inline=True)
         emb.add_field(name='Тип нарушения:', value=f'Ругательства/ссылки', inline=True)
@@ -59,38 +60,46 @@ class NewMwarns(commands.Cog):
         self.bot: WaveBot = bot
 
 
-    def first(self, message: discord.Message, badlist):
-        """
-
-        badlist = [BADWORDS, maybe LINKS]
-        """
+    async def cheack_mess(self, message: discord.Message):
+        badlist = self.bot.read_sql(db="servers", guild=message.guild.id, key="BADWORDS, LINKS")
         for i in badlist:
-            warn = self.bot.read_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS")
-            messagelist = list(str(message.content.lower()).split(" "))
-            if "**" in i:
-                leni = len(i)
-                if "**" == i[:-(leni-2)] and "**" == i[leni-2] and i in message.content.lower():
-                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
-                    return warn+1
-                if "**" == i[:-(leni-2)] and True in [i[2:] == ii[len(ii)-leni:] in ii for ii in messagelist]:
-                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
-                    return warn+1
-                if "**" == i[leni-2] and True in [i[2:] == ii[:-(len(ii)-leni)] in ii for ii in messagelist]:
-                    self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
-                    return warn+1
-                
-            if " " in message.content.lower() and not("**" in i):
-                for ii in messagelist:
-                    if i == ii:
+            modroles = self.bot.read_sql(db="servers", guild=message.guild.id, key="MODROLES")
+            if modroles != {}:
+                Modroot = modroles[[str(i.id) for i in message.author.roles if str(i.id) in modroles][0]]['Warns']['Warn'] == "True" or message.author.guild_permissions.administrator
+            else:
+                Modroot = message.author.guild_permissions.administrator
+
+
+            if str(message.content) == f'~set add_badword {i}' and Modroot:
+                await message.delete()
+
+            else:
+                warn = self.bot.read_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS")
+                messagelist = list(str(message.content.lower()).split(" "))
+                if "**" in i:
+                    leni = len(i)
+                    if "**" == i[:-(leni-2)] and "**" == i[leni-2] and i in message.content.lower():
                         self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
                         return warn+1
-                if "*" in i:
-                    if "*" == i[0] and True in [i[1:] == ii[1:] for ii in messagelist]:
+                    if "**" == i[:-(leni-2)] and True in [i[2:] == ii[len(ii)-leni:] in ii for ii in messagelist]:
                         self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
                         return warn+1
-                    if "*" == i[-1] and True in [i[:-1] == ii[:-1] for ii in messagelist]:
+                    if "**" == i[leni-2] and True in [i[2:] == ii[:-(len(ii)-leni)] in ii for ii in messagelist]:
                         self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
                         return warn+1
+                    
+                elif " " in message.content.lower():
+                    for ii in messagelist:
+                        if i == ii:
+                            self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
+                            return warn+1
+                    if "*" in i:
+                        if "*" == i[0] and True in [i[1:] == ii[1:] for ii in messagelist]:
+                            self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
+                            return warn+1
+                        if "*" == i[-1] and True in [i[:-1] == ii[:-1] for ii in messagelist]:
+                            self.bot.write_sql(db=f"server{message.guild.id}", guild=message.author.id, key="WARNS", value=warn+1)
+                            return warn+1
         return 0
 
 
@@ -99,45 +108,32 @@ class NewMwarns(commands.Cog):
 class Mwarns(commands.Cog):
     def __init__(self, bot: WaveBot):
         self.bot: WaveBot = bot
-
+    
     async def listener_on_message_mwarns(self, message: discord.Message):
         try:
             if message.guild:
-                with open(f'{BD}users.json', 'r') as file:
-                    data = json.load(file)
-                WARN = []
-                WARN.extend(self.bot.db_get_badwords(message))
-                WARN.extend(self.bot.db_get_links(message))
-                if self.bot.db_get_modroles(message) != {}:
-                    Modroot = self.bot.db_get_modroles(message)[[str(i.id) for i in message.author.roles if str(i.id) in self.bot.db_get_modroles(message)][0]]['Warns']['Warn'] == "True" or message.author.guild_permissions.administrator
+                userWarn = NewMwarns(self.bot).cheack_mess(message)
+                if userWarn:
+                    pass
                 else:
-                    Modroot = message.author.guild_permissions.administrator
-                for i in WARN:
-                    #badwords + links==============================================================
-                    if i in message.content.lower():
-                        if str(message.content) == f'~set add_badword {i}' and Modroot:
-                            await message.delete()
-                        else:
-                            data[str(message.guild.id)]["USERS"][str(message.author.id)]["WARNS"] +=1
+                    #====================================================================
+                    #ban
+                    #====================================================================
+                    if userWarn >= self.bot.read_sql(db="servers", guild=message.guild.id, key="NWARNS"):
+                        ReasoN = 'Вы привысили допустимое количество нарушений'
+                        emb = discord.Embed(
+                        title=f'Вас забанили на сервере {message.guild.name}',
+                        description=f'{ReasoN}',
+                        timestamp=message.created_at,
+                        color=self.bot.read_sql(db="servers", guild=message.guild.id, key="MODERATIONCOLOR")
+                        )
+                        await message.author.send(embed=emb)
+                        await message.author.ban(reason=ReasoN)
+                    #========================================================================================
 
-                            #====================================================================
-                            #ban
-                            #====================================================================
-                            if data[str(message.guild.id)]['USERS'][str(message.author.id)]['WARNS'] >= self.bot.db_get_nwarns(message):
-                                ReasoN = 'Вы привысили допустимое количество нарушений'
-                                emb = discord.Embed(
-                                title=f'Вас забанили на сервере {message.guild.name}',
-                                description=f'{ReasoN}',
-                                timestamp=message.created_at,
-                                color=self.bot.db_get_modercolor(message)
-                                )
-                                await message.author.send(embed=emb)
-                                await message.author.ban(reason=ReasoN)
-                            #========================================================================================
-
-                            #message_delete=======
-                            await message.delete()
-                            #=====================
+                    #message_delete=======
+                    await message.delete()
+                    #=====================
 
 
 

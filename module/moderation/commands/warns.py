@@ -20,13 +20,14 @@ class Warns(commands.Cog):
         await Audit.audit(self, ctx, member, reason, text=Lang(ctx).language['warns_command_ban_text'])
 
     async def command_warn(self, ctx: commands.Context, member: discord.Member, num: int):
+        #Warn
         warns = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="WARNS")
-        print(warns)
         self.bot.write_sql(db=f"server{ctx.guild.id}", guild=str(ctx.author.id), key="WARNS", value= warns + num)
-        print(warns)
-
-        if warns+num >= self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="NWARNS"):
-            await self.command_ban(ctx, member, reason=Lang(ctx).language['warns_command_warn_reason'])
+        #Ban
+        nwarns = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="NWARNS")
+        if nwarns:
+            if warns+num >= nwarns:
+                await self.command_ban(ctx, member, reason=Lang(ctx).language['warns_command_warn_reason'])
         
         # Audit(self.bot).warn_audit(ctx, )
 

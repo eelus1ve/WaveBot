@@ -5,7 +5,7 @@ import json
 
 class SQLeditor():
 
-    def read_sql(self, db: str, guild: Union[str, int], key: str) -> any:
+    def read_sql(self, table: str, guild: Union[str, int], key: str) -> Union[str, int]:
         """
         Method parameters
         -----------------------------------------------
@@ -17,17 +17,9 @@ class SQLeditor():
         """
         sqlite_connection = sqlite3.connect(f'{BD}WaveDateBase.db')
         cursor = sqlite_connection.cursor()
-        cursor.execute(f"""SELECT {key} from {db} WHERE ID == {guild}""")
+        cursor.execute(f"""SELECT {key} from {table} WHERE SERVER_ID == {guild}""")
         records: Union[str, int] = cursor.fetchone()[0]
         cursor.close()
-        if records == None:
-            return records
-        if "COLOR" in key and key != "TEXTCOLOR" and key != "BARCOLOR":
-            return int(records, 16)
-        if key in "JOINROLE, BADWORDS, LINKS, IGNORECHANNELS, IGNOREROLES, SRINFROOMS":
-            return records.split(", ")
-        if key in "AUDIT, MODROLES, ROLES, SELFROOM, SELFROOMS, MAFROOMS":
-            return json.loads(records)
         return records
 
 
