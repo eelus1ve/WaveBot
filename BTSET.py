@@ -289,12 +289,14 @@ async def embpy(ctx: commands.Context, comp: str, des, time: Optional[float] = N
         else:
             await ctx.send(embed=emb)
 
+
 class Lang():
     def __init__(self, ctx: Union[commands.Context, discord.Interaction]):
         self.language = self.lang(ctx)
 
-    def lang(self, ctx: commands.Context):
-        sql = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT VALUE from lang WHERE ID == {ctx.guild.id}""").fetchone()[0]
+    @staticmethod
+    def lang(ctx: commands.Context):
+        sql = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT VALUE from lang WHERE SERVER_ID == {ctx.guild.id}""").fetchone()[0]
         lang_dict = {}
         part = 'system\\Languages\\ru.wave'     #потом заменить на en-US
         if os.path.exists('system\\Languages\\{}.wave'.format(str(ctx.guild.preferred_locale) if not sql else sql)):

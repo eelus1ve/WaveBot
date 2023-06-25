@@ -17,15 +17,15 @@ intents = discord.Intents.all()
 
 def get_prefix(bot: WaveBot, message: discord.Message):
     try:
-        prefix = bot.read_sql("servers", guild=str(message.guild.id), key="PREFIX")
+        prefix = bot.read_sql(table="prefix", guild_id=message.guild.id, key="VALUE")
     except AttributeError:
         bot.write_sql(db=f"server{message.guild.id}", guild=str(message.author.id), key="PREFIX", value="~")
-        prefix = bot.read_sql("servers", guild=str(message.guild.id), key="PREFIX")
+        prefix = bot.read_sql(table="prefix", guild=str(message.guild.id), key="PREFIX")
         raise commands.BadArgument(Lang(message).language['get_prefix_error'])
     return commands.when_mentioned(bot, message) + list(prefix)
 
 
-bot = WaveBot(command_prefix=get_prefix, intents=intents)
+bot: WaveBot = WaveBot(command_prefix=get_prefix, intents=intents)
 bot.remove_command('help')
 
 
@@ -43,6 +43,8 @@ async def on_ready():
 @bot.command()
 async def a(ctx: commands.Context):
     await embpy(ctx, comp='s', des=f'Степа все плохо')
+
+    print(bot.read_sql(table='colors', key='COLOR'))
 
 
 def main():

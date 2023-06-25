@@ -4,6 +4,8 @@ import os
 from BTSET import BD, DEFGUILD, DEFGUILDSQL, DEFUSERSQL
 import sqlite3
 import discord
+
+
 class Json_write(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
