@@ -4,6 +4,7 @@ from discord.ext import commands
 from BTSET import Lang
 from system.Bot import WaveBot
 
+
 class Coin(commands.Cog):
     def __init__(self, bot: WaveBot):
         self.bot = bot
@@ -13,5 +14,5 @@ class Coin(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title=Lang(ctx).language[f'coin_title_{result}'],
             description=Lang(ctx).language[f'coin_result_{result}'],
-            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="FUNCOLOR")
+            color=self.bot.read_sql(table="colors", key="FUNCOLOR")
         ))

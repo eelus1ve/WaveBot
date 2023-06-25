@@ -40,7 +40,7 @@ class Game2048Support:
         if Game2048Support(self.bot).game_over(body) == 2:
             emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title_win'],
                                 description=Lang(ctx=interaction).language['p2048_des_win'],
-                                color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="FUNCOLOR"))
+                                color=self.bot.read_sql(table="colors", key="FUNCOLOR"))
             await interaction.message.edit(embed=emb)
 
         elif Game2048Support(self.bot).game_over(body):
@@ -50,7 +50,7 @@ class Game2048Support:
                                     Lang(ctx=interaction).language['p2048_des_loose_sum_1'], sum(asd),
                                     Lang(ctx=interaction).language['p2048_des_loose_sum_2'],
                                     Lang(ctx=interaction).language['p2048_des_loose_max'], max(asd)),
-                                color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="FUNCOLOR"))
+                                color=self.bot.read_sql(table="colors", key="FUNCOLOR"))
             await interaction.message.edit(embed=emb)
 
     def get_body(self, interaction: discord.Interaction) -> list:
@@ -124,7 +124,7 @@ class Game2048Support:
             des.append(str(''.join(map(str, i)) + str('\n')))
         emb = discord.Embed(title=Lang(ctx=interaction).language['p2048_title'],
                             description=''.join(des),
-                            color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="FUNCOLOR"))
+                            color=self.bot.read_sql(table="servers", key="FUNCOLOR"))
         emb.set_footer(text=f'{interaction.user.name}#{interaction.user.discriminator}', icon_url=interaction.user.display_icon)
         await interaction.message.edit(embed=emb)
         await Game2048Support(self.bot).check_1(body, interaction, bot)
@@ -215,7 +215,7 @@ class Game2048(commands.Cog):
             des.append(str(''.join(map(str, i)) + str('\n')))
         emb = discord.Embed(title=Lang(ctx).language['p2048_title'],
                             description=''.join(des),
-                            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="FUNCOLOR"))
+                            color=self.bot.read_sql(table="colors", key="FUNCOLOR"))
         emb.set_footer(text=f'{ctx.author.name}#{ctx.author.discriminator}', icon_url=ctx.author.display_icon)
 
         vw = discord.ui.View(timeout=None)

@@ -4,7 +4,7 @@ from module.fun.commands.dice import Dice
 from module.fun.commands.MagicBall import MagicBall
 from module.fun.commands.coin import Coin
 from module.fun.commands.QRcode import CreateQR
-from module.fun.commands.anMessage import Get_message
+from module.fun.commands.anMessage import GetMessage
 from module.fun.commands.p2048 import Game2048
 # from module.fun.mafia import
 # from module.fun.xo import
@@ -25,7 +25,7 @@ class FunSetup(commands.Cog):
 
     @commands.command(aliases=['Волшебный_шар', '8ball', 'MagicBall', '8Ball'])
     async def Magicball(self, ctx: commands.Context):
-        await MagicBall(self.bot).command_Magicball(ctx)
+        await MagicBall(self.bot).command_magicball(ctx)
 
     @commands.command()
     async def p2048(self, ctx: commands.Context):
@@ -37,7 +37,7 @@ class FunSetup(commands.Cog):
 
     @commands.command()
     async def send_an_message(self, ctx: commands.Context):
-        await Get_message(self.bot).command_send_an_message(ctx)
+        await GetMessage(self.bot).command_send_an_message(ctx)
 
     @commands.Cog.listener('on_interaction')
     async def on_button_click_2048(self, interaction: discord.Interaction):
@@ -45,4 +45,4 @@ class FunSetup(commands.Cog):
 
     @commands.Cog.listener('on_button_click')
     async def on_button_click_anMessage(self, interaction: discord.Interaction):
-        await Get_message(self.bot).listener_on_button_click_anMessage(interaction)
+        await GetMessage(self.bot).listener_on_button_click_anMessage(interaction)

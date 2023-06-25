@@ -13,7 +13,7 @@ class Dice(commands.Cog):
         msg = await ctx.send(embed=discord.Embed(
                 title=Lang(ctx).language['dice_title'],
                 description='{} {} {}'.format(random.randint(1, 6), Lang(ctx).language['dice_des'], random.randint(1, 6)),
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="FUNCOLOR")
+                color=self.bot.read_sql(table="colors", key="FUNCOLOR")
             )
         )
         for _ in range(5):
@@ -21,6 +21,6 @@ class Dice(commands.Cog):
                 embed=discord.Embed(
                     title=Lang(ctx).language['dice_title'],
                     description='{} {} {}'.format(random.randint(1, 6), Lang(ctx).language['dice_des'], random.randint(1, 6)),
-                    color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="FUNCOLOR")
+                    color=self.bot.read_sql(table="colors", key="FUNCOLOR")
                 )
             )

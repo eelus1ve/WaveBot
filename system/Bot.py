@@ -3,12 +3,12 @@ from discord.ext import commands
 from typing import *
 from discord import app_commands
 from discord.ext.commands.help import HelpCommand
-from .db_.db_read import DataBaseRead
-from .db_.db_write import DataBaseWrite
-from .db_.sqledit import SQLeditor
+from system.db_.db_read import DataBaseRead
+from system.db_.db_write import DataBaseWrite
+from system.db_.sqledit import SQLEditor
 
 
-class WaveBot(commands.Bot, DataBaseWrite, DataBaseRead, SQLeditor):
+class WaveBot(commands.Bot, DataBaseWrite, DataBaseRead, SQLEditor):
     def __init__(
             self,
             command_prefix,
