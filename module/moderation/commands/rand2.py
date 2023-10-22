@@ -7,8 +7,9 @@ from system.Bot import WaveBot
 
 
 class SelectRole(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_select(self, ctx: commands.Context, arg=None):
         roles = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="ROLES")
@@ -28,7 +29,7 @@ class SelectRole(commands.Cog):
             vw.add_item(sel)
             await ctx.send(embed=discord.Embed(
                 title=selftitle,
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONCOLOR")
+                color=self.color
             ),
                 view=vw
             )
@@ -42,14 +43,14 @@ class SelectRole(commands.Cog):
                     await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description=f"Роли выбраны!",
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                        color=self.color
                     ), ephemeral=True)
                     
                 except IndexError:
                     await interaction.response.send_message(embed=discord.Embed(
                         title="Успешно",
                         description="*Роли успешно сняты!*",
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                        color=self.color
                     ), ephemeral=True)
 
                 try:

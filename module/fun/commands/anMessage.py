@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 
-
-class GetMessage(commands.Cog):
+class Get_message(commands.Cog):
     def __init__(self, bot):
         self.bot: commands.Bot = bot
 
@@ -34,7 +33,7 @@ class GetMessage(commands.Cog):
 
         adm_chlen = await self.bot.fetch_channel(1023514594414690324)
         await adm_chlen.send(f'{ms1.author.name}#{ms1.author.discriminator} отправил сообщение для {ms1.content} с содержанием: \n\n{ms2.content}')
-        # components=[Button(label='одобрить'), Button(label='послать')])
+        #components=[Button(label='одобрить'), Button(label='послать')])
 
     @commands.Cog.listener('on_button_click')
     async def listener_on_button_click_anMessage(self, interaction: discord.Interaction):

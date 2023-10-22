@@ -5,8 +5,9 @@ from system.Bot import WaveBot
 
 #все работает но в место даты надо подставить функцию из db_write
 class NewStngs(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     command_name = "settings"
 
@@ -174,23 +175,24 @@ class NewStngs(commands.Cog):
 #тут дописать emb-ы
 
 class NewStngsviewer(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
     
     def view_join_roles(self, ctx: commands.Context):
-        emb = discord.Embed(title="", description="Роли:", color="")
+        emb = discord.Embed(title="", description="Роли:", color=self.color)
         for i in self.bot.db_get_joinroles(ctx):
             emb.add_field(name = f'{ctx.guild.get_role(int(i))}', value =f'{i}', inline=True)
         return emb
     
     def view_ignorechannels(self, ctx: commands.Context, functionName: str):
-        emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_ignorechannel_{functionName}'], color="")
+        emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_ignorechannel_{functionName}'], color=self.color)
         for i in self.bot.db_get_ignorechannels:
             emb.add_field(name=ctx.guild.get_channel(i), value=''.join(i), inline=True)
         return emb
     
     def view_ignoreroles(self, ctx: commands.Context, functionName: str):
-        emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_ignoreRole_{functionName}'], color="")
+        emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_ignoreRole_{functionName}'], color=self.color)
         for i in self.bot.db_get_ignoreroles:
             emb.add_field(name=ctx.guild.get_channel(i), value=''.join(i), inline=True)
         return emb
@@ -201,13 +203,13 @@ class NewStngsviewer(commands.Cog):
             raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_class_{functionName}_error_1']} {self.bot.read_sql(db='servers', guild=ctx.guild.id, key='PREFIX')}{NewStngs.command_name} {functionName} {Lang(ctx).language[f'settings_command_set_class_{functionName}_error_2']}")
         if not(className in self.bot.read_sql(db="servers", guild=ctx.guild.id, key='ROLES')):
             raise commands.BadArgument(f"{Lang(ctx).language[f'settings_command_set_class_{functionName}_not_ex_1']} {className} {Lang(ctx).language[f'settings_command_set_class_{functionName}_not_ex_2']}")
-        emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_class_{functionName}'], color="")
+        emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_class_{functionName}'], color=self.color)
         for i in self.bot.db_get_roles(ctx)[className]:
             emb.add_field(name = f'{ctx.guild.get_role(int(i))}', value =f'{i}', inline=True)
         return emb
     
     def view_classes(self, ctx: commands.Context, functionName: str):
-        emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_class_{functionName}'], color="")
+        emb = discord.Embed(title="", description=Lang(ctx).language[f'settings_command_set_class_{functionName}'], color=self.color)
         for i in self.bot.db_get_roles(ctx):
             emb.add_field(name = f'{str(i)}', value =''.join(self.bot.db_get_roles(ctx)[str(i)][0]), inline=True)
         return emb

@@ -5,30 +5,35 @@ from module.rate.commands.score import *
 from module.rate.commands.leaders import Leaders
 from module.rate.commands.rank import Rank
 from module.rate.commands.mrate import Mrate
+from system.db_.sqledit import SQLEditor
 
 
 class RateSetup(commands.Cog):
     def __init__(self, bot: commands.Bot):
-        self.bot = bot
+        self.bot: commands.Bot = bot
+
+    @staticmethod
+    def __ctx_to_color(ctx):
+        return SQLEditor.get_color(ctx)(name="RATE")
 
     @commands.command()
     async def score(self, ctx: commands.Context, memberr: Optional[discord.Member], arg: Optional[str]):
         member: discord.Member = memberr or ctx.author
-        await Score_commands(self.bot).command_score(ctx, member, arg)
+        await Score_commands(self.bot, self.__ctx_to_color(ctx)).command_score(ctx, member, arg)
     
     @commands.command()
     async def set_lvl(self, ctx: commands.Context, memberr: Optional[discord.Member], arg = None):
         member: discord.Member = memberr or ctx.author
-        await Score_commands(self.bot).command_set_lvl(ctx, member, arg)
+        await Score_commands(self.bot, self.__ctx_to_color(ctx)).command_set_lvl(ctx, member, arg)
 
     @commands.command()
     async def voice_time(self, ctx: commands.Context, memberr: Optional[discord.Member]):
         member: discord.Member = memberr or ctx.author
-        await Score_commands(self.bot).command_voice_time(ctx, member)
+        await Score_commands(self.bot, self.__ctx_to_color(ctx)).command_voice_time(ctx, member)
 
     @commands.command()
     async def leaders(self, ctx: commands.Context, range_num: int = 10):
-        await Leaders(self.bot).command_leaders(ctx, range_num)
+        await Leaders(self.bot, self.__ctx_to_color(ctx)).command_leaders(ctx, range_num)
 
     @commands.command()
     async def rank(self, ctx: commands.Context, memberr: Optional[discord.Member]):

@@ -5,8 +5,9 @@ from system.Bot import WaveBot
 
 
 class Clean(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_clear(self, ctx: commands.Context, amount: int):
         max_amount = 1000
@@ -16,5 +17,5 @@ class Clean(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title=Lang(ctx).language['clear_title'],
             description="{} {} {}".format(Lang(ctx).language['clear_des_1'], amount, Lang(ctx).language['clear_des_2']),
-            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONCOLOR")
+            color=self.color
         ))

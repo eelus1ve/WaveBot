@@ -51,11 +51,12 @@ class Help(commands.Cog):
         },
     }
 
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_help(self, ctx: commands.Context, arg=None):
-        COLOR = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
+        COLOR = self.color
         pref = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="PREFIX")
         if arg:
             await ctx.author.send(embed=discord.Embed(

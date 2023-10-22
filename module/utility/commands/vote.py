@@ -4,8 +4,9 @@ from system.Bot import WaveBot
 
 
 class Vote(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_vote(self, ctx: commands.Context, arg):
         em = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣⃣', '7️⃣', '8️⃣', '9️⃣', '0️⃣']
@@ -17,7 +18,7 @@ class Vote(commands.Cog):
         for i in arg:
             title.append('\n' + str(em[e]) + ' ' + str(i))
             e += 1
-        ms = await ctx.send(embed=discord.Embed(title=title.pop(0), description=''.join(title), color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="UTILITYCOLOR")))
+        ms = await ctx.send(embed=discord.Embed(title=title.pop(0), description=''.join(title), color=self.color))
         
         for i in range(len(title)):
             await ms.add_reaction(em[i])

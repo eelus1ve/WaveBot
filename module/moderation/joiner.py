@@ -9,6 +9,7 @@ class Joiner(commands.Cog):
 
     @commands.Cog.listener('on_member_join')
     async def n_mr_join(self, member: discord.Member):
+        SQL_write(self.bot).memberjoinsql(member)
         SQL_write(self.bot).newmembersql(member)
         Json_write(self.bot).jsonwrite()
 

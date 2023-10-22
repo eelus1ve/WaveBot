@@ -7,8 +7,9 @@ lst1 = [' ', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', '
 
 
 class Translits(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_tr(self, ctx: commands.Context, arg):
         if arg:
@@ -19,5 +20,5 @@ class Translits(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="Перевод: ",
                 description=''.join([lst1[lst.index(i)] for i in bf]),
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="UTILITYCOLOR")
+                color=self.color
             ))

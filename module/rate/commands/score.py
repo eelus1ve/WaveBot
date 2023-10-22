@@ -20,8 +20,9 @@ beforeTime = {}
 #         ))
 
 class Score_audit(commands.Cog):
-    def __init__(self, bot: WaveBot):
+    def __init__(self, bot: WaveBot, color):
         self.bot = bot
+        self.color = color
 
     async def audit1(self, ctx: commands.Context, arg, mr):
         #====================================================================
@@ -43,12 +44,13 @@ class Score_audit(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title=Lang(ctx).language[f'score_rep_{arg[0]}_title'],
             description=f"{Lang(ctx).language[f'score_rep_{arg[0]}_des_1']} {mr.name} {Lang(ctx).language[f'score_rep_{arg[0]}_des_2']} {arg} {Lang(ctx).language[f'score_mes_reason_{arg[-1]}']}!",
-            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
+            color=self.color
         ))
 
 class Score_commands(commands.Cog):
-    def __init__(self, bot: WaveBot):
+    def __init__(self, bot: WaveBot, color):
         self.bot = bot
+        self.color = color
 
     @Rool.role(quest='score')
     def edit_xp(self, ctx: commands.Context, arg: str, member: discord.Member):
@@ -74,7 +76,7 @@ class Score_commands(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title=f"{Lang(ctx).language[f'score_info']} {mr.name}",
                 description=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="XP"),
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
+                color=self.color
             ))
 
     async def command_set_lvl(self, ctx: commands.Context, member: discord.Member, arg = None):
@@ -83,7 +85,7 @@ class Score_commands(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title=Lang(ctx).language[f'command_set_lvl_title'],
                 description=f"{Lang(ctx).language[f'command_set_lvl_des_1']} {member.name} {Lang(ctx).language[f'command_set_lvl_des_2']} {arg} {Lang(ctx).language[f'command_set_lvl_des_3']}",
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
+                color=self.color
             ))
         else:
             raise commands.BadArgument(Lang(ctx).language[f'command_set_lvl_er'])
@@ -121,7 +123,7 @@ class Score_commands(commands.Cog):
         emb = discord.Embed(
             title=f'Voice {member.name}',
             description=f'{int(hours)}:{int(mins)}:{sec}',
-            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
+            color=self.color
         )
         await ctx.send(embed=emb)
 

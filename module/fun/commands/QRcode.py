@@ -6,11 +6,10 @@ from system.Bot import WaveBot
 
 
 class CreateQR(commands.Cog):
-    def __init__(self, bot): 
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot):
+        self.bot = bot
     
-    @staticmethod
-    async def command_get_qr(ctx: commands.Context):
+    async def command_get_qr(self, ctx: commands.Context): 
         im = qrcode.make(ctx.message.content[8:]).get_image()
         bt = io.BytesIO() 
         im.save(bt, format="PNG")

@@ -7,14 +7,15 @@ import asyncio
 from system.Bot import WaveBot
 from module.moderation.commands.newstngs import NewStngs, NewStngsviewer
 class Stngs(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_server_set(self, ctx: commands.Context):
         emb = discord.Embed(
             title='',
             description='',
-            color=self.bot.db_get_modercolor(ctx)
+            color=self.color
         )
 
     async def command_set(self, ctx: commands.Context, arg: str=None, clArg: str=None, roleClass: str=None, emo=None):
@@ -22,7 +23,7 @@ class Stngs(commands.Cog):
         #сюда if
         
         # roles = self.bot.db_get_joinroles(ctx)
-        COLOR = self.bot.db_get_modercolor(ctx)
+        COLOR = self.color
         description1 = 0
         description2 = 0
         title = 0
@@ -52,7 +53,7 @@ class Stngs(commands.Cog):
         if arg==None:
             await ctx.send(embb = discord.Embed(title=f'Настройка сервера ***{str(ctx.message.guild)}***',      #ПЕРЕДЕЛАТЬ
                 description=some_des,
-                color=COLOR))
+                color=self.color))
         arg = arg.lower()
         if arg == 'add_role' or arg == 'remove_role':
             description1 = NewStngs(self.bot).add_rem_role(ctx, arg, clArg, roleClass, emo)

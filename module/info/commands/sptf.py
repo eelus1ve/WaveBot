@@ -10,8 +10,9 @@ from system.Bot import WaveBot
 
 
 class SpotifyInfo(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_spotify_info(self, ctx: commands.Context, member: discord.Member):
         spotifyActivity = next((activity for activity in member.activities if isinstance(activity, discord.Spotify)), None)
@@ -23,7 +24,7 @@ class SpotifyInfo(commands.Cog):
             embed = discord.Embed(
                 title=f"{member.name}'s Spotify",
                 description="{} [{}](https://open.spotify.com/track/{})".format(Lang(ctx).language['spotify_listen'], spotifyActivity.title, spotifyActivity.track_id),
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
+                color=self.color
             )
             embed.set_thumbnail(url=spotifyActivity.album_cover_url)
             embed.add_field(name=Lang(ctx).language['spotify_musician'], value=spotifyActivity.artist)

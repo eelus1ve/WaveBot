@@ -8,11 +8,11 @@ from BTSET import Lang
 
 
 class Mwarns_audit(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def audit1(self, message: discord.Message):
-        COLOR = self.bot.read_sql(db="servers", guild=message.guild.id, key="MODERATIONCOLOR")
         #====================================================================
         #audit
         #====================================================================
@@ -21,7 +21,7 @@ class Mwarns_audit(commands.Cog):
                 title=Lang(message).language['mwarns_audit1_title'],
                 description=f"*{Lang(message).language['mwarns_audit1_des_1']} {self.bot.db_get_user_warns(message.author) - 1} {Lang(message).language['mwarns_audit1_des_2']} {self.bot.db_get_nwarns(message)} {Lang(message).language['mwarns_audit1_des_3']}*",
                 timestamp=message.created_at,
-                color=COLOR
+                color=self.color
             )
             emb.add_field(name=Lang(message).language['mwarns_audit1_field_1'], value=message.content, inline=False)
             emb.add_field(name=Lang(message).language['mwarns_audit1_field_2'], value=message.channel.mention, inline=True)
@@ -37,7 +37,7 @@ class Mwarns_audit(commands.Cog):
             title='Нарушение',
             description=f'Вам выдали предупреждение на сервере {message.guild.name}\nСообщение с нарушением: {message.content}',
             timestamp=message.created_at,
-            color=COLOR
+            color=self.color
         )
         emb.add_field(name='Канал', value=message.channel.mention, inline=True)
         emb.add_field(name='Тип нарушения:', value=f'Ругательства/ссылки', inline=True)

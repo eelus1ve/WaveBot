@@ -10,10 +10,15 @@ from module.utility.utility import UtilitySetup
 from module.self.commands.support import SupportAnswer
 from module.self.commands.support import Suppot
 from system.Bot import WaveBot
+from system.db_.sqledit import SQLEditor
 
 class BotError(commands.Cog):
     def __init__(self, bot: WaveBot):
         self.bot = bot
+
+    @staticmethod
+    def __ctx_to_color(ctx):
+        return SQLEditor.get_color(ctx)(name="MODERATION", er="ER")
 
     @commands.Cog.listener('on_command_error')
     async def error(self, ctx, error):
@@ -36,7 +41,7 @@ class BotError(commands.Cog):
         await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description=des,
-                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color = self.__ctx_to_color(ctx)
             ))
 
     
@@ -46,7 +51,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*clear (количество до 1000 за 1 раз)*",
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color=self.__ctx_to_color(ctx)
             ))
 
     @ModerationSetup.ban.error
@@ -55,7 +60,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="Ошибка",
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*ban (@Участник)*",
-                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color = self.__ctx_to_color(ctx)
             ))
     @ModerationSetup.kick.error
     async def error(self, ctx, error):
@@ -63,7 +68,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование:* {Moderation(ctx.author).prefix}*kick (@Участник)*",
-                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color = self.__ctx_to_color(ctx)
             ))
     @ModerationSetup.warn.error
     async def error(self, ctx: commands.Context, error):
@@ -72,7 +77,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование: {pref}warn (@Участник) (Причина)",
-                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color = self.__ctx_to_color(ctx)
             ))
     @ModerationSetup.unwarn.error
     async def error(self, ctx: commands.Context, error):
@@ -81,7 +86,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"*Использование: {pref}unwarn (@Участник)",
-                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color = self.__ctx_to_color(ctx)
             ))
     @ModerationSetup.clear_warns.error
     async def error(self, ctx: commands.Context, error):
@@ -90,7 +95,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"Использование: {pref}clear_warns (@Участник)",
-                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color = self.__ctx_to_color(ctx)
             ))
 
     @ModerationSetup.set.error
@@ -99,14 +104,14 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=error,
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color=self.__ctx_to_color(ctx)
             ))
         elif isinstance(error, commands.MissingRequiredArgument):
             print(3)
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=error,
-                color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color=self.__ctx_to_color(ctx)
             ))
 
     @InfoSetup.spotify_info.error
@@ -116,7 +121,7 @@ class BotError(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title='Ошибка',
                 description=f"Пользователь не слушает spotify",
-                color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONERCOLOR")
+                color = self.__ctx_to_color(ctx)
             ))
     
     # @Score_commands.clear_rank.error
@@ -140,5 +145,5 @@ class BotError(commands.Cog):
     #             await ctx.send(embed=discord.Embed(
     #                 title="Ошибка",
     #                 description=f"*Участник `{''.join(found)}` не найден*",
-    #                 color = self.ercolor
+    #                 color = self.__ctx_to_color(ctx)
     #             ))

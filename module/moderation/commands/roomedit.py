@@ -13,14 +13,15 @@ rtask = None
 
 
 class Roomedit(commands.Cog):
-    def __init__(self, bot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_room(self, ctx: commands.Context):
         stb_gld: discord.Guild = self.bot.get_guild(981511419042361344)
         emb = discord.Embed(title='***⚙️ {}***'.format(Lang(ctx).language['roomedit_craate_title']),
                             description='👑 - {} \n🗒 - {} \n👥 - {} \n🔒 - {} \n✏️ - {} \n👁‍🗨 - {} \n🚪 - {} \n🎙 - {}'.format(Lang(ctx).language['roomedit_craate_des_1'], Lang(ctx).language['roomedit_craate_des_2'], Lang(ctx).language['roomedit_craate_des_3'], Lang(ctx).language['roomedit_craate_des_4'], Lang(ctx).language['roomedit_craate_des_5'], Lang(ctx).language['roomedit_craate_des_6'], Lang(ctx).language['roomedit_craate_des_7'], Lang(ctx).language['roomedit_craate_des_8']),
-                            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="MODERATIONCOLOR"))
+                            color=self.color)
         await ctx.send(embed=emb)
     #     components = [
     #         [
@@ -115,7 +116,7 @@ class Roomedit(commands.Cog):
                 await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                     title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                     description=Lang(ctx=interaction).language['roomedit_edit_new_own'],
-                    color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                    color=self.color
                 ))
                 ms: discord.Message = await get_mes()
                 data[str(interaction.guild.id)]['Selfrooms'][str(interaction.user.voice.channel.id)] = [str(i.id) for i in ms.author.voice.channel.members if ms.content == i.mention][0]
@@ -126,7 +127,7 @@ class Roomedit(commands.Cog):
             elif str(inter.emoji) == str(await stb_gld.fetch_emoji(1020971040416993280)):       #ignore member
                 await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                     title=Lang(ctx=interaction).language['roomedit_edit_ignore_member_1'],
-                    color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                    color=self.color
                 ))
                 ms: discord.Message = await get_mes()
                 pr = discord.PermissionOverwrite()
@@ -137,7 +138,7 @@ class Roomedit(commands.Cog):
                             await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                                 title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                                 description='{} {} {}'.format(Lang(ctx=interaction).language['roomedit_edit_ignore_member_2'], ms.content, Lang(ctx=interaction).language['roomedit_edit_ignore_member_3']),
-                                color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                                color=self.color
                             ))
                             [await i.move_to(None) for i in ms.author.voice.channel.members if ms.content == i.mention]
                         else:
@@ -145,7 +146,7 @@ class Roomedit(commands.Cog):
                             await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                                 title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                                 description='{} {} {}'.format(Lang(ctx=interaction).language['roomedit_edit_ignore_member_2'], ms.content, Lang(ctx=interaction).language['roomedit_edit_ignore_member_4']),
-                                color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                                color=self.color
                             ))
                         await interaction.user.voice.channel.set_permissions(target=[i for i in ms.guild.members if ms.content == i.mention][0], overwrite=pr)
                         await ms.delete()
@@ -155,14 +156,14 @@ class Roomedit(commands.Cog):
                             await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                                 title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                                 description='{} {} {}'.format(Lang(ctx=interaction).language['roomedit_edit_ignore_member_2'], ms.content, Lang(ctx=interaction).language['roomedit_edit_ignore_member_3']),
-                                color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                                color=self.color
                             ))
                         else:
                             pr.connect = True
                             await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                                 title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                                 description='{} {} {}'.format(Lang(ctx=interaction).language['roomedit_edit_ignore_member_2'], ms.content, Lang(ctx=interaction).language['roomedit_edit_ignore_member_4']),
-                                color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                                color=self.color
                             ))
                         await interaction.user.voice.channel.set_permissions(target=[i for i in ms.guild.members if ms.content == i.mention][0], overwrite=pr)
                         await ms.delete()
@@ -170,14 +171,14 @@ class Roomedit(commands.Cog):
                     await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                         title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                         description='{} {} {}'.format(Lang(ctx=interaction).language['roomedit_edit_doesnt_exist_1'], ms.content, Lang(ctx=interaction).language['roomedit_edit_doesnt_exist_2']),
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                        color=self.color
                     ))       #тут переписать через вывод ошибки
                     await ms.delete()
 
             elif str(inter.emoji) == str(await stb_gld.fetch_emoji(1020971037741043713)):
                 await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                     title=Lang(ctx=interaction).language['roomedit_edit_user_lim_1'],
-                    color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                    color=self.color
                 ))
                 ms: discord.Message = await get_mes()
                 # if int(ms.content) <= 99:
@@ -186,7 +187,7 @@ class Roomedit(commands.Cog):
                     await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                         title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                         description='{} {}.'.format(Lang(ctx=interaction).language['roomedit_edit_user_lim_2'], ms.content),
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                        color=self.color
                     ))
                 except TypeError:
                     await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
@@ -206,14 +207,14 @@ class Roomedit(commands.Cog):
                     await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                         title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                         description=Lang(ctx=interaction).language['roomedit_edit_block_inv_1'],
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                        color=self.color
                     ))
                 else:
                     pr.connect = True
                     await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                         title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                         description=Lang(ctx=interaction).language['roomedit_edit_block_inv_2'],
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                        color=self.color
                     ))
 
                 await interaction.user.voice.channel.set_permissions(target=fr, overwrite=pr)
@@ -221,7 +222,7 @@ class Roomedit(commands.Cog):
             elif str(inter.emoji) == str(await stb_gld.fetch_emoji(1020971043856330782)):
                 await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                     title=Lang(ctx=interaction).language['roomedit_edit_new_name'],
-                    color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                    color=self.color
                 ))
                 ms: discord.Message = await get_mes()
                 await ms.author.voice.channel.edit(name=f'{ms.content}')
@@ -236,14 +237,14 @@ class Roomedit(commands.Cog):
                     await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                         title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                         description=Lang(ctx=interaction).language['roomedit_edit_block_watch_1'],
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                        color=self.color
                     ))
                 else:
                     pr.view_channel = True
                     await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                         title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                         description=Lang(ctx=interaction).language['roomedit_edit_block_watch_2'],
-                        color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                        color=self.color
                     ))
 
                 await interaction.user.voice.channel.set_permissions(target=fr, overwrite=pr)
@@ -252,7 +253,7 @@ class Roomedit(commands.Cog):
                 await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                     title=Lang(ctx=interaction).language['roomedit_edit_title_s'],
                     description=Lang(ctx=interaction).language['roomedit_edit_kick_1'],
-                    color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                    color=self.color
                 ))
                 ms: discord.Message = await get_mes()
                 [await i.move_to(None) for i in ms.author.voice.channel.members if ms.content == i.mention]
@@ -261,7 +262,7 @@ class Roomedit(commands.Cog):
             elif str(inter.emoji) == str(await stb_gld.fetch_emoji(1020971039141920819)):  #селект
                 await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                     title=Lang(ctx=interaction).language['roomedit_edit_block_voice_1'],
-                    color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                    color=self.color
                 ))
                 ms: discord.Message = await get_mes()
                 pr = discord.PermissionOverwrite()
@@ -277,7 +278,7 @@ class Roomedit(commands.Cog):
                         await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                             title=Lang(ctx=interaction).language['roomedit_edit_title_f'],
                             description='{} {} {}'.format(Lang(ctx=interaction).language['roomedit_edit_block_voice_2'], member, Lang(ctx=interaction).language['roomedit_edit_block_voice_3']),
-                            color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                            color=self.color
                         ))
                 else:
                     pr.speak = True
@@ -293,7 +294,7 @@ class Roomedit(commands.Cog):
             await interaction.response.send_message(ephemeral=True, embed=discord.Embed(
                 title=Lang(ctx=interaction).language['roomedit_edit_title_f'],
                 description=Lang(ctx=interaction).language['roomedit_edit_error'],
-                color=self.bot.read_sql(db="servers", guild=str(interaction.guild.id), key="MODERATIONCOLOR")
+                color=self.color
             ))
 
     async def listener_roomedit_start(self, interaction: discord.Interaction):

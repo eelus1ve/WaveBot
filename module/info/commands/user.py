@@ -7,8 +7,9 @@ from system.Bot import WaveBot
 from module.rate.commands.rank import Rank
 
 class UserInfo(commands.Cog):
-    def __init__(self, bot: WaveBot):
-        self.bot: WaveBot = bot
+    def __init__(self, bot: WaveBot, color):
+        self.bot = bot
+        self.color = color
 
     async def command_user(self, ctx: commands.Context, member: discord.Member):
 
@@ -29,7 +30,7 @@ class UserInfo(commands.Cog):
         if str(member.id) in ADMINS: lstdisc.append(f"***{Lang(ctx).language['user_dev']}*** \n")
         emb = discord.Embed(title=f"{Lang(ctx).language['user_info_about']} ***{member.name}***",
                             description=f"***{Lang(ctx).language['user_some_info']}***\n" + "".join(lstdisc),
-                            color=self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="INFOCOLOR")
+                            color=self.color
         )
         xp = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="XP")
         warns = self.bot.read_sql(db=f"server{ctx.guild.id}", guild=member.id, key="WARNS")

@@ -122,7 +122,7 @@ async def setup(bot: WaveBot):
             elif arg == 'IgnoreRoles':
                 pass
 
-            elif arg == 'добавить канал с информацией':  # переимовать
+            elif arg == 'добавить канал с инфорацией':  # переимовать
                 pass
 
     @bot.listen('on_interaction')

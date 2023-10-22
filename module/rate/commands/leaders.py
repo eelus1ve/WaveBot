@@ -6,16 +6,12 @@ from module.rate.commands.rank import Rank
 import sqlite3
 
 class Leaders(commands.Cog):
-    def __init__(self, bot: WaveBot):
+    def __init__(self, bot: WaveBot, color):
         self.bot = bot
+        self.color = color
 
     async def command_leaders(self, ctx: commands.Context, range_num: int):
         members = []
-        sqlite_connection = sqlite3.connect(f'{BD}WaveDateBase.db')
-        cursor = sqlite_connection.cursor()
-        cursor.execute(f"""SELECT XP, ID from server{ctx.guild.id}""")
-        records = cursor.fetchall()
-        records = list(reversed(sorted(records)))
         members.append(f"ㅤ`{Lang(ctx).language['leaders_command_leaders_list_2']}` {Lang(ctx).language['leaders_command_leaders_list_3']} {Lang(ctx).language['leaders_command_leaders_list_4']}")
         for i in range(range_num):
             lvl = Rank.levelFunction(int(records[i][0]))
@@ -24,6 +20,6 @@ class Leaders(commands.Cog):
         emb = discord.Embed(
             title=Lang(ctx).language['leaders_command_leaders_title'],
             description='\n '.join(members),
-            color = self.bot.read_sql(db="servers", guild=str(ctx.guild.id), key="RATECOLOR")
+            color = self.color
         )
         await ctx.send(embed = emb)
