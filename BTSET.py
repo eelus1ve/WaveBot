@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 from typing import Optional, Union
-import sqlite3
+# import sqlite3
 import os
 
 ADMINS = ['466609421863354388', '758734389072625685', '840307986228707368']
@@ -15,7 +15,7 @@ BD = 'system/Database/'
 IGNORE = ['commands']
 IGNORE_SIMV = ['<WaveEmb>']
 DEFGUILDSQL = {
-    'ID': "id",
+    'SERVER_ID': "id",
     'CHEK': False,
     'LANG': None,
     'COLOR': 0x0000FF,
@@ -289,14 +289,12 @@ async def embpy(ctx: commands.Context, comp: str, des, time: Optional[float] = N
         else:
             await ctx.send(embed=emb)
 
-
 class Lang():
     def __init__(self, ctx: Union[commands.Context, discord.Interaction]):
         self.language = self.lang(ctx)
 
-    @staticmethod
-    def lang(ctx: commands.Context):
-        sql = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT VALUE from lang WHERE SERVER_ID == {ctx.guild.id}""").fetchone()[0]
+    def lang(self, ctx: commands.Context):
+        sql = sqlite3.connect(f'{BD}WaveDateBase.db').cursor().execute(f"""SELECT LANG from servers WHERE ID == {ctx.guild.id}""").fetchone()[0]
         lang_dict = {}
         part = 'system\\Languages\\ru.wave'     #потом заменить на en-US
         if os.path.exists('system\\Languages\\{}.wave'.format(str(ctx.guild.preferred_locale) if not sql else sql)):
