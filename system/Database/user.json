@@ -1,0 +1,1705 @@
+{
+    "547782677793734656": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "359774801784602628": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "330050349408845825": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "758734389072625685": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "243063451751153664": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "789220420237656124": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "539848793693224970": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "858638662160613376": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "576788775846412304": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "184405311681986560": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "243062080981172224": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "478645571511648257": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "402861302273409024": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "867499046197526568": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "435554379207278613": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "404597024923713536": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "421668402281840650": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "615894092580257835": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "441864509238542346": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "701912803950198925": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "607908793417728010": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "298777154479718403": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "694136874230349845": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "558701945523798040": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "772352799139823626": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "806765553221107712": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "424672245537964042": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "406124614729859073": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "396331698352160778": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "992771455500681307": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "136845059717988354": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "653654221438320642": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "224930494314315776": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "1026209845210263552": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "602852993108410410": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "583722104059592757": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "666768779174346782": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "352413086096818176": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "707489011547242546": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "815969322760667227": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "386853412496736256": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "539839705412272138": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "760772341591703562": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "491983334419857426": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "786296552620556329": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "699930487707271178": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "692071425728708618": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "544279889470291989": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "969620718574784522": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "347027993530728448": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "611558079221465118": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "495221623654318080": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "758724686497579100": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "204255221017214977": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "214324842617372673": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "445598738266718218": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "320904078555217920": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "935190075430543461": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "612345806925725776": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "640846464427229184": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "639517763362226176": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "547785297690099742": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "678681421874855956": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "775110596584538193": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "498214011385675777": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "773917655840850001": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "263363253906702337": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "249522645782102017": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "547077175308713994": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "514454731754569738": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "392000513673134081": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "509388836670013466": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "422048430353940490": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "637306295757832202": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "313723235843833856": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "469068799681888286": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "247089573153341440": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "618701320026849302": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "747389258393714729": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "348847502318895104": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "565523599700787210": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "549163915506876426": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "398167900994928650": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "745352462604697668": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "313598443010654209": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "796004215197007892": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    },
+    "705375538570723328": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "758734389072625685": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "450998896471048193": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "539848793693224970": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "773875536627630090": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "704059929413287978": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "742045972280115231": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "728490855173980191": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "516006809807486996": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "282981504261423104": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "356017045693005827": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "694136874230349845": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "418472829114122241": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "586288718684487701": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "707451192082563093": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "770710296410980392": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "406124614729859073": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "682284139080450166": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "666768779174346782": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "548396516579213312": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "430702358402564097": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "707489011547242546": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "849384628446953502": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "826878276420894740": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "815969322760667227": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "852579428990058516": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "565136716206178305": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "347027993530728448": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "495221623654318080": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "418423687788756996": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "775110596584538193": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "724964109694795796": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "678649093165416464": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "639506131579961374": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "873227093834620958": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "550303318887628822": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "675596035694788608": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "514329860852809740": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "644134412354715668": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "796004215197007892": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    },
+    "812800677637652525": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "228537642583588864": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    },
+    "981257625696075896": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "281070552465145857": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "347027993530728448": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "406124614729859073": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "495221623654318080": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "496021942877552660": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "539848793693224970": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "544279889470291989": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "547077175308713994": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "666768779174346782": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "692071425728708618": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "707489011547242546": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "758734389072625685": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "840307986228707368": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "849384628446953502": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "858638662160613376": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "867499046197526568": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "871359460029890560": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "935190075430543461": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "992771455500681307": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    },
+    "981511419042361344": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "539848793693224970": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "666768779174346782": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "694136874230349845": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "758734389072625685": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "935190075430543461": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "981511682960547860": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    },
+    "986005469447487570": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "514329860852809740": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "758734389072625685": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    },
+    "989015983534522428": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "708616355024207884": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    },
+    "1062287445787418704": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "330050349408845825": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "406124614729859073": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "694136874230349845": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "715614855662403584": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "758734389072625685": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "840307986228707368": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "867499046197526568": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    },
+    "1098159367452381267": {
+        "": "id",
+        "check": false,
+        "LANG": "ru",
+        "COLOR": "0x0000FF",
+        "FUNCOLOR": "0x0000FF",
+        "INFOCOLOR": "0x0000FF",
+        "MODERATIONCOLOR": "0x0000FF",
+        "RATECOLOR": "0x0000FF",
+        "UTILITYCOLOR": "0x0000FF",
+        "ERCOLOR": "0x8B0000",
+        "FUNERCOLOR": "0x8B0000",
+        "INFOERCOLOR": "0x8B0000",
+        "MODERATIONERCOLOR": "0x8B0000",
+        "RATEERCOLOR": "0x8B0000",
+        "UTILITYERCOLOR": "0x8B0000",
+        "AUDIT": {},
+        "AUDIT_CHANNEL": "0",
+        "JoinRoles": [],
+        "ModRoles": {},
+        "ROLES": {},
+        "actmoduls": "",
+        "NCAPS": -1,
+        "NWARNS": 10,
+        "ADMINCHANNEL": "0",
+        "idMainch": "0",
+        "SELFROOM": {},
+        "BADWORDS": [],
+        "LINKS": [],
+        "PREFIX": "~",
+        "JNMSG": "",
+        "SelfTitle": "*\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0448\u0438 \u0440\u043e\u043b\u0438:* ",
+        "Selfrooms": {},
+        "Mafrooms": {},
+        "IgnoreChannels": [
+            [],
+            []
+        ],
+        "IgnoreRoles": [
+            [],
+            []
+        ],
+        "card": "wave.png",
+        "text_color": "#d0ed2b",
+        "bar_color": "#ec5252",
+        "blend": 1,
+        "FirstRole": "",
+        "USERS": {
+            "466609421863354388": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "984816758441517157": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            },
+            "1053993233413308436": {
+                "WARNS": 0,
+                "CAPS": 0,
+                "SCR": 0,
+                "LvL": 1,
+                "TIME": 0.0
+            }
+        }
+    }
+}
