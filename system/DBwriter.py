@@ -5,7 +5,7 @@ from BTSET import BD, DEFGUILD, DEFGUILDSQL, DEFUSERSQL
 import discord
 import mysql.connector
 from mysql.connector import connect, Error
-from mysql.connector.connection_cext import CMySQLConnection
+from mysql.connector.connection_cext import CMySQLConnection, CMySQLCursor
 
 mysql.connector.connect()
 
@@ -96,9 +96,47 @@ class Json_write(commands.Cog):
                 with open(f'{BD}user.json', 'w') as file:
                     json.dump(dat, file, indent=4)
 
-class SQL_write(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+class GetConnection:
+    def __init__(
+        self, 
+        user: str, 
+        password: str, 
+        host: str,
+        db_name: str
+    ) -> None:
+        self.__user: str = user
+        self.__password: str = password
+        self.__host: str = host
+        self.__db_name: str = db_name
+        #TODO брать из env хешированные данные и далле преобразовывать их
+        try:
+            self.connection: CMySQLConnection = connect(
+                host=self.__host,
+                user=self.__user,
+                database=self.__db_name, #! Будет ошибка при отсутствии БД (Но только в случае рега db на лок пк)
+                password=self.__password
+            )
+    
+        except Error as e:
+            print(e)
+            if e.errno == 1049: # ! Все строчки в execpt для легкой работы в время разработки в дальнейшей эксплуатации удалить
+                try:
+                    connection: CMySQLConnection = connect(
+                        host=self.__host,
+                        user=self.__user,
+                        password=self.__password,
+                    )
+                    with connection.cursor() as cursor:
+                        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {self.__db_name};")
+                    connection.close()
+                    self.connection: CMySQLConnection = connect(
+                        host=self.__host,
+                        user=self.__user,
+                        database=self.__db_name,
+                        password=self.__password,
+                    )
+                except:
+                    pass
         # self.db = mysql.connector.connect(
         # host="sql7.freemysqlhosting.net",
         # user="sql7639281",
@@ -109,314 +147,317 @@ class SQL_write(commands.Cog):
         # self.user = "sql7639284"
         # self.pas = "dj3Ra3RTuu"
         # self.namedb = "sql7639284"
-        
-        self.host = "localhost"
-        self.user = "mysql"
-        self.pas = "mysql"
-        self.db_name = "dsfgds"
+    def create_tables(self, cursor: CMySQLCursor):
+        cursor.execute('''      
+        CREATE TABLE IF NOT EXISTS server(
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        server_id BIGINT UNSIGNED NOT NULL UNIQUE,
+        prefix CHAR(1) DEFAULT '~',
+        PRIMARY KEY (id)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
 
-        
-        try:
-            self.connection: CMySQLConnection = connect(
-                host=self.host,
-                user=self.user,
-                database=self.db_name, #! Будет ошибка при отсутствии БД
-                password=self.password,
-            )
-        except Error as e:
-            print(e)
-            if e.errno == 1049: # ! Все строчки в execpt для легкой работы в время разработки в дальнейшей эксплуатации удалить
-                try:
-                    connection: CMySQLConnection = connect(
-                        host=self.host,
-                        user=self.user,
-                        password=self.password,
-                    )
-                    with connection.cursor() as cursor:
-                        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {self.db_name};")
-                    connection.close()
-                    self.connection: CMySQLConnection = connect(
-                        host=self.host,
-                        user=self.user,
-                        database=self.db_name,
-                        password=self.password,
-                    )
-                except Error as e:
-                    pass
-        
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS text_name(
+        id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        name TEXT,
+        PRIMARY KEY (id)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_text(
+        server_id INT UNSIGNED NOT NULL,
+        text_id TINYINT UNSIGNED NOT NULL,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE,
+        INDEX (text_id), FOREIGN KEY (text_id) REFERENCES text_name(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_vip(
+        server_id INT UNSIGNED NOT NULL UNIQUE,
+        status BOOLEAN NOT NULL,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_audit(
+        server_id INT UNSIGNED NOT NULL UNIQUE,
+        auditchannel BIGINT UNSIGNED NOT NULL UNIQUE,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS lang(
+        id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        name VARCHAR(5) UNIQUE,
+        PRIMARY KEY (id)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_lang(
+        server_id INT UNSIGNED NOT NULL UNIQUE,
+        lang_id TINYINT UNSIGNED NOT NULL UNIQUE,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE,
+        INDEX (lang_id), FOREIGN KEY (lang_id) REFERENCES lang(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS module(
+        id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        name VARCHAR(17) UNIQUE,
+        PRIMARY KEY (id)
+        ) ENGINE = INNODB;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_module(
+        server_id INT UNSIGNED NOT NULL,
+        module_id TINYINT UNSIGNED NOT NULL,
+        UNIQUE (server_id, module_id),
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE,
+        INDEX (module_id), FOREIGN KEY (module_id) REFERENCES module(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_moderation(
+        server_id INT UNSIGNED NOT NULL UNIQUE,
+        ncaps INT UNSIGNED,
+        nwarns INT UNSIGNED,
+        adminchannel BIGINT UNSIGNED,
+        mainch BIGINT UNSIGNED,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_rate(
+        server_id INT UNSIGNED NOT NULL UNIQUE,       
+        card TEXT,
+        textcolor VARCHAR(7),
+        barcolor VARCHAR(7),
+        blend INT UNSIGNED,
+        firstrole INT UNSIGNED,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE   
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS color(
+        id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        name VARCHAR(17) NOT NULL UNIQUE,
+        PRIMARY KEY (id)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+        ''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_color(
+        server_id INT UNSIGNED NOT NULL,
+        color_id TINYINT UNSIGNED NOT NULL,
+        color INT UNSIGNED,
+        UNIQUE (server_id, color_id),
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE,
+        INDEX (color_id), FOREIGN KEY (color_id) REFERENCES color(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+        ''')
+
+        cursor.execute('''     
+        CREATE TABLE IF NOT EXISTS user(
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        discord_id BIGINT UNSIGNED UNIQUE,
+        tg_link VARCHAR(20) UNIQUE,
+        anilagann INT UNIQUE,
+        PRIMARY KEY(id)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_user(
+        server_id INT UNSIGNED,
+        user_id INT UNSIGNED,
+        warns INT UNSIGNED,
+        caps INT UNSIGNED,
+        xp INT UNSIGNED,
+        time INT UNSIGNED,
+        UNIQUE (server_id, user_id),
+        INDEX (user_id), FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''         
+        CREATE TABLE IF NOT EXISTS user_social_rate(
+        from_id INT UNSIGNED,
+        to_id INT UNSIGNED,
+        rate INT UNSIGNED,
+        UNIQUE (from_id, to_id),
+        INDEX (from_id), FOREIGN KEY (from_id) REFERENCES user(id) ON DELETE CASCADE,
+        INDEX (to_id), FOREIGN KEY (to_id) REFERENCES user(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''      
+        CREATE TABLE IF NOT EXISTS server_social_rate(
+        from_id INT UNSIGNED,
+        to_id INT UNSIGNED,
+        rate INT UNSIGNED,
+        UNIQUE (from_id, to_id),
+        INDEX (from_id), FOREIGN KEY (from_id) REFERENCES user(id) ON DELETE CASCADE,
+        INDEX (to_id), FOREIGN KEY (to_id) REFERENCES server(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''      
+        CREATE TABLE IF NOT EXISTS user_review(
+        from_id INT UNSIGNED,
+        to_id INT UNSIGNED,
+        review TEXT,
+        UNIQUE (from_id, to_id),
+        INDEX (from_id), FOREIGN KEY (from_id) REFERENCES user(id) ON DELETE CASCADE,
+        INDEX (to_id), FOREIGN KEY (to_id) REFERENCES user(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute(''' 
+        CREATE TABLE IF NOT EXISTS server_review(
+        from_id INT UNSIGNED,
+        to_id INT UNSIGNED,
+        review TEXT,
+        UNIQUE (from_id, to_id),
+        INDEX (from_id), FOREIGN KEY (from_id) REFERENCES user(id) ON DELETE CASCADE,
+        INDEX (to_id), FOREIGN KEY (to_id) REFERENCES server(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_class(
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        server_id INT UNSIGNED,
+        name VARCHAR(25),
+        PRIMARY KEY(id),
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+                    
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS class_role(
+        class_id INT UNSIGNED,
+        role_id BIGINT UNSIGNED,
+        INDEX (class_id), FOREIGN KEY (class_id) REFERENCES server_class (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''        
+        CREATE TABLE IF NOT EXISTS server_modrole(
+        server_id INT UNSIGNED NOT NULL,
+        role_id BIGINT UNSIGNED UNIQUE,
+        kick BOOLEAN,
+        ban BOOLEAN,
+        unban BOOLEAN,
+        tempban BOOLEAN,
+        warn BOOLEAN,
+        tempwarn BOOLEAN,
+        unwarn BOOLEAN,
+        clearwarns BOOLEAN,
+        settings BOOLEAN,
+        clear BOOLEAN,
+        score BOOLEAN,
+        clearscore BOOLEAN,
+        setlvl BOOLEAN,
+        clearrank BOOLEAN,
+        temprole BOOLEAN,
+        giverole BOOLEAN,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''    
+        CREATE TABLE IF NOT EXISTS server_privatroom_category(
+        server_id INT UNSIGNED UNIQUE,
+        text_channel_id INT UNSIGNED UNIQUE,
+        voice_channel_id INT UNSIGNED UNIQUE,
+        category_id INT UNSIGNED UNIQUE,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''             
+        CREATE TABLE IF NOT EXISTS server_privatroom_channel(
+        server_id INT UNSIGNED,
+        voice_channel_id INT UNSIGNED UNIQUE,
+        owner_id INT UNSIGNED UNIQUE,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS word(
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        word VARCHAR(100) UNIQUE,
+        PRIMARY KEY (id)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS list_type(
+        id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        type VARCHAR(18) UNIQUE,
+        PRIMARY KEY (id)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS server_word(
+        server_id INT UNSIGNED,
+        type TINYINT UNSIGNED,
+        word_id INT UNSIGNED,
+        UNIQUE (server_id, type, word_id),
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE,
+        INDEX (type), FOREIGN KEY (type) REFERENCES list_type (id) ON DELETE CASCADE,
+        INDEX (word_id), FOREIGN KEY (word_id) REFERENCES word (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''           
+        CREATE TABLE IF NOT EXISTS server_list(
+        server_id INT UNSIGNED,
+        type TINYINT UNSIGNED,
+        value BIGINT,
+        UNIQUE (server_id, type, value),
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE,
+        INDEX (type), FOREIGN KEY (type) REFERENCES list_type (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+
+        cursor.execute('''      
+        CREATE TABLE IF NOT EXISTS server_info_channel(
+        server_id INT UNSIGNED UNIQUE,
+        ch1_id INT UNSIGNED UNIQUE,
+        ch2_id INT UNSIGNED UNIQUE,
+        ch3_id INT UNSIGNED UNIQUE,
+        ct INT UNSIGNED,
+        INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+    
+    def create_triggers(self, cursor: CMySQLCursor):
+        pass
+    def create_procedures(self, cursor: CMySQLCursor):
+        pass
+class DbMethods:
+    """
+    Class of methods to work with connection
+    -------------------------------
+    """
+    def __init__(
+        self, 
+        сonn_obj: GetConnection
+    ) -> None:
+        self.__conn_obj = сonn_obj
+    
+    def __get_cursor(function_to_decorate) -> CMySQLCursor:
+        """
+        Wrapper to get cursor
+        ---------------------
+        * Using only in class DbMethods
+        """
+        def the_wrapper(
+            self: DbMethods, 
+            cursor: CMySQLCursor | None = None
+        ) -> None:
+            with self.__conn_obj.connection.cursor() as cursor:
+                return function_to_decorate(self, cursor)
+        return the_wrapper
+    
+    @__get_cursor
+    def create_db(self, cursor):
+        self.__conn_obj.create_tables(cursor)
+        self.__conn_obj.create_triggers(cursor)
+        self.__conn_obj.create_procedures(cursor)
+
+    @__get_cursor
     def write_db(self):
-        with self.connection.cursor() as cursor:
-            cursor.execute('''      
-            CREATE TABLE IF NOT EXISTS server(
-            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            server_id BIGINT UNSIGNED NOT NULL UNIQUE,
-            prefix CHAR(1) DEFAULT '~',
-            PRIMARY KEY (id)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS text_name(
-            id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            name TEXT,
-            PRIMARY KEY (id)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_text(
-            server_id INT UNSIGNED NOT NULL,
-            text_id TINYINT UNSIGNED NOT NULL,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE,
-            INDEX (text_id), FOREIGN KEY (text_id) REFERENCES text_name(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_vip(
-            server_id INT UNSIGNED NOT NULL UNIQUE,
-            status BOOLEAN NOT NULL,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_audit(
-            server_id INT UNSIGNED NOT NULL UNIQUE,
-            auditchannel BIGINT UNSIGNED NOT NULL UNIQUE,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS lang(
-            id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            name VARCHAR(5) UNIQUE,
-            PRIMARY KEY (id)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_lang(
-            server_id INT UNSIGNED NOT NULL UNIQUE,
-            lang_id TINYINT UNSIGNED NOT NULL UNIQUE,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE,
-            INDEX (lang_id), FOREIGN KEY (lang_id) REFERENCES lang(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS module(
-            id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            name VARCHAR(17) UNIQUE,
-            PRIMARY KEY (id)
-            ) ENGINE = INNODB;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_module(
-            server_id INT UNSIGNED NOT NULL,
-            module_id TINYINT UNSIGNED NOT NULL,
-            UNIQUE (server_id, module_id),
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE,
-            INDEX (module_id), FOREIGN KEY (module_id) REFERENCES module(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_moderation(
-            server_id INT UNSIGNED NOT NULL UNIQUE,
-            ncaps INT UNSIGNED,
-            nwarns INT UNSIGNED,
-            adminchannel BIGINT UNSIGNED,
-            mainch BIGINT UNSIGNED,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_rate(
-            server_id INT UNSIGNED NOT NULL UNIQUE,       
-            card TEXT,
-            textcolor VARCHAR(7),
-            barcolor VARCHAR(7),
-            blend INT UNSIGNED,
-            firstrole INT UNSIGNED,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE   
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS color(
-            id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            name VARCHAR(17) NOT NULL UNIQUE,
-            PRIMARY KEY (id)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-            ''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_color(
-            server_id INT UNSIGNED NOT NULL,
-            color_id TINYINT UNSIGNED NOT NULL,
-            color INT UNSIGNED,
-            UNIQUE (server_id, color_id),
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server(id) ON DELETE CASCADE,
-            INDEX (color_id), FOREIGN KEY (color_id) REFERENCES color(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-            ''')
-
-            cursor.execute('''     
-            CREATE TABLE IF NOT EXISTS user(
-            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            discord_id BIGINT UNSIGNED UNIQUE,
-            tg_link VARCHAR(20) UNIQUE,
-            anilagann INT UNIQUE,
-            PRIMARY KEY(id)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_user(
-            server_id INT UNSIGNED,
-            user_id INT UNSIGNED,
-            warns INT UNSIGNED,
-            caps INT UNSIGNED,
-            xp INT UNSIGNED,
-            time INT UNSIGNED,
-            UNIQUE (server_id, user_id),
-            INDEX (user_id), FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''         
-            CREATE TABLE IF NOT EXISTS user_social_rate(
-            from_id INT UNSIGNED,
-            to_id INT UNSIGNED,
-            rate INT UNSIGNED,
-            UNIQUE (from_id, to_id),
-            INDEX (from_id), FOREIGN KEY (from_id) REFERENCES user(id) ON DELETE CASCADE,
-            INDEX (to_id), FOREIGN KEY (to_id) REFERENCES user(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''      
-            CREATE TABLE IF NOT EXISTS server_social_rate(
-            from_id INT UNSIGNED,
-            to_id INT UNSIGNED,
-            rate INT UNSIGNED,
-            UNIQUE (from_id, to_id),
-            INDEX (from_id), FOREIGN KEY (from_id) REFERENCES user(id) ON DELETE CASCADE,
-            INDEX (to_id), FOREIGN KEY (to_id) REFERENCES server(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''      
-            CREATE TABLE IF NOT EXISTS user_review(
-            from_id INT UNSIGNED,
-            to_id INT UNSIGNED,
-            review TEXT,
-            UNIQUE (from_id, to_id),
-            INDEX (from_id), FOREIGN KEY (from_id) REFERENCES user(id) ON DELETE CASCADE,
-            INDEX (to_id), FOREIGN KEY (to_id) REFERENCES user(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute(''' 
-            CREATE TABLE IF NOT EXISTS server_review(
-            from_id INT UNSIGNED,
-            to_id INT UNSIGNED,
-            review TEXT,
-            UNIQUE (from_id, to_id),
-            INDEX (from_id), FOREIGN KEY (from_id) REFERENCES user(id) ON DELETE CASCADE,
-            INDEX (to_id), FOREIGN KEY (to_id) REFERENCES server(id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_class(
-            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            server_id INT UNSIGNED,
-            name VARCHAR(25),
-            PRIMARY KEY(id),
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-                        
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS class_role(
-            class_id INT UNSIGNED,
-            role_id BIGINT UNSIGNED,
-            INDEX (class_id), FOREIGN KEY (class_id) REFERENCES server_class (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''        
-            CREATE TABLE IF NOT EXISTS server_modrole(
-            server_id INT UNSIGNED NOT NULL,
-            role_id BIGINT UNSIGNED UNIQUE,
-            kick BOOLEAN,
-            ban BOOLEAN,
-            unban BOOLEAN,
-            tempban BOOLEAN,
-            warn BOOLEAN,
-            tempwarn BOOLEAN,
-            unwarn BOOLEAN,
-            clearwarns BOOLEAN,
-            settings BOOLEAN,
-            clear BOOLEAN,
-            score BOOLEAN,
-            clearscore BOOLEAN,
-            setlvl BOOLEAN,
-            clearrank BOOLEAN,
-            temprole BOOLEAN,
-            giverole BOOLEAN,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''    
-            CREATE TABLE IF NOT EXISTS server_privatroom_category(
-            server_id INT UNSIGNED UNIQUE,
-            text_channel_id INT UNSIGNED UNIQUE,
-            voice_channel_id INT UNSIGNED UNIQUE,
-            category_id INT UNSIGNED UNIQUE,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''             
-            CREATE TABLE IF NOT EXISTS server_privatroom_channel(
-            server_id INT UNSIGNED,
-            voice_channel_id INT UNSIGNED UNIQUE,
-            owner_id INT UNSIGNED UNIQUE,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS word(
-            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            word VARCHAR(100) UNIQUE,
-            PRIMARY KEY (id)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS list_type(
-            id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            type VARCHAR(18) UNIQUE,
-            PRIMARY KEY (id)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS server_word(
-            server_id INT UNSIGNED,
-            type TINYINT UNSIGNED,
-            word_id INT UNSIGNED,
-            UNIQUE (server_id, type, word_id),
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE,
-            INDEX (type), FOREIGN KEY (type) REFERENCES list_type (id) ON DELETE CASCADE,
-            INDEX (word_id), FOREIGN KEY (word_id) REFERENCES word (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''           
-            CREATE TABLE IF NOT EXISTS server_list(
-            server_id INT UNSIGNED,
-            type TINYINT UNSIGNED,
-            value BIGINT,
-            UNIQUE (server_id, type, value),
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE,
-            INDEX (type), FOREIGN KEY (type) REFERENCES list_type (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
-
-            cursor.execute('''      
-            CREATE TABLE IF NOT EXISTS server_info_channel(
-            server_id INT UNSIGNED UNIQUE,
-            ch1_id INT UNSIGNED UNIQUE,
-            ch2_id INT UNSIGNED UNIQUE,
-            ch3_id INT UNSIGNED UNIQUE,
-            ct INT UNSIGNED,
-            INDEX (server_id), FOREIGN KEY (server_id) REFERENCES server (id) ON DELETE CASCADE
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;''')
+            #!-----------------------------------------
             import time 
             start_time = time.time()
             # все форки принтануть и избавиться
