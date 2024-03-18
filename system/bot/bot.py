@@ -3,13 +3,10 @@ from discord.ext import commands
 from typing import *
 from discord import app_commands
 from discord.ext.commands.help import HelpCommand
-from .db_.db_read import DataBaseRead
-from .db_.db_write import DataBaseWrite
-from .db_.sqledit import SQLEditor
+from system.db.db_functions import DbMethods
 
-
-class WaveBot(commands.Bot, DataBaseWrite, DataBaseRead, SQLEditor):
-    language = Lang().language
+class WaveBot(commands.Bot, DbMethods):
+    language = Lang()
     def __init__(
             self,
             command_prefix,

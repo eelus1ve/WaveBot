@@ -4,26 +4,19 @@
 import os
 
 
-
-
-
-
-
-
-
 class Lang():
-    def __init__(self, ctx: Union[commands.Context, discord.Interaction]):
-        self.language = self.lang()
+	def __init__(self, ctx: Union[commands.Context, discord.Interaction]):
+		self.language = self.lang()
 
-    def get_lang(self, ctx: commands.Context):
-        lang_dict = {}
+	def get_lang(self, ctx: commands.Context):
+		lang_dict = {}
 		path = "system\\Languages\\"
 		lang_name = ""
 		return self.language[lang_name]
     
 	@staticmethod
-    def lang(ctx: commands.Context):
-        lang_dict = {}
+	def lang(ctx: commands.Context):
+		lang_dict = {}
 		path = "system\\Languages\\"
 		for i in os.listdir(path):
 			if i == "language.py":
@@ -34,4 +27,4 @@ class Lang():
 					if not (line.startswith('//')) and not (line == '\n'):
 						key, *value = line.split()
 						lang_dict[key] = ' '.join([i.replace('\\n', '\n') for i in value])
-			return lang_dict
+		return lang_dict
